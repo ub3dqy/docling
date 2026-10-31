@@ -31,7 +31,6 @@ from pathlib import Path
 
 from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import (
-    NemotronOcrOptions,
     OcrMode,
     PdfPipelineOptions,
     TableStructureOptions,
@@ -58,10 +57,8 @@ def main():
     )
 
     # Any of the OCR options can be used: EasyOcrOptions, TesseractOcrOptions,
-    # TesseractCliOcrOptions, OcrMacOptions (macOS only), RapidOcrOptions,
-    # NemotronOcrOptions (Linux x86_64, Python 3.12, CUDA 13.x only)
+    # TesseractCliOcrOptions, OcrMacOptions (macOS only), RapidOcrOptions.
     # ocr_options = EasyOcrOptions(mode=OcrMode.FULL_PAGE)
-    # ocr_options = NemotronOcrOptions(mode=OcrMode.FULL_PAGE)
     # ocr_options = TesseractOcrOptions(mode=OcrMode.FULL_PAGE)
     # ocr_options = OcrMacOptions(mode=OcrMode.FULL_PAGE)
     # ocr_options = RapidOcrOptions(mode=OcrMode.FULL_PAGE)

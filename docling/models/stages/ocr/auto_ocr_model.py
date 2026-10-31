@@ -12,7 +12,6 @@ from docling.datamodel.base_models import Page
 from docling.datamodel.document import ConversionResult
 from docling.datamodel.pipeline_options import (
     EasyOcrOptions,
-    NemotronOcrOptions,
     OcrAutoOptions,
     OcrMacOptions,
     OcrOptions,
@@ -21,7 +20,6 @@ from docling.datamodel.pipeline_options import (
 from docling.exceptions import OcrLanguageNotSupportedError
 from docling.models.base_ocr_model import BaseOcrModel
 from docling.models.stages.ocr.easyocr_model import EasyOcrModel
-from docling.models.stages.ocr.nemotron_ocr_model import NemotronOcrModel
 from docling.models.stages.ocr.ocr_mac_model import OcrMacModel
 from docling.models.stages.ocr.rapid_ocr_model import RapidOcrModel
 
@@ -89,40 +87,6 @@ class OcrAutoModel(BaseOcrModel):
                 except OcrLanguageNotSupportedError as exc:
                     _log.info("Auto OCR: skipping ocrmac: %s", exc)
                     rejected.append(_Rejection("ocrmac", str(exc), is_language=True))
-
-            if "linux" == sys.platform:
-                try:
-                    import nemotron_ocr.inference.pipeline_v2
-
-                    NemotronOcrModel.validate_runtime(accelerator_options)
-
-                    self._engine = NemotronOcrModel(
-                        enabled=self.enabled,
-                        artifacts_path=artifacts_path,
-                        options=NemotronOcrOptions(
-                            mode=self.options.mode,
-                            lang=self.options.lang,
-                            replace_broken_text_layer=(
-                                self.options.replace_broken_text_layer
-                            ),
-                        ),
-                        accelerator_options=accelerator_options,
-                    )
-                    _log.info("Auto OCR model selected nemotron.")
-                except ImportError:
-                    _log.info("Nemotron cannot be used because it is not installed.")
-                    rejected.append(
-                        _Rejection("nemotron", _NOT_INSTALLED, is_language=False)
-                    )
-                except OcrLanguageNotSupportedError as exc:
-                    # Caught before the arm below: OcrLanguageNotSupportedError
-                    # is a BaseError, hence a RuntimeError, and the two must not
-                    # be reported as the same kind of failure.
-                    _log.info("Auto OCR: skipping nemotron: %s", exc)
-                    rejected.append(_Rejection("nemotron", str(exc), is_language=True))
-                except (RuntimeError, FileNotFoundError) as exc:
-                    _log.warning("Nemotron OCR cannot be used: %s", exc)
-                    rejected.append(_Rejection("nemotron", str(exc), is_language=False))
 
             if self._engine is None:
                 try:

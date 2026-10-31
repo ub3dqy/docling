@@ -27,8 +27,8 @@ concurrency:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-  DEFAULT_PYTHON_VERSIONS: '["3.10"]'
-  FULL_PYTHON_VERSIONS: '["3.10", "3.11", "3.12", "3.13", "3.14"]'
+  DEFAULT_PYTHON_VERSIONS: '["3.11"]'
+  FULL_PYTHON_VERSIONS: '["3.11", "3.12", "3.13", "3.14"]'
 
 jobs:
   changes:

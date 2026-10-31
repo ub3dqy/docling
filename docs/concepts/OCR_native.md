@@ -185,24 +185,6 @@ Check the semantic of easyocr language inputs here: https://www.jaided.ai/easyoc
 
 
 
-## Nemotron-OCR
-
-This section describes Nemotron-OCR for versions `v2.0.0`, `v2.0.2`.
-
-Nemotron works only on Linux and requires CUDA (Docling enforces 13.x).
-
-The following table shows the supported Python versions and languages
-
-
-| Nemotron version | Python version   | Supported language inputs                              |
-| ---------------- | ---------------- | ------------------------------------------------------ |
-| v2.0.0           | 3.12 only        | `english` (alias `en`), `multilingual` (alias `multi`) |
-| v2.0.2           | 3.11, 3.12, 3.13 | `english` (alias `en`), `multilingual` (alias `multi`) |
-
-
-The "multi/multilingual" languages cover: English, Chinese (Simplified and Traditional), Japanese, Korean, and Russian
-
-
 ## Tesseract - TesserOCR
 
 Tesseract must be installed as a system package (see [installation](../getting_started/installation.md)).

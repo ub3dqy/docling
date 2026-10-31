@@ -154,7 +154,7 @@ def test_cli_convert_help():
     assert "odf" in metavar_by_name["from_formats"]
     assert "granite_docling" in metavar_by_name["vlm_model"]
     assert metavar_by_name["ocr_engine"] == (
-        "[auto|easyocr|kserve_v2_ocr|nemotron-ocr|ocrmac|rapidocr|tesserocr|tesseract]"
+        "[auto|easyocr|kserve_v2_ocr|ocrmac|rapidocr|tesserocr|tesseract]"
     )
 
 

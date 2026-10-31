@@ -26,7 +26,6 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
@@ -42,7 +41,7 @@ authors = [
   { name = "Panos Vagenas", email = "pva@zurich.ibm.com" },
   { name = "Peter Staar", email = "taa@zurich.ibm.com" },
 ]
-requires-python = '>=3.10,<4.0'
+requires-python = '>=3.11,<4.0'
 
 # Meta-package: pulls in docling-slim with the service-client extra.
 # The `docling` Python module itself is provided by docling-slim.

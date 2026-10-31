@@ -27,7 +27,6 @@ from docling.cli.main import app
 from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import (
     EasyOcrOptions,
-    NemotronOcrOptions,
     OcrAutoOptions,
     OcrMacOptions,
     OcrMode,
@@ -324,7 +323,6 @@ def test_a_tag_carries_the_prefix() -> None:
         (TesseractOcrOptions, ["chi_tra"], ["chi_tra"]),
         (TesseractCliOcrOptions, ["script/Cyrillic"], ["script/Cyrillic"]),
         (EasyOcrOptions, ["ch_sim", "ang"], ["ch_sim", "ang"]),
-        (NemotronOcrOptions, ["multilingual"], ["multilingual"]),
         (OcrAutoOptions, ["chinese"], ["chinese"]),
         # Vision's codes look like tags but are not read as any: they are what
         # the running macOS reports, region and all.
@@ -354,7 +352,6 @@ def test_tesseract_fraktur_keeps_its_own_traineddata() -> None:
 _OPTION_CLASSES = [
     OcrAutoOptions,
     RapidOcrOptions,
-    NemotronOcrOptions,
     EasyOcrOptions,
     TesseractCliOcrOptions,
     TesseractOcrOptions,

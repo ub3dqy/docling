@@ -5,7 +5,6 @@
 Docling supports multiple OCR engines that can be installed as extra packages:
 
 - [RapidOCR](https://github.com/RapidAI/RapidOCR)
-- [Nemotron-OCR](https://huggingface.co/nvidia/nemotron-ocr-v2)
 - [EasyOCR](https://github.com/jaidedai/easyocr)
 - [ocrmac](https://github.com/straussmaximilian/ocrmac)
 - [tesseract-CLI](https://github.com/tesseract-ocr/tesseract)
@@ -48,7 +47,7 @@ Three BCP-47 tags name something other than a language and are rejected behind `
 
 | Tag   | Means                 | Say this instead                                                                       |
 | ----- | --------------------- | -------------------------------------------------------------------------------------- |
-| `mul` | multiple languages    | The engine's own code for its multilingual model, e.g. `multilingual` for Nemotron-OCR |
+| `mul` | multiple languages    | List the requested languages explicitly                                               |
 | `und` | undetermined          | An empty list, or a language written in the script you want                            |
 | `zxx` | no linguistic content | Turn OCR off: `--no-ocr`, or `do_ocr=False`                                            |
 
@@ -63,7 +62,6 @@ On the CLI, omitting `--ocr-lang` applies the engine's default languages; an emp
 | EasyOCR           | English (`en`)                     |
 | RapidOCR          | The Simplified Chinese default     |
 | KServe            | Sends `en`                         |
-| Nemotron-OCR      | The English model                  |
 | ocrmac            | Vision's own automatic behaviour   |
 
 The KServe client is the exception to everything in this page: it canonicalizes nothing at all.
@@ -104,7 +102,6 @@ Two cases need the bare code:
 |                   | files you trained yourself                                            |
 | EasyOCR           | Any EasyOCR code: `ch_sim`, `ch_tra`, `rs_latin`, `rs_cyrillic`,      |
 |                   | `tjk`, `ang`, `mah`, `tab`                                            |
-| Nemotron-OCR      | `english`, `multilingual`                                             |
 | ocrmac            | Any recognition language the running macOS reports, e.g. `en-US`,     |
 |                   | `zh-Hans`                                                             |
 | KServe            | Everything -- `lang` is sent verbatim either way                      |
@@ -147,7 +144,7 @@ you can paste straight back into `lang`:
 TesseractOcrCli has no model for the OCR language 'iso:th-Thai'. No traineddata file 'tha' is installed. Engine codes: jpn_vert, script/Cyrillic. Supported: iso:de, iso:en, iso:ja, iso:zh.
 ```
 
-Engines that run one language at a time (RapidOCR, Nemotron-OCR) take the **first** tag and warn
+Engines that run one language at a time (RapidOCR) take the **first** tag and warn
 about the rest. The KServe client also sends only the first entry.
 
 
@@ -318,26 +315,6 @@ written bare. A BCP-47 tag behind `iso:` is translated into one of them: `iso:zh
 `ch_tra`, `iso:sr-Cyrl` becomes `rs_cyrillic`, `iso:tg` becomes `tjk`. EasyOCR then picks the one
 checkpoint covering every requested code, by the script they share, so `iso:ru` reaches the
 Cyrillic model unnamed. The grouping is in [Native OCR engines](OCR_native.md#easyocr).
-
-## Nemotron-OCR
-
-The engine's own vocabulary, in its own codes, is listed in
-[Native OCR engines](OCR_native.md#nemotron-ocr).
-
-### Nemotron-OCR language input
-
-A request reaches one of three answers:
-
-- `english` selects the English recognizer, and so do `iso:en` and an empty list.
-- `multilingual` selects the multilingual one, as do the five languages it is trained on:
-  `iso:zh`, `iso:zh-Hant`, `iso:ja`, `iso:ko` and `iso:ru`.
-- Any other Latin-script language whose alphabet the English recognizer can spell is routed to it
-  as a best effort: `iso:de`, `iso:fr`, `iso:pl`, `iso:sr-Latn` and about 170 more. NVIDIA
-  validates none of these, so docling logs a warning saying that the accuracy on them is untested.
-  The full set is what `supported_ocr_languages()` reports.
-
-Everything else raises.
-
 
 ## Tesseract - TesserOCR
 

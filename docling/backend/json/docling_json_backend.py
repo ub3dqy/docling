@@ -2,10 +2,14 @@
 # SPDX-License-Identifier: MIT
 
 import codecs
+import json
 import logging
+import sys
 from io import BytesIO
+from itertools import chain
 from pathlib import Path
 from typing import Optional, Union
+from urllib.request import url2pathname
 
 from docling_core.types.doc import DoclingDocument, ImageRef
 from pydantic import AnyUrl, BaseModel
@@ -49,6 +53,48 @@ def _clear_local_image_refs(node: object) -> int:
         for child in node.values():
             cleared += _clear_local_image_refs(child)
     return cleared
+
+
+def _normalize_windows_image_refs(doc: DoclingDocument, json_data: str | bytes) -> None:
+    """Restore native Windows paths after JSON's URI-first validation."""
+    if sys.platform != "win32":
+        return
+    # The document has already passed schema validation. Read the original URI
+    # strings as well: URI validation percent-encodes Cyrillic drive paths.
+    payload = json.loads(json_data)
+    for item, raw_item in zip(
+        chain(
+            doc.pictures,
+            doc.tables,
+            doc.key_value_items,
+            doc.form_items,
+            doc.pages.values(),
+        ),
+        chain(
+            payload.get("pictures", []),
+            payload.get("tables", []),
+            payload.get("key_value_items", []),
+            payload.get("form_items", []),
+            payload.get("pages", {}).values(),
+        ),
+    ):
+        if item.image is None or not isinstance(item.image.uri, AnyUrl):
+            continue
+        uri = item.image.uri
+        if (
+            uri.scheme == "file"
+            and uri.host in (None, "", "localhost")
+            and uri.path is not None
+        ):
+            item.image.uri = Path(url2pathname(uri.path))
+        elif len(uri.scheme) == 1:
+            # A drive letter, e.g. C:\\images\\scan.png, is also a valid URI scheme.
+            # Keep native percent signs and spaces unchanged in this case.
+            raw_image = raw_item.get("image")
+            if isinstance(raw_image, dict) and isinstance(raw_image.get("uri"), str):
+                path = Path(raw_image["uri"])
+                if path.is_absolute():
+                    item.image.uri = path
 
 
 class DoclingJSONBackend(DeclarativeDocumentBackend):
@@ -96,6 +142,7 @@ class DoclingJSONBackend(DeclarativeDocumentBackend):
                 raise RuntimeError(f"Unexpected: {type(self.path_or_stream)=}")
             doc = DoclingDocument.model_validate_json(json_data=json_data)
             if self.options.enable_local_fetch:
+                _normalize_windows_image_refs(doc, json_data)
                 # docling-core gates local image reads; opting in reads them now,
                 # resolving relative paths against the JSON file's directory
                 doc.load_local_images(

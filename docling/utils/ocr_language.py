@@ -258,9 +258,7 @@ class OcrLanguageResolver:
                 raise OcrLanguageResolver._invalid(
                     bcp47_tobe,
                     "it names 'multiple languages', which is not a language docling "
-                    "can recognize. An engine that ships a multilingual model names "
-                    "it with its own code, so write that code without the prefix "
-                    "(`multilingual` for nemotron-OCR).",
+                    "can recognize. List the requested languages explicitly instead.",
                 )
 
             try:

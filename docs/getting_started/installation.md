@@ -1,3 +1,5 @@
+This fork requires Python 3.11 or higher.
+
 To use Docling, simply install `docling` from your Python package manager, e.g. pip:
 ```bash
 pip install docling
@@ -84,9 +86,6 @@ The following table summarizes the extras available in the `docling` package. Th
 | `htmlrender` | Installs dependencies for HTML page rendering in the HTML backend. |
 | `rapidocr` | Installs the [RapidOCR](https://github.com/RapidAI/RapidOCR) OCR engine with [onnxruntime](https://github.com/microsoft/onnxruntime/) backend. |
 
-For Nemotron OCR, install `docling-slim[feat-ocr-nemotron]` alongside `docling` as shown below.
-
-
 ### OCR engines
 
 
@@ -96,7 +95,6 @@ the following engines.
 | Engine | Installation | Usage |
 | ------ | ------------ | ----- |
 | [EasyOCR](https://github.com/JaidedAI/EasyOCR) | `easyocr` extra or via `pip install easyocr`. | `EasyOcrOptions` |
-| [Nemotron OCR](https://huggingface.co/nvidia/nemotron-ocr-v2) | `docling-slim[feat-ocr-nemotron]`. Supported only on Linux x86_64 with Python 3.12 and CUDA 13.x. See installation note below. | `NemotronOcrOptions` |
 | Tesseract | System dependency. See description for Tesseract and Tesserocr below.  | `TesseractOcrOptions` |
 | Tesseract CLI | System dependency. See description below. | `TesseractCliOcrOptions` |
 | OcrMac | System dependency. See description below. | `OcrMacOptions` |
@@ -168,21 +166,6 @@ doc_converter = DocumentConverter(
     pip install --no-binary :all: tesserocr
     ```
 
-??? "Nemotron OCR installation"
-
-    [Nemotron OCR](https://huggingface.co/nvidia/nemotron-ocr-v2) requires the CUDA 13 PyTorch wheels.
-    Install `docling` together with `docling-slim[feat-ocr-nemotron]` using uv.
-    Use uv's `unsafe-best-match` index strategy to select the CUDA-enabled `torch` wheels.
-
-    ```console
-    uv venv --python 3.12
-    uv pip install docling "docling-slim[feat-ocr-nemotron]" \
-      --extra-index-url https://download.pytorch.org/whl/cu130 \
-      --index-strategy unsafe-best-match
-    ```
-
-    Nemotron OCR is currently supported only on Linux x86_64 with Python 3.12 and CUDA 13.x.
-
 ??? "Installation without RapidOCR"
 
     The `docling` package installs `docling-slim[standard]`, which always includes RapidOCR.
@@ -222,8 +205,8 @@ doc_converter = DocumentConverter(
 To develop Docling features, bugfixes etc., install as follows from your local clone's root dir:
 
 ```bash
-uv sync --all-extras --no-extra feat-ocr-nemotron
+uv sync --frozen --group dev --all-packages --no-group docs --no-group examples
 ```
 
-The `feat-ocr-nemotron` extra is intentionally excluded from the default development
-setup because it is only usable on Linux x86_64 with Python 3.12 and CUDA 13.x.
+This installs the standard conversion features and development tools. Add a specific
+`--extra` when developing an optional feature that needs additional dependencies.

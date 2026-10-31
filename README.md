@@ -62,6 +62,17 @@ Docling simplifies document processing by parsing diverse formats — including 
 - 📝 Metadata extraction, including title, authors, references & language
 - 📝 Complex chemistry understanding (Molecular structures)
 
+## Developing this fork
+
+Use Python 3.11 or higher and [uv](https://docs.astral.sh/uv/):
+
+```bash
+git clone --branch development https://github.com/ub3dqy/docling.git
+cd docling
+uv sync --frozen --group dev --all-packages --no-group docs --no-group examples
+uv run --no-sync docling --help
+```
+
 ## Quickstart
 
 ### 1. Install
@@ -70,7 +81,7 @@ Docling simplifies document processing by parsing diverse formats — including 
 pip install docling
 ```
 
-> **Note:** Python 3.9 support was dropped in docling version 2.70.0. Please use Python 3.10 or higher.
+> **Note:** This fork requires Python 3.11 or higher to use current dependencies and security fixes.
 
 Works on macOS, Linux and Windows environments for both x86_64 and arm64 architectures.
 

@@ -34,10 +34,6 @@ from docling.models.stages.ocr.easyocr_model import (
     _resolve_easyocr_recognition_models,
     resolve_easyocr_codes,
 )
-from docling.models.stages.ocr.nemotron_ocr_model import (
-    NemotronOcrModel,
-    nemotron_ocr_model_dir,
-)
 from docling.models.stages.ocr.rapid_ocr_model import (
     _RAPIDOCR_DEFAULT_LANGUAGE,
     _RAPIDOCR_MODEL_TYPE,
@@ -216,7 +212,6 @@ def download_models(
     rapidocr_model_size: str = _RAPIDOCR_MODEL_TYPE,
     with_easyocr: bool = False,
     easyocr_languages: Optional[list[str]] = None,  # BCP-47 tags
-    with_nemotron_ocr: bool = False,
     whisper_models: Optional[list[str]] = None,
     whisper_distil_models: Optional[list[str]] = None,
     whisper_s2t_models: Optional[list[str]] = None,
@@ -439,15 +434,6 @@ def download_models(
         EasyOcrModel.download_models(
             local_dir=output_dir / EasyOcrModel._model_repo_folder,
             recognition_models=easyocr_recognition_models,
-            force=force,
-            progress=progress,
-        )
-
-    if with_nemotron_ocr:
-        nemotron_model_dir = nemotron_ocr_model_dir()
-        _log.info("Downloading nemotron-ocr-v2 model...")
-        NemotronOcrModel.download_models(
-            local_dir=output_dir / nemotron_model_dir,
             force=force,
             progress=progress,
         )

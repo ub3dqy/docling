@@ -21,6 +21,8 @@ The `docling` package includes all standard features, the CLI tools, and is the 
 
 ## Installation
 
+This fork requires Python 3.11 or higher.
+
 ### With Specific Features
 ```bash
 # PDF support with local models

@@ -80,7 +80,6 @@ class _AvailableModels(str, Enum):
     GRANITE_CHART_EXTRACTION_V4 = "granite_chart_extraction_v4"
     RAPIDOCR = "rapidocr"
     EASYOCR = "easyocr"
-    NEMOTRON_OCR_V2 = "nemotron_ocr_v2"
     WHISPER_TINY = "whisper_tiny"
     WHISPER_TINY_EN = "whisper_tiny_en"
     WHISPER_BASE = "whisper_base"
@@ -342,7 +341,6 @@ def download(
         rapidocr_model_size=rapidocr_model_size,
         with_easyocr=_AvailableModels.EASYOCR in to_download,
         easyocr_languages=easyocr_lang,
-        with_nemotron_ocr=_AvailableModels.NEMOTRON_OCR_V2 in to_download,
         whisper_models=[
             _WHISPER_MODELS[model] for model in to_download if model in _WHISPER_MODELS
         ],

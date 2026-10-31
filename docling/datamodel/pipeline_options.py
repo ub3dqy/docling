@@ -203,7 +203,7 @@ class OcrOptions(BaseOptions):
     See Also:
         `OcrAutoOptions`: Automatic engine selection based on availability.
         `EasyOcrOptions`, `TesseractCliOcrOptions`, `TesseractOcrOptions`,
-        `RapidOcrOptions`, `OcrMacOptions`, `NemotronOcrOptions`: Engine-specific
+        `RapidOcrOptions`, `OcrMacOptions`: Engine-specific
         configurations.
     """
 
@@ -334,7 +334,7 @@ class OcrAutoOptions(OcrOptions):
 
     When this option is used, Docling probes the runtime environment at
     pipeline initialization and selects the first available OCR engine, in
-    this order: OcrMac on macOS, Nemotron OCR on Linux with CUDA, RapidOCR
+    this order: OcrMac on macOS, RapidOCR
     with onnxruntime, EasyOCR, and RapidOCR with torch. Tesseract is never
     selected automatically; use `TesseractOcrOptions` or
     `TesseractCliOcrOptions` for it. The requested languages are forwarded to
@@ -514,56 +514,6 @@ class RapidOcrOptions(OcrOptions):
     model_config = ConfigDict(
         extra="forbid",
     )
-
-
-class NemotronOcrOptions(OcrOptions):
-    """Configuration for NVIDIA Nemotron OCR.
-
-    Notes:
-        Use the pipeline-level `artifacts_path` to point to pre-downloaded checkpoint artifacts.
-    """
-
-    kind: ClassVar[Literal["nemotron-ocr"]] = "nemotron-ocr"
-    lang: Annotated[
-        list[str],
-        Field(
-            description=(
-                "Recognition language, written as one of nemotron-OCR's own codes "
-                "(`english`, `multilingual`) or as a BCP-47 tag behind the `iso:` "
-                "prefix. nemotron-OCR-v2 ships two recognizers: `english`, "
-                "`iso:en` and an empty list all select the English model, while "
-                "`multilingual` and the languages that model covers (`iso:zh-Hans`, "
-                "`iso:zh-Hant`, `iso:ja`, `iso:ko`, `iso:ru`) select the "
-                "multilingual one. Any other Latin-script language whose alphabet "
-                "the English recognizer can spell (`iso:de`, `iso:fr`, `iso:pl`, "
-                "`iso:sr-Latn`, ...) is routed to the English model as a best "
-                "effort, with a warning: NVIDIA validates none of them. A language "
-                "that model cannot spell raises"
-            ),
-            examples=[["english"], ["multilingual"]],
-        ),
-    ] = ["english"]
-    merge_level: Annotated[
-        Literal["word", "sentence", "paragraph"],
-        Field(
-            description=(
-                "Granularity requested from Nemotron OCR. `sentence` is the default "
-                "because it maps most directly to Docling OCR cells."
-            )
-        ),
-    ] = "sentence"
-    model_config = ConfigDict(
-        extra="forbid",
-    )
-    batch_size: Annotated[
-        int,
-        Field(
-            description=(
-                "Number of images within the same page to process. "
-                "In practice a batch>1 happens only with PDF inputs with many OCR rectangles."
-            )
-        ),
-    ] = 8
 
 
 class EasyOcrOptions(OcrOptions):

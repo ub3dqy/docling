@@ -165,12 +165,18 @@ def test_local_page_image_is_not_embedded_by_default(tmp_path):
         assert pixels not in _embedded_pixels(exported)
 
 
-def test_local_image_uri_is_embedded_with_enable_local_fetch(tmp_path):
-    image_file = tmp_path / "local.png"
+@pytest.mark.parametrize("uri_kind", ["absolute", "relative", "file_uri"])
+def test_local_image_uri_is_embedded_with_enable_local_fetch(tmp_path, uri_kind):
+    image_file = tmp_path / "локальный рисунок %20.png"
     pixels = _write_image(image_file)
+    uri = {
+        "absolute": image_file,
+        "relative": Path(image_file.name),
+        "file_uri": image_file.as_uri(),
+    }[uri_kind]
     doc = DoclingDocument(name="pic")
-    doc.add_picture(image=_image_ref(image_file))
-    doc.add_page(page_no=1, size=Size(width=7, height=5), image=_image_ref(image_file))
+    doc.add_picture(image=_image_ref(uri))
+    doc.add_page(page_no=1, size=Size(width=7, height=5), image=_image_ref(uri))
     converter = DocumentConverter(
         format_options={
             InputFormat.JSON_DOCLING: DoclingJSONFormatOption(
@@ -183,6 +189,9 @@ def test_local_image_uri_is_embedded_with_enable_local_fetch(tmp_path):
 
     assert result.pictures[0].image is not None
     assert result.pages[1].image is not None
+    page_image = result.pages[1].image.pil_image
+    assert page_image is not None
+    assert page_image.convert("RGB").tobytes() == pixels
     assert pixels in _embedded_pixels(
         result.export_to_markdown(image_mode=ImageRefMode.EMBEDDED)
     )

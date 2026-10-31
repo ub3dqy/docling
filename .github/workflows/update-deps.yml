@@ -22,7 +22,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   DEFAULT_PACKAGES: "docling-core docling-parse docling-ibm-models"
   PR_BRANCH: "ci/update-locked-deps"
-  PYTHON_VERSION: "3.10"
+  PYTHON_VERSION: "3.11"
 
 permissions:
   contents: read

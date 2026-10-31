@@ -54,7 +54,7 @@ make validate       # run mutating hooks on the current changeset
 
 ## Code standards
 
-- Keep public APIs typed and compatible with Python 3.10+.
+- Keep public APIs typed and compatible with Python 3.11+.
 - Use `uv add` or project-local dependency patterns when dependencies change.
 - Add focused tests for behavior changes; regenerate reference data only when
   conversion outputs intentionally change.

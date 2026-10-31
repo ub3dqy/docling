@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: The Docling Contributors
 # SPDX-License-Identifier: MIT
 
+from pathlib import Path
+
 import pytest
 
 pytestmark = pytest.mark.cross_platform
@@ -24,7 +26,7 @@ def test_settings(monkeypatch):
     importlib.reload(m)
 
     # Check top level setting
-    assert str(m.settings.artifacts_path) == "/path/to/artifacts"
+    assert m.settings.artifacts_path == Path("/path/to/artifacts")
 
     # Check nested set via environment variables
     assert m.settings.perf.page_batch_size == 12

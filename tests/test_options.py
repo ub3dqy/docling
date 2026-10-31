@@ -25,7 +25,6 @@ from docling.datamodel.image_classification_engine_options import (
 )
 from docling.datamodel.pipeline_options import (
     EasyOcrOptions,
-    NemotronOcrOptions,
     PdfPipelineOptions,
     TableFormerMode,
     TesseractCliOcrOptions,
@@ -35,9 +34,7 @@ from docling.document_converter import (
     DocumentConverter,
     PdfFormatOption,
 )
-from docling.models.factories import get_ocr_factory
 from docling.models.stages.ocr.easyocr_model import EasyOcrModel
-from docling.models.stages.ocr.nemotron_ocr_model import NemotronOcrModel
 from docling.models.stages.ocr.tesseract_ocr_cli_model import TesseractOcrCliModel
 from docling.pipeline.legacy_standard_pdf_pipeline import LegacyStandardPdfPipeline
 
@@ -508,19 +505,6 @@ def test_ocr_scale_is_configurable():
 
     with pytest.raises(ValidationError):
         TesseractCliOcrOptions(scale=0)
-
-
-def test_nemotron_ocr_backend_registration():
-    factory = get_ocr_factory(allow_external_plugins=False)
-
-    model = factory.create_instance(
-        options=NemotronOcrOptions(),
-        enabled=False,
-        artifacts_path=None,
-        accelerator_options=AcceleratorOptions(),
-    )
-
-    assert isinstance(model, NemotronOcrModel)
 
 
 def test_parser_backends(test_doc_path):
