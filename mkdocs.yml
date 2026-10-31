@@ -66,6 +66,7 @@ nav:
       - ⚡ RTX GPU: getting_started/rtx.md
     - Usage:
       - Advanced options: usage/advanced_options.md
+      - Russian scanned documents: usage/russian_ocr.md
       - Supported formats: usage/supported_formats.md
       - Audio & video: usage/processing_audio_media.md
       - Enrichment features: usage/enrichments.md

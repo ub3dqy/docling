@@ -1385,6 +1385,74 @@ def test_cli_ocr_mode_defaults_to_default(tmp_path, monkeypatch):
     assert ocr_options.mode is OcrMode.DEFAULT
 
 
+def test_cli_russian_ocr_profile_reaches_the_pdf_pipeline(tmp_path, monkeypatch):
+    result, ocr_options = _capture_cli_ocr_options(
+        monkeypatch, ["--ocr-profile", "ru"], tmp_path
+    )
+    assert result.exit_code == 0, result.output
+    assert ocr_options.kind == "rapidocr"
+    assert ocr_options.lang == ["iso:ru-Cyrl"]
+    assert ocr_options.backend == "onnxruntime"
+    assert ocr_options.mode is OcrMode.FULL_PAGE
+    assert ocr_options.scale == 2.0
+
+
+@pytest.mark.parametrize(
+    "extra_args", [["--ocr-mode", "default"], ["--ocr-option", "mode=default"]]
+)
+def test_cli_russian_profile_allows_native_text_mode(tmp_path, monkeypatch, extra_args):
+    result, ocr_options = _capture_cli_ocr_options(
+        monkeypatch, ["--ocr-profile", "ru", *extra_args], tmp_path
+    )
+    assert result.exit_code == 0, result.output
+    assert ocr_options.mode is OcrMode.DEFAULT
+
+
+def test_cli_russian_profile_allows_scale_override(tmp_path, monkeypatch):
+    result, ocr_options = _capture_cli_ocr_options(
+        monkeypatch, ["--ocr-profile", "ru", "--ocr-option", "scale=3"], tmp_path
+    )
+    assert result.exit_code == 0, result.output
+    assert ocr_options.scale == 3.0
+
+
+@pytest.mark.parametrize(
+    "extra_args",
+    [
+        ["--ocr-lang", "en"],
+        ["--ocr-option", 'lang=["en"]'],
+    ],
+)
+def test_cli_russian_profile_allows_explicit_language(
+    tmp_path, monkeypatch, extra_args
+):
+    result, ocr_options = _capture_cli_ocr_options(
+        monkeypatch, ["--ocr-profile", "ru", *extra_args], tmp_path
+    )
+    assert result.exit_code == 0, result.output
+    assert ocr_options.lang == ["en"]
+
+
+@pytest.mark.parametrize("engine", ["auto", "easyocr"])
+def test_cli_russian_profile_preserves_explicit_engine(tmp_path, monkeypatch, engine):
+    result, ocr_options = _capture_cli_ocr_options(
+        monkeypatch, ["--ocr-profile", "ru", "--ocr-engine", engine], tmp_path
+    )
+    assert result.exit_code == 0, result.output
+    assert ocr_options.kind == engine
+    assert ocr_options.lang == ["iso:ru-Cyrl"]
+
+
+@pytest.mark.parametrize("pipeline", ["native", "vlm", "asr"])
+def test_cli_ocr_profile_rejects_pipelines_without_local_ocr(tmp_path, pipeline):
+    result = runner.invoke(
+        app,
+        ["scan.pdf", "--ocr-profile", "ru", "--pipeline", pipeline],
+    )
+    assert result.exit_code == 2
+    assert "--ocr-profile" in result.output
+
+
 def test_cli_force_ocr_is_deprecated_and_maps_to_full_page(tmp_path, monkeypatch):
     with pytest.warns(DeprecationWarning, match="--force-ocr"):
         result, ocr_options = _capture_cli_ocr_options(

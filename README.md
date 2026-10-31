@@ -69,9 +69,23 @@ Use Python 3.11 or higher and [uv](https://docs.astral.sh/uv/):
 ```bash
 git clone --branch development https://github.com/ub3dqy/docling.git
 cd docling
-uv sync --frozen --group dev --all-packages --no-group docs --no-group examples
+uv sync --frozen --extra russian --group dev --all-packages --no-group docs --no-group examples
 uv run --no-sync docling --help
 ```
+
+### Russian scans on Windows
+
+This fork has a local Russian OCR profile for scanned PDFs, PNG, JPEG and TIFF.
+It uses RapidOCR through ONNX Runtime and can run on the CPU.
+
+```bash
+uv run --no-sync docling-tools models download layout tableformer rapidocr --rapidocr-backend-lang onnxruntime:iso:ru --output-dir model_artifacts/ru
+uv run --no-sync docling scan.pdf --ocr-profile ru --artifacts-path model_artifacts/ru --device cpu --to md --to text --to json --output output/recognized --fail-on partial
+```
+
+The profile reads the whole page, including PDFs with an existing text layer.
+Use `--ocr-mode default` to keep normal text-layer handling.
+See the [Russian setup and scan checks](docs/usage/russian_ocr.md).
 
 ## Quickstart
 

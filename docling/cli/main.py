@@ -134,6 +134,7 @@ from docling.datamodel.base_models import (
 )
 from docling.datamodel.chart_extraction_options import ChartExtractionVlmEngineOptions
 from docling.datamodel.document import ConversionResult, DoclingVersion
+from docling.datamodel.ocr_profiles import OcrProfile, ocr_options_for_profile
 from docling.datamodel.pipeline_options import (
     AsrPipelineOptions,
     BaseLayoutOptions,
@@ -1076,12 +1077,12 @@ def convert(  # noqa: C901
         ),
     ] = False,
     ocr_mode: Annotated[
-        OcrMode,
+        OcrMode | None,
         typer.Option(
             ...,
-            help="Which document regions are fed to the OCR engine.",
+            help="Which document regions are fed to OCR. Default: the profile's mode, or 'default' without a profile.",
         ),
-    ] = OcrMode.DEFAULT,
+    ] = None,
     replace_broken_text_layer: Annotated[
         bool,
         typer.Option(
@@ -1157,18 +1158,26 @@ def convert(  # noqa: C901
             ),
         ),
     ] = TableStructureOptions.kind,
+    ocr_profile: Annotated[
+        OcrProfile | None,
+        typer.Option(
+            "--ocr-profile",
+            help="Local OCR preset. 'ru' reads full-page Russian scans with RapidOCR and ONNX Runtime. Explicit OCR flags override the preset.",
+        ),
+    ] = None,
     ocr_engine: Annotated[
-        str,
+        str | None,
         typer.Option(
             ...,
             metavar=_choices_metavar(o.value for o in ocr_engines_enum_internal),
             help=(
                 f"The OCR engine to use. When --allow-external-plugins is *not* set, the available values are: "
                 f"{', '.join(o.value for o in ocr_engines_enum_internal)}. "
-                f"Use the option --show-external-plugins to see the options allowed with external plugins."
+                f"Use the option --show-external-plugins to see the options allowed with external plugins. "
+                "Defaults to automatic selection, or the engine of --ocr-profile."
             ),
         ),
-    ] = OcrAutoOptions.kind,
+    ] = None,
     ocr_option: Annotated[
         list[str] | None,
         typer.Option(
@@ -1471,6 +1480,15 @@ def convert(  # noqa: C901
 ):
     _require_local_model_stack("docling convert")
 
+    if ocr_profile is not None and pipeline not in {
+        ProcessingPipeline.STANDARD,
+        ProcessingPipeline.LEGACY,
+    }:
+        raise typer.BadParameter(
+            "OCR profiles require the standard or legacy pipeline.",
+            param_hint="--ocr-profile",
+        )
+
     # Heavy backend/converter/pipeline imports are deferred to here so the CLI
     # (and `convert-remote`) stay importable without the local PDF stack
     # (pypdfium2 / docling_parse). Only local `convert` needs them.
@@ -1702,6 +1720,15 @@ def convert(  # noqa: C901
 
         export_flags = _export_flags_from_formats(to_formats)
 
+        profile_options = (
+            ocr_options_for_profile(ocr_profile) if ocr_profile is not None else None
+        )
+        if ocr_engine is None:
+            ocr_engine = (
+                profile_options.kind
+                if profile_options is not None
+                else OcrAutoOptions.kind
+            )
         ocr_factory = get_ocr_factory(allow_external_plugins=allow_external_plugins)
         # Deprecated --force-ocr wins over --ocr-mode; warn when used.
         if force_ocr:
@@ -1712,20 +1739,27 @@ def convert(  # noqa: C901
                 stacklevel=2,
             )
             resolved_ocr_mode = OcrMode.FULL_PAGE
-        else:
+        elif ocr_mode is not None:
             resolved_ocr_mode = ocr_mode
+        else:
+            resolved_ocr_mode = (
+                profile_options.mode if profile_options is not None else OcrMode.DEFAULT
+            )
         ocr_kwargs: dict[str, Any] = {"mode": resolved_ocr_mode}
+        if profile_options is not None:
+            ocr_kwargs["lang"] = profile_options.lang
+            if ocr_engine == profile_options.kind:
+                ocr_kwargs["backend"] = profile_options.backend
+                ocr_kwargs["scale"] = profile_options.scale
         ocr_flag_names = {
             "mode": "--ocr-mode",
             "lang": "--ocr-lang",
             "psm": "--psm",
             "replace_broken_text_layer": "--replace-broken-text-layer",
         }
-        # `--ocr-mode` always has a value; count it as set only when it differs
-        # from the default, so `--ocr-option mode=...` works on its own.
-        explicit_ocr_fields = (
-            {"mode"} if force_ocr or ocr_mode != OcrMode.DEFAULT else set()
-        )
+        # A profile supplies defaults; only a user-supplied mode flag conflicts
+        # with `--ocr-option mode=...`.
+        explicit_ocr_fields = {"mode"} if force_ocr or ocr_mode is not None else set()
         # Like `--ocr-mode`, count the flag as set only when it is on, so
         # `--ocr-option replace_broken_text_layer=true` works on its own.
         if replace_broken_text_layer:

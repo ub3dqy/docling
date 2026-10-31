@@ -312,6 +312,10 @@ standard = [
   'docling-slim[format-pdf,models-local,feat-ocr-rapidocr,format-office,format-web,format-latex,format-email,format-iwork,feat-chunking,extract-core,service-client,cli]',
 ]
 
+russian = [
+  'docling-slim[standard,feat-ocr-rapidocr-onnx]',
+]
+
 all = [
   # format-video is deliberately excluded: it pulls in resemblyzer, which
   # requires webrtcvad, which has no wheels and needs Python dev headers

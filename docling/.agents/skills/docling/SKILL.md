@@ -13,7 +13,7 @@ description: >
   docling-serve), and the docling-slim install extras for a minimal dependency
   footprint.
 license: MIT
-compatibility: Requires Python 3.10+
+compatibility: Requires Python 3.11+
 metadata:
   author: docling-project
   version: "1.0"
@@ -39,6 +39,11 @@ the `docling` package and accepts a local path **or** a URL:
 docling report.pdf --to md --output /tmp/        # → /tmp/report.md
 docling https://example.com/paper.pdf --to json --output /tmp/
 ```
+
+This fork also provides `--ocr-profile ru` for Russian printed scans. Install
+its `russian` extra and prefetch the ONNX Russian models. See the OCR section
+in [references/cli.md](references/cli.md). The profile reads the full page;
+`--ocr-mode default` preserves normal PDF text-layer handling.
 
 Output files are named after the input (`report.pdf` → `report.md`). Default
 output directory is the current directory. This handles the majority of

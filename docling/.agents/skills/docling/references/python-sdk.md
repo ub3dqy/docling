@@ -59,7 +59,7 @@ Useful `PdfPipelineOptions` / base fields:
 
 | Field | Purpose |
 |---|---|
-| `do_ocr` | Run OCR (default engine EasyOCR) |
+| `do_ocr` | Run OCR (auto engine by default) |
 | `do_table_structure` | Detect table structure |
 | `extract_form_fields` | Convert docling-parse PDF widgets (AcroForm) into fillable fields with keys from printed text |
 | `do_code_enrichment` / `do_formula_enrichment` | Enrich code / formulas |
@@ -97,7 +97,7 @@ from docling.datamodel.pipeline_options import (
     OcrMacOptions,
 )
 
-# Default is EasyOCR:
+# Default is the auto engine:
 opts = PdfPipelineOptions(do_ocr=True)
 # Alternatives:
 opts = PdfPipelineOptions(do_ocr=True, ocr_options=RapidOcrOptions())  # lightweight
@@ -108,6 +108,39 @@ opts = PdfPipelineOptions(do_ocr=True, ocr_options=OcrMacOptions())  # macOS onl
 ```
 
 Each engine is an optional dependency — see [slim-packaging.md](slim-packaging.md).
+
+### Russian PDF and image scans in this fork
+
+Install the fork's `russian` extra and prefetch the models as shown in
+[cli.md](cli.md#russian-printed-scans-in-this-fork). Configure both input
+formats; an option for PDF alone does not configure images.
+
+```python
+from pathlib import Path
+
+from docling.datamodel.base_models import InputFormat
+from docling.datamodel.ocr_profiles import OcrProfile, ocr_options_for_profile
+from docling.datamodel.pipeline_options import PdfPipelineOptions
+from docling.document_converter import DocumentConverter, ImageFormatOption, PdfFormatOption
+
+options = PdfPipelineOptions(
+    artifacts_path=Path("model_artifacts/ru"),
+    ocr_options=ocr_options_for_profile(OcrProfile.RUSSIAN),
+)
+converter = DocumentConverter(
+    format_options={
+        InputFormat.PDF: PdfFormatOption(pipeline_options=options),
+        InputFormat.IMAGE: ImageFormatOption(pipeline_options=options),
+    }
+)
+result = converter.convert("scan.pdf")  # Also accepts scan.png or photo.jpg.
+print(result.document.export_to_markdown())
+```
+
+The profile reads the full page at scale 2.0, even if the PDF has native text.
+Set `options.ocr_options.mode = OcrMode.DEFAULT` (import `OcrMode` from
+`docling.datamodel.pipeline_options`) to keep normal text-layer handling.
+It uses local ONNX models and needs no remote service.
 
 When a PDF looks right but its text copies out as garbage (a font whose glyphs
 were not mapped to real characters), let OCR replace the text of just those pages.

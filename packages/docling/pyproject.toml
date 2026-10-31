@@ -74,6 +74,8 @@ docling-slim = { workspace = true }
 # Re-export slim extras with backwards-compatible names
 [project.optional-dependencies]
 easyocr = ['docling-slim[feat-ocr-easyocr]==2.145.0']
+
+russian = ['docling-slim[russian]==2.145.0']
 tesserocr = ['docling-slim[feat-ocr-tesserocr]==2.145.0']
 ocrmac = ['docling-slim[feat-ocr-mac]==2.145.0']
 vlm = ['docling-slim[models-vlm-inline]==2.145.0']

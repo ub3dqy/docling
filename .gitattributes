@@ -26,3 +26,6 @@ docs/** linguist-vendored
 tests/data/** -text
 # Generated ground truth: LF in the repo and in every checkout
 tests/data/**/groundtruth/** text eol=lf
+# OCR references are text; scan PDFs must keep their binary representation.
+tests/data/russian_ocr/expected.json text eol=lf
+tests/data/russian_ocr/sources/*.pdf binary

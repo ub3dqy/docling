@@ -115,7 +115,7 @@ Decision guide:
 OCR is on by default in the standard pipeline. Control it with:
 
 ```bash
-docling scan.pdf --ocr-engine easyocr --output /tmp/     # default engine
+docling scan.pdf --ocr-engine easyocr --output /tmp/     # explicit optional engine
 docling scan.pdf --ocr-engine rapidocr --output /tmp/    # lightweight
 docling scan.pdf --ocr-engine tesserocr --output /tmp/   # needs system Tesseract
 docling scan.pdf --ocr-engine ocrmac --output /tmp/      # macOS Vision (mac only)
@@ -136,6 +136,28 @@ options are for local `convert` only; `convert-remote` does not accept them.
 
 OCR engines are optional dependencies — see
 [slim-packaging.md](slim-packaging.md) for the `feat-ocr-*` extras.
+
+### Russian printed scans in this fork
+
+Install this checkout with `uv sync --extra russian` (the extra is specific to
+this fork). Prefetch the models once, then convert local PDFs or images:
+
+```bash
+docling-tools models download layout tableformer rapidocr --rapidocr-backend-lang onnxruntime:iso:ru --output-dir model_artifacts/ru
+docling scan.pdf --ocr-profile ru --artifacts-path model_artifacts/ru --device cpu --output output/recognized --fail-on partial
+docling photo.jpg --ocr-profile ru --artifacts-path model_artifacts/ru --device cpu --output output/recognized --fail-on partial
+```
+
+`ru` selects RapidOCR, ONNX Runtime, `iso:ru` (the PP-OCRv5 `eslav` recognizer),
+full-page OCR and scale 2.0 (144 DPI). It also handles Latin text, as checked in
+the synthetic mixed-language scan. Do not add a second RapidOCR language: one
+recognizer serves each run. Explicit engine, language, mode and `--ocr-option`
+settings override the profile defaults. The profile applies to local standard
+and legacy PDF/image pipelines; it is not a remote-service setting.
+
+Full-page OCR also replaces an existing PDF text layer. For text PDFs, add
+`--ocr-mode default` to retain the normal text-layer handling. With no profile,
+the default remains the auto engine and the default OCR mode.
 
 ## Tables, enrichment, and other content
 

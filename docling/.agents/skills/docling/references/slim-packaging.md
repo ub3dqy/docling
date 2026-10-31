@@ -22,6 +22,7 @@ pulling heavy packages (torch, OCR engines, VLM stacks) you won't use.
 | Local VLM pipeline | `docling-slim[models-vlm-inline]` |
 | Chunking for RAG | `docling-slim[feat-chunking]` |
 | Everything the default package has | `docling-slim[standard]` |
+| Russian printed scans in this fork, including CPU ONNX Runtime | `docling-slim[russian]` |
 | The default package without RapidOCR (e.g. for the Tesseract CLI) | `docling-slim[format-pdf,models-local,format-office,format-web,format-latex,format-email,format-iwork,feat-chunking,extract-core,service-client,cli]` plus `opencv-python-headless` |
 | Kitchen sink (all optional features) | `docling-slim[all]` |
 
@@ -49,7 +50,6 @@ Extras compose — combine them with commas:
 - `feat-ocr-easyocr`
 - `feat-ocr-tesserocr` (needs system Tesseract)
 - `feat-ocr-mac` (macOS Vision)
-- `feat-ocr-nemotron`
 
 **Models**
 - `models-local` — torch + docling-ibm-models (local layout/table/OCR models)
@@ -67,6 +67,10 @@ Extras compose — combine them with commas:
   `feat-ocr-rapidocr`, `format-office`, `format-web`, `format-latex`,
   `format-email`, `format-iwork`, `feat-chunking`, `extract-core`,
   `service-client`, `cli`.
+- `russian` — this fork's `standard` plus `feat-ocr-rapidocr-onnx`, for
+  `--ocr-profile ru`. Without a profile the usual auto-selection rules apply;
+  installing ONNX Runtime can change the backend picked by those rules.
+  Install this extra from the fork, not an upstream release.
 - `all` — `standard` plus VLM, audio, HTML render, all XML, remote/onnx models,
   and the extra OCR engines. (Excludes `format-video`, which needs a compiler.)
 
