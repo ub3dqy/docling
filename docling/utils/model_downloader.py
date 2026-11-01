@@ -210,6 +210,7 @@ def download_models(
     with_rapidocr: bool = True,
     rapidocr_models: Optional[list[str]] = None,
     rapidocr_model_size: str = _RAPIDOCR_MODEL_TYPE,
+    with_russian_ocr_refinement: bool = False,
     with_easyocr: bool = False,
     easyocr_languages: Optional[list[str]] = None,  # BCP-47 tags
     whisper_models: Optional[list[str]] = None,
@@ -428,6 +429,11 @@ def download_models(
                 progress=progress,
                 model_size=rapidocr_model_size,
             )
+
+    if with_russian_ocr_refinement:
+        from docling.utils.russian_ocr_models import download_refinement_models
+
+        download_refinement_models(output_dir, force=force, progress=progress)
 
     if with_easyocr:
         _log.info("Downloading easyocr models...")

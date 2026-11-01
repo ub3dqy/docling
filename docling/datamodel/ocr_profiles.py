@@ -31,6 +31,7 @@ def ocr_options_for_profile(profile: OcrProfile) -> RapidOcrOptions:
         image_scale=2.0,
         use_word_boxes=True,
         use_multiscale=True,
+        use_region_refinement=True,
         text_score=0.25,
         rapidocr_params={
             "Global.max_side_len": 4096,

@@ -4,6 +4,7 @@
 """Qualify the Russian profile against frozen public scans and camera documents."""
 
 import argparse
+import hashlib
 import importlib.metadata
 import json
 import re
@@ -78,6 +79,61 @@ class SourceReference(BaseModel):
 class SourceManifest(BaseModel):
     reference_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     files: dict[str, SourceReference]
+
+
+class ReferenceCorrection(BaseModel):
+    case_id: str
+    row_key: str
+    value_index: int = Field(ge=0)
+    original: str
+    reviewed: str
+    source_page: int = Field(ge=1)
+    source_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    evidence: str = Field(min_length=1)
+
+
+class ReferenceAdjudications(BaseModel):
+    reference_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    corrections: list[ReferenceCorrection] = Field(min_length=1)
+
+
+def reviewed_references(
+    references: References,
+    manifest: SourceManifest,
+    adjudications: ReferenceAdjudications,
+) -> References:
+    """Apply explicit source reviews to a copy, keeping the frozen answer intact."""
+    if adjudications.reference_sha256 != manifest.reference_sha256:
+        raise ValueError("Source reviews do not match the frozen reference version.")
+    reviewed = references.model_copy(deep=True)
+    reviewed.scope += (
+        " Source transcription corrections were reviewed after the initial diagnostics."
+        " This remains a development regression sample, not a blind evaluation."
+    )
+    seen: set[tuple[str, str, int]] = set()
+    for correction in adjudications.corrections:
+        identity = (correction.case_id, correction.row_key, correction.value_index)
+        cases = [case for case in reviewed.cases if case.id == correction.case_id]
+        if len(cases) != 1 or identity in seen:
+            raise ValueError("Source review must identify one unique reference value.")
+        case = cases[0]
+        if (
+            case.page != correction.source_page
+            or manifest.files[case.file].sha256 != correction.source_sha256
+        ):
+            raise ValueError("Source review points to a different document or page.")
+        rows = [row for row in case.rows if row.key == correction.row_key]
+        if (
+            len(rows) != 1
+            or correction.value_index >= len(rows[0].values)
+            or rows[0].values[correction.value_index] != correction.original
+        ):
+            raise ValueError(
+                "Source review does not match the original expected value."
+            )
+        rows[0].values[correction.value_index] = correction.reviewed
+        seen.add(identity)
+    return reviewed
 
 
 class Line(BaseModel):
@@ -277,6 +333,11 @@ def main() -> None:
     parser.add_argument("--sources", type=Path, required=True)
     parser.add_argument("--artifacts-path", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--use-source-review",
+        action="store_true",
+        help="Apply documented visual source corrections and retain both sets of scores.",
+    )
     args = parser.parse_args()
     sources = args.sources.resolve(strict=True)
     references_path = FIXTURES / "references.json"
@@ -288,6 +349,18 @@ def main() -> None:
     references = References.model_validate_json(
         references_path.read_text(encoding="utf-8")
     )
+    original_references = references.model_copy(deep=True)
+    adjudications_path = FIXTURES / "reference_adjudications.json"
+    adjudications = (
+        ReferenceAdjudications.model_validate_json(
+            adjudications_path.read_text(encoding="utf-8")
+        )
+        if args.use_source_review
+        else None
+    )
+    if adjudications is not None:
+        references = reviewed_references(references, expected_manifest, adjudications)
+    effective_reference_bytes = references.model_dump_json(indent=2).encode("utf-8")
     destination = args.output
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError("Existing results will not be overwritten.")
@@ -308,6 +381,15 @@ def main() -> None:
     manifest = {
         "sealed_before_inference_utc": datetime.now(timezone.utc).isoformat(),
         "reference_sha256": sha256_file(references_path),
+        "effective_reference_sha256": hashlib.sha256(
+            effective_reference_bytes
+        ).hexdigest(),
+        "assessment_basis": "source_review"
+        if adjudications is not None
+        else "original_references",
+        "adjudications_sha256": sha256_file(adjudications_path)
+        if adjudications is not None
+        else None,
         "runner_sha256": sha256_file(Path(__file__)),
         "code_sha256": {
             str(path.relative_to(FIXTURES.parents[2])): sha256_file(path)
@@ -333,6 +415,9 @@ def main() -> None:
                 "rapidocr",
                 "onnxruntime",
                 "torch",
+                "tesserocr",
+                "pymorphy3",
+                "pymorphy3-dicts-ru",
             )
         },
     }
@@ -341,6 +426,13 @@ def main() -> None:
     )
     (destination / "runner-used.py").write_bytes(Path(__file__).read_bytes())
     (destination / "references-used.json").write_bytes(references_path.read_bytes())
+    (destination / "effective-references-used.json").write_bytes(
+        effective_reference_bytes
+    )
+    if adjudications is not None:
+        (destination / "reference-adjudications-used.json").write_bytes(
+            adjudications_path.read_bytes()
+        )
     options = PdfPipelineOptions(
         artifacts_path=artifacts,
         ocr_options=ocr_options_for_profile(OcrProfile.RUSSIAN),
@@ -488,12 +580,53 @@ def main() -> None:
         "completed_utc": datetime.now(timezone.utc).isoformat(),
         "scope": references.scope,
         "reference_sha256": manifest["reference_sha256"],
+        "effective_reference_sha256": manifest["effective_reference_sha256"],
+        "assessment_basis": manifest["assessment_basis"],
+        "adjudications_sha256": manifest["adjudications_sha256"],
         "normalization": "NFC, casefold, collapsed whitespace for CER; no ё/e or Latin/Cyrillic correction. Numeric table comparisons ignore whitespace and accept decimal comma/point and equivalent negative notation.",
         "exclusions": references.exclusions,
         "passed_cases": sum(case.passed for case in results),
         "total_cases": len(results),
         "cases": [case.model_dump() for case in results],
     }
+    if adjudications is not None:
+        original_by_id = {case.id: case for case in original_references.cases}
+        original_results: list[CaseResult] = []
+        for result in results:
+            original_rows = [
+                check_row(row, result.tables) for row in original_by_id[result.id].rows
+            ]
+            original_results.append(
+                result.model_copy(
+                    update={
+                        "row_scores": original_rows,
+                        "passed": (
+                            result.status == ConversionStatus.SUCCESS.value
+                            and (
+                                result.text_export_characters > 0
+                                or not (
+                                    original_by_id[result.id].fields
+                                    or original_by_id[result.id].texts
+                                )
+                            )
+                            and all(
+                                check.passed
+                                for check in [
+                                    *result.text_scores,
+                                    *original_rows,
+                                    *result.field_scores,
+                                ]
+                            )
+                        ),
+                    }
+                )
+            )
+        report["original_reference_results"] = {
+            "scope": original_references.scope,
+            "passed_cases": sum(case.passed for case in original_results),
+            "cases": [case.model_dump() for case in original_results],
+        }
+        report["reference_corrections"] = adjudications.model_dump()
     (destination / "report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
     )

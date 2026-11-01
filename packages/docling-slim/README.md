@@ -45,7 +45,7 @@ pip install docling-slim[service-client]
 | Extra | Description | Use Case |
 |-------|-------------|----------|
 | `standard` | All standard features (same as `docling` package) | Full-featured usage |
-| `russian` | Standard features plus ONNX Runtime | This fork's `--ocr-profile ru` for Russian scans |
+| `russian` | Standard features, ONNX Runtime, Tesseract bindings and a Russian dictionary | This fork's `--ocr-profile ru` for Russian scans |
 | `all` | All available extras | Complete installation |
 
 ### CLI

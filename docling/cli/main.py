@@ -1753,6 +1753,9 @@ def convert(  # noqa: C901
                 ocr_kwargs["scale"] = profile_options.scale
                 ocr_kwargs["use_word_boxes"] = profile_options.use_word_boxes
                 ocr_kwargs["use_multiscale"] = profile_options.use_multiscale
+                ocr_kwargs["use_region_refinement"] = (
+                    profile_options.use_region_refinement
+                )
                 ocr_kwargs["image_scale"] = profile_options.image_scale
                 ocr_kwargs["text_score"] = profile_options.text_score
                 ocr_kwargs["rapidocr_params"] = profile_options.rapidocr_params

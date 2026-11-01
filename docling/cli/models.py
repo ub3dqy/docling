@@ -79,6 +79,7 @@ class _AvailableModels(str, Enum):
     GRANITE_CHART_EXTRACTION_V3_3 = "granite_chart_extraction_v3_3"
     GRANITE_CHART_EXTRACTION_V4 = "granite_chart_extraction_v4"
     RAPIDOCR = "rapidocr"
+    RUSSIAN_OCR_REFINEMENT = "russian_ocr_refinement"
     EASYOCR = "easyocr"
     WHISPER_TINY = "whisper_tiny"
     WHISPER_TINY_EN = "whisper_tiny_en"
@@ -339,6 +340,8 @@ def download(
         with_rapidocr=_AvailableModels.RAPIDOCR in to_download,
         rapidocr_models=rapidocr_backend_lang,
         rapidocr_model_size=rapidocr_model_size,
+        with_russian_ocr_refinement=_AvailableModels.RUSSIAN_OCR_REFINEMENT
+        in to_download,
         with_easyocr=_AvailableModels.EASYOCR in to_download,
         easyocr_languages=easyocr_lang,
         whisper_models=[

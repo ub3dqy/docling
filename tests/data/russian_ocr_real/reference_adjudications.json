@@ -1,0 +1,15 @@
+{
+  "reference_sha256": "db1c672c5ba070155209738d6169f0967eadc5ec287b6649831fc4e6dee3f07e",
+  "corrections": [
+    {
+      "case_id": "rosseti-balance",
+      "row_key": "1180",
+      "value_index": 2,
+      "original": "76 393",
+      "reviewed": "75 393",
+      "source_page": 5,
+      "source_sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+      "evidence": "The original PDF, page 5, row 1180, third amount visibly prints 75 393. The embedded text layer also reads 75 393. The printed section subtotal independently agrees. This corrects a transcription error in the reference, not the OCR output. The original references.json remains byte-for-byte unchanged."
+    }
+  ]
+}

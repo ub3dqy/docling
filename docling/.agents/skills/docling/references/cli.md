@@ -143,7 +143,7 @@ Install this checkout with `uv sync --extra russian` (the extra is specific to
 this fork). Prefetch the models once, then convert local PDFs or images:
 
 ```bash
-docling-tools models download layout tableformer rapidocr --rapidocr-backend-lang onnxruntime:iso:ru --output-dir model_artifacts/ru
+docling-tools models download layout tableformer rapidocr russian_ocr_refinement --rapidocr-backend-lang onnxruntime:iso:ru --output-dir model_artifacts/ru
 docling scan.pdf --ocr-profile ru --artifacts-path model_artifacts/ru --device cpu --output output/recognized --fail-on partial
 docling photo.jpg --ocr-profile ru --artifacts-path model_artifacts/ru --device cpu --output output/recognized --fail-on partial
 ```
@@ -151,6 +151,10 @@ docling photo.jpg --ocr-profile ru --artifacts-path model_artifacts/ru --device 
 `ru` selects RapidOCR, ONNX Runtime, `iso:ru` (the PP-OCRv5 `eslav` recognizer),
 full-page OCR at 300 DPI for PDFs and 144 DPI for images, word coordinates, and
 a second reading at 1536 pixels. Close fragments are joined in printed order.
+Uncertain image lines and numeric table cells are also read as separate crops.
+This needs the `russian` extra, independent RapidOCR recognizers, pinned Tesseract
+models and the local Russian dictionary. The dictionary ranks actual OCR readings;
+it does not supply replacement words. Totals and VAT are not inferred from arithmetic.
 Printed table rules can restore rows that the structure model merged. Image
 inputs expose OCR text even if the layout model put it inside a picture.
 It also handles Latin text, as checked in
@@ -163,6 +167,10 @@ and legacy PDF/image pipelines; it is not a remote-service setting.
 Use `--ocr-option use_multiscale=false` to disable the second reading, or
 `--table-structure-option prefer_ocr_grid=false` to disable rule-based table
 recovery. `--no-tables` also disables recovery of overlooked OCR tables.
+Use `--ocr-option use_region_refinement=false` to disable crop refinement.
+Refinement never uses benchmark references. For the real-document qualification,
+`--use-source-review` applies a documented source transcription correction and
+retains the original reference scores alongside the reviewed scores.
 These controls do not guarantee correct amounts. See the frozen real-document
 qualification in `tests/data/russian_ocr_real` and `scripts/qualify_real_russian_ocr.py`.
 

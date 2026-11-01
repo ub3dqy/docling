@@ -12,6 +12,15 @@ five text regions. It is a development regression sample, not a held-out
 accuracy estimate. Neither the reference nor the limits may be changed to
 accommodate recognition errors.
 
+A subsequent visual source review found a transcription error: Rosseti page 5,
+row `1180`, third amount is visibly `75 393`, while the original reference says
+`76 393`. The original reference remains byte-for-byte unchanged.
+`reference_adjudications.json` records the original and reviewed values, exact
+source hash, page and visual evidence. This file is sealed in each reviewed run.
+`--use-source-review` applies only these explicit corrections to a copy and saves
+the original reference scores too. It does not change regions, limits, exclusions
+or the number of controls. The recognizer never loads either reference file.
+
 Source attribution:
 
 - [Rosseti Yantar: appendix to the 2021 annual report](https://www.rosseti-yantar.ru/upload/iblock/c2f/Prilozhenie-k-Godovomu-otchetu-za-2021-g.-_Bukhgalterskaya-otchetnost_.pdf), pages 1, 5 and 7.
@@ -28,7 +37,7 @@ Download the exact files to a separate directory, retaining the filenames from
 `sources.json`, or reuse the original local source directory. Run from the repo:
 
 ```powershell
-uv run --no-sync python -m scripts.qualify_real_russian_ocr --sources output/real-russian-ocr-2026-11-01/sources --artifacts-path model_artifacts/ru --output output/real-russian-check/results
+uv run --no-sync python -m scripts.qualify_real_russian_ocr --sources output/real-russian-ocr-2026-11-01/sources --artifacts-path model_artifacts/ru --output output/real-russian-check/results --use-source-review
 ```
 
 Use a new output directory. A nonzero exit code means that quality controls did

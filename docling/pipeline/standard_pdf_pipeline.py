@@ -57,6 +57,7 @@ from docling.datamodel.document import ConversionResult
 from docling.datamodel.pipeline_options import (
     KserveV2OcrOptions,
     LayoutPostprocessorOptions,
+    RapidOcrOptions,
     TableStructureOptions,
     ThreadedPdfPipelineOptions,
 )
@@ -76,6 +77,7 @@ from docling.models.stages.heading_hierarchy.heading_hierarchy_model import (
 from docling.models.stages.layout.layout_postprocessing_model import (
     LayoutPostprocessingModel,
 )
+from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
 from docling.models.stages.page_assemble.page_assemble_model import (
     PageAssembleModel,
     PageAssembleOptions,
@@ -698,7 +700,22 @@ class StandardPdfPipeline(ConvertPipeline):
                     )
                     and self.pipeline_options.table_structure_options.prefer_ocr_grid
                 )
-            )
+            ),
+            ocr_refiner=(
+                OcrRegionRefiner(
+                    artifacts_path=art_path,
+                    accelerator_options=self.pipeline_options.accelerator_options,
+                )
+                if self.pipeline_options.do_ocr
+                and isinstance(self.pipeline_options.ocr_options, RapidOcrOptions)
+                and self.pipeline_options.ocr_options.use_region_refinement
+                and self.pipeline_options.ocr_options.lang
+                and self.pipeline_options.ocr_options.lang[0]
+                .removeprefix("iso:")
+                .split("-")[0]
+                == "ru"
+                else None
+            ),
         )
         self.reading_order_model = ReadingOrderModel(
             options=ReadingOrderOptions(

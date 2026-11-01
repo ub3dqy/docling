@@ -130,6 +130,7 @@ def table_from_ocr_grid(
         for column in range(len(columns) - 1)
     ]
     return Table(
+        from_ocr_grid=True,
         id=cluster.id,
         label=cluster.label,
         page_no=page_no,

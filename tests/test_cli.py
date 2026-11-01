@@ -1396,6 +1396,7 @@ def test_cli_russian_ocr_profile_reaches_the_pdf_pipeline(tmp_path, monkeypatch)
     assert ocr_options.mode is OcrMode.FULL_PAGE
     assert ocr_options.scale == 300 / 72
     assert ocr_options.use_word_boxes is True
+    assert ocr_options.use_region_refinement is True
     assert ocr_options.rapidocr_params["Global.max_side_len"] == 4096
 
 
@@ -1416,6 +1417,16 @@ def test_cli_russian_profile_allows_scale_override(tmp_path, monkeypatch):
     )
     assert result.exit_code == 0, result.output
     assert ocr_options.scale == 3.0
+
+
+def test_cli_russian_profile_allows_disabling_region_refinement(tmp_path, monkeypatch):
+    result, ocr_options = _capture_cli_ocr_options(
+        monkeypatch,
+        ["--ocr-profile", "ru", "--ocr-option", "use_region_refinement=false"],
+        tmp_path,
+    )
+    assert result.exit_code == 0, result.output
+    assert ocr_options.use_region_refinement is False
 
 
 @pytest.mark.parametrize(

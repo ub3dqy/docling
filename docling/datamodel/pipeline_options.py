@@ -396,6 +396,12 @@ class RapidOcrOptions(OcrOptions):
             description="Retry OCR at 1536 pixels and retain more complete, confident text lines."
         ),
     ] = False
+    use_region_refinement: Annotated[
+        bool,
+        Field(
+            description="Re-read uncertain Russian image lines and numeric table cells with independent local recognizers. Requires the russian extra and prefetched russian_ocr_refinement models."
+        ),
+    ] = False
     image_scale: Annotated[
         float | None,
         Field(

@@ -79,7 +79,7 @@ This fork has a local Russian OCR profile for scanned PDFs, PNG, JPEG and TIFF.
 It uses RapidOCR through ONNX Runtime and can run on the CPU.
 
 ```bash
-uv run --no-sync docling-tools models download layout tableformer rapidocr --rapidocr-backend-lang onnxruntime:iso:ru --output-dir model_artifacts/ru
+uv run --no-sync docling-tools models download layout tableformer rapidocr russian_ocr_refinement --rapidocr-backend-lang onnxruntime:iso:ru --output-dir model_artifacts/ru
 uv run --no-sync docling scan.pdf --ocr-profile ru --artifacts-path model_artifacts/ru --device cpu --to md --to text --to json --output output/recognized --fail-on partial
 ```
 

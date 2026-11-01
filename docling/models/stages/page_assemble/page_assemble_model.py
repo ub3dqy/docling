@@ -33,6 +33,7 @@ from docling.models.base_layout_model import (
     TEXT_ELEM_LABELS,
 )
 from docling.models.base_model import BasePageModel
+from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
 from docling.utils.ocr_table_grid import table_from_aligned_ocr
 from docling.utils.profiling import TimeRecorder
 from docling.utils.text_normalization import (
@@ -52,8 +53,11 @@ class PageAssembleModel(BasePageModel):
     # to be considered a match (avoids false positives from adjacent links).
     _HYPERLINK_COVERAGE_THRESHOLD = 0.5
 
-    def __init__(self, options: PageAssembleOptions):
+    def __init__(
+        self, options: PageAssembleOptions, ocr_refiner: OcrRegionRefiner | None = None
+    ):
         self.options = options
+        self.ocr_refiner = ocr_refiner
 
     @staticmethod
     def _match_hyperlink(
@@ -290,6 +294,10 @@ class PageAssembleModel(BasePageModel):
             else:
                 with TimeRecorder(conv_res, "page_assemble"):
                     assert page.predictions.layout is not None
+                    if self.ocr_refiner is not None:
+                        self.ocr_refiner.refine_lines(
+                            page, image_input=conv_res.input.format == InputFormat.IMAGE
+                        )
 
                     # assembles some JSON output page by page.
 
@@ -385,6 +393,12 @@ class PageAssembleModel(BasePageModel):
                     )
                     if self.options.recover_ocr_tables:
                         elements = self._recover_ocr_table(elements, page)
+                    if self.ocr_refiner is not None:
+                        self.ocr_refiner.refine_tables(
+                            page,
+                            elements,
+                            image_input=conv_res.input.format == InputFormat.IMAGE,
+                        )
                     headers = [
                         element
                         for element in elements
