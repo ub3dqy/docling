@@ -86,3 +86,28 @@ def test_source_review_rejects_a_different_source_or_reference_value(
     )
     with pytest.raises(ValueError):
         reviewed_references(original, manifest, adjudications)
+
+
+def test_source_field_review_preserves_original_bytes_and_regions():
+    directory = Path("tests/data/russian_ocr_unseen")
+    original = References.model_validate_json(
+        (directory / "references.json").read_text(encoding="utf-8")
+    )
+    manifest = SourceManifest.model_validate_json(
+        (directory / "sources.json").read_text(encoding="utf-8")
+    )
+    review = ReferenceAdjudications.model_validate_json(
+        (directory / "reference_adjudications.json").read_text(encoding="utf-8")
+    )
+    before = original.model_dump_json()
+    result = reviewed_references(original, manifest, review)
+    case = next(case for case in result.cases if case.id == "receipt-grocery-mixed-vat")
+    field = next(field for field in case.fields if field.name == "vat-20")
+    assert field.value == "103.18"
+    assert original.model_dump_json() == before
+    assert [field.roi for case in result.cases for field in case.fields] == [
+        field.roi for case in original.cases for field in case.fields
+    ]
+    review.field_corrections[0].source_sha256 = "0" * 64
+    with pytest.raises(ValueError, match="different document"):
+        reviewed_references(original, manifest, review)

@@ -92,9 +92,20 @@ class ReferenceCorrection(BaseModel):
     evidence: str = Field(min_length=1)
 
 
+class FieldReferenceCorrection(BaseModel):
+    case_id: str
+    field_name: str
+    original: str
+    reviewed: str
+    source_page: int = Field(ge=1)
+    source_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    evidence: str = Field(min_length=1)
+
+
 class ReferenceAdjudications(BaseModel):
     reference_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
-    corrections: list[ReferenceCorrection] = Field(min_length=1)
+    corrections: list[ReferenceCorrection] = []
+    field_corrections: list[FieldReferenceCorrection] = []
 
 
 def reviewed_references(
@@ -105,6 +116,8 @@ def reviewed_references(
     """Apply explicit source reviews to a copy, keeping the frozen answer intact."""
     if adjudications.reference_sha256 != manifest.reference_sha256:
         raise ValueError("Source reviews do not match the frozen reference version.")
+    if not adjudications.corrections and not adjudications.field_corrections:
+        raise ValueError("A source review must contain a documented correction.")
     reviewed = references.model_copy(deep=True)
     reviewed.scope += (
         " Source transcription corrections were reviewed after the initial diagnostics."
@@ -133,6 +146,27 @@ def reviewed_references(
             )
         rows[0].values[correction.value_index] = correction.reviewed
         seen.add(identity)
+    reviewed_fields: set[tuple[str, str]] = set()
+    for field_correction in adjudications.field_corrections:
+        field_identity = (field_correction.case_id, field_correction.field_name)
+        cases = [case for case in reviewed.cases if case.id == field_correction.case_id]
+        if len(cases) != 1 or field_identity in reviewed_fields:
+            raise ValueError("Source review must identify one unique reference field.")
+        case = cases[0]
+        if (
+            case.page != field_correction.source_page
+            or manifest.files[case.file].sha256 != field_correction.source_sha256
+        ):
+            raise ValueError("Source review points to a different document or page.")
+        fields = [
+            field for field in case.fields if field.name == field_correction.field_name
+        ]
+        if len(fields) != 1 or fields[0].value != field_correction.original:
+            raise ValueError(
+                "Source review does not match the original expected field."
+            )
+        fields[0].value = field_correction.reviewed
+        reviewed_fields.add(field_identity)
     return reviewed
 
 
@@ -596,10 +630,29 @@ def main() -> None:
             original_rows = [
                 check_row(row, result.tables) for row in original_by_id[result.id].rows
             ]
+            fields_by_name = {field.name: field for field in result.field_scores}
+            original_export = (
+                (destination / result.id / "document.txt").read_text(encoding="utf-8")
+                if fields_by_name
+                else ""
+            )
+            original_fields = (
+                [
+                    check_field(
+                        field,
+                        fields_by_name[field.name].actual_region,
+                        original_export,
+                    )
+                    for field in original_by_id[result.id].fields
+                ]
+                if fields_by_name
+                else []
+            )
             original_results.append(
                 result.model_copy(
                     update={
                         "row_scores": original_rows,
+                        "field_scores": original_fields,
                         "passed": (
                             result.status == ConversionStatus.SUCCESS.value
                             and (
@@ -614,7 +667,7 @@ def main() -> None:
                                 for check in [
                                     *result.text_scores,
                                     *original_rows,
-                                    *result.field_scores,
+                                    *original_fields,
                                 ]
                             )
                         ),

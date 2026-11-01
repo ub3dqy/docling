@@ -2,10 +2,12 @@
 # SPDX-License-Identifier: MIT
 
 import logging
+import re
 from collections.abc import Iterable
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
+from statistics import median
 from typing import TYPE_CHECKING, Type, cast, get_args
 
 import numpy
@@ -69,6 +71,17 @@ _ORIENTATION_MIN_LINES = 3
 _OcrLine = tuple[list[list[float]], str, float]
 _RapidWord = tuple[str, float, list[list[float]] | None]
 _RapidWordLine = tuple[_RapidWord, ...] | _RapidWord
+
+
+def _number_signature(text: str) -> list[str]:
+    values: list[str] = []
+    for match in re.finditer(r"\(?[-\u2212]?\d[\d ]*(?:[.,]\d+)?\)?", text):
+        token = match.group(0)
+        value = token.replace(" ", "").replace(",", ".").replace("\u2212", "-")
+        if value.startswith("(") and value.endswith(")"):
+            value = "-" + value[1:-1]
+        values.append(value)
+    return values
 
 
 @dataclass(frozen=True)
@@ -520,6 +533,7 @@ class RapidOcrModel(BaseOcrModel):
         )
         self.options: RapidOcrOptions
         self._multiscale_reader: _RapidOCRReader | None = None
+        self._refinement_reader: _RapidOCRReader | None = None
 
         # multiplier for 72 dpi; the default 3.0 == 216 dpi.
         self.scale = self.options.scale
@@ -721,6 +735,22 @@ class RapidOcrModel(BaseOcrModel):
                 self._multiscale_reader = RapidOCR(
                     params=params | {"Det.limit_side_len": 1536}
                 )
+                alternate_detector = (
+                    (artifacts_path or settings.cache_dir / "models")
+                    / self._model_repo_folder
+                    / "PP-OCRv6_det_small.onnx"
+                )
+                if (
+                    rec_code == "eslav"
+                    and self.options.use_region_refinement
+                    and self.options.use_det is not False
+                    and self.options.det_model_path is None
+                    and "Det.model_path" not in (self.options.rapidocr_params or {})
+                    and alternate_detector.is_file()
+                ):
+                    self._refinement_reader = RapidOCR(
+                        params=params | {"Det.model_path": str(alternate_detector)}
+                    )
 
     def supported_ocr_languages(self) -> OcrLanguageSupport:
         return _ppocr_supported_languages(_rapidocr_vocabulary(self.options.backend))
@@ -830,10 +860,24 @@ class RapidOcrModel(BaseOcrModel):
                         if result is None:
                             _log.warning("RapidOCR returned empty result!")
                             continue
-                        if self.options.use_multiscale:
-                            result = self._read_multiscale(high_res_image, result)
                         orientation, im_size = 0, high_res_image.size
-                        if self.options.detect_orientation:
+                        if self.options.use_region_refinement:
+                            result, orientation = self._read_sideways_page(
+                                high_res_image, result
+                            )
+                            if orientation:
+                                high_res_image = high_res_image.rotate(
+                                    -orientation, expand=True
+                                )
+                                im_size = high_res_image.size
+                        if self.options.use_multiscale:
+                            result = self._read_multiscale(
+                                high_res_image,
+                                result,
+                                refine_detection=conv_res.input.format
+                                == InputFormat.IMAGE,
+                            )
+                        if self.options.detect_orientation and not orientation:
                             result, orientation, im_size = self._read_upright(
                                 high_res_image, result
                             )
@@ -956,12 +1000,19 @@ class RapidOcrModel(BaseOcrModel):
         return _OcrPrediction(lines=lines, line_words=line_words)
 
     def _read_multiscale(
-        self, image: Image.Image, prediction: _OcrPrediction
+        self,
+        image: Image.Image,
+        prediction: _OcrPrediction,
+        *,
+        refine_detection: bool = True,
     ) -> _OcrPrediction:
         ratio = 1536 / max(image.size)
         if ratio >= 0.9:
-            return self._order_and_join(
+            ordered = self._order_and_join(
                 list(zip(prediction.lines, prediction.line_words))
+            )
+            return (
+                self._refine_detection(image, ordered) if refine_detection else ordered
             )
         reduced = image.resize(
             (max(1, round(image.width * ratio)), max(1, round(image.height * ratio))),
@@ -969,7 +1020,11 @@ class RapidOcrModel(BaseOcrModel):
         )
         alternative = self._read(reduced, reader=self._multiscale_reader)
         if alternative is None:
-            return prediction
+            return (
+                self._refine_detection(image, prediction)
+                if refine_detection
+                else prediction
+            )
         sx, sy = image.width / reduced.width, image.height / reduced.height
 
         def rescale(observation: _OcrLine) -> _OcrLine:
@@ -1006,6 +1061,112 @@ class RapidOcrModel(BaseOcrModel):
                     if index not in conflicts
                 ]
             selected.append((candidate, [rescale(word) for word in words]))
+        merged = self._order_and_join(selected)
+        return self._refine_detection(image, merged) if refine_detection else merged
+
+    def _refine_detection(
+        self, image: Image.Image, prediction: _OcrPrediction
+    ) -> _OcrPrediction:
+        """Recover small missed lines with a second local detector, retaining words."""
+        if not self.options.use_region_refinement or self._refinement_reader is None:
+            return prediction
+        alternative = self._read(image, reader=self._refinement_reader)
+        if alternative is None:
+            return prediction
+        selected = list(zip(prediction.lines, prediction.line_words))
+        additions = [
+            (line, words)
+            for line, words in zip(alternative.lines, alternative.line_words)
+            if line[2] >= 0.8
+            and (len("".join(line[1].split())) >= 2 or line[1].strip().isdecimal())
+        ]
+        # A detector may merge two neighboring receipt rows into one poor box.
+        # Replace that box only if several precise readings cover its span.
+        retained = []
+        for line, words in selected:
+            box = self._line_bbox(line)
+            contained = [
+                candidate
+                for candidate, _ in additions
+                if self._line_bbox(candidate).intersection_over_self(box) >= 0.7
+                and self._line_bbox(candidate).height <= box.height * 0.8
+            ]
+            concatenated = re.search(r"\d+[.,]\d{2}\d+[.,]\d", line[1]) is not None
+            if (line[2] < 0.65 or concatenated) and len(contained) >= 2:
+                original_values = _number_signature(line[1])
+                observed_values = [
+                    value
+                    for candidate in contained
+                    for value in _number_signature(candidate[1])
+                ]
+                if not concatenated and any(
+                    observed_values.count(value) < original_values.count(value)
+                    for value in set(original_values)
+                ):
+                    retained.append((line, words))
+                    continue
+                boxes = [self._line_bbox(candidate) for candidate in contained]
+                if (
+                    max(b.r for b in boxes) - min(b.l for b in boxes) >= box.width * 0.7
+                    and max(b.b for b in boxes) - min(b.t for b in boxes)
+                    >= box.height * 0.65
+                ):
+                    continue
+            retained.append((line, words))
+        selected = retained
+        for candidate, words in additions:
+            conflicts = [
+                index
+                for index, (line, _) in enumerate(selected)
+                if self._same_text_region(candidate, line)
+                or (
+                    self._line_bbox(candidate).intersection_over_self(
+                        self._line_bbox(line)
+                    )
+                    >= 0.85
+                    and bool(_number_signature(line[1]))
+                )
+            ]
+            if conflicts:
+                previous = [selected[index][0] for index in conflicts]
+                original_numbers = [
+                    value for line in previous for value in _number_signature(line[1])
+                ]
+                if original_numbers and original_numbers != _number_signature(
+                    candidate[1]
+                ):
+                    continue
+                original_markers = [
+                    match.group(1)
+                    for line in previous
+                    for match in re.finditer(r"([=*])\s*-?\d", line[1])
+                ]
+                candidate_markers = [
+                    match.group(1)
+                    for match in re.finditer(r"([=*])\s*-?\d", candidate[1])
+                ]
+                if original_markers and original_markers != candidate_markers:
+                    continue
+                quality = sum(
+                    len("".join(line[1].split())) * line[2] for line in previous
+                )
+                characters = len("".join(candidate[1].split()))
+                if not (
+                    characters * candidate[2] > quality * 1.05
+                    or (
+                        candidate[2] >= max(line[2] for line in previous) + 0.1
+                        and characters
+                        >= 0.85
+                        * sum(len("".join(line[1].split())) for line in previous)
+                    )
+                ):
+                    continue
+                selected = [
+                    item
+                    for index, item in enumerate(selected)
+                    if index not in conflicts
+                ]
+            selected.append((candidate, words))
         return self._order_and_join(selected)
 
     @classmethod
@@ -1161,6 +1322,60 @@ class RapidOcrModel(BaseOcrModel):
             orientation,
             im_size,
         )
+
+    def _read_sideways_page(
+        self, image: Image.Image, prediction: _OcrPrediction
+    ) -> tuple[_OcrPrediction, int]:
+        """Reread a sideways form even if its individual rotated crops look confident."""
+        # A line detector may merge a label with several amount columns.
+        # Individual word coordinates still reveal the page's reading direction.
+        observations = prediction.words or prediction.lines
+        labels = [
+            line for line in observations if sum(c.isalpha() for c in line[1]) >= 4
+        ]
+        numbers = [
+            line
+            for line in observations
+            if sum(c.isdigit() for c in line[1]) >= 3
+            and not any(c.isalpha() for c in line[1])
+        ]
+        if (
+            len(labels) < 5
+            or len(numbers) < 8
+            or sum(
+                self._line_bbox(line).height > 1.8 * self._line_bbox(line).width
+                for line in labels
+            )
+            < len(labels) * 0.7
+        ):
+            return prediction, 0
+        separation = median(
+            (self._line_bbox(line).t + self._line_bbox(line).b) / 2 for line in numbers
+        ) - median(
+            (self._line_bbox(line).t + self._line_bbox(line).b) / 2 for line in labels
+        )
+        if abs(separation) < image.height * 0.2:
+            return prediction, 0
+        turn = 270 if separation > 0 else 90
+        rotated = image.rotate(-turn, expand=True)
+        candidate = self._read(rotated)
+        if candidate is None:
+            return prediction, 0
+        candidate_labels = [
+            line for line in candidate.lines if sum(c.isalpha() for c in line[1]) >= 4
+        ]
+        if (
+            len(candidate_labels) < 5
+            or sum(
+                self._line_bbox(line).width > self._line_bbox(line).height
+                for line in candidate_labels
+            )
+            < len(candidate_labels) * 0.7
+            or _confident_chars(candidate.lines)
+            < 0.9 * _confident_chars(prediction.lines)
+        ):
+            return prediction, 0
+        return candidate, turn
 
     @classmethod
     def get_options_type(cls) -> Type[OcrOptions]:

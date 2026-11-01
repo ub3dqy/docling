@@ -171,6 +171,22 @@ and legacy PDF/image pipelines; it is not a remote-service setting.
 Use `--ocr-option use_multiscale=false` to disable the second reading, or
 `--table-structure-option prefer_ocr_grid=false` to disable rule-based table
 recovery. `--no-tables` also disables recovery of overlooked OCR tables.
+With multiscale reading enabled, the same refinement option also enables a
+supplemental local detector for image inputs when the prefetched
+`PP-OCRv6_det_small.onnx` is present. Explicit detector paths take
+precedence. Conflicting numeric values, signs and precision are protected during
+line replacement. A missing receipt decimal requires a visible dot and multiple
+readings; it never uses calculated VAT or totals. Printed fiscal captions and
+right-aligned amounts on the same row stay together in text output.
+Receipt detection accepts distinct fiscal captions with Latin/Cyrillic OCR
+lookalikes without substituting their output text. Fiscal fields are rechecked
+even at high page confidence; punctuation checks preserve confident amount digits.
+
+Sideways financial forms can be reread upright even when their individual
+rotated crops look confident. Table cells return to source-page coordinates.
+Open label columns need repeated printed rules and real labels. Numeric grid
+cells receive a missing dash only when its pixels support that sign.
+
 Use `--ocr-option use_region_refinement=false` to disable crop refinement.
 Refinement never uses benchmark references. For the real-document qualification,
 `--use-source-review` applies a documented source transcription correction and

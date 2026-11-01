@@ -1,0 +1,56 @@
+{
+  "reference_sha256": "3bb832441a96558b11f4f1aa559e9ec250f83b2798ac2d6301e850cc215ae0f9",
+  "corrections": [
+    {
+      "case_id": "bi-balance-sideways",
+      "row_key": "020",
+      "value_index": 6,
+      "original": "853 199,83",
+      "reviewed": "835 199,83",
+      "source_page": 1,
+      "source_sha256": "0b60170a158217da5c1203d18da5a12434191071b845f7e32e5712756e83ed1a",
+      "evidence": "Visual review of the source page rendered at 288 dpi and turned 90 degrees counter-clockwise. The value in row 020, printed column 9, is 835 199,83. The first reference transposed its second and third digits. No value was calculated. Original references and scores are retained."
+    },
+    {
+      "case_id": "bi-balance-sideways",
+      "row_key": "020",
+      "value_index": 7,
+      "original": "75 297 675,61",
+      "reviewed": "75 279 675,61",
+      "source_page": 1,
+      "source_sha256": "0b60170a158217da5c1203d18da5a12434191071b845f7e32e5712756e83ed1a",
+      "evidence": "The same enlarged source row 020, printed column 10, reads 75 279 675,61. The first reference transposed the last two digits of the thousands group. Original references and scores are retained."
+    },
+    {
+      "case_id": "bi-balance-sideways",
+      "row_key": "021",
+      "value_index": 6,
+      "original": "853 199,83",
+      "reviewed": "835 199,83",
+      "source_page": 1,
+      "source_sha256": "0b60170a158217da5c1203d18da5a12434191071b845f7e32e5712756e83ed1a",
+      "evidence": "Visual review of the source row 021 itself, printed column 9, confirms 835 199,83. It was read independently from that row, not copied from row 020. Original references and scores are retained."
+    },
+    {
+      "case_id": "bi-balance-sideways",
+      "row_key": "021",
+      "value_index": 7,
+      "original": "75 297 675,61",
+      "reviewed": "75 279 675,61",
+      "source_page": 1,
+      "source_sha256": "0b60170a158217da5c1203d18da5a12434191071b845f7e32e5712756e83ed1a",
+      "evidence": "Visual review of the source row 021 itself, printed column 10, confirms 75 279 675,61. It was read independently from that row, not calculated or copied from row 020. Original references and scores are retained."
+    }
+  ],
+  "field_corrections": [
+    {
+      "case_id": "receipt-grocery-mixed-vat",
+      "field_name": "vat-20",
+      "original": "103.19",
+      "reviewed": "103.18",
+      "source_page": 1,
+      "source_sha256": "bc3787f800a4c40bc1e348296c7a3468ee0eb2ab9af111e57e0f4632e6dccd7a",
+      "evidence": "The visual source review recorded in reference_review_notes.json during the first evaluation shows 103.18. The final digit has two enclosed counters in source crop (1180, 1410, 1340, 1495). This applies only that existing transcription correction; source bytes, original reference bytes, regions and limits remain unchanged. Both original and reviewed scores are retained."
+    }
+  ]
+}

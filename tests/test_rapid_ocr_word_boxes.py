@@ -154,3 +154,98 @@ def test_word_cells_return_to_original_page_after_rotation_and_crop(
         2,
     )
     assert cells[0].rect.to_bounding_box().as_tuple() == expected
+
+
+def test_confident_sideways_form_is_reread_as_a_whole_page(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    model = _model()
+    image = Image.new("RGB", (800, 1200))
+    initial_lines = [
+        (_box(20 + i * 30, 40, 35 + i * 30, 300), "Article", 0.98) for i in range(6)
+    ]
+    initial_lines.extend(
+        (_box(20 + i * 30, 800, 35 + i * 30, 1100), "12345.67", 0.98) for i in range(9)
+    )
+    initial = _OcrPrediction(initial_lines, [[] for _ in initial_lines])
+    upright_lines = [
+        (_box(10, 10 + i * 30, 270, 25 + i * 30), "Article", 0.98) for i in range(6)
+    ]
+    upright_lines.extend(
+        (_box(600, 10 + i * 30, 900, 25 + i * 30), "12345.67", 0.98) for i in range(9)
+    )
+    upright = _OcrPrediction(upright_lines, [[] for _ in upright_lines])
+    seen = []
+
+    def read(turned: Image.Image) -> _OcrPrediction:
+        seen.append(turned.size)
+        return upright
+
+    monkeypatch.setattr(model, "_read", read)
+    actual, turn = model._read_sideways_page(image, initial)
+    assert actual is upright
+    assert turn == 270
+    assert seen == [(1200, 800)]
+    # Ordinary upright text must not be reread or turned by this path.
+    assert model._read_sideways_page(image, upright) == (upright, 0)
+    assert len(seen) == 1
+
+
+@pytest.mark.parametrize(
+    "original,candidate",
+    [
+        ("1 565387", "1:565387"),
+        ("-123.45", "123.45"),
+        ("12345", "123.45"),
+        ("99.99", "99.89"),
+        ("=123.45", "123.45"),
+        ("*123.45", "=123.45"),
+        ("99.99 *5 =499.95", "99.99 5 =499.95"),
+    ],
+)
+def test_supplementary_detector_cannot_replace_conflicting_numeric_values(
+    monkeypatch: pytest.MonkeyPatch, original: str, candidate: str
+) -> None:
+    model = _model()
+    model.options.use_region_refinement = True
+    monkeypatch.setattr(model, "_refinement_reader", object(), raising=False)
+    initial = _OcrPrediction([(_box(20, 40, 200, 60), original, 0.7)], [[]])
+    alternative = _OcrPrediction([(_box(20, 40, 200, 60), candidate, 0.99)], [[]])
+    monkeypatch.setattr(model, "_read", lambda *args, **kwargs: alternative)
+    actual = model._refine_detection(Image.new("RGB", (240, 100)), initial)
+    assert [line[1] for line in actual.lines] == [original]
+
+
+def test_split_detector_boxes_cannot_bypass_numeric_replacement_protection(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    model = _model()
+    model.options.use_region_refinement = True
+    monkeypatch.setattr(model, "_refinement_reader", object(), raising=False)
+    initial = _OcrPrediction([(_box(20, 20, 220, 120), "123.45", 0.6)], [[]])
+    alternative = _OcrPrediction(
+        [
+            (_box(20, 25, 220, 60), "123.46", 0.99),
+            (_box(20, 80, 220, 115), "234.56", 0.99),
+        ],
+        [[], []],
+    )
+    monkeypatch.setattr(model, "_read", lambda *args, **kwargs: alternative)
+    result = model._refine_detection(Image.new("RGB", (240, 150)), initial)
+    assert [line[1] for line in result.lines] == ["123.45"]
+
+
+def test_supplementary_detector_retains_small_digits_without_adding_lone_letter_noise(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    model = _model()
+    model.options.use_region_refinement = True
+    monkeypatch.setattr(model, "_refinement_reader", object(), raising=False)
+    alternative = _OcrPrediction(
+        [(_box(20, 20, 30, 40), "в", 0.99), (_box(60, 20, 70, 40), "5", 0.99)], [[], []]
+    )
+    monkeypatch.setattr(model, "_read", lambda *args, **kwargs: alternative)
+    result = model._refine_detection(
+        Image.new("RGB", (100, 80)), _OcrPrediction([], [])
+    )
+    assert [line[1] for line in result.lines] == ["5"]

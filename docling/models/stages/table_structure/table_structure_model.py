@@ -30,6 +30,7 @@ from docling.models.base_table_model import BaseTableStructureModel
 from docling.models.utils.hf_model_download import download_hf_model
 from docling.utils.accelerator_utils import decide_device
 from docling.utils.ocr_table_grid import table_from_ocr_grid
+from docling.utils.ocr_table_orientation import upright_table_view
 from docling.utils.profiling import TimeRecorder
 from docling.utils.text_normalization import normalize_extracted_text
 
@@ -292,6 +293,25 @@ class TableStructureModel(BaseTableStructureModel):
                     else:
                         # Otherwise - we use normal (line/phrase) cells
                         tcells = table_cluster.cells
+                    view = (
+                        upright_table_view(
+                            image, table_cluster, list(tcells), scale=self.scale
+                        )
+                        if self.do_cell_matching and self.options.prefer_ocr_grid
+                        else None
+                    )
+                    table_image = image if view is None else view.image
+                    working_cluster = table_cluster if view is None else view.cluster
+                    if view is not None:
+                        tcells = view.words
+                        working_box = working_cluster.bbox.scaled(self.scale)
+                        tbl_box = list(working_box.as_tuple())
+                    table_input = {
+                        **page_input,
+                        "width": table_image.width,
+                        "height": table_image.height,
+                        "image": numpy.asarray(table_image),
+                    }
                     tokens = []
                     for c in tcells:
                         # Only allow non empty strings (spaces) into the cells of a table
@@ -309,7 +329,7 @@ class TableStructureModel(BaseTableStructureModel):
                                     "bbox": new_cell.rect.to_bounding_box().model_dump(),
                                 }
                             )
-                    page_input["tokens"] = tokens
+                    table_input["tokens"] = tokens
 
                     if (
                         self.do_cell_matching
@@ -318,18 +338,23 @@ class TableStructureModel(BaseTableStructureModel):
                         and any(word.from_ocr for word in sp.word_cells)
                     ):
                         grid_table = table_from_ocr_grid(
-                            image,
-                            table_cluster,
+                            table_image,
+                            working_cluster,
                             list(tcells),
                             page_no=page.page_no,
                             scale=self.scale,
+                            allow_open_labels=view is not None,
                         )
                         if grid_table is not None:
-                            table_prediction.table_map[table_cluster.id] = grid_table
+                            table_prediction.table_map[table_cluster.id] = (
+                                grid_table
+                                if view is None
+                                else view.restore(grid_table, table_cluster)
+                            )
                             continue
 
                     tf_output = self.tf_predictor.multi_table_predict(
-                        page_input, [tbl_box], do_matching=self.do_cell_matching
+                        table_input, [tbl_box], do_matching=self.do_cell_matching
                     )
                     table_out = tf_output[0]
                     table_cells = []
@@ -369,7 +394,9 @@ class TableStructureModel(BaseTableStructureModel):
                         label=table_cluster.label,
                     )
 
-                    table_prediction.table_map[table_cluster.id] = tbl
+                    table_prediction.table_map[table_cluster.id] = (
+                        tbl if view is None else view.restore(tbl, table_cluster)
+                    )
 
                 if settings.debug.visualize_tables:
                     self.draw_table_and_cells(

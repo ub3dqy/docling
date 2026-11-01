@@ -16,12 +16,23 @@ from docling_core.types.doc.page import TextCell
 from PIL import Image
 
 from docling.datamodel.base_models import Cluster, Table
+from docling.utils.ocr_table_orientation import label_first_rows, sideways_grid_views
 
 
 def _centers(positions: list[float], tolerance: float) -> list[float]:
     groups: list[list[float]] = []
     for position in sorted(positions):
         if groups and position - groups[-1][0] <= tolerance:
+            groups[-1].append(position)
+        else:
+            groups.append([position])
+    return [median(group) for group in groups]
+
+
+def _row_centers(positions: list[float]) -> list[float]:
+    groups: list[list[float]] = []
+    for position in positions:
+        if groups and position - groups[-1][-1] <= 2:
             groups[-1].append(position)
         else:
             groups.append([position])
@@ -35,6 +46,52 @@ def table_from_ocr_grid(
     *,
     page_no: int,
     scale: float,
+    allow_open_labels: bool = False,
+) -> Table | None:
+    if not words or not all(word.from_ocr for word in words):
+        return None
+    views = sideways_grid_views(image, cluster, words, scale=scale)
+    if views and all(word.from_ocr for word in words):
+        candidates = []
+        for view in views:
+            table = _table_from_ocr_grid(
+                view.image,
+                view.cluster,
+                view.words,
+                page_no=page_no,
+                scale=scale,
+                allow_open_labels=True,
+            )
+            if table is not None:
+                candidates.append((label_first_rows(table), view, table))
+        candidates.sort(key=lambda candidate: candidate[0], reverse=True)
+        if (
+            candidates
+            and candidates[0][0] >= 5
+            and (len(candidates) == 1 or candidates[0][0] >= candidates[1][0] + 3)
+        ):
+            _, view, table = candidates[0]
+            return view.restore(table, cluster)
+        # Do not silently materialize a sideways table as a transposed grid.
+        return None
+    return _table_from_ocr_grid(
+        image,
+        cluster,
+        words,
+        page_no=page_no,
+        scale=scale,
+        allow_open_labels=allow_open_labels,
+    )
+
+
+def _table_from_ocr_grid(
+    image: Image.Image,
+    cluster: Cluster,
+    words: list[TextCell],
+    *,
+    page_no: int,
+    scale: float,
+    allow_open_labels: bool = False,
 ) -> Table | None:
     """Prefer a complete, dense printed grid over merged model-predicted rows.
 
@@ -51,7 +108,10 @@ def table_from_ocr_grid(
         return None
 
     box = cluster.bbox.scaled(scale)
-    padding = max(3, round(box.width * 0.02))
+    padding = max(
+        3,
+        round((min(box.width, box.height) if allow_open_labels else box.width) * 0.02),
+    )
     left = max(0, int(box.l) - padding)
     top = max(0, int(box.t) - padding)
     right = min(image.width, ceil(box.r) + padding)
@@ -60,25 +120,69 @@ def table_from_ocr_grid(
         return None
     gray = np.asarray(image.crop((left, top, right, bottom)).convert("L"))
     _, ink = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    binary_views = [ink]
+    if allow_open_labels:
+        binary_views.extend(
+            cv2.adaptiveThreshold(
+                gray,
+                255,
+                cv2.ADAPTIVE_THRESH_MEAN_C,
+                cv2.THRESH_BINARY_INV,
+                window,
+                offset,
+            )
+            for window, offset in ((31, 4), (31, 10), (51, 4))
+        )
+        ink = binary_views[0].copy()
+        for binary in binary_views[1:]:
+            ink |= binary
     height, width = ink.shape
-    segments = cv2.HoughLinesP(
-        ink,
-        1,
-        np.pi / 1800,
-        threshold=max(30, height // 12),
-        minLineLength=height * 0.45,
-        maxLineGap=max(3, height // 80),
-    )
-    if segments is None:
+    detected = [
+        cv2.HoughLinesP(
+            binary,
+            1,
+            np.pi / 1800,
+            threshold=max(30, height // 12),
+            minLineLength=height * 0.45,
+            maxLineGap=max(3, height // (40 if allow_open_labels else 80)),
+        )
+        for binary in binary_views
+    ]
+    valid_segments = [
+        segment.reshape(-1, 4) for segment in detected if segment is not None
+    ]
+    if not valid_segments:
         return None
+    segments = np.concatenate(valid_segments)
     verticals = [
         float(x1 + x2) / 2
         for x1, y1, x2, y2 in segments.reshape(-1, 4)
-        if abs(y2 - y1) >= height * 0.45 and abs(x2 - x1) <= 0.025 * abs(y2 - y1)
+        if abs(y2 - y1) >= height * 0.45
+        and abs(x2 - x1) <= (0.05 if allow_open_labels else 0.025) * abs(y2 - y1)
     ]
     columns = _centers(verticals, max(3, width * 0.008))
     if len(columns) < 4:
         return None
+    if allow_open_labels and columns[0] > width * 0.06:
+        # Some financial forms have no left rule around the label column.
+        # Repeated full-width row rules and real labels must support that column.
+        horizontals = [
+            (float(y1 + y2) / 2)
+            for x1, y1, x2, y2 in segments.reshape(-1, 4)
+            if abs(x2 - x1) >= width * 0.8 and abs(y2 - y1) <= 0.025 * abs(x2 - x1)
+        ]
+        labels = [
+            word
+            for word in words
+            if sum(char.isalpha() for char in word.text) >= 4
+            and (word.rect.to_bounding_box().l + word.rect.to_bounding_box().r)
+            * scale
+            / 2
+            - left
+            < columns[0]
+        ]
+        if len(_centers(horizontals, 4)) >= 5 and len(labels) >= 5:
+            columns.insert(0, 0.0)
     # All outer borders must be visible, not a set of incidental interior lines.
     if columns[0] > width * 0.06 or columns[-1] < width * 0.94:
         return None
@@ -93,14 +197,22 @@ def table_from_ocr_grid(
             np.convolve(signal >= 0.65, np.ones(2 * tolerance + 1), mode="same") > 0
         )
     ruled = np.sum(signals, axis=0) >= ceil(len(signals) * 0.6)
-    rows = _centers(np.flatnonzero(ruled).astype(float).tolist(), 2 * tolerance + 2)
-    if len(rows) < 6 or rows[0] > height * 0.06 or rows[-1] < height * 0.94:
+    positions = np.flatnonzero(ruled).astype(float).tolist()
+    rows = (
+        _row_centers(positions)
+        if allow_open_labels
+        else _centers(positions, 2 * tolerance + 2)
+    )
+    if len(rows) < 6 or (
+        not allow_open_labels and (rows[0] > height * 0.06 or rows[-1] < height * 0.94)
+    ):
         return None
     if any(end - start <= 2 * tolerance for start, end in pairwise(rows)):
         return None
 
     contents: dict[tuple[int, int], list[TextCell]] = defaultdict(list)
     assigned = 0
+    outside: list[TextCell] = []
     for word in words:
         word_box = word.rect.to_bounding_box()
         x = (word_box.l + word_box.r) * scale / 2 - left
@@ -109,13 +221,31 @@ def table_from_ocr_grid(
         if 0 <= column < len(columns) - 1 and 0 <= row < len(rows) - 1:
             contents[row, column].append(word)
             assigned += 1
-    if assigned < len(words) * 0.9:
+        elif allow_open_labels and not rows[0] <= y <= rows[-1]:
+            outside.append(word)
+    if assigned < (len(words) - len(outside)) * 0.9:
         return None
+    offset = int(bool(outside))
     cells = [
         TableCell(
-            text=" ".join(word.text for word in contents[row, column]),
-            start_row_offset_idx=row,
-            end_row_offset_idx=row + 1,
+            text=" ".join(
+                word.text
+                for word in (
+                    sorted(
+                        contents[row, column],
+                        key=lambda word: word.rect.to_bounding_box().l,
+                    )
+                    if allow_open_labels
+                    and not any(
+                        char.isalpha()
+                        for word in contents[row, column]
+                        for char in word.text
+                    )
+                    else contents[row, column]
+                )
+            ),
+            start_row_offset_idx=row + offset,
+            end_row_offset_idx=row + 1 + offset,
             start_col_offset_idx=column,
             end_col_offset_idx=column + 1,
             column_header=row == 0,
@@ -129,6 +259,26 @@ def table_from_ocr_grid(
         for row in range(len(rows) - 1)
         for column in range(len(columns) - 1)
     ]
+    if outside:
+        boxes = [word.rect.to_bounding_box() for word in outside]
+        cells.insert(
+            0,
+            TableCell(
+                text=" ".join(word.text for word in outside),
+                start_row_offset_idx=0,
+                end_row_offset_idx=1,
+                start_col_offset_idx=0,
+                end_col_offset_idx=len(columns) - 1,
+                col_span=len(columns) - 1,
+                column_header=True,
+                bbox=BoundingBox(
+                    l=min(box.l for box in boxes),
+                    t=min(box.t for box in boxes),
+                    r=max(box.r for box in boxes),
+                    b=max(box.b for box in boxes),
+                ),
+            ),
+        )
     return Table(
         from_ocr_grid=True,
         id=cluster.id,
@@ -137,7 +287,7 @@ def table_from_ocr_grid(
         cluster=cluster,
         otsl_seq=[],
         table_cells=cells,
-        num_rows=len(rows) - 1,
+        num_rows=len(rows) - 1 + offset,
         num_cols=len(columns) - 1,
     )
 

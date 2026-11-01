@@ -29,6 +29,11 @@ from docling.datamodel.base_models import Cluster, Page, PageElement, Table
 from docling.datamodel.pipeline_options import RapidOcrOptions
 from docling.datamodel.settings import settings
 from docling.models.stages.ocr.rapid_ocr_model import RapidOcrModel
+from docling.utils.ocr_receipt_rows import (
+    is_receipt_field_caption,
+    is_receipt_page,
+    join_receipt_fields,
+)
 
 if TYPE_CHECKING:
     from tesserocr import PyTessBaseAPI
@@ -175,7 +180,11 @@ def choose_amount_punctuation(
 
 
 def supports_leading_equals(
-    symbols: list[SymbolReading], text: str, amount: str
+    symbols: list[SymbolReading],
+    text: str,
+    amount: str,
+    *,
+    min_confidence: float = 0.95,
 ) -> bool:
     """Verify an actual leading glyph, separately from uncertain numeric glyphs."""
     key = number_key(text)
@@ -196,7 +205,7 @@ def supports_leading_equals(
     height = db - dt
     return (
         marker.text == "="
-        and marker.confidence >= 0.95
+        and marker.confidence >= min_confidence
         and len(digit.text) == 1
         and digit.text.isdigit()
         and height > 0
@@ -365,10 +374,12 @@ def choose_number(
     return best.text.strip()
 
 
-def choose_line_number(original: str, readings: list[RegionReading]) -> str:
+def choose_line_number(
+    original: str, readings: list[RegionReading], *, confidence: float = 0.0
+) -> str:
     """Keep a receipt amount unless two segmentation modes verify one digit."""
     original_key = number_key(original)
-    if original_key is None:
+    if original_key is None or confidence >= 0.95:
         return original
     wide = [
         reading
@@ -391,6 +402,172 @@ def choose_line_number(original: str, readings: list[RegionReading]) -> str:
         return original
     prefix = original[:1] if original[:1] in {"=", "*", ":"} else ""
     return prefix + wide[0].text.strip("=*: ")
+
+
+def choose_receipt_decimal(
+    original: str, readings: list[RegionReading], *, printed_dot: bool
+) -> str:
+    """Restore an observed separator without replacing any original digit."""
+    key = number_key(original)
+    if not printed_dot or key is None or re.fullmatch(r"\d{4,8}", key) is None:
+        return original
+    rapid_support = False
+    strong_rapid: dict[str, set[str]] = defaultdict(set)
+    tess_modes: set[str] = set()
+    for reading in readings:
+        candidate = number_key(reading.text)
+        if candidate is None or re.fullmatch(r"\d+\.\d{2}", candidate) is None:
+            continue
+        digits = candidate.replace(".", "")
+        if len(digits) != len(key) or reading.confidence < 0.78:
+            continue
+        if reading.engine.startswith("tesseract"):
+            if sum(a != b for a, b in zip(digits, key)) <= 1:
+                tess_modes.add(reading.engine)
+        elif digits == key:
+            rapid_support = True
+            if reading.confidence >= 0.9:
+                strong_rapid[recognizer_family(reading.engine)].add(reading.variant)
+    independent_rapid = (
+        sum(len(variants) >= 2 for variants in strong_rapid.values()) >= 2
+    )
+    if not independent_rapid and (not rapid_support or len(tess_modes) < 2):
+        return original
+    prefix = original[:1] if original[:1] in {"=", "*", ":"} else ""
+    return prefix + key[:-2] + "." + key[-2:]
+
+
+def printed_decimal(gray: np.ndarray, digits: int) -> bool:
+    """Require an isolated baseline dot between the actual last three digits."""
+    import cv2
+
+    gray = clean_region(gray)
+    _, ink = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    _, _, stats, _ = cv2.connectedComponentsWithStats(ink, connectivity=8)
+    components = [stat for stat in stats[1:] if stat[4] >= 2]
+    if not components:
+        return False
+    height = max(int(stat[3]) for stat in components)
+    body = sorted(
+        (stat for stat in components if stat[3] >= height * 0.5),
+        key=lambda stat: stat[0],
+    )
+    if height < 6 or len(body) not in {digits, digits - 1}:
+        return False
+    widths = [int(stat[2]) for stat in body]
+    pairs = [
+        index for index, width in enumerate(widths) if width > 1.6 * median(widths)
+    ]
+    if len(body) == digits - 1 and len(pairs) != 1:
+        return False
+    count = 0
+    boundary = None
+    for index, stat in enumerate(body[:-1]):
+        count += 2 if len(body) == digits - 1 and index in pairs else 1
+        if count == digits - 2:
+            boundary = index
+            break
+    if boundary is None:
+        return False
+    before, after = body[boundary], body[boundary + 1]
+    baseline = median(int(stat[1] + stat[3]) for stat in body)
+    return any(
+        stat[3] <= height * 0.35
+        and stat[2] <= height * 0.4
+        and before[0] + before[2] <= stat[0] + stat[2] / 2 <= after[0]
+        and baseline - height * 0.3 <= stat[1] + stat[3] <= baseline + height * 0.2
+        for stat in components
+    )
+
+
+def printed_dash(gray: np.ndarray) -> bool:
+    """Distinguish a printed dash in a numeric cell from a dot or an empty cell."""
+    import cv2
+
+    height, width = gray.shape
+    if height < 6 or width < 6:
+        return False
+    # Keep the whole cell: skewed grid boundaries can clip a right-aligned
+    # dash. Ignore long frame components and ink on the top/bottom boundary,
+    # without cropping away the short horizontal glyph itself.
+    supported = 0
+    strong = False
+    for threshold in (96, 128, 160):
+        _, ink = cv2.threshold(gray, threshold, 255, cv2.THRESH_BINARY_INV)
+        _, _, stats, _ = cv2.connectedComponentsWithStats(ink, connectivity=8)
+        body = [
+            stat
+            for stat in stats[1:]
+            if stat[4] >= 3
+            and stat[3] < height * 0.6
+            and stat[2] < width * 0.8
+            and height * 0.12 <= stat[1] + stat[3] / 2 <= height * 0.88
+        ]
+        if len(body) != 1:
+            continue
+        _, _, dash_width, dash_height, _ = body[0]
+        if (
+            dash_width >= max(4, 1.4 * dash_height)
+            and dash_width <= width * 0.7
+            and dash_height <= height * 0.3
+        ):
+            supported += 1
+            strong = strong or bool(dash_width >= 2 * dash_height)
+    return supported >= 2 and strong
+
+
+def choose_short_code(original: str, readings: list[RegionReading]) -> str:
+    """Read a three-digit code literally; never pad an incomplete reading."""
+    if sum(char.isdigit() for char in original) > 3:
+        return original
+    groups: dict[str, set[str]] = defaultdict(set)
+    for reading in readings:
+        text = reading.text.strip()
+        if reading.confidence >= 0.85 and re.fullmatch(r"\d{3}", text):
+            groups[text].add(recognizer_family(reading.engine))
+    winners = [text for text, engines in groups.items() if len(engines) >= 2]
+    return winners[0] if len(winners) == 1 else original
+
+
+def two_bar_marker(gray: np.ndarray) -> bool:
+    if gray.size == 0 or gray.shape[1] < 2:
+        return False
+    ink = gray < 128
+    return any(_two_bar_shape(ink, coverage) for coverage in (0.4, 0.55, 0.65))
+
+
+def _two_bar_shape(ink: np.ndarray, coverage: float) -> bool:
+    # Tesseract can include unrelated horizontal padding inside a glyph box.
+    occupied = ink.sum(axis=1) >= max(2, ink.shape[1] * coverage)
+    bands: list[tuple[int, int]] = []
+    for index, value in enumerate(occupied):
+        if value:
+            if bands and bands[-1][1] == index:
+                bands[-1] = (bands[-1][0], index + 1)
+            else:
+                bands.append((index, index + 1))
+    groups: list[list[tuple[int, int]]] = []
+    for band in bands:
+        if groups and band[0] - groups[-1][-1][1] <= max(
+            2, 1.5 * max(band[1] - band[0], groups[-1][-1][1] - groups[-1][-1][0])
+        ):
+            groups[-1].append(band)
+        else:
+            groups.append([band])
+    # A fragment above the current line must not become a second minus bar.
+    if not groups or len(groups[-1]) != 2 or groups[-1][-1][1] < ink.shape[0] * 0.8:
+        return False
+    first, second = groups[-1]
+    heights = (first[1] - first[0], second[1] - second[0])
+    if max(heights) > 2 * min(heights):
+        return False
+    first_ink = ink[first[0] : first[1]].mean(axis=0) >= 0.5
+    second_ink = ink[second[0] : second[1]].mean(axis=0) >= 0.5
+    if min(first_ink.sum(), second_ink.sum()) < max(2, ink.shape[1] * 0.3):
+        return False
+    return bool(
+        (first_ink & second_ink).sum() >= 0.75 * min(first_ink.sum(), second_ink.sum())
+    )
 
 
 def compatible_text_reading(original: str, candidate: str) -> bool:
@@ -726,6 +903,90 @@ class OcrRegionRefiner:
                 exact = exact or number_key(text) == amount
         return votes >= 2 and exact
 
+    def _receipt_equals(self, api: PyTessBaseAPI, gray: np.ndarray, text: str) -> str:
+        """Correct a minus only when two actual bars are observed before that value."""
+        import cv2
+
+        observed_originals = [
+            match.group()[1:].replace(",", ".")
+            for match in re.finditer(r"(?<![\w.,])-\d+[.,]\d{2}(?![\d.,])", text)
+        ]
+        amounts = {
+            amount
+            for amount in observed_originals
+            if observed_originals.count(amount) == 1
+        }
+        if not amounts:
+            return text
+        gray = punctuation_line_crop(gray)
+        api.SetVariable("tessedit_char_whitelist", "0123456789.,()=+-*:")
+        api.SetPageSegMode(self._tesserocr.PSM.SINGLE_LINE)
+        votes: dict[str, int] = defaultdict(int)
+        exact: set[str] = set()
+        for factor in (1.0, 1.5):
+            array = cv2.resize(
+                gray, None, fx=factor, fy=1, interpolation=cv2.INTER_CUBIC
+            )
+            for padding in (6, 12):
+                sample = ImageOps.expand(Image.fromarray(array), padding, fill=255)
+                api.SetImage(sample)
+                if not api.GetUTF8Text().strip():
+                    continue
+                symbols = []
+                for item in self._tesserocr.iterate_level(
+                    api.GetIterator(), self._tesserocr.RIL.SYMBOL
+                ):
+                    box = item.BoundingBox(self._tesserocr.RIL.SYMBOL)
+                    if box is None:
+                        break
+                    symbols.append(
+                        SymbolReading(
+                            item.GetUTF8Text(self._tesserocr.RIL.SYMBOL),
+                            item.Confidence(self._tesserocr.RIL.SYMBOL) / 100,
+                            box,
+                        )
+                    )
+                joined = "".join(symbol.text for symbol in symbols)
+                if len(joined) != len(symbols):
+                    continue
+                supported = set()
+                # Only the operator is replaced. A trailing OCR fragment or
+                # one uncertain numeric glyph cannot supply new amount digits.
+                for match in re.finditer(r"=(\d+[.,]\d{2})", joined):
+                    observed = match.group(1).replace(",", ".")
+                    candidates = [
+                        amount
+                        for amount in amounts
+                        if supports_leading_equals(
+                            symbols[match.start() : match.start() + 2],
+                            match.group(),
+                            amount,
+                            min_confidence=0.94,
+                        )
+                    ]
+                    if observed in candidates:
+                        candidates = [observed]
+                    if len(candidates) != 1:
+                        continue
+                    amount = candidates[0]
+                    left, top, right, bottom = symbols[match.start()].bbox
+                    if two_bar_marker(np.asarray(sample)[top:bottom, left:right]):
+                        supported.add(amount)
+                        if observed == amount:
+                            exact.add(amount)
+                for amount in supported:
+                    votes[amount] += 1
+        return re.sub(
+            r"(?<![\w.,])-\d+[.,]\d{2}(?![\d.,])",
+            lambda match: (
+                "=" + match.group()[1:]
+                if votes[match.group()[1:].replace(",", ".")] >= 2
+                and match.group()[1:].replace(",", ".") in exact
+                else match.group()
+            ),
+            text,
+        )
+
     def _choose_text(
         self, original: str, confidence: float, readings: list[RegionReading]
     ) -> RegionReading:
@@ -796,6 +1057,13 @@ class OcrRegionRefiner:
             return
         heights = [cell.rect.to_bounding_box().height for cell in lines]
         line_height = median(heights)
+        page_text = " ".join(
+            normalize_mixed_script(cell.text).casefold() for cell in lines
+        )
+        receipt = (
+            sum(word in page_text for word in ("итог", "оплат", "ндс", "сумм", "касс"))
+            >= 2
+        ) or is_receipt_page(cell.text for cell in lines)
         replacements: dict[int, RegionReading] = {}
         with (
             self._lock,
@@ -807,20 +1075,40 @@ class OcrRegionRefiner:
             ) as api,
         ):
             for cell in lines:
-                if cell.confidence >= 0.95 or not 4 <= len(cell.text) <= 120:
+                key = number_key(cell.text)
+                receipt_field = receipt and (
+                    is_receipt_field_caption(cell.text)
+                    or (
+                        key is not None
+                        and re.fullmatch(r"\d{4,8}|\d+\.\d{2}", key) is not None
+                    )
+                )
+                if (cell.confidence >= 0.95 and not receipt_field) or not 4 <= len(
+                    cell.text
+                ) <= 120:
                     continue
                 box = cell.rect.to_bounding_box()
                 if box.height > 2.5 * line_height:
                     continue
-                gray = self._crop(
-                    image, box, page, inset=-3 / (image.width / page.size.width)
-                )
+                numeric = number_key(cell.text) is not None
+                pixel_scale = image.width / page.size.width
+                if (
+                    not numeric
+                    and re.search(r"\d+[.,]\d{2}", cell.text) is None
+                    and (not receipt or _CYRILLIC.search(cell.text) is None)
+                ):
+                    extra = min(9 / pixel_scale, box.height * 0.35)
+                    box = box.model_copy(
+                        update={"l": box.l - extra, "r": box.r + extra}
+                    )
+                gray = self._crop(image, box, page, inset=-3 / pixel_scale)
                 if gray is None:
                     continue
-                numeric = number_key(cell.text) is not None
                 tess = self._tess_readings(api, gray, numeric=numeric)
                 if numeric:
-                    text = choose_line_number(cell.text, tess)
+                    text = choose_line_number(
+                        cell.text, tess, confidence=cell.confidence
+                    )
                     selected = RegionReading(text, cell.confidence, "page", "original")
                     if text != cell.text:
                         selected = RegionReading(
@@ -830,6 +1118,18 @@ class OcrRegionRefiner:
                             "wide",
                         )
                     key = number_key(selected.text)
+                    if receipt and key is not None and re.fullmatch(r"\d{4,8}", key):
+                        selected = RegionReading(
+                            choose_receipt_decimal(
+                                selected.text,
+                                [*tess, *self._rapid_readings(gray, numeric=True)],
+                                printed_dot=printed_decimal(gray, len(key)),
+                            ),
+                            selected.confidence,
+                            selected.engine,
+                            selected.variant,
+                        )
+                        key = number_key(selected.text)
                     if key is not None and re.fullmatch(r"\d+\.\d{2}", key):
                         punctuation_readings = (
                             self._rapid_readings(gray, numeric=True)
@@ -850,6 +1150,13 @@ class OcrRegionRefiner:
                         cell.confidence,
                         [*self._rapid_readings(gray, numeric=False), *tess],
                     )
+                    if receipt:
+                        selected = RegionReading(
+                            self._receipt_equals(api, gray, selected.text),
+                            selected.confidence,
+                            selected.engine,
+                            selected.variant,
+                        )
                 if selected.text and selected.text != cell.text:
                     replacements[cell.index] = selected
                     cell.text = selected.text
@@ -867,6 +1174,8 @@ class OcrRegionRefiner:
 
             for cluster in page.predictions.layout.clusters:
                 update(cluster)
+        if receipt:
+            join_receipt_fields(page)
 
     def refine_tables(
         self, page: Page, elements: list[PageElement], *, image_input: bool = False
@@ -913,11 +1222,43 @@ class OcrRegionRefiner:
                         for key in keys
                     )
                 }
+                numeric_columns = {
+                    column for column, keys in column_keys.items() if len(keys) >= 3
+                }
+                if table.from_ocr_grid:
+                    # A fully ruled amount column can contain only printed dashes.
+                    # Its empty OCR output is not evidence of an empty source cell.
+                    amount_rows: dict[int, int] = defaultdict(int)
+                    for cell in table.table_cells:
+                        if (
+                            cell.start_col_offset_idx in amount_columns
+                            and number_key(cell.text) is not None
+                        ):
+                            amount_rows[cell.start_row_offset_idx] += 1
+                    for column in range(table.num_cols):
+                        body = [
+                            cell
+                            for cell in table.table_cells
+                            if cell.start_col_offset_idx == column
+                            and amount_rows[cell.start_row_offset_idx] >= 2
+                            and not cell.column_header
+                            and not cell.row_header
+                        ]
+                        if len(body) >= 3 and not any(
+                            char.isalpha() for cell in body for char in cell.text
+                        ):
+                            numeric_columns.add(column)
+                code_columns = {
+                    column
+                    for column, keys in column_keys.items()
+                    if len(keys) >= 3
+                    and sum(re.fullmatch(r"\d{3}", key) is not None for key in keys)
+                    >= 0.7 * len(keys)
+                } - amount_columns
                 for cell in table.table_cells:
                     if (
                         cell.bbox is None
-                        or number_key(cell.text) is None
-                        or cell.start_col_offset_idx not in amount_columns
+                        or cell.start_col_offset_idx not in numeric_columns
                         or cell.column_header
                         or cell.row_header
                     ):
@@ -928,8 +1269,8 @@ class OcrRegionRefiner:
                         for word in page.parsed_page.word_cells
                         if word.rect.to_bounding_box().intersection_over_self(box) > 0.5
                     ]
-                    if not source_words or any(
-                        not word.from_ocr for word in source_words
+                    if any(not word.from_ocr for word in source_words) or (
+                        not source_words and not table.from_ocr_grid
                     ):
                         continue
                     # Grid cells include border rules. Neural table boxes
@@ -937,6 +1278,35 @@ class OcrRegionRefiner:
                     inset = 0.35 if table.from_ocr_grid else -0.7
                     gray = self._crop(image, cell.bbox, page, inset=inset)
                     if gray is not None:
+                        quarter_turns = {
+                            "rot_90": 1,
+                            "rot_180": 2,
+                            "rot_270": 3,
+                        }.get(table.orientation.value, 0)
+                        if quarter_turns:
+                            gray = np.rot90(gray, quarter_turns).copy()
+                        if cell.text.strip() in {"", ".", "-", "_", "\u2014", "\u2013"}:
+                            if printed_dash(gray):
+                                cell.text = "-"
+                            if (
+                                cell.text.strip()
+                                or cell.start_col_offset_idx not in code_columns
+                            ):
+                                continue
+                        if cell.start_col_offset_idx in code_columns:
+                            cell.text = choose_short_code(
+                                cell.text,
+                                [
+                                    *self._rapid_readings(gray, numeric=True),
+                                    *self._tess_readings(api, gray, numeric=True),
+                                ],
+                            )
+                            continue
+                        if (
+                            cell.start_col_offset_idx not in amount_columns
+                            or number_key(cell.text) is None
+                        ):
+                            continue
                         keys = column_keys[cell.start_col_offset_idx]
                         cell.text = choose_number(
                             cell.text,

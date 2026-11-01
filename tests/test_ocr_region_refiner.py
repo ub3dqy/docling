@@ -13,13 +13,18 @@ from docling.models.stages.ocr.ocr_region_refiner import (
     choose_amount_punctuation,
     choose_line_number,
     choose_number,
+    choose_receipt_decimal,
+    choose_short_code,
     choose_text_punctuation,
     clean_region,
     compatible_text_reading,
     normalize_mixed_script,
+    printed_dash,
+    printed_decimal,
     punctuation_line_crop,
     refine_word_choices,
     supports_leading_equals,
+    two_bar_marker,
 )
 
 
@@ -113,10 +118,52 @@ def test_receipt_correction_preserves_decimal_scale_and_limits_digit_changes(
     assert choose_line_number("16.64", candidates) == expected
 
 
+def test_punctuation_recheck_preserves_confident_original_amount_digits():
+    candidates = [
+        RegionReading("171.97", 0.99, f"tesseract-{mode}", "wide") for mode in (7, 13)
+    ]
+    assert choose_line_number("170.97", candidates, confidence=0.99) == "170.97"
+    assert choose_line_number("170.97", candidates, confidence=0.8) == "171.97"
+
+
 def test_text_refinement_cannot_turn_a_price_decimal_into_two_numbers():
     assert not compatible_text_reading("Цена 94.99", "Цена 94 99")
     assert compatible_text_reading("Цена 94.99", "Цена 94,99")
     assert not compatible_text_reading("Цена 94.99", "Цена 94.98")
+
+
+def test_right_aligned_dash_survives_cell_frame_and_extra_heading_space():
+    image = Image.new("L", (400, 150), 255)
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((0, 0, 399, 149), outline=0, width=2)
+    draw.rectangle((375, 120, 386, 123), fill=80)
+    assert printed_dash(np.asarray(image))
+    # A small square ink spot at the same position is not a printed dash.
+    draw.rectangle((375, 120, 386, 123), fill=255)
+    draw.rectangle((379, 119, 382, 122), fill=0)
+    assert not printed_dash(np.asarray(image))
+
+
+def test_dash_at_clipped_right_edge_is_not_confused_with_bottom_rule():
+    image = Image.new("L", (400, 100), 255)
+    draw = ImageDraw.Draw(image)
+    draw.line((0, 0, 0, 99), fill=0, width=2)
+    draw.line((0, 99, 399, 99), fill=0, width=2)
+    assert not printed_dash(np.asarray(image))
+    draw.rectangle((390, 60, 399, 64), fill=80)
+    assert printed_dash(np.asarray(image))
+
+
+def test_blurred_dash_needs_a_horizontal_core_and_not_just_a_dark_spot():
+    image = Image.new("L", (200, 60), 255)
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((175, 35, 186, 42), fill=150)
+    draw.rectangle((175, 39, 186, 42), fill=110)
+    draw.rectangle((179, 39, 182, 42), fill=50)
+    assert printed_dash(np.asarray(image))
+    image = Image.new("L", (200, 60), 255)
+    ImageDraw.Draw(image).ellipse((175, 35, 182, 42), fill=110)
+    assert not printed_dash(np.asarray(image))
 
 
 def test_extra_spacing_does_not_block_a_complete_grade_reading():
@@ -219,6 +266,15 @@ def test_observed_marker_is_separate_from_the_first_numeric_glyph():
     assert not supports_leading_equals(symbols, "=23.45", "-23.45")
 
 
+def test_expression_marker_can_use_a_separate_confidence_floor_with_pixel_evidence():
+    symbols = [
+        SymbolReading("=", 0.945, (3, 5, 12, 10)),
+        SymbolReading("2", 0.98, (18, 0, 28, 16)),
+    ]
+    assert not supports_leading_equals(symbols, "=23.45", "23.45")
+    assert supports_leading_equals(symbols, "=23.45", "23.45", min_confidence=0.94)
+
+
 def test_punctuation_crop_keeps_the_operator_and_excludes_the_next_line():
     image = Image.new("L", (80, 40), 255)
     draw = ImageDraw.Draw(image)
@@ -245,3 +301,100 @@ def test_numeric_refinement_retains_an_observed_asterisk():
         RegionReading("23.45", 0.9, f"tesseract-{mode}", "wide") for mode in (7, 13)
     ]
     assert choose_line_number("*23.45", candidates) == "*23.45"
+
+
+def test_receipt_decimal_requires_observed_ink_and_independent_readings():
+    readings = [
+        RegionReading("103.18", 0.9, "iso:ru", "crop"),
+        RegionReading("103.48", 0.95, "tesseract-7", "wide"),
+        RegionReading("103.48", 0.95, "tesseract-13", "wide"),
+    ]
+    assert choose_receipt_decimal("10318", readings, printed_dot=True) == "103.18"
+    assert choose_receipt_decimal("10318", readings, printed_dot=False) == "10318"
+    assert choose_receipt_decimal("10318", readings[:2], printed_dot=True) == "10318"
+    assert choose_receipt_decimal("10319", readings, printed_dot=True) == "10319"
+    assert choose_receipt_decimal("-10318", readings, printed_dot=True) == "-10318"
+
+
+def test_decimal_can_use_consistent_models_when_tesseract_is_uncertain():
+    one_model = [
+        RegionReading("107.21", 0.94, "iso:ru", variant)
+        for variant in ("clean", "wide")
+    ]
+    assert choose_receipt_decimal("10721", one_model, printed_dot=True) == "10721"
+    two_models = [
+        *one_model,
+        *[
+            RegionReading("107.21", 0.94, "ch", variant)
+            for variant in ("clean", "wide")
+        ],
+    ]
+    assert choose_receipt_decimal("10721", two_models, printed_dot=True) == "107.21"
+    assert choose_receipt_decimal("10721", two_models, printed_dot=False) == "10721"
+    assert choose_receipt_decimal("10722", two_models, printed_dot=True) == "10722"
+
+
+@pytest.mark.parametrize("dot_y,expected", [(25, True), (1, False), (None, False)])
+def test_printed_decimal_must_be_in_the_numeric_baseline_gap(dot_y, expected):
+    image = Image.new("L", (105, 40), 255)
+    draw = ImageDraw.Draw(image)
+    for index in range(5):
+        draw.rectangle((8 + index * 20, 8, 14 + index * 20, 28), fill=0)
+    if dot_y is not None:
+        draw.rectangle((59, dot_y, 61, dot_y + 2), fill=0)
+    assert printed_decimal(np.asarray(image), 5) == expected
+
+
+def test_a_printed_dash_is_not_a_decimal_dot_or_an_empty_field():
+    image = Image.new("L", (100, 40), 255)
+    assert not printed_dash(np.asarray(image))
+    ImageDraw.Draw(image).rectangle((35, 18, 65, 20), fill=0)
+    assert printed_dash(np.asarray(image))
+    image = Image.new("L", (100, 40), 255)
+    ImageDraw.Draw(image).rectangle((48, 18, 50, 20), fill=0)
+    assert not printed_dash(np.asarray(image))
+
+
+def test_a_minus_cannot_pass_the_two_bar_equals_check():
+    marker = np.full((7, 10), 255, dtype=np.uint8)
+    marker[1:3, :] = 0
+    assert not two_bar_marker(marker)
+    marker[5:7, :] = 0
+    assert two_bar_marker(marker)
+
+
+def test_equals_marker_ignores_an_upper_row_fragment_and_ink_between_its_bars():
+    marker = np.full((30, 14), 255, dtype=np.uint8)
+    marker[:4, :12] = 0
+    marker[22:25, :13] = 0
+    marker[27:30, :] = 0
+    marker[25:27, 3:5] = 0
+    marker[25:27, 9:13] = 0
+    assert two_bar_marker(marker)
+    marker[27:30, :] = 255
+    assert not two_bar_marker(marker)
+
+
+def test_an_equals_in_a_previous_row_does_not_turn_a_current_minus_into_equals():
+    marker = np.full((40, 14), 255, dtype=np.uint8)
+    marker[1:3, :] = 0
+    marker[5:7, :] = 0
+    marker[30:33, :] = 0
+    assert not two_bar_marker(marker)
+    marker[30:33, :] = 255
+    marker[30:33, 5:9] = 0
+    assert not two_bar_marker(marker)
+
+
+def test_short_code_requires_full_digits_and_independent_engines():
+    readings = [
+        RegionReading("021", 0.98, "iso:ru", "clean"),
+        RegionReading("021", 0.98, "tesseract-7", "clean"),
+    ]
+    assert choose_short_code("", readings) == "021"
+    assert choose_short_code("", readings[:1]) == ""
+    assert choose_short_code("1234", readings) == "1234"
+    incomplete = [
+        RegionReading("21", r.confidence, r.engine, r.variant) for r in readings
+    ]
+    assert choose_short_code("", incomplete) == ""
