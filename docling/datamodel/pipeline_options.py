@@ -155,6 +155,12 @@ class TableStructureOptions(BaseTableStructureOptions):
     """Options for the table structure (TableFormer V1)."""
 
     kind: ClassVar[str] = "docling_tableformer"
+    prefer_ocr_grid: Annotated[
+        bool,
+        Field(
+            description="Use complete printed grids for dense tables with OCR word coordinates."
+        ),
+    ] = True
     do_cell_matching: Annotated[
         bool,
         Field(
@@ -378,6 +384,25 @@ class RapidOcrOptions(OcrOptions):
     """
 
     kind: ClassVar[Literal["rapidocr"]] = "rapidocr"
+    use_word_boxes: Annotated[
+        bool,
+        Field(
+            description="Retain word coordinates for matching OCR text to individual table cells."
+        ),
+    ] = False
+    use_multiscale: Annotated[
+        bool,
+        Field(
+            description="Retry OCR at 1536 pixels and retain more complete, confident text lines."
+        ),
+    ] = False
+    image_scale: Annotated[
+        float | None,
+        Field(
+            gt=0,
+            description="Optional rendering scale for image inputs, independent of the PDF scale.",
+        ),
+    ] = None
     lang: Annotated[
         list[str],
         Field(

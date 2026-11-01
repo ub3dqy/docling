@@ -1394,7 +1394,9 @@ def test_cli_russian_ocr_profile_reaches_the_pdf_pipeline(tmp_path, monkeypatch)
     assert ocr_options.lang == ["iso:ru-Cyrl"]
     assert ocr_options.backend == "onnxruntime"
     assert ocr_options.mode is OcrMode.FULL_PAGE
-    assert ocr_options.scale == 2.0
+    assert ocr_options.scale == 300 / 72
+    assert ocr_options.use_word_boxes is True
+    assert ocr_options.rapidocr_params["Global.max_side_len"] == 4096
 
 
 @pytest.mark.parametrize(

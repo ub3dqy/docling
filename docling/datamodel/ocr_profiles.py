@@ -21,7 +21,20 @@ def ocr_options_for_profile(profile: OcrProfile) -> RapidOcrOptions:
     if profile != OcrProfile.RUSSIAN:
         raise ValueError(f"Unsupported OCR profile: {profile!r}")
     # Read a scan as a page: tight layout crops can clip headings and final lines.
-    # 144 DPI keeps this recognizer from unnecessarily rescaling large scans.
+    # Preserve small digits and headings at 300 DPI. RapidOCR's default 2000px
+    # limit otherwise reduces a dense A4 scan back to about 170 DPI.
     return RapidOcrOptions(
-        backend="onnxruntime", lang=["iso:ru"], mode=OcrMode.FULL_PAGE, scale=2.0
+        backend="onnxruntime",
+        lang=["iso:ru"],
+        mode=OcrMode.FULL_PAGE,
+        scale=300 / 72,
+        image_scale=2.0,
+        use_word_boxes=True,
+        use_multiscale=True,
+        text_score=0.25,
+        rapidocr_params={
+            "Global.max_side_len": 4096,
+            "Det.limit_side_len": 736,
+            "Det.limit_type": "min",
+        },
     )

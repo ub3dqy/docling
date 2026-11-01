@@ -1,0 +1,155 @@
+{
+  "scope": "Purposive diagnostic sample of real published scans and camera images. References transcribed visually before running the current ru profile. Metrics cover the listed regions and cells, not every character in the source documents.",
+  "exclusions": [
+    "The medical receipt-1 image was not selected.",
+    "Digital diploma templates and the minpros-order slide deck were not selected as real document scans.",
+    "White-redacted identity fields, signatures, stamps, QR codes and illegible tiny print are outside text-reference regions.",
+    "Two receipt-3 item sums have damaged digit loops in the binarized image and were excluded from exact cell metrics. Unit prices and total were retained. Receipt-2 VAT reference is the visually printed 15.64; it was not recomputed from the total."
+  ],
+  "cases": [
+    {
+      "id": "rosseti-text",
+      "file": "rosseti-report.pdf", "page": 1, "kind": "scanned_pdf_with_existing_ocr",
+      "source_url": "https://www.rosseti-yantar.ru/upload/iblock/c2f/Prilozhenie-k-Godovomu-otchetu-za-2021-g.-_Bukhgalterskaya-otchetnost_.pdf",
+      "texts": [{"name": "opinion-introduction", "roi": [0.14, 0.115, 0.95, 0.366], "max_cer": 0.05, "text": "Акционерам акционерного общества «Калининградская генерирующая компания». Мнение Мы провели аудит прилагаемой годовой бухгалтерской (финансовой) отчетности акционерного общества «Калининградская генерирующая компания» (ОГРН 1083925011466), состоящей из бухгалтерского баланса по состоянию на 31 декабря 2021 года, отчета о финансовых результатах за 2021 год, приложений к бухгалтерскому балансу и отчету о финансовых результатах, в том числе отчета об изменениях капитала и отчета о движении денежных средств за 2021 год, пояснений к бухгалтерскому балансу и отчету о финансовых результатах, включая основные положения учетной политики."}],
+      "rows": [], "fields": []
+    },
+    {
+      "id": "rosseti-balance", "file": "rosseti-report.pdf", "page": 5, "kind": "scanned_pdf_with_existing_ocr",
+      "source_url": "https://www.rosseti-yantar.ru/upload/iblock/c2f/Prilozhenie-k-Godovomu-otchetu-za-2021-g.-_Bukhgalterskaya-otchetnost_.pdf",
+      "texts": [], "fields": [],
+      "rows": [
+        {"key": "1150", "values": ["1 383 225", "1 408 891", "1 435 242"]},
+        {"key": "1180", "values": ["48 873", "70 876", "76 393"]},
+        {"key": "1100", "values": ["1 434 493", "1 481 626", "1 513 250"]},
+        {"key": "1210", "values": ["74 428", "80 013", "78 095"]},
+        {"key": "1220", "values": ["169 507", "173 844", "177 746"]},
+        {"key": "1230", "values": ["270 894", "214 607", "183 433"]},
+        {"key": "1250", "values": ["48 981", "3 179", "16 736"]},
+        {"key": "1200", "values": ["574 118", "487 694", "472 041"]},
+        {"key": "1600", "values": ["2 008 611", "1 969 220", "1 985 291"]}
+      ]
+    },
+    {
+      "id": "rosseti-results", "file": "rosseti-report.pdf", "page": 7, "kind": "scanned_pdf_with_existing_ocr",
+      "source_url": "https://www.rosseti-yantar.ru/upload/iblock/c2f/Prilozhenie-k-Godovomu-otchetu-za-2021-g.-_Bukhgalterskaya-otchetnost_.pdf",
+      "texts": [], "fields": [],
+      "rows": [
+        {"key": "2110", "values": ["1 188 601", "890 207"]},
+        {"key": "2114", "values": ["214 526", "107 555"]},
+        {"key": "2117", "values": ["973 276", "781 992"]},
+        {"key": "2120", "values": ["(926 358)", "(793 526)"]},
+        {"key": "2100", "values": ["262 243", "96 681"]},
+        {"key": "2200", "values": ["205 960", "51 109"]},
+        {"key": "2320", "values": ["3 173", "2 746"]},
+        {"key": "2340", "values": ["41 276", "9 431"]},
+        {"key": "2350", "values": ["(46 404)", "(29 669)"]},
+        {"key": "2300", "values": ["204 005", "33 617"]},
+        {"key": "2410", "values": ["(46 056)", "(11 972)"]},
+        {"key": "2400", "values": ["157 713", "21 438"]}
+      ]
+    },
+    {
+      "id": "bank-text", "file": "hlynov-report.pdf", "page": 3, "kind": "image_only_scanned_pdf",
+      "source_url": "https://www.bank-hlynov.ru/files/aktsionery-i-investory/%D0%93%D0%BE%D0%B4%D0%BE%D0%B2%D0%BE%D0%B9_%D0%BE%D1%82%D1%87%D0%B5%D1%82_2014_1.pdf",
+      "texts": [{"name": "audit-scope", "roi": [0.12, 0.087, 0.965, 0.293], "max_cer": 0.05, "text": "ЗАКЛЮЧЕНИЕ О БУХГАЛТЕРСКОЙ ОТЧЕТНОСТИ Мы провели аудит прилагаемой бухгалтерской (финансовой) отчетности Коммерческого банка \"Хлынов\" (открытое акционерное общество), состоящей из: — бухгалтерского баланса (публикуемая форма) на 1 января 2015 года; — отчета о финансовых результатах (публикуемая форма) за 2014 год; — отчета об уровне достаточности капитала для покрытия рисков, величине резервов на покрытие сомнительных ссуд и иных активов (публикуемая форма) на 1 января 2015 года; — сведений об обязательных нормативах (публикуемая форма) на 1 января 2015 года; — отчета о движении денежных средств (публикуемая форма) за 2014 год; — пояснительной информации."}],
+      "rows": [], "fields": []
+    },
+    {
+      "id": "bank-assets", "file": "hlynov-report.pdf", "page": 5, "kind": "image_only_scanned_pdf",
+      "source_url": "https://www.bank-hlynov.ru/files/aktsionery-i-investory/%D0%93%D0%BE%D0%B4%D0%BE%D0%B2%D0%BE%D0%B9_%D0%BE%D1%82%D1%87%D0%B5%D1%82_2014_1.pdf",
+      "texts": [], "fields": [],
+      "rows": [
+        {"key": "1", "values": ["729 500", "767 044"]},
+        {"key": "2", "values": ["558 735", "619 692"]},
+        {"key": "2.1", "values": ["116 148", "109 607"]},
+        {"key": "3", "values": ["315 713", "957 943"]},
+        {"key": "4", "values": ["162 903", "1 776 241"]},
+        {"key": "5", "values": ["10 496 155", "9 750 880"]},
+        {"key": "6", "values": ["1 187 410", "102"]},
+        {"key": "7", "values": ["847 777", "79 540"]},
+        {"key": "10", "values": ["464 717", "378 820"]},
+        {"key": "11", "values": ["173 202", "138 702"]},
+        {"key": "12", "values": ["14 936 112", "14 468 964"]},
+        {"key": "15", "values": ["12 164 494", "11 961 087"]}
+      ]
+    },
+    {
+      "id": "bank-liabilities", "file": "hlynov-report.pdf", "page": 6, "kind": "image_only_scanned_pdf",
+      "source_url": "https://www.bank-hlynov.ru/files/aktsionery-i-investory/%D0%93%D0%BE%D0%B4%D0%BE%D0%B2%D0%BE%D0%B9_%D0%BE%D1%82%D1%87%D0%B5%D1%82_2014_1.pdf",
+      "texts": [], "fields": [],
+      "rows": [
+        {"key": "19", "values": ["16 886", "0"]},
+        {"key": "20", "values": ["20 991", "14 904"]},
+        {"key": "21", "values": ["46 791", "50 167"]},
+        {"key": "22", "values": ["12 743 073", "12 603 810"]},
+        {"key": "23", "values": ["605 000", "605 000"]},
+        {"key": "26", "values": ["90 750", "90 750"]},
+        {"key": "28", "values": ["67 542", "73 442"]},
+        {"key": "29", "values": ["1 096 405", "752 320"]},
+        {"key": "30", "values": ["333 342", "343 642"]},
+        {"key": "31", "values": ["2 193 039", "1 865 154"]},
+        {"key": "32", "values": ["1 002 519", "1 780 203"]},
+        {"key": "33", "values": ["1 196 591", "1 070 254"]},
+        {"key": "34", "values": ["0", "0"]}
+      ]
+    },
+    {
+      "id": "photo-certificate", "file": "doc-000003.jpg", "page": 1, "kind": "colour_camera_photo",
+      "source_url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000003.jpg",
+      "texts": [{"name": "unredacted-education-text", "roi": [0.525, 0.287, 0.98, 0.639], "max_cer": 0.10, "text": "в 2019 году окончил(а) Муниципальное бюджетное общеобразовательное учреждение \"Гимназия № 1\" города Бийска Алтайского края и получил(а) среднее общее образование"}],
+      "rows": [], "fields": []
+    },
+    {
+      "id": "photo-grades", "file": "doc-000017.jpg", "page": 1, "kind": "colour_camera_photo_table",
+      "source_url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000017.jpg",
+      "texts": [], "fields": [],
+      "rows": [
+        {"key": "Русский язык", "values": ["5 (отлично)"]},
+        {"key": "Литература", "values": ["4 (хорошо)"]},
+        {"key": "Иностранный язык (английский)", "values": ["5 (отлично)"]},
+        {"key": "Математика (алгебра)", "values": ["5 (отлично)"]},
+        {"key": "Математика (геометрия)", "values": ["5 (отлично)"]},
+        {"key": "Информатика и ИКТ", "values": ["5 (отлично)"]},
+        {"key": "История", "values": ["5 (отлично)"]},
+        {"key": "Обществознание (включая экономику и право)", "values": ["5 (отлично)"]},
+        {"key": "География", "values": ["5 (отлично)"]},
+        {"key": "Физика", "values": ["5 (отлично)"]},
+        {"key": "Химия", "values": ["5 (отлично)"]},
+        {"key": "Биология", "values": ["5 (отлично)"]},
+        {"key": "Искусство (Музыка и ИЗО)", "values": ["5 (отлично)"]},
+        {"key": "Технология", "values": ["5 (отлично)"]},
+        {"key": "Основы безопасности жизнедеятельности", "values": ["5 (отлично)"]},
+        {"key": "Физическая культура", "values": ["5 (отлично)"]}
+      ]
+    },
+    {
+      "id": "receipt-sugar", "file": "receipt-2.jpg", "page": 1, "kind": "binarized_camera_receipt",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0745_bin.jpg",
+      "texts": [{"name": "totals-block", "roi": [0.16, 0.627, 0.76, 0.699], "max_cer": 0.10, "text": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =170.97 БЕЗНАЛИЧНЫМИ =170.97 СУММА НДС 10% =15.64"}],
+      "rows": [],
+      "fields": [
+        {"name": "unit-price", "roi": [0.18, 0.443, 0.74, 0.477], "value": "56.99"},
+        {"name": "quantity", "roi": [0.18, 0.443, 0.74, 0.477], "value": "3"},
+        {"name": "item-sum", "roi": [0.18, 0.443, 0.74, 0.477], "value": "170.97"},
+        {"name": "total", "roi": [0.17, 0.627, 0.76, 0.656], "value": "170.97"},
+        {"name": "paid", "roi": [0.17, 0.656, 0.76, 0.677], "value": "170.97"},
+        {"name": "vat", "roi": [0.40, 0.677, 0.76, 0.699], "value": "15.64"}
+      ]
+    },
+    {
+      "id": "receipt-products", "file": "receipt-3.jpg", "page": 1, "kind": "binarized_camera_receipt",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0750_bin.jpg",
+      "texts": [{"name": "totals-block", "roi": [0.16, 0.58, 0.87, 0.658], "max_cer": 0.10, "text": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =464.00 НАЛИЧНЫМИ =464.00 СУММА НДС 10% =42.19"}],
+      "rows": [],
+      "fields": [
+        {"name": "unit-price-1", "roi": [0.18, 0.50, 0.84, 0.535], "value": "74.98"},
+        {"name": "unit-price-2", "roi": [0.18, 0.535, 0.84, 0.557], "value": "99.52"},
+        {"name": "unit-price-3", "roi": [0.18, 0.557, 0.84, 0.58], "value": "94.99"},
+        {"name": "total", "roi": [0.17, 0.58, 0.86, 0.61], "value": "464.00"},
+        {"name": "paid", "roi": [0.17, 0.61, 0.86, 0.635], "value": "464.00"},
+        {"name": "vat", "roi": [0.50, 0.63, 0.87, 0.658], "value": "42.19"}
+      ]
+    }
+  ]
+}

@@ -6,7 +6,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Type, get_args
+from typing import TYPE_CHECKING, Type, cast, get_args
 
 import numpy
 from docling_core.types.doc import BoundingBox, CoordOrigin
@@ -14,7 +14,7 @@ from docling_core.types.doc.page import TextCell
 from PIL import Image
 
 from docling.datamodel.accelerator_options import AcceleratorDevice, AcceleratorOptions
-from docling.datamodel.base_models import Page
+from docling.datamodel.base_models import InputFormat, Page
 from docling.datamodel.document import ConversionResult
 from docling.datamodel.pipeline_options import (
     OcrOptions,
@@ -38,6 +38,7 @@ from docling.utils.profiling import TimeRecorder
 from docling.utils.utils import download_url_with_progress, safe_version
 
 if TYPE_CHECKING:
+    from rapidocr import RapidOCR as _RapidOCRReader
     from rapidocr.utils.typings import EngineType, OCRVersion
 
 _log = logging.getLogger(__name__)
@@ -66,6 +67,19 @@ _ORIENTATION_MIN_LINES = 3
 
 # A line read by RapidOCR: its box as four corner points, its text and its score
 _OcrLine = tuple[list[list[float]], str, float]
+_RapidWord = tuple[str, float, list[list[float]] | None]
+_RapidWordLine = tuple[_RapidWord, ...] | _RapidWord
+
+
+@dataclass(frozen=True)
+class _OcrPrediction:
+    lines: list[_OcrLine]
+    line_words: list[list[_OcrLine]]
+
+    @property
+    def words(self) -> list[_OcrLine]:
+        return [word for group in self.line_words for word in group]
+
 
 # Canonical BCP-47 to PP-OCR recognizer codes. The PP-OCRv6 set comes from the
 # installed `rapidocr`; the v4/v5 sets below have no upstream equivalent to read,
@@ -505,6 +519,7 @@ class RapidOcrModel(BaseOcrModel):
             accelerator_options=accelerator_options,
         )
         self.options: RapidOcrOptions
+        self._multiscale_reader: _RapidOCRReader | None = None
 
         # multiplier for 72 dpi; the default 3.0 == 216 dpi.
         self.scale = self.options.scale
@@ -699,6 +714,13 @@ class RapidOcrModel(BaseOcrModel):
             self.reader = RapidOCR(
                 params=params,
             )
+            if self.options.use_multiscale:
+                # A small original scan needs the regular detector scale. The
+                # reduced second reading needs larger detection glyphs, while
+                # recognition still crops the original reduced image.
+                self._multiscale_reader = RapidOCR(
+                    params=params | {"Det.limit_side_len": 1536}
+                )
 
     def supported_ocr_languages(self) -> OcrLanguageSupport:
         return _ppocr_supported_languages(_rapidocr_vocabulary(self.options.backend))
@@ -788,19 +810,28 @@ class RapidOcrModel(BaseOcrModel):
             else:
                 with TimeRecorder(conv_res, "ocr"):
                     ocr_rects = self.get_ocr_rects(page)
+                    scale = (
+                        self.options.image_scale
+                        if conv_res.input.format == InputFormat.IMAGE
+                        and self.options.image_scale is not None
+                        else self.scale
+                    )
 
                     all_ocr_cells = []
+                    all_ocr_words = []
                     for ocr_rect in ocr_rects:
                         # Skip zero area boxes
                         if ocr_rect.area() == 0:
                             continue
                         high_res_image = page._backend.get_page_image(
-                            scale=self.scale, cropbox=ocr_rect
+                            scale=scale, cropbox=ocr_rect
                         )
                         result = self._read(high_res_image)
                         if result is None:
                             _log.warning("RapidOCR returned empty result!")
                             continue
+                        if self.options.use_multiscale:
+                            result = self._read_multiscale(high_res_image, result)
                         orientation, im_size = 0, high_res_image.size
                         if self.options.detect_orientation:
                             result, orientation, im_size = self._read_upright(
@@ -809,38 +840,33 @@ class RapidOcrModel(BaseOcrModel):
 
                         del high_res_image
 
-                        if result is not None:
-                            cells = [
-                                TextCell(
-                                    index=ix,
-                                    text=line[1],
-                                    orig=line[1],
-                                    confidence=line[2],
-                                    from_ocr=True,
-                                    rect=ocr_box_to_bounding_rectangle(
-                                        # Corners 0 and 2 of RapidOCR's quadrilateral
-                                        # span the line box
-                                        BoundingBox.from_tuple(
-                                            coord=(
-                                                line[0][0][0],
-                                                line[0][0][1],
-                                                line[0][2][0],
-                                                line[0][2][1],
-                                            ),
-                                            origin=CoordOrigin.TOPLEFT,
-                                        ),
-                                        original_offset=ocr_rect,
-                                        scale=self.scale,
-                                        orientation=orientation,
-                                        im_size=im_size,
-                                    ),
-                                )
-                                for ix, line in enumerate(result)
-                            ]
-                            all_ocr_cells.extend(cells)
+                        all_ocr_cells.extend(
+                            self._to_cells(
+                                result.lines, ocr_rect, orientation, im_size, scale
+                            )
+                        )
+                        all_ocr_words.extend(
+                            self._to_cells(
+                                result.words, ocr_rect, orientation, im_size, scale
+                            )
+                        )
 
                     # Post-process the cells
                     self.post_process_cells(all_ocr_cells, page, conv_res)
+                    if self.options.use_word_boxes:
+                        assert page.parsed_page is not None
+                        # Do not share a last-result cache: one engine may serve
+                        # concurrent conversions. Keep words with this page only.
+                        words = [
+                            cell
+                            for cell in page.parsed_page.word_cells
+                            if not cell.from_ocr
+                        ]
+                        words.extend(all_ocr_words)
+                        for index, word in enumerate(words):
+                            word.index = index
+                        page.parsed_page.word_cells = words
+                        page.parsed_page.has_words = bool(words)
 
                 # DEBUG code:
                 if settings.debug.visualize_ocr:
@@ -848,20 +874,252 @@ class RapidOcrModel(BaseOcrModel):
 
                 yield page
 
-    def _read(self, image: Image.Image) -> list[_OcrLine] | None:
-        result = self.reader(
+    def _to_cells(
+        self,
+        observations: list[_OcrLine],
+        offset: BoundingBox,
+        orientation: int,
+        image_size: tuple[int, int],
+        scale: float,
+    ) -> list[TextCell]:
+        return [
+            TextCell(
+                index=index,
+                text=text,
+                orig=text,
+                confidence=score,
+                from_ocr=True,
+                rect=ocr_box_to_bounding_rectangle(
+                    BoundingBox.from_tuple(
+                        coord=(
+                            min(point[0] for point in box),
+                            min(point[1] for point in box),
+                            max(point[0] for point in box),
+                            max(point[1] for point in box),
+                        ),
+                        origin=CoordOrigin.TOPLEFT,
+                    ),
+                    original_offset=offset,
+                    scale=scale,
+                    orientation=orientation,
+                    im_size=image_size,
+                ),
+            )
+            for index, (box, text, score) in enumerate(observations)
+        ]
+
+    def _read(
+        self, image: Image.Image, *, reader: "_RapidOCRReader | None" = None
+    ) -> _OcrPrediction | None:
+        from rapidocr.utils.output import RapidOCROutput
+
+        selected_reader = self.reader if reader is None else reader
+        result = selected_reader(
             numpy.asarray(image),
             use_det=self.options.use_det,
             use_cls=self.options.use_cls,
             use_rec=self.options.use_rec,
+            return_word_box=self.options.use_word_boxes,
         )
-        if result is None or result.boxes is None:
+        if (
+            not isinstance(result, RapidOCROutput)
+            or result.boxes is None
+            or result.txts is None
+            or result.scores is None
+        ):
             return None
-        return list(zip(result.boxes.tolist(), result.txts, result.scores))
+        lines = list(zip(result.boxes.tolist(), result.txts, result.scores))
+        line_words: list[list[_OcrLine]] = [[] for _ in lines]
+        # RapidOCR 3.10 annotates word_results as a flat triple, but returns
+        # one group of triples per line (or a flat empty-output sentinel).
+        word_results = cast("tuple[_RapidWordLine, ...]", result.word_results)
+        if self.options.use_word_boxes and len(word_results) == len(lines):
+            for index, (line, word_line) in enumerate(zip(lines, word_results)):
+                # RapidOCR's empty-output sentinel is a flat triple. It has no
+                # word coordinates; leave that line available as a fallback.
+                if (
+                    line[2] < self.options.text_score
+                    or not word_line
+                    or isinstance(word_line[0], str)
+                ):
+                    continue
+                complete_words = [
+                    (numpy.asarray(box).tolist(), text, float(score))
+                    for text, score, box in cast("tuple[_RapidWord, ...]", word_line)
+                    if box is not None
+                ]
+                # Partial word output must not replace a complete table line.
+                if "".join(
+                    "".join(word[1].split()) for word in complete_words
+                ) == "".join(line[1].split()):
+                    line_words[index] = complete_words
+        return _OcrPrediction(lines=lines, line_words=line_words)
+
+    def _read_multiscale(
+        self, image: Image.Image, prediction: _OcrPrediction
+    ) -> _OcrPrediction:
+        ratio = 1536 / max(image.size)
+        if ratio >= 0.9:
+            return self._order_and_join(
+                list(zip(prediction.lines, prediction.line_words))
+            )
+        reduced = image.resize(
+            (max(1, round(image.width * ratio)), max(1, round(image.height * ratio))),
+            Image.Resampling.LANCZOS,
+        )
+        alternative = self._read(reduced, reader=self._multiscale_reader)
+        if alternative is None:
+            return prediction
+        sx, sy = image.width / reduced.width, image.height / reduced.height
+
+        def rescale(observation: _OcrLine) -> _OcrLine:
+            box, text, score = observation
+            return [[x * sx, y * sy] for x, y in box], text, score
+
+        selected = list(zip(prediction.lines, prediction.line_words))
+        for candidate, words in zip(alternative.lines, alternative.line_words):
+            candidate = rescale(candidate)
+            if candidate[2] < 0.8:
+                continue
+            conflicts = [
+                index
+                for index, (line, _) in enumerate(selected)
+                if self._same_text_region(candidate, line)
+            ]
+            if conflicts:
+                previous = [selected[index][0] for index in conflicts]
+                previous_chars = sum(len("".join(line[1].split())) for line in previous)
+                candidate_chars = len("".join(candidate[1].split()))
+                previous_quality = sum(
+                    len("".join(line[1].split())) * line[2] for line in previous
+                )
+                better = candidate_chars * candidate[2] > previous_quality * 1.05
+                better_confidence = (
+                    candidate[2] >= max(line[2] for line in previous) + 0.1
+                    and candidate_chars >= 0.85 * previous_chars
+                )
+                if not (better or better_confidence):
+                    continue
+                selected = [
+                    item
+                    for index, item in enumerate(selected)
+                    if index not in conflicts
+                ]
+            selected.append((candidate, [rescale(word) for word in words]))
+        return self._order_and_join(selected)
+
+    @classmethod
+    def _order_and_join(
+        cls, selected: list[tuple[_OcrLine, list[_OcrLine]]]
+    ) -> _OcrPrediction:
+        rows: list[list[tuple[_OcrLine, list[_OcrLine]]]] = []
+        for item in sorted(selected, key=lambda item: cls._line_bbox(item[0]).t):
+            box = cls._line_bbox(item[0])
+            for row in rows:
+                if all(
+                    cls._same_printed_row(box, cls._line_bbox(other[0]))
+                    for other in row
+                ):
+                    row.append(item)
+                    break
+            else:
+                rows.append([item])
+        ordered: list[tuple[_OcrLine, list[_OcrLine]]] = []
+        for row in rows:
+            row_start = len(ordered)
+            for line, words in sorted(row, key=lambda item: cls._line_bbox(item[0]).l):
+                if len(ordered) > row_start:
+                    previous, previous_words = ordered[-1]
+                    box, previous_box = cls._line_bbox(line), cls._line_bbox(previous)
+                    if cls._same_printed_row(
+                        box, previous_box
+                    ) and box.l - previous_box.r <= 0.5 * min(
+                        box.height, previous_box.height
+                    ):
+                        left, top = (
+                            min(box.l, previous_box.l),
+                            min(box.t, previous_box.t),
+                        )
+                        right, bottom = (
+                            max(box.r, previous_box.r),
+                            max(box.b, previous_box.b),
+                        )
+                        text = f"{previous[1].strip()} {line[1].strip()}"
+                        score = (
+                            len(previous[1]) * previous[2] + len(line[1]) * line[2]
+                        ) / max(1, len(previous[1]) + len(line[1]))
+                        ordered[-1] = (
+                            (
+                                [
+                                    [left, top],
+                                    [right, top],
+                                    [right, bottom],
+                                    [left, bottom],
+                                ],
+                                text,
+                                score,
+                            ),
+                            (previous_words or [previous]) + (words or [line]),
+                        )
+                        continue
+                ordered.append((line, words))
+        return _OcrPrediction(
+            [line for line, _ in ordered], [words for _, words in ordered]
+        )
+
+    @staticmethod
+    def _same_printed_row(first: BoundingBox, second: BoundingBox) -> bool:
+        overlap_x = min(first.r, second.r) - max(first.l, second.l)
+        overlap_y = min(first.b, second.b) - max(first.t, second.t)
+        return overlap_y >= 0.5 * min(
+            first.height, second.height
+        ) and overlap_x <= 0.1 * min(first.width, second.width)
+
+    @staticmethod
+    def _line_bbox(line: _OcrLine) -> BoundingBox:
+        return BoundingBox(
+            l=min(point[0] for point in line[0]),
+            t=min(point[1] for point in line[0]),
+            r=max(point[0] for point in line[0]),
+            b=max(point[1] for point in line[0]),
+        )
+
+    @staticmethod
+    def _line_band(line: _OcrLine, x: float) -> tuple[float, float]:
+        # Compare the text baselines at the same x coordinate. Axis-aligned
+        # envelopes of long tilted lines also cover neighbouring printed rows.
+        points = line[0]
+        left_x = (points[0][0] + points[3][0]) / 2
+        right_x = (points[1][0] + points[2][0]) / 2
+        left_y = (points[0][1] + points[3][1]) / 2
+        right_y = (points[1][1] + points[2][1]) / 2
+        if abs(right_x - left_x) < 1e-6:
+            return (left_y + right_y) / 2, abs(right_y - left_y)
+        center = left_y + (x - left_x) * (right_y - left_y) / (right_x - left_x)
+        height = (
+            abs(points[3][1] - points[0][1]) + abs(points[2][1] - points[1][1])
+        ) / 2
+        return center, height
+
+    @classmethod
+    def _same_text_region(cls, first_line: _OcrLine, second_line: _OcrLine) -> bool:
+        first, second = cls._line_bbox(first_line), cls._line_bbox(second_line)
+        overlap_x = min(first.r, second.r) - max(first.l, second.l)
+        if overlap_x <= 0.5 * min(first.width, second.width):
+            return False
+        x = (max(first.l, second.l) + min(first.r, second.r)) / 2
+        first_y, first_height = cls._line_band(first_line, x)
+        second_y, second_height = cls._line_band(second_line, x)
+        height = min(first_height, second_height)
+        return (
+            height > 0
+            and max(first_height, second_height) <= 2 * height
+            and abs(first_y - second_y) <= 0.5 * height
+        )
 
     def _read_upright(
-        self, image: Image.Image, lines: list[_OcrLine]
-    ) -> tuple[list[_OcrLine], int, tuple[int, int]]:
+        self, image: Image.Image, prediction: _OcrPrediction
+    ) -> tuple[_OcrPrediction, int, tuple[int, int]]:
         """Read a poorly read region again at the other orientations.
 
         Keeps the first orientation that reads well with at least twice the confidently
@@ -870,21 +1128,39 @@ class RapidOcrModel(BaseOcrModel):
         as in the Tesseract engines) and the size of the image they were read on.
         """
         orientation, im_size = 0, image.size
-        if len(lines) >= _ORIENTATION_MIN_LINES and not _reads_well(lines):
-            needed = 2 * _confident_chars(lines)
+        if len(prediction.lines) >= _ORIENTATION_MIN_LINES and not _reads_well(
+            prediction.lines
+        ):
+            needed = 2 * _confident_chars(prediction.lines)
             # RapidOCR turns tall line crops a quarter turn counter-clockwise, so it
             # reads a region turned counter-clockwise upside down: try that fix first.
             for turn in (90, 180, 270):
                 turned = image.rotate(-turn, expand=True)
-                turned_lines = self._read(turned) or []
+                turned_prediction = self._read(turned)
+                turned_lines = (
+                    turned_prediction.lines if turned_prediction is not None else []
+                )
                 if (
                     _reads_well(turned_lines)
                     and _confident_chars(turned_lines) >= needed
                 ):
-                    lines, orientation, im_size = turned_lines, turn, turned.size
+                    assert turned_prediction is not None
+                    prediction, orientation, im_size = (
+                        turned_prediction,
+                        turn,
+                        turned.size,
+                    )
                     break
-        lines = [line for line in lines if line[2] >= self.options.text_score]
-        return lines, orientation, im_size
+        kept = [
+            (line, words)
+            for line, words in zip(prediction.lines, prediction.line_words)
+            if line[2] >= self.options.text_score
+        ]
+        return (
+            _OcrPrediction([line for line, _ in kept], [words for _, words in kept]),
+            orientation,
+            im_size,
+        )
 
     @classmethod
     def get_options_type(cls) -> Type[OcrOptions]:

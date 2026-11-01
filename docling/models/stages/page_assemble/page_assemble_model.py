@@ -18,6 +18,7 @@ from docling.datamodel.base_models import (
     FieldRegionElement,
     FigureElement,
     FormFieldPrediction,
+    InputFormat,
     Page,
     PageElement,
     Table,
@@ -32,6 +33,7 @@ from docling.models.base_layout_model import (
     TEXT_ELEM_LABELS,
 )
 from docling.models.base_model import BasePageModel
+from docling.utils.ocr_table_grid import table_from_aligned_ocr
 from docling.utils.profiling import TimeRecorder
 from docling.utils.text_normalization import (
     cell_text_lines,
@@ -42,7 +44,7 @@ _log = logging.getLogger(__name__)
 
 
 class PageAssembleOptions(BaseModel):
-    pass
+    recover_ocr_tables: bool = False
 
 
 class PageAssembleModel(BasePageModel):
@@ -140,6 +142,143 @@ class PageAssembleModel(BasePageModel):
         sanitized_text = normalize_extracted_text(sanitized_text)
 
         return sanitized_text.strip()  # Strip any leading or trailing whitespace
+
+    def _recover_picture_only_ocr(
+        self, elements: list[PageElement], page: Page, *, image_input: bool = False
+    ) -> list[PageElement]:
+        """Expose OCR paragraphs when a photographed page is labelled a picture.
+
+        Keep ordinary figure labels inside their picture. This fallback applies
+        only when a page has almost no readable body text or populated table
+        and the picture children contain actual OCR output. A short date or
+        scanner mark outside a full-page picture must not hide the document.
+        """
+        if not image_input and any(
+            isinstance(element, Table)
+            and any(cell.text.strip() for cell in element.table_cells)
+            for element in elements
+        ):
+            return elements
+        body_characters = sum(
+            len(element.text.strip())
+            for element in elements
+            if isinstance(element, TextElement)
+            and element.label not in PAGE_HEADER_LABELS
+        )
+        recovered: list[PageElement] = []
+        for element in elements:
+            if not isinstance(element, FigureElement):
+                recovered.append(element)
+                continue
+            text_children = [
+                child
+                for child in element.cluster.children
+                if child.label in TEXT_ELEM_LABELS
+                and any(cell.from_ocr and cell.text.strip() for cell in child.cells)
+            ]
+            if not text_children:
+                recovered.append(element)
+                continue
+            picture_characters = sum(
+                len(cell.text.strip())
+                for child in text_children
+                for cell in child.cells
+            )
+            if (
+                body_characters
+                and not image_input
+                and (
+                    page.size is None
+                    or element.cluster.bbox.area()
+                    < 0.75 * page.size.width * page.size.height
+                    or picture_characters < 5 * body_characters
+                )
+            ):
+                recovered.append(element)
+                continue
+            promoted_ids = {child.id for child in text_children}
+            picture_cluster = element.cluster.model_copy(
+                update={
+                    "children": [
+                        child
+                        for child in element.cluster.children
+                        if child.id not in promoted_ids
+                    ]
+                }
+            )
+            recovered.append(element.model_copy(update={"cluster": picture_cluster}))
+            recovered.extend(
+                TextElement(
+                    label=child.label,
+                    id=child.id,
+                    text=self.sanitize_text(cell_text_lines(child.cells)),
+                    hyperlink=self._match_hyperlink(child.bbox, page),
+                    page_no=page.page_no,
+                    cluster=child,
+                )
+                for child in text_children
+            )
+        return recovered
+
+    def _recover_ocr_table(
+        self, elements: list[PageElement], page: Page
+    ) -> list[PageElement]:
+        if page.parsed_page is None or any(
+            isinstance(element, Table) for element in elements
+        ):
+            return elements
+        if sum(cell.from_ocr for cell in page.parsed_page.textline_cells) < 16:
+            return elements
+        if not any(word.from_ocr for word in page.parsed_page.word_cells):
+            return elements
+        cluster_ids = (
+            [cluster.id for cluster in page.predictions.layout.clusters]
+            if page.predictions.layout is not None
+            else []
+        )
+        cluster_ids.extend(
+            child.id for element in elements for child in element.cluster.children
+        )
+        image = page.get_image(scale=2)
+        if image is None:
+            return elements
+        recovered = table_from_aligned_ocr(
+            image,
+            page.parsed_page.textline_cells,
+            page_no=page.page_no,
+            cluster_id=max(
+                [element.id for element in elements] + cluster_ids, default=-1
+            )
+            + 1,
+            scale=2,
+        )
+        if recovered is None:
+            return elements
+        result: list[PageElement] = []
+        for element in elements:
+            if not isinstance(element, TextElement):
+                result.append(element)
+                continue
+            cells = [
+                cell
+                for cell in element.cluster.cells
+                if cell.index not in recovered.cell_indices
+            ]
+            if len(cells) == len(element.cluster.cells):
+                result.append(element)
+            elif cells:
+                result.append(
+                    element.model_copy(
+                        update={
+                            "cluster": element.cluster.model_copy(
+                                update={"cells": cells}
+                            ),
+                            "text": self.sanitize_text(cell_text_lines(cells)),
+                        }
+                    )
+                )
+        result.append(recovered.table)
+        return result
 
     def __call__(
         self, conv_res: ConversionResult, page_batch: Iterable[Page]
@@ -239,6 +378,23 @@ class PageAssembleModel(BasePageModel):
                             elements.append(container_el)
                             body.append(container_el)
 
+                    elements = self._recover_picture_only_ocr(
+                        elements,
+                        page,
+                        image_input=conv_res.input.format == InputFormat.IMAGE,
+                    )
+                    if self.options.recover_ocr_tables:
+                        elements = self._recover_ocr_table(elements, page)
+                    headers = [
+                        element
+                        for element in elements
+                        if element.label in PAGE_HEADER_LABELS
+                    ]
+                    body = [
+                        element
+                        for element in elements
+                        if element.label not in PAGE_HEADER_LABELS
+                    ]
                     page.assembled = AssembledUnit(
                         elements=elements, headers=headers, body=body
                     )

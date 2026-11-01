@@ -57,6 +57,7 @@ from docling.datamodel.document import ConversionResult
 from docling.datamodel.pipeline_options import (
     KserveV2OcrOptions,
     LayoutPostprocessorOptions,
+    TableStructureOptions,
     ThreadedPdfPipelineOptions,
 )
 from docling.datamodel.settings import settings
@@ -687,7 +688,18 @@ class StandardPdfPipeline(ConvertPipeline):
             accelerator_options=self.pipeline_options.accelerator_options,
             enable_remote_services=self.pipeline_options.enable_remote_services,
         )
-        self.assemble_model = PageAssembleModel(options=PageAssembleOptions())
+        self.assemble_model = PageAssembleModel(
+            options=PageAssembleOptions(
+                recover_ocr_tables=(
+                    self.pipeline_options.do_table_structure
+                    and isinstance(
+                        self.pipeline_options.table_structure_options,
+                        TableStructureOptions,
+                    )
+                    and self.pipeline_options.table_structure_options.prefer_ocr_grid
+                )
+            )
+        )
         self.reading_order_model = ReadingOrderModel(
             options=ReadingOrderOptions(
                 use_page_separators=self.pipeline_options.use_reading_order_separators

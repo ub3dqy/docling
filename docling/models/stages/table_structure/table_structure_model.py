@@ -29,6 +29,7 @@ from docling.datamodel.spatial import BoundingBoxSpatialIndex
 from docling.models.base_table_model import BaseTableStructureModel
 from docling.models.utils.hf_model_download import download_hf_model
 from docling.utils.accelerator_utils import decide_device
+from docling.utils.ocr_table_grid import table_from_ocr_grid
 from docling.utils.profiling import TimeRecorder
 from docling.utils.text_normalization import normalize_extracted_text
 
@@ -260,10 +261,12 @@ class TableStructureModel(BaseTableStructureModel):
                     predictions.append(table_prediction)
                     continue
 
+                image = page.get_image(scale=self.scale)
+                assert image is not None
                 page_input = {
                     "width": page.size.width * self.scale,
                     "height": page.size.height * self.scale,
-                    "image": numpy.asarray(page.get_image(scale=self.scale)),
+                    "image": numpy.asarray(image),
                 }
 
                 # Resolved once per page: the segmented page is the same for
@@ -307,6 +310,23 @@ class TableStructureModel(BaseTableStructureModel):
                                 }
                             )
                     page_input["tokens"] = tokens
+
+                    if (
+                        self.do_cell_matching
+                        and self.options.prefer_ocr_grid
+                        and sp is not None
+                        and any(word.from_ocr for word in sp.word_cells)
+                    ):
+                        grid_table = table_from_ocr_grid(
+                            image,
+                            table_cluster,
+                            list(tcells),
+                            page_no=page.page_no,
+                            scale=self.scale,
+                        )
+                        if grid_table is not None:
+                            table_prediction.table_map[table_cluster.id] = grid_table
+                            continue
 
                     tf_output = self.tf_predictor.multi_table_predict(
                         page_input, [tbl_box], do_matching=self.do_cell_matching

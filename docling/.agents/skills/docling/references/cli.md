@@ -149,11 +149,22 @@ docling photo.jpg --ocr-profile ru --artifacts-path model_artifacts/ru --device 
 ```
 
 `ru` selects RapidOCR, ONNX Runtime, `iso:ru` (the PP-OCRv5 `eslav` recognizer),
-full-page OCR and scale 2.0 (144 DPI). It also handles Latin text, as checked in
+full-page OCR at 300 DPI for PDFs and 144 DPI for images, word coordinates, and
+a second reading at 1536 pixels. Close fragments are joined in printed order.
+Printed table rules can restore rows that the structure model merged. Image
+inputs expose OCR text even if the layout model put it inside a picture.
+It also handles Latin text, as checked in
 the synthetic mixed-language scan. Do not add a second RapidOCR language: one
 recognizer serves each run. Explicit engine, language, mode and `--ocr-option`
 settings override the profile defaults. The profile applies to local standard
 and legacy PDF/image pipelines; it is not a remote-service setting.
+
+`scale` controls PDF rendering; `image_scale` controls image rendering.
+Use `--ocr-option use_multiscale=false` to disable the second reading, or
+`--table-structure-option prefer_ocr_grid=false` to disable rule-based table
+recovery. `--no-tables` also disables recovery of overlooked OCR tables.
+These controls do not guarantee correct amounts. See the frozen real-document
+qualification in `tests/data/russian_ocr_real` and `scripts/qualify_real_russian_ocr.py`.
 
 Full-page OCR also replaces an existing PDF text layer. For text PDFs, add
 `--ocr-mode default` to retain the normal text-layer handling. With no profile,

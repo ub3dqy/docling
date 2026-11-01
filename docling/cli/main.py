@@ -1751,6 +1751,11 @@ def convert(  # noqa: C901
             if ocr_engine == profile_options.kind:
                 ocr_kwargs["backend"] = profile_options.backend
                 ocr_kwargs["scale"] = profile_options.scale
+                ocr_kwargs["use_word_boxes"] = profile_options.use_word_boxes
+                ocr_kwargs["use_multiscale"] = profile_options.use_multiscale
+                ocr_kwargs["image_scale"] = profile_options.image_scale
+                ocr_kwargs["text_score"] = profile_options.text_score
+                ocr_kwargs["rapidocr_params"] = profile_options.rapidocr_params
         ocr_flag_names = {
             "mode": "--ocr-mode",
             "lang": "--ocr-lang",

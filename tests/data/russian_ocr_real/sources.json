@@ -1,0 +1,35 @@
+{
+  "reference_sha256": "db1c672c5ba070155209738d6169f0967eadc5ec287b6649831fc4e6dee3f07e",
+  "files": {
+    "rosseti-report.pdf": {
+      "sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+      "bytes": 2840734,
+      "url": "https://www.rosseti-yantar.ru/upload/iblock/c2f/Prilozhenie-k-Godovomu-otchetu-za-2021-g.-_Bukhgalterskaya-otchetnost_.pdf"
+    },
+    "hlynov-report.pdf": {
+      "sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+      "bytes": 12438585,
+      "url": "https://www.bank-hlynov.ru/files/aktsionery-i-investory/%D0%93%D0%BE%D0%B4%D0%BE%D0%B2%D0%BE%D0%B9_%D0%BE%D1%82%D1%87%D0%B5%D1%82_2014_1.pdf"
+    },
+    "doc-000003.jpg": {
+      "sha256": "288a0b476aeea3512e835555b65e53c39498834b22ccb878f3260d3acde0611f",
+      "bytes": 487396,
+      "url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000003.jpg"
+    },
+    "doc-000017.jpg": {
+      "sha256": "4213813a40408691d8cd8b5740e50a18b99647cb55baa84bd6c8e2db7256aab7",
+      "bytes": 404356,
+      "url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000017.jpg"
+    },
+    "receipt-2.jpg": {
+      "sha256": "f737a502e69e8d854663513c946402b8851fb54c788a738fd840370bfce1e9ad",
+      "bytes": 927024,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0745_bin.jpg"
+    },
+    "receipt-3.jpg": {
+      "sha256": "de94c9a76d7e5bfd904ab312022755cc9f5a07728df623a89093e21a47c6ce20",
+      "bytes": 802815,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0750_bin.jpg"
+    }
+  }
+}
