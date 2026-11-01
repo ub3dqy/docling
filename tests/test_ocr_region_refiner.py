@@ -19,6 +19,7 @@ from docling.models.stages.ocr.ocr_region_refiner import (
     clean_region,
     compatible_text_reading,
     normalize_mixed_script,
+    photo_contrast,
     printed_dash,
     printed_decimal,
     punctuation_line_crop,
@@ -440,6 +441,17 @@ def test_a_printed_dash_is_not_a_decimal_dot_or_an_empty_field():
     image = Image.new("L", (100, 40), 255)
     ImageDraw.Draw(image).rectangle((48, 18, 50, 20), fill=0)
     assert not printed_dash(np.asarray(image))
+
+
+@pytest.mark.parametrize("mark", ["dash", "dot", "empty"])
+def test_photo_contrast_exposes_faint_ink_without_turning_a_dot_into_a_dash(mark):
+    image = Image.new("L", (90, 32), 150)
+    draw = ImageDraw.Draw(image)
+    if mark == "dash":
+        draw.rectangle((35, 15, 47, 17), fill=120)
+    elif mark == "dot":
+        draw.rectangle((41, 15, 43, 17), fill=120)
+    assert printed_dash(photo_contrast(np.asarray(image))) == (mark == "dash")
 
 
 def test_a_minus_cannot_pass_the_two_bar_equals_check():

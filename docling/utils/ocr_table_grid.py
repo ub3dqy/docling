@@ -16,6 +16,7 @@ from docling_core.types.doc.page import TextCell
 from PIL import Image
 
 from docling.datamodel.base_models import Cluster, Table
+from docling.utils.ocr_photo_grid import table_from_photo_grid
 from docling.utils.ocr_table_orientation import label_first_rows, sideways_grid_views
 
 
@@ -76,6 +77,12 @@ def table_from_ocr_grid(
             return view.restore(table, cluster)
         # Do not silently materialize a sideways table as a transposed grid.
         return None
+    if adaptive_thresholds:
+        photographed = table_from_photo_grid(
+            image, cluster, words, page_no=page_no, scale=scale
+        )
+        if photographed is not None:
+            return photographed
     return _table_from_ocr_grid(
         image,
         cluster,

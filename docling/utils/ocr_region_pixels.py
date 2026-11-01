@@ -224,3 +224,59 @@ def printed_dash(gray: np.ndarray) -> bool:
         supported += 1
         strong = strong or bool(dash[2] >= 1.4 * dash[3])
     return supported >= 2 and strong
+
+
+def photo_contrast(gray: np.ndarray) -> np.ndarray:
+    """Expose faint photographic ink while retaining its source shape."""
+    import cv2
+
+    kernel = max(3, min(31, gray.shape[0] // 2) | 1)
+    background = cv2.morphologyEx(
+        gray, cv2.MORPH_CLOSE, np.ones((kernel, kernel), np.uint8)
+    )
+    difference = np.maximum(background.astype(np.float32) - gray, 0)
+    maximum = float(difference.max())
+    if maximum < 20:
+        return gray
+    return np.clip(255 - difference * 255 / maximum, 0, 255).astype(np.uint8)
+
+
+def two_bar_marker(gray: np.ndarray) -> bool:
+    if gray.size == 0 or gray.shape[1] < 2:
+        return False
+    ink = gray < 128
+    return any(_two_bar_shape(ink, coverage) for coverage in (0.4, 0.55, 0.65))
+
+
+def _two_bar_shape(ink: np.ndarray, coverage: float) -> bool:
+    # Tesseract can include unrelated horizontal padding inside a glyph box.
+    occupied = ink.sum(axis=1) >= max(2, ink.shape[1] * coverage)
+    bands: list[tuple[int, int]] = []
+    for index, value in enumerate(occupied):
+        if value:
+            if bands and bands[-1][1] == index:
+                bands[-1] = (bands[-1][0], index + 1)
+            else:
+                bands.append((index, index + 1))
+    groups: list[list[tuple[int, int]]] = []
+    for band in bands:
+        if groups and band[0] - groups[-1][-1][1] <= max(
+            2, 1.5 * max(band[1] - band[0], groups[-1][-1][1] - groups[-1][-1][0])
+        ):
+            groups[-1].append(band)
+        else:
+            groups.append([band])
+    # A fragment above the current line must not become a second minus bar.
+    if not groups or len(groups[-1]) != 2 or groups[-1][-1][1] < ink.shape[0] * 0.8:
+        return False
+    first, second = groups[-1]
+    heights = (first[1] - first[0], second[1] - second[0])
+    if max(heights) > 2 * min(heights):
+        return False
+    first_ink = ink[first[0] : first[1]].mean(axis=0) >= 0.5
+    second_ink = ink[second[0] : second[1]].mean(axis=0) >= 0.5
+    if min(first_ink.sum(), second_ink.sum()) < max(2, ink.shape[1] * 0.3):
+        return False
+    return bool(
+        (first_ink & second_ink).sum() >= 0.75 * min(first_ink.sum(), second_ink.sum())
+    )

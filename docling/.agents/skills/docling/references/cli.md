@@ -195,6 +195,16 @@ Open label columns need repeated printed rules and real labels. Numeric grid
 cells receive a missing dash only when its pixels support that sign.
 
 Use `--ocr-option use_region_refinement=false` to disable crop refinement.
+Small photographed grids use their printed rules to correct slight skew before
+matching words to cells. Small cell crops use a larger, bounded image canvas.
+Word crops can retain clipped endings within the printed cell. Two raster scales
+can provide alternate readings; an already readable label needs independent
+support before a word crop replaces it.
+Mixed receipt tokens can be separated at a visible decimal dot. A disputed digit
+needs an actual full-amount reading and two matching digit exemplars from the
+same source amount; arithmetic cannot supply a replacement. Overlapping word
+boxes must not duplicate a price digit in the assembled line. Damaged fiscal
+captions are read separately, with model agreement for Latin/Cyrillic lookalikes.
 Refinement never uses benchmark references. For the real-document qualification,
 `--use-source-review` applies a documented source transcription correction and
 retains the original reference scores alongside the reviewed scores.

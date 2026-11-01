@@ -282,3 +282,17 @@ def test_light_word_added_by_a_detector_gets_its_complete_source_region(
     assert model._line_bbox(result.lines[index]).r == (220 if expanded else 100)
     # Expanding the crop must not inject the weaker detector's proposed text.
     assert result.line_words[index][0][1] == "POCCX"
+
+
+def test_overlapping_character_does_not_duplicate_a_price_in_the_joined_line() -> None:
+    price = (_box(20, 20, 100, 50), "87.99", 0.96)
+    duplicate = (_box(88, 21, 99, 49), "9", 0.7)
+    quantity = (_box(125, 20, 200, 50), "2=175.98", 0.95)
+    line = (_box(20, 20, 200, 50), "87.99 92=175.98", 0.9)
+    result = RapidOcrModel._order_and_join([(line, [price, duplicate, quantity])])
+    assert result.lines[0][1] == "87.99 2=175.98"
+    assert [word[1] for word in result.words] == ["87.99", "2=175.98"]
+    # An adjacent quantity uses separate pixels and must remain present.
+    separate = (_box(104, 20, 119, 50), "9", 0.7)
+    result = RapidOcrModel._order_and_join([(line, [price, separate, quantity])])
+    assert [word[1] for word in result.words] == ["87.99", "9", "2=175.98"]

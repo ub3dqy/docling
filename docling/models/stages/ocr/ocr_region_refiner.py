@@ -37,8 +37,10 @@ from docling.utils.ocr_receipt_rows import (
 from docling.utils.ocr_region_pixels import (
     clean_region,
     light_on_dark,
+    photo_contrast,
     printed_dash,
     trim_light_text,
+    two_bar_marker,
 )
 
 if TYPE_CHECKING:
@@ -84,7 +86,25 @@ def supports_photo_label(
 ) -> bool:
     """Permit observed Cyrillic letters in a damaged short table label."""
     text = normalize_mixed_script(reading.text).strip()
-    if (
+    source_label = re.sub(r"^\d{1,3}[.)]?\s*", "", original).strip()
+    candidate_label = re.sub(r"^\d{1,3}[.)]?\s*", "", text).strip()
+    candidate_words = _WORDS.findall(candidate_label)
+    source_ordinal = re.match(r"^\d{1,3}[.)]?", original)
+    candidate_ordinal = re.match(r"^\d{1,3}[.)]?", text)
+    complete_label = (
+        sum(char.isalpha() for char in source_label) >= 1
+        and (source_ordinal is None) == (candidate_ordinal is None)
+        and (
+            not any(char.isdigit() for char in source_label)
+            or (source_label.isalnum() and len(source_label) <= 3)
+        )
+        and candidate_words
+        and all(known(word) for word in candidate_words)
+        and not any(char.isdigit() for char in candidate_label)
+        and re.search(r"[A-Za-z]", candidate_label) is None
+        and len(candidate_label) <= 4 * max(2, len(source_label))
+    )
+    if not complete_label and (
         not original.isalnum()
         or not any(char.isdigit() for char in original)
         or (original.isdigit() and len(original) > 3)
@@ -102,7 +122,9 @@ def supports_photo_label(
         ):
             family = recognizer_family(candidate.engine)
             families[family] = max(families.get(family, 0.0), candidate.confidence)
-    return len(families) >= 2 and mean(families.values()) >= 0.6
+    return len(families) >= 2 and mean(families.values()) >= (
+        0.55 if complete_label else 0.6
+    )
 
 
 def _significant_punctuation(text: str) -> tuple[tuple[int, str], ...]:
@@ -473,47 +495,6 @@ def choose_short_code(original: str, readings: list[RegionReading]) -> str:
     return winners[0] if len(winners) == 1 else original
 
 
-def two_bar_marker(gray: np.ndarray) -> bool:
-    if gray.size == 0 or gray.shape[1] < 2:
-        return False
-    ink = gray < 128
-    return any(_two_bar_shape(ink, coverage) for coverage in (0.4, 0.55, 0.65))
-
-
-def _two_bar_shape(ink: np.ndarray, coverage: float) -> bool:
-    # Tesseract can include unrelated horizontal padding inside a glyph box.
-    occupied = ink.sum(axis=1) >= max(2, ink.shape[1] * coverage)
-    bands: list[tuple[int, int]] = []
-    for index, value in enumerate(occupied):
-        if value:
-            if bands and bands[-1][1] == index:
-                bands[-1] = (bands[-1][0], index + 1)
-            else:
-                bands.append((index, index + 1))
-    groups: list[list[tuple[int, int]]] = []
-    for band in bands:
-        if groups and band[0] - groups[-1][-1][1] <= max(
-            2, 1.5 * max(band[1] - band[0], groups[-1][-1][1] - groups[-1][-1][0])
-        ):
-            groups[-1].append(band)
-        else:
-            groups.append([band])
-    # A fragment above the current line must not become a second minus bar.
-    if not groups or len(groups[-1]) != 2 or groups[-1][-1][1] < ink.shape[0] * 0.8:
-        return False
-    first, second = groups[-1]
-    heights = (first[1] - first[0], second[1] - second[0])
-    if max(heights) > 2 * min(heights):
-        return False
-    first_ink = ink[first[0] : first[1]].mean(axis=0) >= 0.5
-    second_ink = ink[second[0] : second[1]].mean(axis=0) >= 0.5
-    if min(first_ink.sum(), second_ink.sum()) < max(2, ink.shape[1] * 0.3):
-        return False
-    return bool(
-        (first_ink & second_ink).sum() >= 0.75 * min(first_ink.sum(), second_ink.sum())
-    )
-
-
 def compatible_text_reading(original: str, candidate: str) -> bool:
     """Allow OCR spacing changes without losing decimal marks or printed digits."""
     original_length = len("".join(original.split()))
@@ -799,7 +780,12 @@ class OcrRegionRefiner:
         return readings
 
     def _leading_equals(
-        self, api: PyTessBaseAPI, gray: np.ndarray, amount: str
+        self,
+        api: PyTessBaseAPI,
+        gray: np.ndarray,
+        amount: str,
+        *,
+        require_two_bars: bool = False,
     ) -> bool:
         import cv2
 
@@ -841,7 +827,11 @@ class OcrRegionRefiner:
                     continue
                 left, top, right, bottom = symbols[0].bbox
                 ink = np.asarray(sample)[top:bottom, left:right]
-                if ink.size == 0 or np.mean(ink < 128) < 0.1:
+                if (
+                    ink.size == 0
+                    or np.mean(ink < 128) < 0.1
+                    or (require_two_bars and not two_bar_marker(ink))
+                ):
                     continue
                 votes += 1
                 exact = exact or number_key(text) == amount
@@ -853,7 +843,9 @@ class OcrRegionRefiner:
 
         observed_originals = [
             match.group()[1:].replace(",", ".")
-            for match in re.finditer(r"(?<![\w.,])-\d+[.,]\d{2}(?![\d.,])", text)
+            for match in re.finditer(
+                r"(?<![^\W\d])(?<![.,])-\d+[.,]\d{2}(?![\d.,])", text
+            )
         ]
         amounts = {
             amount
@@ -921,7 +913,7 @@ class OcrRegionRefiner:
                 for amount in supported:
                     votes[amount] += 1
         return re.sub(
-            r"(?<![\w.,])-\d+[.,]\d{2}(?![\d.,])",
+            r"(?<![^\W\d])(?<![.,])-\d+[.,]\d{2}(?![\d.,])",
             lambda match: (
                 "=" + match.group()[1:]
                 if votes[match.group()[1:].replace(",", ".")] >= 2
@@ -1112,10 +1104,12 @@ class OcrRegionRefiner:
             )
         ]
 
-    def _receipt_prices(self, page: Page, image: Image.Image) -> set[int]:
+    def _receipt_prices(
+        self, page: Page, image: Image.Image, api: PyTessBaseAPI
+    ) -> set[int]:
         from docling.models.stages.ocr.ocr_receipt_regions import refine_receipt_prices
 
-        return refine_receipt_prices(self, page, image)
+        return refine_receipt_prices(self, page, image, api)
 
     def refine_lines(self, page: Page, *, image_input: bool) -> None:
         if not image_input or page.parsed_page is None or page.size is None:
@@ -1148,7 +1142,13 @@ class OcrRegionRefiner:
             ) as api,
         ):
             if receipt:
-                for index in self._receipt_prices(page, image):
+                from docling.models.stages.ocr.ocr_receipt_words import (
+                    refine_receipt_words,
+                )
+
+                for index in self._receipt_prices(
+                    page, image, api
+                ) | refine_receipt_words(self, page, image, api):
                     cell = next(cell for cell in lines if cell.index == index)
                     replacements[index] = RegionReading(
                         cell.text, cell.confidence, "page", "verified-word"
@@ -1232,13 +1232,32 @@ class OcrRegionRefiner:
                             if selected.text.endswith(".")
                             else []
                         )
+                        leading_equals = not selected.text.startswith(
+                            "="
+                        ) and self._leading_equals(api, gray, key)
+                        if (
+                            receipt
+                            and not selected.text.startswith("=")
+                            and not leading_equals
+                        ):
+                            wider = box.model_copy(
+                                update={
+                                    "l": box.l - min(box.height * 0.9, 28 / pixel_scale)
+                                }
+                            )
+                            extended = self._crop(
+                                image, wider, page, inset=-3 / pixel_scale
+                            )
+                            leading_equals = (
+                                extended is not None
+                                and self._leading_equals(
+                                    api, extended, key, require_two_bars=True
+                                )
+                            )
                         selected = choose_amount_punctuation(
                             selected,
                             [*tess, *punctuation_readings],
-                            leading_equals=(
-                                not selected.text.startswith("=")
-                                and self._leading_equals(api, gray, key)
-                            ),
+                            leading_equals=leading_equals,
                         )
                 else:
                     photo_readings = self._photo_readings(api, gray) if photo else []
@@ -1299,7 +1318,9 @@ class OcrRegionRefiner:
             for cell in table.table_cells
             if cell.bbox is not None
         ]
-        photo_scale = 2 if cell_heights and median(cell_heights) < 12 else 1
+        photo_scale = 4 if cell_heights and median(cell_heights) < 12 else 1
+        # Bound the full-page canvas before reading individual small cells.
+        photo_scale = min(photo_scale, 6144 / max(page.size.width, page.size.height))
         image = page.get_image(scale=photo_scale if image_input else 600 / 72)
         if image is None:
             return
@@ -1313,75 +1334,19 @@ class OcrRegionRefiner:
             ) as api,
         ):
             for table in tables:
+                from docling.models.stages.ocr.ocr_photo_regions import (
+                    photo_number_readings,
+                    refine_photo_labels,
+                )
+                from docling.utils.ocr_photo_grid import photo_table_regions
+
+                regions = (
+                    photo_table_regions(image, table, scale=photo_scale)
+                    if image_input
+                    else {}
+                )
                 if image_input:
-                    # Neural cell boxes can hug only a broken word fragment.
-                    # Read the first column up to the numeric column, retaining
-                    # the row's own vertical coordinates and all source digits.
-                    labels = [
-                        cell
-                        for cell in table.table_cells
-                        if cell.bbox is not None
-                        and cell.start_col_offset_idx == 0
-                        and cell.col_span == 1
-                        and not cell.column_header
-                    ]
-                    neighbors = [
-                        cell.bbox.l
-                        for cell in table.table_cells
-                        if cell.bbox is not None
-                        and cell.start_col_offset_idx == 1
-                        and number_key(cell.text) is not None
-                    ]
-                    if (
-                        sum(
-                            sum(char.isalpha() for char in cell.text) >= 4
-                            for cell in labels
-                        )
-                        >= 5
-                        and neighbors
-                        and median(
-                            cell.bbox.height for cell in labels if cell.bbox is not None
-                        )
-                        < 12
-                    ):
-                        left = max(
-                            table.cluster.bbox.l - 0.5,
-                            min(
-                                cell.bbox.l for cell in labels if cell.bbox is not None
-                            ),
-                        )
-                        right = min(neighbors) - 1
-                        for cell in labels:
-                            assert cell.bbox is not None
-                            box = cell.bbox.model_copy(update={"l": left, "r": right})
-                            gray = self._crop(image, box, page, inset=-0.5)
-                            if gray is not None:
-                                readings = [
-                                    *self._rapid_readings(gray, numeric=False),
-                                    *self._photo_readings(api, gray, table_label=True),
-                                ]
-                                selected = self._choose_text(
-                                    cell.text,
-                                    0.65,
-                                    readings,
-                                    photo_label=True,
-                                )
-                                if any(
-                                    not self._dictionary.word_is_known(word)
-                                    for word in _WORDS.findall(selected.text)
-                                ):
-                                    selected = self._choose_text(
-                                        cell.text,
-                                        0.65,
-                                        [
-                                            *readings,
-                                            *self._tess_readings(
-                                                api, gray, numeric=False
-                                            ),
-                                        ],
-                                        photo_label=True,
-                                    )
-                                cell.text = selected.text
+                    refine_photo_labels(self, api, page, image, table, regions)
                 column_keys: dict[int, list[str]] = defaultdict(list)
                 for cell in table.table_cells:
                     key = number_key(cell.text)
@@ -1433,6 +1398,8 @@ class OcrRegionRefiner:
                     and sum(re.fullmatch(r"\d{3}", key) is not None for key in keys)
                     >= 0.7 * len(keys)
                 } - amount_columns
+                if image_input:
+                    code_columns = set()
                 for cell in table.table_cells:
                     if (
                         cell.bbox is None
@@ -1454,7 +1421,9 @@ class OcrRegionRefiner:
                     # Grid cells include border rules. Neural table boxes
                     # usually hug the glyphs and need a small outer margin.
                     inset = 0.35 if table.from_ocr_grid else -0.7
-                    gray = self._crop(image, cell.bbox, page, inset=inset)
+                    gray = regions.get(id(cell))
+                    if gray is None:
+                        gray = self._crop(image, cell.bbox, page, inset=inset)
                     if gray is not None:
                         quarter_turns = {
                             "rot_90": 1,
@@ -1464,7 +1433,9 @@ class OcrRegionRefiner:
                         if quarter_turns:
                             gray = np.rot90(gray, quarter_turns).copy()
                         if cell.text.strip() in {"", ".", "-", "_", "\u2014", "\u2013"}:
-                            if printed_dash(gray):
+                            if printed_dash(gray) or (
+                                image_input and printed_dash(photo_contrast(gray))
+                            ):
                                 cell.text = "-"
                             if (
                                 cell.text.strip()
@@ -1488,7 +1459,9 @@ class OcrRegionRefiner:
                         keys = column_keys[cell.start_col_offset_idx]
                         cell.text = choose_number(
                             cell.text,
-                            self._rapid_readings(gray, numeric=True),
+                            photo_number_readings(self, gray, cell.text)
+                            if image_input
+                            else self._rapid_readings(gray, numeric=True),
                             allow_decimal_removal=(
                                 len(keys) >= 5
                                 and sum("." not in key for key in keys) / len(keys)

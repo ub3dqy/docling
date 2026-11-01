@@ -66,6 +66,48 @@ def test_dense_grid_keeps_adjacent_amounts_in_separate_rows(uneven_light: bool) 
     assert rows[12] == ["1112", "Article 12", "12 123", "12 456"]
 
 
+def test_photo_grid_recovers_skewed_rules_without_duplicate_rows() -> None:
+    import cv2
+
+    image = Image.fromarray(
+        np.tile(np.linspace(95, 210, 700).astype(np.uint8), (420, 1))
+    ).convert("RGB")
+    draw = ImageDraw.Draw(image)
+    xs, ys = [20, 110, 350, 510, 680], list(range(20, 401, 20))
+    for x in xs:
+        draw.line((x, ys[0], x, ys[-1]), fill=40, width=2)
+    for y in ys:
+        draw.line((xs[0], y, xs[-1], y), fill=40, width=2)
+    transform = np.array([[1, -0.012, 5], [0.025, 1, -8]], dtype=float)
+    skewed = Image.fromarray(
+        cv2.warpAffine(
+            np.asarray(image), transform, image.size, borderValue=(210, 210, 210)
+        )
+    )
+    words = []
+    for row, y in enumerate(ys[:-1]):
+        for col, x in enumerate(xs[:-1]):
+            x0, y0 = transform @ np.array([x + 10, y + 5, 1])
+            words.append(
+                _cell(
+                    len(words),
+                    f"r{row}c{col}",
+                    (float(x0), float(y0), float(x0 + 35), float(y0 + 10)),
+                )
+            )
+    cluster = Cluster(
+        id=0, label=DocItemLabel.TABLE, bbox=BoundingBox(l=20, t=12, r=681, b=410)
+    )
+    table = table_from_ocr_grid(
+        skewed, cluster, words, page_no=1, scale=1, adaptive_thresholds=True
+    )
+    assert table is not None
+    assert (table.num_rows, table.num_cols) == (19, 4)
+    assert [
+        cell.text for cell in table.table_cells if cell.start_row_offset_idx == 11
+    ] == [f"r11c{col}" for col in range(4)]
+
+
 @pytest.mark.parametrize(
     "with_divider,missing_row", [(True, False), (False, False), (True, True)]
 )

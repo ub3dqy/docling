@@ -36,6 +36,7 @@ from docling.utils.ocr_language import (
     OcrLanguageSupport,
 )
 from docling.utils.ocr_region_pixels import light_on_dark
+from docling.utils.ocr_word_overlap import deduplicate_line_words
 from docling.utils.orientation import ocr_box_to_bounding_rectangle
 from docling.utils.profiling import TimeRecorder
 from docling.utils.utils import download_url_with_progress, safe_version
@@ -1006,7 +1007,9 @@ class RapidOcrModel(BaseOcrModel):
                 if "".join(
                     "".join(word[1].split()) for word in complete_words
                 ) == "".join(line[1].split()):
-                    line_words[index] = complete_words
+                    lines[index], line_words[index] = deduplicate_line_words(
+                        line, complete_words
+                    )
         return _OcrPrediction(lines=lines, line_words=line_words)
 
     def _read_multiscale(
@@ -1338,6 +1341,7 @@ class RapidOcrModel(BaseOcrModel):
                         )
                         continue
                 ordered.append((line, words))
+        ordered = [deduplicate_line_words(line, words) for line, words in ordered]
         return _OcrPrediction(
             [line for line, _ in ordered], [words for _, words in ordered]
         )
