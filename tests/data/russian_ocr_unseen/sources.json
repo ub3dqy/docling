@@ -1,0 +1,45 @@
+{
+  "reference_sha256": "3bb832441a96558b11f4f1aa559e9ec250f83b2798ac2d6301e850cc215ae0f9",
+  "files": {
+    "bi-balance-2024.pdf": {
+      "sha256": "0b60170a158217da5c1203d18da5a12434191071b845f7e32e5712756e83ed1a",
+      "bytes": 1191689,
+      "url": "https://xn---33-9cdulgg0aog6b.xn--p1ai/upload/iblock/575/9uc633sbo1pkaiuri1n9n158s6cp12q7/%D0%A4.%200503730%2C%20%D0%91%D0%B0%D0%BB%D0%B0%D0%BD%D1%81%20%D1%83%D1%87%D1%80%D0%B5%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D1%8F_0001.pdf"
+    },
+    "bi-results-2024.pdf": {
+      "sha256": "00633d5fc56d8582a630d629b6827b7e30fba53fdfc43e3785f3afad10346543",
+      "bytes": 1633025,
+      "url": "https://xn---33-9cdulgg0aog6b.xn--p1ai/upload/iblock/6b1/71ug3t7sy6pztjgeuo3pjkkfhbs7zka1/%D0%A4.%200503721%2C%20%D0%9E%D1%82%D1%87%D0%B5%D1%82%20%D0%BE%20%D1%84%D0%B8%D0%BD%D0%B0%D0%BD%D1%81%D0%BE%D0%B2%D1%8B%D1%85%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%D0%B0%D1%85_0001.pdf"
+    },
+    "amfbc-audit-2024.pdf": {
+      "sha256": "1121246441a782bbd6bccd152694ff4c7ac08aa2f121305f717de595fc9c03d1",
+      "bytes": 4150134,
+      "url": "https://amfbc.ru/wp-content/uploads/2025/03/report2024.pdf"
+    },
+    "doc-000013.jpg": {
+      "sha256": "b5b683b731cfd52f4438d4db66cbe036066510c7c44cbdeb45005eea13e02381",
+      "bytes": 107721,
+      "url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000013.jpg"
+    },
+    "doc-000225.jpg": {
+      "sha256": "bd64105f792b82344c5562c4395adef41c494fb30f2720a360974ab26e61f1a7",
+      "bytes": 251887,
+      "url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000225.jpg"
+    },
+    "IMG_0667_bin.PNG": {
+      "sha256": "bc3787f800a4c40bc1e348296c7a3468ee0eb2ab9af111e57e0f4632e6dccd7a",
+      "bytes": 447369,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0667_bin.PNG"
+    },
+    "IMG_0752_bin.jpg": {
+      "sha256": "a8b3e632a6e91e9c0812651aadae9eb7cd60f5b539584e8b6ab53a93dd25234b",
+      "bytes": 1016712,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0752_bin.jpg"
+    },
+    "IMG_0863_bin.PNG": {
+      "sha256": "c2d89cbbb8b22d162f67f2c4854e78d52626a01d100616ab8c6f85fd988ef253",
+      "bytes": 193436,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0863_bin.PNG"
+    }
+  }
+}

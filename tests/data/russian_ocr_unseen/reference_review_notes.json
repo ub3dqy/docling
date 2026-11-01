@@ -1,0 +1,18 @@
+{
+  "reference_sha256": "3bb832441a96558b11f4f1aa559e9ec250f83b2798ac2d6301e850cc215ae0f9",
+  "applied_to_first_run_scores": false,
+  "reviews": [
+    {
+      "case_id": "receipt-grocery-mixed-vat",
+      "field_name": "vat-20",
+      "source_file": "IMG_0667_bin.PNG",
+      "source_sha256": "bc3787f800a4c40bc1e348296c7a3468ee0eb2ab9af111e57e0f4632e6dccd7a",
+      "source_page": 1,
+      "source_crop_pixels": [1180, 1410, 1340, 1495],
+      "original_reference": "103.19",
+      "visually_reviewed_value": "103.18",
+      "evidence": "A nearest-neighbor enlargement of source pixels (1180, 1410, 1340, 1495) shows two enclosed counters in the final digit 8. The original frozen reference remains byte-for-byte unchanged. OCR reads 10318, so both the original and reviewed values fail because the decimal mark is absent.",
+      "does_not_change_pass_or_fail": true
+    }
+  ]
+}
