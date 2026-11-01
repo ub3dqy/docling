@@ -24,8 +24,10 @@ from docling.models.stages.ocr.ocr_region_refiner import (
     punctuation_line_crop,
     refine_word_choices,
     supports_leading_equals,
+    supports_photo_label,
     two_bar_marker,
 )
+from docling.utils.ocr_region_pixels import light_on_dark, trim_light_text
 
 
 def test_multiple_preprocessings_of_one_recognizer_are_not_independent_votes():
@@ -84,8 +86,9 @@ def test_mixed_script_cleanup_preserves_english_words_and_numbers():
     )
 
 
-def test_rule_cleanup_retains_a_decimal_dot_next_to_digits():
-    image = Image.new("L", (180, 60), 255)
+@pytest.mark.parametrize("paper", [255, 170])
+def test_rule_cleanup_retains_a_decimal_dot_next_to_digits(paper):
+    image = Image.new("L", (180, 60), paper)
     draw = ImageDraw.Draw(image)
     draw.line((0, 0, 0, 59), fill=0, width=2)
     draw.line((0, 59, 179, 59), fill=0, width=2)
@@ -102,6 +105,90 @@ def test_rule_cleanup_retains_a_decimal_dot_next_to_digits():
     )
     assert count - 1 == 5
     assert min(stats[1:, cv2.CC_STAT_AREA]) == 16
+
+
+def test_broken_cell_rules_do_not_hide_a_faint_short_dash():
+    image = Image.new("L", (450, 150), 255)
+    draw = ImageDraw.Draw(image)
+    for start, end in ((0, 26), (51, 62), (94, 149)):
+        draw.line((449, start, 449, end), fill=80, width=2)
+    draw.rectangle((426, 122, 437, 129), fill=155)
+    assert printed_dash(np.asarray(image))
+
+
+def test_skewed_tall_cell_keeps_its_dash_beside_an_inward_border():
+    image = Image.new("L", (300, 180), 255)
+    draw = ImageDraw.Draw(image)
+    draw.line((288, 20, 288, 179), fill=70, width=4)
+    draw.line((120, 5, 280, 5), fill=100)
+    draw.rectangle((264, 165, 275, 169), fill=80)
+    assert printed_dash(np.asarray(image))
+
+
+def test_raster_rounding_of_a_short_horizontal_dash_is_not_a_round_dot():
+    image = Image.new("L", (450, 75), 255)
+    draw = ImageDraw.Draw(image)
+    draw.rounded_rectangle((426, 47, 435, 53), radius=2, fill=110)
+    assert printed_dash(np.asarray(image))
+    draw.rectangle((426, 47, 435, 53), fill=255)
+    draw.ellipse((426, 47, 432, 53), fill=110)
+    assert not printed_dash(np.asarray(image))
+
+
+def test_partial_thin_border_does_not_hide_the_dash_in_a_tall_row():
+    image = Image.new("L", (680, 320), 255)
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((2, 10, 4, 102), fill=80)
+    draw.rectangle((672, 240, 674, 319), fill=80)
+    draw.rectangle((642, 289, 663, 296), fill=100)
+    assert printed_dash(np.asarray(image))
+
+
+@pytest.mark.parametrize("text", ["1", "7", "-1", "-7", "0", "-10", "."])
+def test_rule_cleanup_does_not_turn_numeric_ink_into_a_dash(text):
+    import cv2
+
+    array = np.full((80, 240), 255, dtype=np.uint8)
+    cv2.rectangle(array, (0, 0), (239, 79), 80, 2)
+    cv2.putText(array, text, (155, 60), cv2.FONT_HERSHEY_SIMPLEX, 1.2, 0, 2)
+    assert not printed_dash(array)
+
+
+def test_short_photo_labels_need_independent_readings_and_preserve_real_numbers():
+    candidate = RegionReading("ИЗО", 0.67, "tesseract-7", "photo")
+    readings = [candidate, RegionReading("изо", 0.58, "iso:ru", "photo")]
+
+    def known(word: str) -> bool:
+        return word.casefold() == "изо"
+
+    assert supports_photo_label("130", candidate, readings, known)
+    assert not supports_photo_label("130", candidate, [candidate], known)
+    for original in ("1300", "13.0", "-130", "130%", "130 мм"):
+        assert not supports_photo_label(original, candidate, readings, known)
+
+
+@pytest.mark.parametrize("text,expected", [("-", True), ("-1", False), (".", False)])
+def test_tall_rows_keep_a_low_baseline_dash_without_dropping_numeric_glyphs(
+    text, expected
+):
+    import cv2
+
+    array = np.full((200, 300), 255, dtype=np.uint8)
+    cv2.rectangle(array, (0, 0), (299, 199), 80, 2)
+    cv2.putText(array, text, (235, 190), cv2.FONT_HERSHEY_SIMPLEX, 0.9, 0, 2)
+    assert printed_dash(array) == expected
+
+
+def test_light_letter_detection_uses_contrast_on_medium_gray_material():
+    light = np.full((50, 140), 136, dtype=np.uint8)
+    light[12:32, 15:125] = 240
+    light[47:50, 15:125] = 240
+    assert light_on_dark(light)
+    cropped = trim_light_text(light)
+    assert int((cropped > 180).sum()) == 20 * 110
+    paper = np.full((50, 140), 136, dtype=np.uint8)
+    paper[12:32, 15:125] = 30
+    assert not light_on_dark(paper)
 
 
 @pytest.mark.parametrize(

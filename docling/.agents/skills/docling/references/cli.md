@@ -155,6 +155,13 @@ Uncertain image lines and numeric table cells are also read as separate crops.
 This needs the `russian` extra, independent RapidOCR recognizers, pinned Tesseract
 models and the local Russian dictionary. The dictionary ranks actual OCR readings;
 it does not supply replacement words. Totals and VAT are not inferred from arithmetic.
+On small photographs, complete short-label regions retain the first letters and
+are read without the 72 DPI reduction. Light lettering on dark or medium-gray
+material receives separate contrast readings. Character alternatives come only
+from the recognizer's actual probabilities. Additional character paths for
+dark-on-light table labels require agreement between independent recognizers.
+Prices inside mixed receipt lines are also read
+as individual amounts, with digit count, decimal scale and printed markers retained.
 Punctuation refinement preserves the leading edge of amount lines. An omitted
 `=` requires a confident, ink-backed symbol in two crop readings. Caption
 punctuation needs independent readers to agree on identical content; amount

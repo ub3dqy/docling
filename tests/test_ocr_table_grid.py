@@ -3,6 +3,7 @@
 
 """Regression coverage for dense grids and curved two-column photographs."""
 
+import numpy as np
 import pytest
 from docling_core.types.doc import BoundingBox, DocItemLabel
 from docling_core.types.doc.page import BoundingRectangle, TextCell
@@ -27,8 +28,15 @@ def _cell(index: int, text: str, box: tuple[float, float, float, float]) -> Text
     )
 
 
-def test_dense_grid_keeps_adjacent_amounts_in_separate_rows() -> None:
-    image = Image.new("RGB", (700, 420), "white")
+@pytest.mark.parametrize("uneven_light", [False, True])
+def test_dense_grid_keeps_adjacent_amounts_in_separate_rows(uneven_light: bool) -> None:
+    image = (
+        Image.fromarray(
+            np.tile(np.linspace(70, 220, 700).astype(np.uint8), (420, 1))
+        ).convert("RGB")
+        if uneven_light
+        else Image.new("RGB", (700, 420), "white")
+    )
     draw = ImageDraw.Draw(image)
     xs = [20, 110, 350, 510, 680]
     ys = list(range(30, 391, 20))
@@ -46,7 +54,9 @@ def test_dense_grid_keeps_adjacent_amounts_in_separate_rows() -> None:
     cluster = Cluster(
         id=0, label=DocItemLabel.TABLE, bbox=BoundingBox(l=20, t=30, r=680, b=390)
     )
-    table = table_from_ocr_grid(image, cluster, words, page_no=1, scale=1)
+    table = table_from_ocr_grid(
+        image, cluster, words, page_no=1, scale=1, adaptive_thresholds=uneven_light
+    )
     assert table is not None
     assert (table.num_rows, table.num_cols) == (18, 4)
     rows = {}

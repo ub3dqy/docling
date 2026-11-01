@@ -21,7 +21,7 @@ from statistics import mean, median
 from typing import TYPE_CHECKING
 
 import numpy as np
-from docling_core.types.doc import BoundingBox
+from docling_core.types.doc import BoundingBox, DocItemLabel
 from PIL import Image, ImageOps
 
 from docling.datamodel.accelerator_options import AcceleratorOptions
@@ -33,6 +33,12 @@ from docling.utils.ocr_receipt_rows import (
     is_receipt_field_caption,
     is_receipt_page,
     join_receipt_fields,
+)
+from docling.utils.ocr_region_pixels import (
+    clean_region,
+    light_on_dark,
+    printed_dash,
+    trim_light_text,
 )
 
 if TYPE_CHECKING:
@@ -68,6 +74,35 @@ def recognizer_family(engine: str) -> str:
     if engine.startswith("tesseract"):
         return "tesseract"
     return engine
+
+
+def supports_photo_label(
+    original: str,
+    reading: RegionReading,
+    readings: list[RegionReading],
+    known: Callable[[str], bool],
+) -> bool:
+    """Permit observed Cyrillic letters in a damaged short table label."""
+    text = normalize_mixed_script(reading.text).strip()
+    if (
+        not original.isalnum()
+        or not any(char.isdigit() for char in original)
+        or (original.isdigit() and len(original) > 3)
+        or not text.isalpha()
+        or not known(text)
+        or not 0.65 * len(original) <= len(text) <= 1.5 * len(original)
+    ):
+        return False
+    families: dict[str, float] = {}
+    for candidate in readings:
+        if (
+            candidate.confidence >= 0.55
+            and normalize_mixed_script(candidate.text).strip().casefold()
+            == text.casefold()
+        ):
+            family = recognizer_family(candidate.engine)
+            families[family] = max(families.get(family, 0.0), candidate.confidence)
+    return len(families) >= 2 and mean(families.values()) >= 0.6
 
 
 def _significant_punctuation(text: str) -> tuple[tuple[int, str], ...]:
@@ -283,61 +318,6 @@ def number_key(text: str) -> str | None:
     return "-" + key if negative else key
 
 
-def clean_region(gray: np.ndarray, *, remove_noise: bool = False) -> np.ndarray:
-    """Remove long border rules, then crop to glyphs without deleting dots."""
-    import cv2
-
-    height, width = gray.shape
-    if height < 4 or width < 4:
-        return gray
-    _, ink = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
-    horizontal = cv2.morphologyEx(
-        ink, cv2.MORPH_OPEN, np.ones((1, max(15, round(width * 0.7))), np.uint8)
-    )
-    vertical = cv2.morphologyEx(
-        ink, cv2.MORPH_OPEN, np.ones((max(10, round(height * 0.7)), 1), np.uint8)
-    )
-    vertical[:, round(width * 0.15) : round(width * 0.85)] = 0
-    mask = cv2.dilate(cv2.bitwise_or(horizontal, vertical), np.ones((2, 2), np.uint8))
-    result = gray.copy()
-    result[mask > 0] = 255
-    _, ink = cv2.threshold(result, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
-    _, labels, stats, _ = cv2.connectedComponentsWithStats(
-        np.asarray(ink, dtype=np.uint8), connectivity=8
-    )
-    body = [
-        stat
-        for stat in stats[1:]
-        if stat[cv2.CC_STAT_HEIGHT] >= height * 0.25
-        and stat[cv2.CC_STAT_AREA] >= 8
-        and stat[cv2.CC_STAT_WIDTH] < width * 0.9
-    ]
-    if not body:
-        return result
-    char_height = median(int(stat[cv2.CC_STAT_HEIGHT]) for stat in body)
-    if remove_noise:
-        for label, stat in enumerate(stats[1:], 1):
-            if (
-                stat[cv2.CC_STAT_AREA] < max(3, char_height**2 * 0.012)
-                or stat[cv2.CC_STAT_HEIGHT] < char_height * 0.18
-            ):
-                result[labels == label] = 255
-    padding = max(2, round(char_height * 0.15))
-    top = max(0, min(int(stat[cv2.CC_STAT_TOP]) for stat in body) - padding)
-    left = max(0, min(int(stat[cv2.CC_STAT_LEFT]) for stat in body) - padding)
-    bottom = min(
-        height,
-        max(int(stat[cv2.CC_STAT_TOP] + stat[cv2.CC_STAT_HEIGHT]) for stat in body)
-        + padding,
-    )
-    right = min(
-        width,
-        max(int(stat[cv2.CC_STAT_LEFT] + stat[cv2.CC_STAT_WIDTH]) for stat in body)
-        + padding,
-    )
-    return result[top:bottom, left:right]
-
-
 def choose_number(
     original: str, readings: list[RegionReading], *, allow_decimal_removal: bool = False
 ) -> str:
@@ -478,42 +458,6 @@ def printed_decimal(gray: np.ndarray, digits: int) -> bool:
         and baseline - height * 0.3 <= stat[1] + stat[3] <= baseline + height * 0.2
         for stat in components
     )
-
-
-def printed_dash(gray: np.ndarray) -> bool:
-    """Distinguish a printed dash in a numeric cell from a dot or an empty cell."""
-    import cv2
-
-    height, width = gray.shape
-    if height < 6 or width < 6:
-        return False
-    # Keep the whole cell: skewed grid boundaries can clip a right-aligned
-    # dash. Ignore long frame components and ink on the top/bottom boundary,
-    # without cropping away the short horizontal glyph itself.
-    supported = 0
-    strong = False
-    for threshold in (96, 128, 160):
-        _, ink = cv2.threshold(gray, threshold, 255, cv2.THRESH_BINARY_INV)
-        _, _, stats, _ = cv2.connectedComponentsWithStats(ink, connectivity=8)
-        body = [
-            stat
-            for stat in stats[1:]
-            if stat[4] >= 3
-            and stat[3] < height * 0.6
-            and stat[2] < width * 0.8
-            and height * 0.12 <= stat[1] + stat[3] / 2 <= height * 0.88
-        ]
-        if len(body) != 1:
-            continue
-        _, _, dash_width, dash_height, _ = body[0]
-        if (
-            dash_width >= max(4, 1.4 * dash_height)
-            and dash_width <= width * 0.7
-            and dash_height <= height * 0.3
-        ):
-            supported += 1
-            strong = strong or bool(dash_width >= 2 * dash_height)
-    return supported >= 2 and strong
 
 
 def choose_short_code(original: str, readings: list[RegionReading]) -> str:
@@ -988,7 +932,13 @@ class OcrRegionRefiner:
         )
 
     def _choose_text(
-        self, original: str, confidence: float, readings: list[RegionReading]
+        self,
+        original: str,
+        confidence: float,
+        readings: list[RegionReading],
+        *,
+        extended_photo_word: bool = False,
+        photo_label: bool = False,
     ) -> RegionReading:
         candidates = [
             RegionReading(original, confidence, "page", "original"),
@@ -998,9 +948,34 @@ class OcrRegionRefiner:
         def score(reading: RegionReading) -> float:
             text = normalize_mixed_script(reading.text)
             words = _WORDS.findall(text)
-            if not words or (reading.engine != "page" and reading.confidence < 0.65):
+            verified_label = photo_label and supports_photo_label(
+                original, reading, readings, self._dictionary.word_is_known
+            )
+            minimum = (
+                0.55
+                if reading.variant in {"light-character-path", "photo-character-path"}
+                or verified_label
+                else 0.65
+            )
+            if not words or (reading.engine != "page" and reading.confidence < minimum):
                 return -1
-            if reading.engine != "page" and not compatible_text_reading(original, text):
+            extended = (
+                extended_photo_word
+                and reading.variant == "light-character-path"
+                and original.isalpha()
+                and text.isalpha()
+                and self._dictionary.word_is_known(text)
+                and len(original) <= len(text) <= 3 * len(original)
+                and SequenceMatcher(
+                    None, original.translate(_CONFUSABLES), text
+                ).ratio()
+                >= 0.5
+            )
+            if (
+                reading.engine != "page"
+                and not compatible_text_reading(original, text)
+                and not (extended or verified_label)
+            ):
                 return -1
             letters = sum(map(len, words))
             known = sum(
@@ -1046,17 +1021,115 @@ class OcrRegionRefiner:
             )
         return choose_text_punctuation(chosen, punctuation_candidates)
 
+    def _photo_readings(
+        self, api: PyTessBaseAPI, gray: np.ndarray, *, table_label: bool = False
+    ) -> list[RegionReading]:
+        """Read photo-specific contrast variants; never supply replacement text."""
+        import cv2
+
+        if light_on_dark(gray):
+            gray = trim_light_text(gray)
+            # Light, broken strokes on dark textured material need the
+            # opposite polarity. Smooth the texture before joining the ink.
+            blurred = cv2.GaussianBlur(gray, (0, 0), 1.4)
+            variants = [255 - gray, np.where(blurred > 150, 0, 255).astype(np.uint8)]
+            from docling.utils.ocr_character_paths import image_character_paths
+
+            ink = (gray > 180).astype(np.uint8) * 255
+            closed = 255 - cv2.morphologyEx(
+                ink, cv2.MORPH_CLOSE, np.ones((2, 2), np.uint8)
+            )
+            sample = np.asarray(
+                ImageOps.expand(
+                    Image.fromarray(clean_region(closed)).convert("RGB"),
+                    6,
+                    fill="white",
+                )
+            )
+            paths = image_character_paths(self._readers["cyrillic"], sample)
+            alternatives = [
+                RegionReading(
+                    path.text, path.confidence, "cyrillic", "light-character-path"
+                )
+                for path in paths
+                if path.text.isalpha()
+                and len(path.text) >= 5
+                and self._dictionary.word_is_known(path.text)
+                and path.log_probability >= paths[0].log_probability - 2.5
+            ]
+        else:
+            alternatives = []
+            kernel = max(3, min(31, gray.shape[0] // 2) | 1)
+            background = cv2.morphologyEx(
+                gray, cv2.MORPH_CLOSE, np.ones((kernel, kernel), np.uint8)
+            )
+            variants = [cv2.divide(gray, np.maximum(background, 1), scale=255)]
+            if table_label:
+                from docling.utils.ocr_character_paths import image_character_paths
+
+                clean = clean_region(variants[0])
+                wide = cv2.resize(
+                    clean, None, fx=1.5, fy=1, interpolation=cv2.INTER_CUBIC
+                )
+                sample = np.asarray(
+                    ImageOps.expand(
+                        Image.fromarray(wide).convert("RGB"), 6, fill="white"
+                    )
+                )
+                groups: dict[str, list[RegionReading]] = defaultdict(list)
+                for lang in ("iso:ru", "cyrillic"):
+                    paths = image_character_paths(self._readers[lang], sample)
+                    for path in paths:
+                        text = normalize_mixed_script(path.text).strip()
+                        words = _WORDS.findall(text)
+                        if (
+                            words
+                            and all(
+                                self._dictionary.word_is_known(word) for word in words
+                            )
+                            and path.log_probability >= paths[0].log_probability - 2.5
+                            and path.confidence >= 0.55
+                        ):
+                            groups[" ".join(text.casefold().split())].append(
+                                RegionReading(
+                                    text, path.confidence, lang, "photo-character-path"
+                                )
+                            )
+                alternatives = [
+                    reading
+                    for group in groups.values()
+                    if len({recognizer_family(reading.engine) for reading in group})
+                    >= 2
+                    for reading in group
+                ]
+
+        return alternatives + [
+            reading
+            for variant in variants
+            for reading in (
+                *self._rapid_readings(variant, numeric=False),
+                *self._tess_readings(api, variant, numeric=False),
+            )
+        ]
+
+    def _receipt_prices(self, page: Page, image: Image.Image) -> set[int]:
+        from docling.models.stages.ocr.ocr_receipt_regions import refine_receipt_prices
+
+        return refine_receipt_prices(self, page, image)
+
     def refine_lines(self, page: Page, *, image_input: bool) -> None:
         if not image_input or page.parsed_page is None or page.size is None:
             return
         lines = [cell for cell in page.parsed_page.textline_cells if cell.from_ocr]
         if not lines:
             return
-        image = page.get_image(scale=1)
-        if image is None:
-            return
         heights = [cell.rect.to_bounding_box().height for cell in lines]
         line_height = median(heights)
+        # Short image text must not lose another generation of camera pixels.
+        # Keep the established scale for receipts and other larger type.
+        image = page.get_image(scale=2 if line_height < 12 else 1)
+        if image is None:
+            return
         page_text = " ".join(
             normalize_mixed_script(cell.text).casefold() for cell in lines
         )
@@ -1074,6 +1147,12 @@ class OcrRegionRefiner:
                 oem=self._tesserocr.OEM.LSTM_ONLY,
             ) as api,
         ):
+            if receipt:
+                for index in self._receipt_prices(page, image):
+                    cell = next(cell for cell in lines if cell.index == index)
+                    replacements[index] = RegionReading(
+                        cell.text, cell.confidence, "page", "verified-word"
+                    )
             for cell in lines:
                 key = number_key(cell.text)
                 receipt_field = receipt and (
@@ -1090,6 +1169,18 @@ class OcrRegionRefiner:
                 box = cell.rect.to_bounding_box()
                 if box.height > 2.5 * line_height:
                     continue
+                if (
+                    line_height < 12
+                    and page.predictions.layout is not None
+                    and any(
+                        cluster.label == DocItemLabel.TABLE
+                        and box.intersection_over_self(cluster.bbox) >= 0.8
+                        for cluster in page.predictions.layout.clusters
+                    )
+                ):
+                    # Read small table text from complete cell crops below.
+                    # Repeating it here doubles the cost and uses clipped boxes.
+                    continue
                 numeric = number_key(cell.text) is not None
                 pixel_scale = image.width / page.size.width
                 if (
@@ -1104,7 +1195,12 @@ class OcrRegionRefiner:
                 gray = self._crop(image, box, page, inset=-3 / pixel_scale)
                 if gray is None:
                     continue
-                tess = self._tess_readings(api, gray, numeric=numeric)
+                photo = (
+                    not numeric
+                    and not receipt
+                    and (box.height < 12 or light_on_dark(gray))
+                )
+                tess = [] if photo else self._tess_readings(api, gray, numeric=numeric)
                 if numeric:
                     text = choose_line_number(
                         cell.text, tess, confidence=cell.confidence
@@ -1145,10 +1241,16 @@ class OcrRegionRefiner:
                             ),
                         )
                 else:
+                    photo_readings = self._photo_readings(api, gray) if photo else []
                     selected = self._choose_text(
                         cell.text,
                         cell.confidence,
-                        [*self._rapid_readings(gray, numeric=False), *tess],
+                        [
+                            *self._rapid_readings(gray, numeric=False),
+                            *tess,
+                            *photo_readings,
+                        ],
+                        extended_photo_word=not receipt and light_on_dark(gray),
                     )
                     if receipt:
                         selected = RegionReading(
@@ -1189,9 +1291,16 @@ class OcrRegionRefiner:
         tables = [element for element in elements if isinstance(element, Table)]
         if not tables:
             return
-        # Render a dense scan at high resolution. This never enlarges photos
-        # during line refinement, where the original camera pixels matter.
-        image = page.get_image(scale=1 if image_input else 600 / 72)
+        # Dense PDF scans need 600 DPI. Short photographic cells also need
+        # enough detail to avoid another reduction to a 72 DPI fallback image.
+        cell_heights = [
+            cell.bbox.height
+            for table in tables
+            for cell in table.table_cells
+            if cell.bbox is not None
+        ]
+        photo_scale = 2 if cell_heights and median(cell_heights) < 12 else 1
+        image = page.get_image(scale=photo_scale if image_input else 600 / 72)
         if image is None:
             return
         with (
@@ -1204,6 +1313,75 @@ class OcrRegionRefiner:
             ) as api,
         ):
             for table in tables:
+                if image_input:
+                    # Neural cell boxes can hug only a broken word fragment.
+                    # Read the first column up to the numeric column, retaining
+                    # the row's own vertical coordinates and all source digits.
+                    labels = [
+                        cell
+                        for cell in table.table_cells
+                        if cell.bbox is not None
+                        and cell.start_col_offset_idx == 0
+                        and cell.col_span == 1
+                        and not cell.column_header
+                    ]
+                    neighbors = [
+                        cell.bbox.l
+                        for cell in table.table_cells
+                        if cell.bbox is not None
+                        and cell.start_col_offset_idx == 1
+                        and number_key(cell.text) is not None
+                    ]
+                    if (
+                        sum(
+                            sum(char.isalpha() for char in cell.text) >= 4
+                            for cell in labels
+                        )
+                        >= 5
+                        and neighbors
+                        and median(
+                            cell.bbox.height for cell in labels if cell.bbox is not None
+                        )
+                        < 12
+                    ):
+                        left = max(
+                            table.cluster.bbox.l - 0.5,
+                            min(
+                                cell.bbox.l for cell in labels if cell.bbox is not None
+                            ),
+                        )
+                        right = min(neighbors) - 1
+                        for cell in labels:
+                            assert cell.bbox is not None
+                            box = cell.bbox.model_copy(update={"l": left, "r": right})
+                            gray = self._crop(image, box, page, inset=-0.5)
+                            if gray is not None:
+                                readings = [
+                                    *self._rapid_readings(gray, numeric=False),
+                                    *self._photo_readings(api, gray, table_label=True),
+                                ]
+                                selected = self._choose_text(
+                                    cell.text,
+                                    0.65,
+                                    readings,
+                                    photo_label=True,
+                                )
+                                if any(
+                                    not self._dictionary.word_is_known(word)
+                                    for word in _WORDS.findall(selected.text)
+                                ):
+                                    selected = self._choose_text(
+                                        cell.text,
+                                        0.65,
+                                        [
+                                            *readings,
+                                            *self._tess_readings(
+                                                api, gray, numeric=False
+                                            ),
+                                        ],
+                                        photo_label=True,
+                                    )
+                                cell.text = selected.text
                 column_keys: dict[int, list[str]] = defaultdict(list)
                 for cell in table.table_cells:
                     key = number_key(cell.text)
@@ -1217,7 +1395,7 @@ class OcrRegionRefiner:
                     for column, keys in column_keys.items()
                     if len(keys) >= 3
                     and any(
-                        sum(char.isdigit() for char in key) >= 5
+                        sum(char.isdigit() for char in key) >= (4 if image_input else 5)
                         or re.fullmatch(r"-?\d+\.\d{2}", key) is not None
                         for key in keys
                     )

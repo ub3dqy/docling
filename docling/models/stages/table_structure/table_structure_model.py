@@ -18,7 +18,12 @@ from docling_core.types.doc.page import (
 from PIL import ImageDraw
 
 from docling.datamodel.accelerator_options import AcceleratorDevice, AcceleratorOptions
-from docling.datamodel.base_models import Page, Table, TableStructurePrediction
+from docling.datamodel.base_models import (
+    InputFormat,
+    Page,
+    Table,
+    TableStructurePrediction,
+)
 from docling.datamodel.document import ConversionResult
 from docling.datamodel.pipeline_options import (
     TableFormerMode,
@@ -344,6 +349,8 @@ class TableStructureModel(BaseTableStructureModel):
                             page_no=page.page_no,
                             scale=self.scale,
                             allow_open_labels=view is not None,
+                            adaptive_thresholds=conv_res.input.format
+                            == InputFormat.IMAGE,
                         )
                         if grid_table is not None:
                             table_prediction.table_map[table_cluster.id] = (

@@ -47,6 +47,7 @@ def table_from_ocr_grid(
     page_no: int,
     scale: float,
     allow_open_labels: bool = False,
+    adaptive_thresholds: bool = False,
 ) -> Table | None:
     if not words or not all(word.from_ocr for word in words):
         return None
@@ -61,6 +62,7 @@ def table_from_ocr_grid(
                 page_no=page_no,
                 scale=scale,
                 allow_open_labels=True,
+                adaptive_thresholds=adaptive_thresholds,
             )
             if table is not None:
                 candidates.append((label_first_rows(table), view, table))
@@ -81,6 +83,7 @@ def table_from_ocr_grid(
         page_no=page_no,
         scale=scale,
         allow_open_labels=allow_open_labels,
+        adaptive_thresholds=adaptive_thresholds,
     )
 
 
@@ -92,6 +95,7 @@ def _table_from_ocr_grid(
     page_no: int,
     scale: float,
     allow_open_labels: bool = False,
+    adaptive_thresholds: bool = False,
 ) -> Table | None:
     """Prefer a complete, dense printed grid over merged model-predicted rows.
 
@@ -121,7 +125,7 @@ def _table_from_ocr_grid(
     gray = np.asarray(image.crop((left, top, right, bottom)).convert("L"))
     _, ink = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
     binary_views = [ink]
-    if allow_open_labels:
+    if allow_open_labels or adaptive_thresholds:
         binary_views.extend(
             cv2.adaptiveThreshold(
                 gray,

@@ -249,3 +249,36 @@ def test_supplementary_detector_retains_small_digits_without_adding_lone_letter_
         Image.new("RGB", (100, 80)), _OcrPrediction([], [])
     )
     assert [line[1] for line in result.lines] == ["5"]
+
+
+@pytest.mark.parametrize("longer,expanded", [("POCCWORD", True), ("RANDOMXX", False)])
+def test_light_word_added_by_a_detector_gets_its_complete_source_region(
+    monkeypatch: pytest.MonkeyPatch, longer: str, expanded: bool
+) -> None:
+    from PIL import ImageDraw
+
+    model = _model()
+    model.options.use_region_refinement = True
+    monkeypatch.setattr(model, "_refinement_reader", object(), raising=False)
+    image = Image.new("RGB", (600, 180), (70, 85, 100))
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((20, 23, 220, 27), fill="white")
+    draw.rectangle((300, 115, 430, 122), fill="white")
+    anchor = (_box(300, 110, 430, 140), "Other", 0.99)
+    partial = (_box(20, 20, 100, 40), "POCCX", 0.86)
+    full = (_box(10, 10, 110, 20), longer, 0.55)
+
+    def read(image: Image.Image, **kwargs) -> _OcrPrediction:
+        lines = [partial, anchor] if image.width == 600 else [full]
+        return _OcrPrediction(lines, [[line] for line in lines])
+
+    monkeypatch.setattr(model, "_read", read)
+    result = model._refine_detection(
+        image,
+        _OcrPrediction([anchor], [[anchor]]),
+        detector_reference=image.resize((300, 90)),
+    )
+    index = next(i for i, line in enumerate(result.lines) if line[1] == "POCCX")
+    assert model._line_bbox(result.lines[index]).r == (220 if expanded else 100)
+    # Expanding the crop must not inject the weaker detector's proposed text.
+    assert result.line_words[index][0][1] == "POCCX"

@@ -35,6 +35,7 @@ from docling.utils.ocr_language import (
     OcrLanguageResolver,
     OcrLanguageSupport,
 )
+from docling.utils.ocr_region_pixels import light_on_dark
 from docling.utils.orientation import ocr_box_to_bounding_rectangle
 from docling.utils.profiling import TimeRecorder
 from docling.utils.utils import download_url_with_progress, safe_version
@@ -871,11 +872,20 @@ class RapidOcrModel(BaseOcrModel):
                                 )
                                 im_size = high_res_image.size
                         if self.options.use_multiscale:
+                            reference = (
+                                page._backend.get_page_image(scale=1, cropbox=ocr_rect)
+                                if conv_res.input.format == InputFormat.IMAGE
+                                and self.options.use_region_refinement
+                                else None
+                            )
+                            if reference is not None and orientation:
+                                reference = reference.rotate(-orientation, expand=True)
                             result = self._read_multiscale(
                                 high_res_image,
                                 result,
                                 refine_detection=conv_res.input.format
                                 == InputFormat.IMAGE,
+                                detector_reference=reference,
                             )
                         if self.options.detect_orientation and not orientation:
                             result, orientation, im_size = self._read_upright(
@@ -1005,6 +1015,7 @@ class RapidOcrModel(BaseOcrModel):
         prediction: _OcrPrediction,
         *,
         refine_detection: bool = True,
+        detector_reference: Image.Image | None = None,
     ) -> _OcrPrediction:
         ratio = 1536 / max(image.size)
         if ratio >= 0.9:
@@ -1012,7 +1023,11 @@ class RapidOcrModel(BaseOcrModel):
                 list(zip(prediction.lines, prediction.line_words))
             )
             return (
-                self._refine_detection(image, ordered) if refine_detection else ordered
+                self._refine_detection(
+                    image, ordered, detector_reference=detector_reference
+                )
+                if refine_detection
+                else ordered
             )
         reduced = image.resize(
             (max(1, round(image.width * ratio)), max(1, round(image.height * ratio))),
@@ -1021,7 +1036,9 @@ class RapidOcrModel(BaseOcrModel):
         alternative = self._read(reduced, reader=self._multiscale_reader)
         if alternative is None:
             return (
-                self._refine_detection(image, prediction)
+                self._refine_detection(
+                    image, prediction, detector_reference=detector_reference
+                )
                 if refine_detection
                 else prediction
             )
@@ -1062,10 +1079,18 @@ class RapidOcrModel(BaseOcrModel):
                 ]
             selected.append((candidate, [rescale(word) for word in words]))
         merged = self._order_and_join(selected)
-        return self._refine_detection(image, merged) if refine_detection else merged
+        return (
+            self._refine_detection(image, merged, detector_reference=detector_reference)
+            if refine_detection
+            else merged
+        )
 
     def _refine_detection(
-        self, image: Image.Image, prediction: _OcrPrediction
+        self,
+        image: Image.Image,
+        prediction: _OcrPrediction,
+        *,
+        detector_reference: Image.Image | None = None,
     ) -> _OcrPrediction:
         """Recover small missed lines with a second local detector, retaining words."""
         if not self.options.use_region_refinement or self._refinement_reader is None:
@@ -1073,6 +1098,32 @@ class RapidOcrModel(BaseOcrModel):
         alternative = self._read(image, reader=self._refinement_reader)
         if alternative is None:
             return prediction
+        if len(prediction.lines) <= 12 and any(
+            len(line[1]) >= 4
+            and line[1].isalpha()
+            and light_on_dark(
+                numpy.asarray(image.crop(self._line_bbox(line).as_tuple()).convert("L"))
+            )
+            for line in prediction.lines
+        ):
+            reduced = (
+                detector_reference
+                if detector_reference is not None
+                else image.resize(
+                    (max(1, image.width // 2), max(1, image.height // 2)),
+                    Image.Resampling.LANCZOS,
+                )
+            )
+            smaller = self._read(reduced, reader=self._refinement_reader)
+            if smaller is not None:
+                sx, sy = image.width / reduced.width, image.height / reduced.height
+                for line, words in zip(smaller.lines, smaller.line_words):
+                    scaled = [
+                        ([[x * sx, y * sy] for x, y in item[0]], item[1], item[2])
+                        for item in [line, *words]
+                    ]
+                    alternative.lines.append(scaled[0])
+                    alternative.line_words.append(scaled[1:])
         selected = list(zip(prediction.lines, prediction.line_words))
         additions = [
             (line, words)
@@ -1085,13 +1136,25 @@ class RapidOcrModel(BaseOcrModel):
         retained = []
         for line, words in selected:
             box = self._line_bbox(line)
+            concatenated = re.search(r"\d+[.,]\d{2}\d+[.,]\d", line[1]) is not None
+            fragments = additions
+            if concatenated:
+                # A damaged row can contain two prices without a separator.
+                # Retain its label too: labels are usually less confident than
+                # prices, and dropping them would turn a split into text loss.
+                fragments = [
+                    (candidate, candidate_words)
+                    for candidate, candidate_words in zip(
+                        alternative.lines, alternative.line_words
+                    )
+                    if candidate[2] >= 0.7
+                ]
             contained = [
                 candidate
-                for candidate, _ in additions
+                for candidate, _ in fragments
                 if self._line_bbox(candidate).intersection_over_self(box) >= 0.7
                 and self._line_bbox(candidate).height <= box.height * 0.8
             ]
-            concatenated = re.search(r"\d+[.,]\d{2}\d+[.,]\d", line[1]) is not None
             if (line[2] < 0.65 or concatenated) and len(contained) >= 2:
                 original_values = _number_signature(line[1])
                 observed_values = [
@@ -1106,11 +1169,29 @@ class RapidOcrModel(BaseOcrModel):
                     retained.append((line, words))
                     continue
                 boxes = [self._line_bbox(candidate) for candidate in contained]
+                complete_split = concatenated and (
+                    sum(
+                        re.fullmatch(r"\d+[.,]\d{2}", candidate[1].strip()) is not None
+                        for candidate in contained
+                    )
+                    >= 2
+                    and any(
+                        sum(char.isalpha() for char in candidate[1]) >= 4
+                        for candidate in contained
+                    )
+                )
                 if (
-                    max(b.r for b in boxes) - min(b.l for b in boxes) >= box.width * 0.7
+                    max(b.r for b in boxes) - min(b.l for b in boxes)
+                    >= box.width * (0.6 if complete_split else 0.7)
                     and max(b.b for b in boxes) - min(b.t for b in boxes)
                     >= box.height * 0.65
                 ):
+                    additions.extend(
+                        (candidate, candidate_words)
+                        for candidate, candidate_words in fragments
+                        if candidate in contained
+                        and not any(candidate is item[0] for item in additions)
+                    )
                     continue
             retained.append((line, words))
         selected = retained
@@ -1167,7 +1248,40 @@ class RapidOcrModel(BaseOcrModel):
                     if index not in conflicts
                 ]
             selected.append((candidate, words))
-        return self._order_and_join(selected)
+        expanded = []
+        for line, words in selected:
+            box = self._line_bbox(line)
+            for candidate in alternative.lines:
+                candidate_box = self._line_bbox(candidate)
+                if (
+                    line[1].isalpha()
+                    and len(line[1]) >= 4
+                    and candidate[2] >= 0.5
+                    and candidate[1][:3]
+                    .upper()
+                    .translate(
+                        str.maketrans("АВСЕНКМОРТХУ", "ABCEHKMOPTXY")  # noqa: RUF001
+                    )
+                    == line[1][:3]
+                    .upper()
+                    .translate(
+                        str.maketrans("АВСЕНКМОРТХУ", "ABCEHKMOPTXY")  # noqa: RUF001
+                    )
+                    and len(candidate[1]) >= 1.5 * len(line[1])
+                    and candidate_box.width >= 1.5 * box.width
+                    and candidate_box.height <= 1.3 * box.height
+                    and box.intersection_over_self(candidate_box) >= 0.8
+                    and light_on_dark(
+                        numpy.asarray(image.crop(candidate_box.as_tuple()).convert("L"))
+                    )
+                ):
+                    # A second detector can see the rest of a light word.
+                    # Expand its pixels for regional rereading, retaining the
+                    # original text until recognition verifies a replacement.
+                    line = candidate[0], line[1], line[2]
+                    break
+            expanded.append((line, words))
+        return self._order_and_join(expanded)
 
     @classmethod
     def _order_and_join(
