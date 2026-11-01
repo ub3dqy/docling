@@ -155,6 +155,10 @@ Uncertain image lines and numeric table cells are also read as separate crops.
 This needs the `russian` extra, independent RapidOCR recognizers, pinned Tesseract
 models and the local Russian dictionary. The dictionary ranks actual OCR readings;
 it does not supply replacement words. Totals and VAT are not inferred from arithmetic.
+Punctuation refinement preserves the leading edge of amount lines. An omitted
+`=` requires a confident, ink-backed symbol in two crop readings. Caption
+punctuation needs independent readers to agree on identical content; amount
+digits, decimal places, operators, percent signs and identifiers remain protected.
 Printed table rules can restore rows that the structure model merged. Image
 inputs expose OCR text even if the layout model put it inside a picture.
 It also handles Latin text, as checked in

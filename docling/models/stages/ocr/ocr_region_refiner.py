@@ -50,6 +50,204 @@ class RegionReading:
     variant: str
 
 
+@dataclass(frozen=True)
+class SymbolReading:
+    text: str
+    confidence: float
+    bbox: tuple[int, int, int, int]
+
+
+def recognizer_family(engine: str) -> str:
+    if engine in {"page", "iso:ru"}:
+        return "eslav"
+    if engine.startswith("tesseract"):
+        return "tesseract"
+    return engine
+
+
+def _significant_punctuation(text: str) -> tuple[tuple[int, str], ...]:
+    # Decimal marks are checked separately by compatible_text_reading.
+    # Keep identifiers and every operator, percent sign and bracket significant.
+    result: list[tuple[int, str]] = []
+    latin = re.search(r"[A-Za-z]", text) is not None
+    content_offset = 0
+    for index, char in enumerate(text):
+        if char.isalnum():
+            content_offset += 1
+            continue
+        if char.isspace():
+            continue
+        if char == ".":
+            word = re.search(r"([^\W\d_]+)$", text[:index])
+            # Sentence endings and abbreviations remain significant. The
+            # caption vote can reject only an isolated internal noise dot.
+            if (
+                index == len(text.rstrip()) - 1
+                or latin
+                or (word is not None and len(word.group()) >= 2)
+            ):
+                result.append((content_offset, char))
+            continue
+        following_word = _WORDS.match(text, index + 1) if char == "_" else None
+        if (
+            char == "_"
+            and not latin
+            and (following_word is None or len(following_word.group()) <= 1)
+            and not (
+                index > 0
+                and index + 1 < len(text)
+                and text[index - 1].isalnum()
+                and text[index + 1].isalnum()
+            )
+        ):
+            continue
+        result.append((content_offset, char))
+    return tuple(result)
+
+
+def choose_text_punctuation(
+    original: RegionReading, readings: list[RegionReading]
+) -> RegionReading:
+    """Change punctuation only when independent readings agree on the same text."""
+    if (
+        original.confidence >= 0.95
+        or len(_WORDS.findall(original.text)) < 3
+        or not "".join(char for char in original.text if char.isalpha()).isupper()
+    ):
+        return original
+    content = "".join(char for char in original.text if char.isalnum())
+    punctuation = _significant_punctuation(original.text)
+    groups: dict[str, dict[str, RegionReading]] = defaultdict(dict)
+    for reading in readings:
+        text = " ".join(reading.text.split())
+        if (
+            reading.confidence < 0.7
+            or "".join(char for char in text if char.isalnum()) != content
+            or _significant_punctuation(text) != punctuation
+            or not compatible_text_reading(original.text, text)
+        ):
+            continue
+        family = recognizer_family(reading.engine)
+        previous = groups[text].get(family)
+        if previous is None or reading.confidence > previous.confidence:
+            groups[text][family] = reading
+    supported = [(text, group) for text, group in groups.items() if len(group) >= 2]
+    if not supported:
+        return original
+    text, winner = max(
+        supported,
+        key=lambda item: (
+            len(item[1]),
+            item[0] == " ".join(original.text.split()),
+            mean(reading.confidence for reading in item[1].values()),
+        ),
+    )
+    return RegionReading(
+        text,
+        min(r.confidence for r in winner.values()),
+        "punctuation-consensus",
+        "same-content",
+    )
+
+
+def choose_amount_punctuation(
+    original: RegionReading, readings: list[RegionReading], *, leading_equals: bool
+) -> RegionReading:
+    """Restore observed field markers without changing an amount's digits or scale."""
+    key = number_key(original.text)
+    if key is None or re.fullmatch(r"-?\d+\.\d{2}", key) is None:
+        return original
+    text = original.text
+    if text.endswith("."):
+        families = {
+            recognizer_family(reading.engine)
+            for reading in readings
+            if reading.confidence >= 0.8
+            and number_key(reading.text) == key
+            and re.fullmatch(r"[=*: ]*\(?-?\d[\d ]*[.,]\d{2}\)?", reading.text.strip())
+            is not None
+        }
+        if len(families) >= 2:
+            text = text[:-1]
+    if leading_equals and not key.startswith("-"):
+        text = "=" + text.lstrip("=*: ")
+    return RegionReading(text, original.confidence, original.engine, original.variant)
+
+
+def supports_leading_equals(
+    symbols: list[SymbolReading], text: str, amount: str
+) -> bool:
+    """Verify an actual leading glyph, separately from uncertain numeric glyphs."""
+    key = number_key(text)
+    if (
+        not text.startswith("=")
+        or key is None
+        or len(symbols) < 2
+        or len(key) != len(amount)
+        or key.startswith("-")
+        or amount.startswith("-")
+        or re.fullmatch(r"\d+\.\d{2}", key) is None
+        or sum(a != b for a, b in zip(key, amount)) > 1
+    ):
+        return False
+    marker, digit = symbols[:2]
+    left, top, right, bottom = marker.bbox
+    dl, dt, dr, db = digit.bbox
+    height = db - dt
+    return (
+        marker.text == "="
+        and marker.confidence >= 0.95
+        and len(digit.text) == 1
+        and digit.text.isdigit()
+        and height > 0
+        and right > left
+        and bottom > top
+        and right - left <= 1.5 * height
+        and bottom - top <= 1.4 * height
+        and (left + right) / 2 + 0.25 * height <= (dl + dr) / 2
+        and dt - 0.25 * height <= (top + bottom) / 2 <= db + 0.25 * height
+    )
+
+
+def punctuation_line_crop(gray: np.ndarray) -> np.ndarray:
+    """Retain leading marks while excluding neighboring lines and distant speckles."""
+    import cv2
+
+    height, width = gray.shape
+    if height < 4 or width < 4:
+        return gray
+    _, ink = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    _, _, stats, _ = cv2.connectedComponentsWithStats(
+        np.asarray(ink, dtype=np.uint8), connectivity=8
+    )
+    body = [
+        stat
+        for stat in stats[1:]
+        if stat[3] >= height * 0.25 and stat[4] >= 8 and stat[2] < width * 0.9
+    ]
+    if not body:
+        return gray
+    top = min(int(stat[1]) for stat in body)
+    bottom = max(int(stat[1] + stat[3]) for stat in body)
+    left = max(0, min(int(stat[0]) for stat in body) - round((bottom - top) * 1.5))
+    right = min(width, max(int(stat[0] + stat[2]) for stat in body) + 2)
+    line = gray[top:bottom, left:right]
+    # Round-to-even page coordinates can change the surrounding white margin
+    # by one pixel. Normalize that margin without trimming the printed marker.
+    _, line_ink = cv2.threshold(line, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    _, _, components, _ = cv2.connectedComponentsWithStats(
+        np.asarray(line_ink, dtype=np.uint8), connectivity=8
+    )
+    useful = [component for component in components[1:] if component[4] >= 2]
+    if not useful:
+        return line
+    first_ink = min(int(component[0]) for component in useful)
+    line = line[:, max(0, first_ink - 2) :]
+    return cv2.copyMakeBorder(
+        line, 0, 0, round((bottom - top) * 0.5), 0, cv2.BORDER_CONSTANT, value=255
+    )
+
+
 def normalize_mixed_script(text: str) -> str:
     """Resolve lookalikes inside a predominantly Cyrillic word only."""
 
@@ -191,7 +389,8 @@ def choose_line_number(original: str, readings: list[RegionReading]) -> str:
         or sum(a != b for a, b in zip(original_key, new_key)) > 1
     ):
         return original
-    return ("=" if original.startswith("=") else "") + wide[0].text.strip("= ")
+    prefix = original[:1] if original[:1] in {"=", "*", ":"} else ""
+    return prefix + wide[0].text.strip("=*: ")
 
 
 def compatible_text_reading(original: str, candidate: str) -> bool:
@@ -461,7 +660,71 @@ class OcrRegionRefiner:
                         name,
                     )
                 )
+        if not numeric:
+            api.SetPageSegMode(self._tesserocr.PSM.RAW_LINE)
+            for name, array in (
+                ("punctuation-clean", cleaned),
+                ("punctuation-wide", wide),
+            ):
+                api.SetImage(ImageOps.expand(Image.fromarray(array), 2, fill=255))
+                readings.append(
+                    RegionReading(
+                        api.GetUTF8Text().strip(),
+                        api.MeanTextConf() / 100,
+                        "tesseract-13",
+                        name,
+                    )
+                )
         return readings
+
+    def _leading_equals(
+        self, api: PyTessBaseAPI, gray: np.ndarray, amount: str
+    ) -> bool:
+        import cv2
+
+        if re.fullmatch(r"\d+\.\d{2}", amount) is None:
+            return False
+        line = punctuation_line_crop(gray)
+        api.SetVariable("tessedit_char_whitelist", "0123456789.,()=+-*:\u2022")
+        api.SetPageSegMode(self._tesserocr.PSM.SINGLE_LINE)
+        votes = 0
+        exact = False
+        for factor in (1.0, 1.5):
+            array = cv2.resize(
+                line, None, fx=factor, fy=1, interpolation=cv2.INTER_CUBIC
+            )
+            for padding in (6, 12):
+                sample = ImageOps.expand(Image.fromarray(array), padding, fill=255)
+                api.SetImage(sample)
+                text = api.GetUTF8Text().strip()
+                if not text:
+                    continue
+                iterator = api.GetIterator()
+                symbols: list[SymbolReading] = []
+                for item in self._tesserocr.iterate_level(
+                    iterator, self._tesserocr.RIL.SYMBOL
+                ):
+                    box = item.BoundingBox(self._tesserocr.RIL.SYMBOL)
+                    if box is None:
+                        break
+                    symbols.append(
+                        SymbolReading(
+                            item.GetUTF8Text(self._tesserocr.RIL.SYMBOL),
+                            item.Confidence(self._tesserocr.RIL.SYMBOL) / 100,
+                            box,
+                        )
+                    )
+                    if len(symbols) == 2:
+                        break
+                if not supports_leading_equals(symbols, text, amount):
+                    continue
+                left, top, right, bottom = symbols[0].bbox
+                ink = np.asarray(sample)[top:bottom, left:right]
+                if ink.size == 0 or np.mean(ink < 128) < 0.1:
+                    continue
+                votes += 1
+                exact = exact or number_key(text) == amount
+        return votes >= 2 and exact
 
     def _choose_text(
         self, original: str, confidence: float, readings: list[RegionReading]
@@ -503,7 +766,24 @@ class OcrRegionRefiner:
             best.engine,
             best.variant,
         )
-        return refine_word_choices(chosen, candidates, self._dictionary.word_is_known)
+        chosen = refine_word_choices(chosen, candidates, self._dictionary.word_is_known)
+        punctuation_candidates = []
+        for reading in candidates:
+            normalized = RegionReading(
+                normalize_mixed_script(reading.text),
+                reading.confidence,
+                reading.engine,
+                reading.variant,
+            )
+            refined = refine_word_choices(
+                normalized, candidates, self._dictionary.word_is_known
+            )
+            punctuation_candidates.append(
+                RegionReading(
+                    refined.text, refined.confidence, reading.engine, reading.variant
+                )
+            )
+        return choose_text_punctuation(chosen, punctuation_candidates)
 
     def refine_lines(self, page: Page, *, image_input: bool) -> None:
         if not image_input or page.parsed_page is None or page.size is None:
@@ -548,6 +828,21 @@ class OcrRegionRefiner:
                             min(r.confidence for r in tess if r.variant == "wide"),
                             "tesseract",
                             "wide",
+                        )
+                    key = number_key(selected.text)
+                    if key is not None and re.fullmatch(r"\d+\.\d{2}", key):
+                        punctuation_readings = (
+                            self._rapid_readings(gray, numeric=True)
+                            if selected.text.endswith(".")
+                            else []
+                        )
+                        selected = choose_amount_punctuation(
+                            selected,
+                            [*tess, *punctuation_readings],
+                            leading_equals=(
+                                not selected.text.startswith("=")
+                                and self._leading_equals(api, gray, key)
+                            ),
                         )
                 else:
                     selected = self._choose_text(

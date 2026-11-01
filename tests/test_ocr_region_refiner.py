@@ -9,12 +9,17 @@ from PIL import Image, ImageDraw
 
 from docling.models.stages.ocr.ocr_region_refiner import (
     RegionReading,
+    SymbolReading,
+    choose_amount_punctuation,
     choose_line_number,
     choose_number,
+    choose_text_punctuation,
     clean_region,
     compatible_text_reading,
     normalize_mixed_script,
+    punctuation_line_crop,
     refine_word_choices,
+    supports_leading_equals,
 )
 
 
@@ -138,3 +143,105 @@ def test_dictionary_word_alignment_cannot_replace_an_english_product_name():
         refine_word_choices(original, [observed], lambda word: True).text
         == original.text
     )
+
+
+def test_caption_punctuation_requires_two_independent_recognizers():
+    noisy = RegionReading("СУММА _К. ОПЛАТЕ БЕЗ СКИДКИ", 0.92, "iso:ru", "wide")  # noqa: RUF001
+    clean = "СУММА К ОПЛАТЕ БЕЗ СКИДКИ"  # noqa: RUF001
+    same_model = [
+        RegionReading(clean, 0.9, "page", "full"),
+        RegionReading(clean, 0.88, "iso:ru", "crop"),
+    ]
+    assert choose_text_punctuation(noisy, same_model).text == noisy.text
+    independent = [*same_model, RegionReading(clean, 0.87, "tesseract-13", "line")]
+    assert choose_text_punctuation(noisy, independent).text == clean
+
+
+@pytest.mark.parametrize(
+    "original, proposed",
+    [
+        ("Report for A. Smith", "Report for A Smith"),
+        ("SAVE THE FILE_NAME", "SAVE THE FILE NAME"),
+        ("ОПЛАТА ПО СЧЕТУ.", "ОПЛАТА ПО СЧЕТУ"),
+        ("СУММА НДС ПО СТАВКЕ 10%", "СУММА НДС ПО СТАВКЕ 10"),  # noqa: RUF001
+        ("НАЛОГ ПО СТАВКЕ 10% ИТОГО 23.45", "НАЛОГ ПО СТАВКЕ 10 ИТОГО 23.45%"),  # noqa: RUF001
+        ("ДОЛГ ПО СЧЕТУ -23.45", "ДОЛГ ПО СЧЕТУ 23.45-"),
+        ("ПЕЧАТНЫЙ ТЕКСТ ПРОВЕРКИ", "Печатный текст проверки"),  # noqa: RUF001
+        ("СОХРАНИТЬ _ОТЧЕТ.ДОК ЗДЕСЬ", "СОХРАНИТЬ ОТЧЕТ.ДОК ЗДЕСЬ"),
+    ],
+)
+def test_punctuation_vote_preserves_initials_identifiers_sentence_endings_and_percent(
+    original, proposed
+):
+    reading = RegionReading(original, 0.9, "page", "full")
+    candidates = [
+        RegionReading(proposed, 0.95, "cyrillic", "clean"),
+        RegionReading(proposed, 0.96, "tesseract-13", "line"),
+    ]
+    assert choose_text_punctuation(reading, candidates).text == original
+
+
+def test_amount_punctuation_uses_the_value_and_independent_votes():
+    amount = RegionReading("=23.45.", 0.9, "page", "full")
+    clean = [
+        RegionReading("23.45", 0.99, "iso:ru", "clean"),
+        RegionReading("23.45", 0.98, "cyrillic", "clean"),
+    ]
+    assert (
+        choose_amount_punctuation(amount, clean, leading_equals=False).text == "=23.45"
+    )
+    assert (
+        choose_amount_punctuation(amount, clean[:1], leading_equals=False).text
+        == "=23.45."
+    )
+    wrong_scale = [
+        RegionReading("2345", 0.99, reading.engine, "clean") for reading in clean
+    ]
+    assert (
+        choose_amount_punctuation(amount, wrong_scale, leading_equals=False).text
+        == "=23.45."
+    )
+    missing = RegionReading("*23.45", 0.9, "page", "full")
+    assert choose_amount_punctuation(missing, [], leading_equals=False).text == "*23.45"
+    assert choose_amount_punctuation(missing, [], leading_equals=True).text == "=23.45"
+
+
+def test_observed_marker_is_separate_from_the_first_numeric_glyph():
+    symbols = [
+        SymbolReading("=", 0.99, (3, 5, 12, 10)),
+        SymbolReading("2", 0.98, (18, 0, 28, 16)),
+    ]
+    assert supports_leading_equals(symbols, "=23.45", "23.45")
+    # A hallucinated marker cannot reuse the first digit's pixels.
+    overlapping = [SymbolReading("=", 0.99, (18, 5, 27, 10)), symbols[1]]
+    assert not supports_leading_equals(overlapping, "=23.45", "23.45")
+    assert not supports_leading_equals(symbols, "=2345", "23.45")
+    assert not supports_leading_equals(symbols, "=23.45", "-23.45")
+
+
+def test_punctuation_crop_keeps_the_operator_and_excludes_the_next_line():
+    image = Image.new("L", (80, 40), 255)
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((5, 15, 12, 16), fill=0)
+    draw.rectangle((5, 20, 12, 21), fill=0)
+    draw.rectangle((20, 10, 28, 27), fill=0)
+    draw.rectangle((35, 10, 43, 27), fill=0)
+    draw.rectangle((20, 37, 60, 39), fill=0)
+    cropped = punctuation_line_crop(np.asarray(image))
+    # Both leading bars survive; neighboring-line ink is outside the crop.
+    import cv2
+
+    _, _, stats, _ = cv2.connectedComponentsWithStats(
+        (cropped < 128).astype(np.uint8), connectivity=8
+    )
+    assert sorted(stats[1:, cv2.CC_STAT_AREA].tolist()) == [16, 16, 162, 162]
+    assert cropped.shape[0] == 18
+    padded = np.pad(np.asarray(image), ((1, 0), (1, 0)), constant_values=255)
+    assert np.array_equal(punctuation_line_crop(padded), cropped)
+
+
+def test_numeric_refinement_retains_an_observed_asterisk():
+    candidates = [
+        RegionReading("23.45", 0.9, f"tesseract-{mode}", "wide") for mode in (7, 13)
+    ]
+    assert choose_line_number("*23.45", candidates) == "*23.45"
