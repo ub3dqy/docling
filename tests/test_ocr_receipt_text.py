@@ -6,10 +6,14 @@
 # ruff: noqa: RUF001 -- Deliberately damaged Cyrillic OCR labels.
 
 import pytest
+from docling_core.types.doc import BoundingBox, CoordOrigin, Size
+from docling_core.types.doc.page import BoundingRectangle, SegmentedPdfPage, TextCell
 
+from docling.datamodel.base_models import Page
 from docling.models.stages.ocr.ocr_receipt_text import (
     choose_amount_marks,
     choose_caption,
+    remove_duplicate_fiscal_marks,
 )
 from docling.models.stages.ocr.ocr_region_refiner import RegionReading
 
@@ -59,3 +63,41 @@ def test_amount_marker_needs_two_models_and_preserves_values_and_negative_sign()
     ):
         assert choose_amount_marks(original, readings) is None
     assert choose_amount_marks("+127.30", readings[:1]) is None
+
+
+def _cell(index, text, box, confidence=0.99):
+    return TextCell(
+        index=index,
+        text=text,
+        orig=text,
+        confidence=confidence,
+        from_ocr=True,
+        rect=BoundingRectangle.from_bounding_box(
+            BoundingBox.from_tuple(box, origin=CoordOrigin.TOPLEFT)
+        ),
+    )
+
+
+def test_repeated_amount_pixels_are_removed_without_deleting_real_operators():
+    amount = _cell(0, "=123.45", (100, 80, 230, 110))
+    duplicate = _cell(1, "+", (108, 90, 116, 100), 0.4)
+    standalone = _cell(2, "+", (70, 90, 78, 100), 0.4)
+    strong = _cell(3, "+", (108, 90, 116, 100), 0.99)
+    native = duplicate.model_copy(update={"index": 4, "from_ocr": False})
+    lines = [amount, duplicate, standalone, strong, native]
+    page = Page(
+        page_no=1,
+        size=Size(width=320, height=200),
+        parsed_page=SegmentedPdfPage.model_construct(
+            textline_cells=lines, word_cells=[], char_cells=[]
+        ),
+    )
+    remove_duplicate_fiscal_marks(page, set())
+    assert len(page.cells) == 5
+    remove_duplicate_fiscal_marks(page, {amount.index})
+    assert [cell.index for cell in page.cells] == [0, 2, 3, 4]
+    amount.rect = amount.rect.model_copy(update={"r_y1": 130, "r_y2": 100})
+    neighbor = _cell(5, "+", (108, 116, 116, 124), 0.4)
+    page.parsed_page.textline_cells = [amount, neighbor]
+    remove_duplicate_fiscal_marks(page, {amount.index})
+    assert len(page.cells) == 2

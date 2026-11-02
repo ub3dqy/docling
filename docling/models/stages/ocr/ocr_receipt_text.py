@@ -188,6 +188,61 @@ def _apply(page: Page, replacements: dict[int, TextCell], removed: set[int]) -> 
             update(cluster)
 
 
+def remove_duplicate_fiscal_marks(page: Page, verified: set[int]) -> None:
+    """Remove a second detection of pixels already read in a verified amount.
+
+    The full amount must have an independently confirmed equals sign. Keep
+    standalone operators and every mark outside that same source region.
+    """
+    assert page.parsed_page is not None
+    lines = page.parsed_page.textline_cells
+    import cv2
+
+    def polygon(rect: BoundingRectangle) -> np.ndarray:
+        return np.asarray(
+            [
+                (rect.r_x0, rect.r_y0),
+                (rect.r_x1, rect.r_y1),
+                (rect.r_x2, rect.r_y2),
+                (rect.r_x3, rect.r_y3),
+            ],
+            dtype=np.float32,
+        )
+
+    amounts = [
+        cell
+        for cell in lines
+        if cell.from_ocr
+        and cell.index in verified
+        and re.fullmatch(r"=\d+[.,]\d{2}", cell.text)
+    ]
+    removed: set[int] = set()
+    for cell in lines:
+        if not cell.from_ocr or cell.text != "+" or cell.confidence >= 0.6:
+            continue
+        box = cell.rect.to_bounding_box()
+        shape = polygon(cell.rect)
+        if not np.isfinite(shape).all() or cv2.contourArea(shape) <= 0:
+            continue
+        for amount in amounts:
+            area = amount.rect.to_bounding_box()
+            if (
+                box.intersection_over_self(area) < 0.95
+                or box.r > area.l + area.width * 0.3
+                or box.height >= area.height * 0.65
+            ):
+                continue
+            parent = polygon(amount.rect)
+            if (
+                np.isfinite(parent).all()
+                and cv2.intersectConvexConvex(shape, parent)[0]
+                >= cv2.contourArea(shape) * 0.95
+            ):
+                removed.add(cell.index)
+                break
+    _apply(page, {}, removed)
+
+
 def refine_company_heading(
     refiner: OcrRegionRefiner, page: Page, gray: np.ndarray
 ) -> set[int]:
@@ -508,4 +563,5 @@ def refine_receipt_captions(
             )
     _apply(page, replacements, set())
     recover_total_caption(refiner, page, gray)
+    remove_duplicate_fiscal_marks(page, set(replacements))
     return changed | set(replacements)
