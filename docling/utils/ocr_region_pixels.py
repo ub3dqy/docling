@@ -91,6 +91,44 @@ def clean_region(gray: np.ndarray, *, remove_noise: bool = False) -> np.ndarray:
     return result[top:bottom, left:right]
 
 
+def terminal_exclamation(gray: np.ndarray) -> bool:
+    """Recognize a final separate stem and dot without inventing punctuation."""
+    import cv2
+
+    if gray.ndim != 2 or min(gray.shape) < 5:
+        return False
+    source = clean_region(gray)
+    _, ink = cv2.threshold(source, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    _, _, stats, _ = cv2.connectedComponentsWithStats(ink)
+    body = [s for s in stats[1:] if s[3] >= source.shape[0] * 0.35 and s[4] >= 4]
+    if len(body) < 4:
+        return False
+    height = median(int(s[3]) for s in body)
+    for stem in body:
+        x, y, width, h, _ = map(int, stem)
+        if (
+            x < source.shape[1] * 0.75
+            or not height * 0.45 <= h <= height * 1.2
+            or width > h * 0.45
+        ):
+            continue
+        for dot in stats[1:]:
+            dx, dy, dw, dh, area = map(int, dot)
+            if (
+                area >= 1
+                and dw <= max(2, height * 0.35)
+                and dh <= max(2, height * 0.3)
+                and 0 <= dy - (y + h) <= height * 0.5
+                and abs((dx + dw / 2) - (x + width / 2)) <= max(2, width)
+                and not any(
+                    other[0] > x + width + height * 0.4 and other[3] >= height * 0.5
+                    for other in body
+                )
+            ):
+                return True
+    return False
+
+
 def printed_dash(gray: np.ndarray) -> bool:
     """Distinguish a printed dash in a numeric cell from a dot or an empty cell."""
     import cv2

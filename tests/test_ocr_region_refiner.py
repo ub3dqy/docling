@@ -8,6 +8,7 @@ import pytest
 from PIL import Image, ImageDraw
 
 from docling.models.stages.ocr.ocr_region_refiner import (
+    OcrRegionRefiner,
     RegionReading,
     SymbolReading,
     choose_amount_punctuation,
@@ -28,7 +29,49 @@ from docling.models.stages.ocr.ocr_region_refiner import (
     supports_photo_label,
     two_bar_marker,
 )
-from docling.utils.ocr_region_pixels import light_on_dark, trim_light_text
+from docling.utils.ocr_region_pixels import (
+    light_on_dark,
+    terminal_exclamation,
+    trim_light_text,
+)
+
+
+@pytest.mark.parametrize("mark", ["bang", "bar", "colon", "question"])
+def test_terminal_mark_needs_a_separate_full_height_stem_and_lower_dot(mark):
+    image = Image.new("L", (190, 42), "white")
+    draw = ImageDraw.Draw(image)
+    for x in range(10, 140, 18):
+        draw.rectangle((x, 8, x + 10, 30), fill=0)
+    if mark in {"bang", "bar"}:
+        draw.rectangle((165, 8, 168, 25 if mark == "bang" else 34), fill=0)
+    if mark in {"bang", "colon", "question"}:
+        draw.rectangle((165, 30, 168, 33), fill=0)
+    if mark == "colon":
+        draw.rectangle((165, 14, 168, 17), fill=0)
+    if mark == "question":
+        draw.rectangle((159, 8, 172, 14), fill=0)
+        draw.rectangle((166, 14, 170, 24), fill=0)
+    assert terminal_exclamation(np.asarray(image)) == (mark == "bang")
+
+
+@pytest.mark.parametrize("confidence", [0.65, 0.83])
+def test_observed_sentence_ending_needs_stronger_votes_when_already_confident(
+    confidence,
+):
+    from types import SimpleNamespace
+
+    refiner = object.__new__(OcrRegionRefiner)
+    refiner._dictionary = SimpleNamespace(word_is_known=lambda _: True)
+    candidates = [
+        RegionReading(
+            "Приходите к нам снова", 0.999, "cyrillic-v6-medium", "row-source"
+        ),
+        RegionReading("Приходите к нам снова", 0.85, "cyrillic-v6-tiny", "row-source"),
+    ]
+    selected = refiner._choose_text("Приходите к нам снова!", confidence, candidates)
+    assert selected.text == (
+        "Приходите к нам снова!" if confidence >= 0.8 else "Приходите к нам снова"
+    )
 
 
 def test_multiple_preprocessings_of_one_recognizer_are_not_independent_votes():

@@ -637,7 +637,18 @@ class OcrRegionRefiner:
 
         if gray_page is None or page.size is None:
             return None, []
-        aligned = rectified_text_crop(gray_page, cell.rect, page.size)
+        rect = cell.rect
+        if (
+            cell.text
+            and cell.text[-1].isalpha()
+            and not any(char.isdigit() for char in cell.text)
+            and not is_receipt_field_caption(cell.text)
+        ):
+            from docling.utils.ocr_text_geometry import extend_text_rect
+
+            height = (abs(rect.r_y0 - rect.r_y3) + abs(rect.r_y1 - rect.r_y2)) / 2
+            rect = extend_text_rect(rect, right=height * 0.7)
+        aligned = rectified_text_crop(gray_page, rect, page.size)
         return (
             (None, [])
             if aligned is None
@@ -970,6 +981,7 @@ class OcrRegionRefiner:
         *,
         extended_photo_word: bool = False,
         photo_label: bool = False,
+        receipt_text: bool = False,
     ) -> RegionReading:
         candidates = [
             RegionReading(original, confidence, "page", "original"),
@@ -978,6 +990,29 @@ class OcrRegionRefiner:
 
         def score(reading: RegionReading) -> float:
             text = normalize_mixed_script(reading.text)
+            if receipt_text:
+                from docling.models.stages.ocr.ocr_receipt_words import (
+                    compatible_receipt_text,
+                )
+
+                if not compatible_receipt_text(original, text):
+                    return -1
+            ending = re.search(r"[!?]+$", original.strip())
+            if (
+                ending is not None
+                and reading.engine != "page"
+                and not text.rstrip().endswith(ending[0])
+                and len(
+                    {
+                        recognizer_family(r.engine)
+                        for r in readings
+                        if r.confidence >= (0.95 if confidence >= 0.8 else 0.85)
+                        and r.text.strip().casefold() == text.strip().casefold()
+                    }
+                )
+                < 2
+            ):
+                return -1
             words = _WORDS.findall(text)
             verified_label = photo_label and supports_photo_label(
                 original, reading, readings, self._dictionary.word_is_known
@@ -1144,11 +1179,18 @@ class OcrRegionRefiner:
         ]
 
     def _receipt_prices(
-        self, page: Page, image: Image.Image, api: PyTessBaseAPI
+        self,
+        page: Page,
+        image: Image.Image,
+        api: PyTessBaseAPI,
+        *,
+        verified_lines: set[int] | None = None,
     ) -> set[int]:
         from docling.models.stages.ocr.ocr_receipt_regions import refine_receipt_prices
 
-        return refine_receipt_prices(self, page, image, api)
+        return refine_receipt_prices(
+            self, page, image, api, verified_lines=verified_lines
+        )
 
     def refine_lines(self, page: Page, *, image_input: bool) -> None:
         if page.parsed_page is None or page.size is None:
@@ -1181,6 +1223,7 @@ class OcrRegionRefiner:
         ) or is_receipt_page(cell.text for cell in lines)
         replacements: dict[int, RegionReading] = {}
         verified_captions: set[int] = set()
+        verified_numbers: set[int] = set()
         with (
             self._lock,
             self._tesserocr.PyTessBaseAPI(
@@ -1198,6 +1241,9 @@ class OcrRegionRefiner:
                 receipt = verify_receipt_page(self, page, image)
             gray_page = np.asarray(image.convert("L")) if receipt else None
             if receipt:
+                from docling.utils.ocr_receipt_segments import split_receipt_lines
+
+                split_receipt_lines(page)
                 from docling.models.stages.ocr.ocr_receipt_expressions import (
                     refine_receipt_expressions,
                 )
@@ -1205,18 +1251,27 @@ class OcrRegionRefiner:
                     refine_receipt_captions,
                 )
                 from docling.models.stages.ocr.ocr_receipt_words import (
+                    choose_receipt_text,
                     refine_receipt_words,
                 )
 
                 verified_captions = refine_receipt_captions(self, page, image, api)
+                from docling.models.stages.ocr.ocr_receipt_amounts import (
+                    refine_fiscal_numbers,
+                )
+
+                verified_numbers = refine_fiscal_numbers(self, page, image)
                 lines = [
                     cell for cell in page.parsed_page.textline_cells if cell.from_ocr
                 ]
                 for index in (
                     refine_receipt_expressions(self, page, image)
-                    | self._receipt_prices(page, image, api)
+                    | self._receipt_prices(
+                        page, image, api, verified_lines=verified_numbers
+                    )
                     | refine_receipt_words(self, page, image, api)
                     | verified_captions
+                    | verified_numbers
                 ):
                     cell = next(cell for cell in lines if cell.index == index)
                     replacements[index] = RegionReading(
@@ -1232,6 +1287,7 @@ class OcrRegionRefiner:
                     replacements[index] = RegionReading(
                         cell.text, cell.confidence, "page", "verified-number"
                     )
+            protected_lines = verified_captions | verified_numbers
             for cell in lines:
                 key = number_key(cell.text)
                 receipt_field = receipt and (
@@ -1242,7 +1298,7 @@ class OcrRegionRefiner:
                     )
                 )
                 if (
-                    cell.index in verified_captions
+                    cell.index in protected_lines
                     or (cell.confidence >= 0.95 and not receipt_field)
                     or not 4 <= len(cell.text) <= 120
                 ):
@@ -1341,24 +1397,41 @@ class OcrRegionRefiner:
                             leading_equals=leading_equals,
                         )
                 else:
+                    from docling.models.stages.ocr.ocr_receipt_words import (
+                        receipt_text_readings,
+                    )
+
                     aligned, aligned_readings = self._aligned_text_readings(
                         gray_page, cell, page
                     )
                     if aligned is not None:
                         gray = aligned
                     photo_readings = self._photo_readings(api, gray) if photo else []
+                    readings = [
+                        *self._rapid_readings(gray, numeric=False),
+                        *tess,
+                        *photo_readings,
+                        *aligned_readings,
+                        *receipt_text_readings(
+                            self, gray, cell.text, cell.confidence, enabled=receipt
+                        ),
+                    ]
                     selected = self._choose_text(
                         cell.text,
                         cell.confidence,
-                        [
-                            *self._rapid_readings(gray, numeric=False),
-                            *tess,
-                            *photo_readings,
-                            *aligned_readings,
-                        ],
+                        readings,
                         extended_photo_word=not receipt and light_on_dark(gray),
+                        receipt_text=receipt,
                     )
                     if receipt:
+                        selected = choose_receipt_text(
+                            cell.text,
+                            cell.confidence,
+                            gray,
+                            readings,
+                            selected,
+                            self._dictionary.word_is_known,
+                        )
                         selected = RegionReading(
                             self._receipt_equals(api, gray, selected.text),
                             selected.confidence,

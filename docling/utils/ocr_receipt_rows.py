@@ -117,7 +117,7 @@ def _supported_wide_field(
         ) or any(
             candidate.index != amount.index
             and abs(candidate.rect.to_bounding_box().r - right.r) <= height
-            and _receipt_field_distance(peer, candidate, lines, page_height)[0]
+            and receipt_field_distance(peer, candidate, lines, page_height)[0]
             <= min(other.height, candidate.rect.to_bounding_box().height) * 0.6
             for candidate in amounts
         ):
@@ -125,7 +125,7 @@ def _supported_wide_field(
     return len(row_centers) >= 2
 
 
-def _receipt_field_distance(
+def receipt_field_distance(
     label: TextCell, amount: TextCell, lines: list[TextCell], page_height: float
 ) -> tuple[float, bool]:
     """Use a nearby wide caption to measure tilt before extrapolating digits.
@@ -154,7 +154,29 @@ def _receipt_field_distance(
         if abs(slope) <= 0.15:
             slopes.append(slope)
     if not slopes:
-        return field_row_distance(label, amount), False
+        # Two aligned local captions can establish a short field's baseline
+        # even when neither is twice as wide as a distant amount.
+        local = []
+        for anchor in lines:
+            region = anchor.rect.to_bounding_box()
+            rect = anchor.rect
+            dx = (rect.r_x1 + rect.r_x2 - rect.r_x0 - rect.r_x3) / 2
+            if (
+                anchor.confidence < 0.65
+                or not is_receipt_field_caption(anchor.text)
+                or re.search(r"\d", anchor.text)
+                or region.width < other.width * 1.2
+                or abs(region.l - box.l) > min(region.height, box.height) * 2
+                or abs((region.t + region.b) / 2 - center) > page_height * 0.12
+                or dx <= 0
+            ):
+                continue
+            slope = (rect.r_y1 + rect.r_y2 - rect.r_y0 - rect.r_y3) / (2 * dx)
+            if abs(slope) <= 0.15:
+                local.append(slope)
+        if len(local) < 2 or max(local) - min(local) > 0.02:
+            return field_row_distance(label, amount), False
+        slopes = local
     tilt = median(slopes)
     rect = amount.rect
     dx = (rect.r_x1 + rect.r_x2 - rect.r_x0 - rect.r_x3) / 2
@@ -193,7 +215,7 @@ def join_receipt_fields(page: Page) -> None:
             if amount.index in used:
                 continue
             other = amount.rect.to_bounding_box()
-            distance, preserve_pixels = _receipt_field_distance(
+            distance, preserve_pixels = receipt_field_distance(
                 label, amount, lines, page.size.height
             )
             height = min(box.height, other.height)
@@ -220,6 +242,12 @@ def join_receipt_fields(page: Page) -> None:
             continue
         _, amount, preserve_pixels = min(candidates, key=lambda item: item[0])
         other = amount.rect.to_bounding_box()
+        dx = (other.l + other.r - box.l - box.r) / 2
+        if dx > 0 and abs((other.t + other.b - box.t - box.b) / (2 * dx)) > 0.1:
+            # A steep field's enclosing frame obscures the amount's real
+            # position. Keep both independently located source cells instead
+            # of assigning the number the distant caption's center.
+            continue
         merged[label.index] = label.model_copy(
             update={
                 "text": f"{label.text} {amount.text}",

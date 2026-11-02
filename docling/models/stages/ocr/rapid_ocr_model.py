@@ -1303,6 +1303,11 @@ class RapidOcrModel(BaseOcrModel):
     ) -> _OcrPrediction:
         from docling.utils.ocr_line_order import order_ocr_lines
 
+        neighbors = [word for _, words in selected for word in words]
+        selected = [
+            deduplicate_line_words(line, words, neighbors=neighbors)
+            for line, words in selected
+        ]
         ordered = order_ocr_lines(selected, line_band=cls._line_band)
         return _OcrPrediction(
             [line for line, _ in ordered], [words for _, words in ordered]

@@ -1,0 +1,15 @@
+{
+  "reference_sha256": "c42fad8b3dabeac0761a9de4969e3fb42c5d2d0c8013585561a461e77574275b",
+  "corrections": [],
+  "field_corrections": [
+    {
+      "case_id": "receipt-grocery-vat10-9999",
+      "field_name": "vat-amount-10",
+      "original": "9.09",
+      "reviewed": "9.08",
+      "source_page": 1,
+      "source_sha256": "24f4545f99246e2db8f9fad70aa699d28d4e4b804464615a94e21e8dd1623127",
+      "evidence": "Magnified original publisher-binarized pixels show 9.08: the final glyph has two closed loops. The original reference was a manual transcription error. Source size is 1152x1536; unmodified source crop (461,588,541,616) is preserved in vat-source-detail.png. No tax arithmetic or expected totals were used. Original references and first-run scores remain unchanged."
+    }
+  ]
+}

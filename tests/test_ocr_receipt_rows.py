@@ -5,6 +5,7 @@
 
 # ruff: noqa: RUF001 -- Russian fiscal captions are the test source text.
 
+import pytest
 from docling_core.types.doc import BoundingBox, DocItemLabel, Size
 from docling_core.types.doc.page import (
     BoundingRectangle,
@@ -149,7 +150,8 @@ def test_wide_gutter_does_not_use_fields_in_a_different_caption_column():
     assert page.parsed_page.textline_cells[0].text == "ИТОГО"
 
 
-def test_tilted_field_uses_its_own_amount_despite_neighboring_axis_overlap():
+@pytest.mark.parametrize("tilt", [0.07, 0.14])
+def test_tilted_field_uses_its_own_amount_despite_neighboring_axis_overlap(tilt):
     caption = _cell(0, "НДС", (40, 100, 120, 118))
     amount = _cell(1, "12.34", (300, 100, 400, 118))
     neighbor = _cell(2, "999.00", (300, 78, 400, 96))
@@ -158,15 +160,17 @@ def test_tilted_field_uses_its_own_amount_despite_neighboring_axis_overlap():
         # Project every corner using the same physical paper tilt.
         cell.rect = rect.model_copy(
             update={
-                "r_y0": rect.r_y0 + rect.r_x0 * 0.07,
-                "r_y1": rect.r_y1 + rect.r_x1 * 0.07,
-                "r_y2": rect.r_y2 + rect.r_x2 * 0.07,
-                "r_y3": rect.r_y3 + rect.r_x3 * 0.07,
+                "r_y0": rect.r_y0 + rect.r_x0 * tilt,
+                "r_y1": rect.r_y1 + rect.r_x1 * tilt,
+                "r_y2": rect.r_y2 + rect.r_x2 * tilt,
+                "r_y3": rect.r_y3 + rect.r_x3 * tilt,
             }
         )
     page = _page([caption, neighbor, amount])
     join_receipt_fields(page)
-    assert [cell.text for cell in page.cells] == ["НДС 12.34", "999.00"]
+    assert [cell.text for cell in page.cells] == (
+        ["НДС 12.34", "999.00"] if tilt < 0.1 else ["НДС", "999.00", "12.34"]
+    )
 
 
 def test_curved_paper_uses_wide_text_instead_of_misleading_short_digit_baseline():
@@ -222,3 +226,26 @@ def test_curved_paper_uses_wide_text_instead_of_misleading_short_digit_baseline(
     for cell in page.cells[1:]:
         assert cell.rect.r_y0 == cell.rect.r_y1
         assert cell.rect.r_y2 == cell.rect.r_y3
+
+
+def test_two_caption_baselines_keep_a_bad_digit_quad_out_of_the_previous_row():
+    total = _cell(0, "ИТОГ", (40, 90, 160, 120))
+    tax = _cell(1, "СУММА БЕЗ НДС", (40, 135, 280, 165))
+    cash = _cell(2, "БЕЗНАЛИЧНЫМИ", (40, 180, 260, 210))
+    amount = _cell(3, "240.10", (480, 135, 600, 165))
+    rect = amount.rect
+    amount.rect = rect.model_copy(
+        update={
+            "r_y0": rect.r_y0 + (rect.r_x0 - 540) * 0.08,
+            "r_y1": rect.r_y1 + (rect.r_x1 - 540) * 0.08,
+            "r_y2": rect.r_y2 + (rect.r_x2 - 540) * 0.08,
+            "r_y3": rect.r_y3 + (rect.r_x3 - 540) * 0.08,
+        }
+    )
+    page = _page([total, tax, cash, amount])
+    join_receipt_fields(page)
+    assert [c.text for c in page.cells] == [
+        "ИТОГ",
+        "СУММА БЕЗ НДС 240.10",
+        "БЕЗНАЛИЧНЫМИ",
+    ]

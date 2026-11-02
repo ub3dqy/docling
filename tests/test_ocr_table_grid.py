@@ -69,6 +69,63 @@ def test_dense_grid_keeps_adjacent_amounts_in_separate_rows(uneven_light: bool) 
 
 
 @pytest.mark.parametrize("adaptive", [False, True])
+@pytest.mark.parametrize("skewed", [False, True])
+def test_short_wide_grid_keeps_the_last_financial_row(
+    adaptive: bool, skewed: bool
+) -> None:
+    import cv2
+
+    image = Image.new("RGB", (1120, 360), "white")
+    draw = ImageDraw.Draw(image)
+    xs, ys = [20, 140, 500, 590, 750, 910, 1080], [40, 90, 135, 175, 215, 255, 295]
+    for x in xs:
+        draw.line((x, ys[0], x, ys[-1]), fill="black", width=2)
+    for y in ys:
+        draw.line((xs[0], y, xs[-1], y), fill="black", width=2)
+    transform = np.array(
+        [[1, -0.005 if skewed else 0, 5], [0.014 if skewed else 0, 1, 3]],
+        dtype=float,
+    )
+    image = Image.fromarray(
+        cv2.warpAffine(np.asarray(image), transform, image.size, borderValue=(255,) * 3)
+    )
+    words = []
+    for row, y in enumerate(ys[:-1]):
+        for col, x in enumerate(xs[:-1]):
+            left, top = transform @ np.array([x + 8, y + 8, 1])
+            words.append(
+                _cell(
+                    len(words),
+                    f"label{row}" if col < 2 else str(1100 + row) if col == 2 else "10",
+                    (float(left), float(top), float(left + 35), float(top + 12)),
+                )
+            )
+    corners = [
+        transform @ np.array([x, y, 1])
+        for x in (xs[0], xs[-1])
+        for y in (ys[0], ys[-1])
+    ]
+    cluster = Cluster(
+        id=0,
+        label=DocItemLabel.TABLE,
+        bbox=BoundingBox(
+            l=min(p[0] for p in corners) - 6,
+            t=min(p[1] for p in corners) - 6,
+            r=max(p[0] for p in corners) + 6,
+            b=max(p[1] for p in corners) + 6,
+        ),
+    )
+    table = table_from_ocr_grid(
+        image, cluster, words, page_no=1, scale=1, adaptive_thresholds=adaptive
+    )
+    assert table is not None
+    assert (table.num_rows, table.num_cols) == (6, 6)
+    assert [
+        cell.text for cell in table.table_cells if cell.start_row_offset_idx == 5
+    ] == ["label5", "label5", "1105", "10", "10", "10"]
+
+
+@pytest.mark.parametrize("adaptive", [False, True])
 def test_photo_grid_recovers_skewed_rules_without_duplicate_rows(
     adaptive: bool,
 ) -> None:

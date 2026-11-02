@@ -143,7 +143,7 @@ def _needs_reading(
         verify_quotes
         or _bad_letters(text, known) >= 3
         or (
-            len(cluster.cells) >= 4
+            len(cluster.cells) >= 2
             and median(cell.rect.to_bounding_box().width for cell in cluster.cells)
             < cluster.bbox.width * 0.65
         )
@@ -423,7 +423,7 @@ def refine_pdf_prose(refiner: OcrRegionRefiner, page: Page) -> None:
                 continue
             if (
                 _bad_letters(candidate, known) >= _bad_letters(original, known)
-                and len(cluster.cells) <= len(rows) * 1.5
+                and len(cluster.cells) < len(rows) * 1.5
                 and not confirmed_quote_repair(original, rows, quote_deficit)
             ):
                 continue

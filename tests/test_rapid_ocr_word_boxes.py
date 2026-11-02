@@ -296,3 +296,23 @@ def test_overlapping_character_does_not_duplicate_a_price_in_the_joined_line() -
     separate = (_box(104, 20, 119, 50), "9", 0.7)
     result = RapidOcrModel._order_and_join([(line, [price, separate, quantity])])
     assert [word[1] for word in result.words] == ["87.99", "9", "2=175.98"]
+
+
+def test_character_repeated_in_a_neighboring_detector_line_keeps_one_source_copy():
+    prefix = (_box(10, 20, 100, 40), "31 December", 0.98)
+    duplicated = (_box(111, 20, 119, 40), "2", 0.98)
+    year = (_box(110, 20, 155, 40), "2027", 0.99)
+    first = (_box(10, 20, 119, 40), "31 December 2", 0.98)
+    second = (_box(110, 20, 155, 40), "2027", 0.99)
+    result = RapidOcrModel._order_and_join(
+        [(first, [prefix, duplicated]), (second, [year])]
+    )
+    assert [word[1] for word in result.words] == ["31 December", "2027"]
+    assert " ".join(line[1] for line in result.lines) == "31 December 2027"
+    # A separate printed quantity must not disappear because its digit also
+    # occurs in the year or in another detector's neighboring line.
+    separate = (_box(100, 20, 108, 40), "2", 0.98)
+    result = RapidOcrModel._order_and_join(
+        [(first, [prefix, separate]), (second, [year])]
+    )
+    assert [word[1] for word in result.words] == ["31 December", "2", "2027"]

@@ -93,13 +93,18 @@ def photo_grid(gray: np.ndarray) -> PhotoGrid | None:
                 groups.append([int(position)])
         boundaries.append([float(median(group)) for group in groups])
     columns, rows = boundaries
+    # Rectifying a sloped outer rule leaves corner clearance in the original
+    # axis-aligned canvas. Account for that geometric clearance separately
+    # from the tolerated margin; a wide table magnifies the vertical offset.
+    column_margin = width * 0.06 + abs(vertical_slope) * height / 2
+    row_margin = height * 0.06 + abs(horizontal_slope) * width / 2
     if (
         len(columns) < 4
         or len(rows) < 6
-        or columns[0] > width * 0.06
-        or columns[-1] < width * 0.94
-        or rows[0] > height * 0.06
-        or rows[-1] < height * 0.94
+        or columns[0] > column_margin
+        or columns[-1] < width - column_margin
+        or rows[0] > row_margin
+        or rows[-1] < height - row_margin
         or any(b - a < 6 for a, b in pairwise(columns))
         or any(b - a < 6 for a, b in pairwise(rows))
     ):
@@ -116,7 +121,7 @@ def photo_table_regions(
     if not table.from_ocr_grid:
         return {}
     box = table.cluster.bbox.scaled(scale)
-    padding = max(3, round(box.width * 0.02))
+    padding = max(3, round(min(box.width, box.height) * 0.02))
     left, top = max(0, int(box.l) - padding), max(0, int(box.t) - padding)
     right = min(image.width, ceil(box.r) + padding)
     bottom = min(image.height, ceil(box.b) + padding)
@@ -170,7 +175,7 @@ def table_from_photo_grid(
     except ImportError:
         return None
     box = cluster.bbox.scaled(scale)
-    padding = max(3, round(box.width * 0.02))
+    padding = max(3, round(min(box.width, box.height) * 0.02))
     left, top = max(0, int(box.l) - padding), max(0, int(box.t) - padding)
     right = min(image.width, ceil(box.r) + padding)
     bottom = min(image.height, ceil(box.b) + padding)

@@ -105,6 +105,22 @@ def refine_table_regions(
                 column for column, keys in column_keys.items() if len(keys) >= 3
             }
             if table.from_ocr_grid:
+                # Short financial tables can have only two small amounts in
+                # a year column. Printed dashes in its other physical cells
+                # still need inspection; neither large totals nor OCR words
+                # are required to see a real source dash.
+                for column, keys in column_keys.items():
+                    body = [
+                        cell
+                        for cell in table.table_cells
+                        if cell.start_col_offset_idx == column
+                        and not cell.column_header
+                        and not cell.row_header
+                    ]
+                    if len(keys) >= 2 and not any(
+                        char.isalpha() for cell in body for char in cell.text
+                    ):
+                        numeric_columns.add(column)
                 # A fully ruled amount column can contain only printed dashes.
                 # Its empty OCR output is not evidence of an empty source cell.
                 amount_rows: dict[int, int] = defaultdict(int)

@@ -170,7 +170,9 @@ def refine_receipt_fields(
                 continue
             selected = max(candidates, key=lambda reading: reading.confidence)
         else:
-            selected = refiner._choose_text(cell.text, cell.confidence, readings)
+            selected = refiner._choose_text(
+                cell.text, cell.confidence, readings, receipt_text=True
+            )
         text = retain_field_numbers(cell.text, selected.text)
         if text is None or text == cell.text:
             continue

@@ -91,14 +91,33 @@ def _repeated_digit_amount(
 
 
 def refine_receipt_prices(
-    refiner: OcrRegionRefiner, page: Page, image: Image.Image, api: PyTessBaseAPI
+    refiner: OcrRegionRefiner,
+    page: Page,
+    image: Image.Image,
+    api: PyTessBaseAPI,
+    *,
+    verified_lines: set[int] | None = None,
 ) -> set[int]:
     """Verify individual printed amounts inside otherwise mixed receipt lines."""
     from rapidocr.ch_ppocr_rec.typings import TextRecOutput
 
     assert page.parsed_page is not None
+    verified = [
+        cell
+        for cell in page.parsed_page.textline_cells
+        if verified_lines is not None and cell.index in verified_lines
+    ]
     changed: set[int] = set()
     for word in page.parsed_page.word_cells:
+        if any(
+            word.text == cell.text
+            and word.rect.to_bounding_box().intersection_over_self(
+                cell.rect.to_bounding_box()
+            )
+            >= 0.8
+            for cell in verified
+        ):
+            continue
         amounts = list(re.finditer(r"(?<![\d.,])\d{1,7}[.,]\d{2}(?![\d.,])", word.text))
         if len(amounts) != 1:
             continue

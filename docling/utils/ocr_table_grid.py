@@ -127,10 +127,9 @@ def _table_from_ocr_grid(
         return None
 
     box = cluster.bbox.scaled(scale)
-    padding = max(
-        3,
-        round((min(box.width, box.height) if allow_open_labels else box.width) * 0.02),
-    )
+    # Width-based padding can consume most of a short, wide table's height
+    # and make its real outer rules fail the completeness check.
+    padding = max(3, round(min(box.width, box.height) * 0.02))
     left = max(0, int(box.l) - padding)
     top = max(0, int(box.t) - padding)
     right = min(image.width, ceil(box.r) + padding)

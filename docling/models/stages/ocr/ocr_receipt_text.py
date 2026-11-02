@@ -25,6 +25,7 @@ from docling.utils.ocr_receipt_rows import (
     field_row_distance,
     field_row_rect,
     is_receipt_field_caption,
+    receipt_field_distance,
 )
 from docling.utils.ocr_region_pixels import clean_region
 from docling.utils.ocr_text_geometry import extend_text_rect, rectified_text_crop
@@ -81,7 +82,7 @@ def choose_caption(
                 rate is None
                 or "%" in original
                 or not _fiscal_letters(original).startswith(_fiscal_letters(text)[:2])
-                or before != [rate[1] + "7"]
+                or before not in ([rate[1] + "7"], [rate[1] + "2"])
                 or not any(
                     other.confidence >= 0.6
                     and recognizer_family(other.engine)
@@ -130,6 +131,32 @@ def choose_caption(
         return RegionReading(
             text, candidate.confidence, candidate.engine, candidate.variant
         )
+    # A fiscal abbreviation can already be correct while only its percent
+    # glyph is damaged. Preserve those observed letters; do not require a
+    # recognizer to spell the entire caption correctly to confirm the mark.
+    if re.search(
+        r"\b\u041d\u0414\u0421\b", normalize_mixed_script(original), re.IGNORECASE
+    ) and ("%" not in original and re.search(r"[.,]\d", original) is None):
+        groups: dict[str, set[str]] = {}
+        for reading in readings:
+            if reading.confidence < 0.8:
+                continue
+            rates = re.findall(r"(?<!\d)(\d{1,3})%", reading.text)
+            if len(rates) != 1 or _NUMBER.findall(original) not in (
+                [rates[0] + "2"],
+                [rates[0] + "7"],
+            ):
+                continue
+            groups.setdefault(rates[0], set()).add(recognizer_family(reading.engine))
+        verified = [rate for rate, families in groups.items() if len(families) >= 2]
+        if len(verified) == 1:
+            rate = verified[0]
+            return RegionReading(
+                re.sub(r"\d+", rate + "%", original),
+                0.8,
+                "caption-rate-consensus",
+                "same-letters",
+            )
     return None
 
 
@@ -243,6 +270,38 @@ def remove_duplicate_fiscal_marks(page: Page, verified: set[int]) -> None:
     _apply(page, {}, removed)
 
 
+def retain_company_quotes(
+    original: str, selected: RegionReading, readings: list[RegionReading]
+) -> RegionReading:
+    """Retain an observed closing quote confirmed by another source reader."""
+    original = original.strip()
+    closing = {'"': '"', "«": "»"}.get(original[:1])
+    text = selected.text
+    if (
+        closing is None
+        or not original.endswith(closing)
+        or text.endswith(closing)
+        or text.count(original[0]) != 1
+    ):
+        return selected
+    for other in readings:
+        if (
+            other.confidence >= 0.85
+            and recognizer_family(other.engine) != recognizer_family(selected.engine)
+            and re.match(r"[0oO\u041e\u043e]{3}", other.text)
+            and other.text.strip().endswith(closing)
+            and _letters(other.text[3:]) == _letters(text[3:])
+            and _NUMBER.findall(other.text[3:]) == _NUMBER.findall(original)
+        ):
+            return RegionReading(
+                text + closing,
+                min(selected.confidence, other.confidence),
+                selected.engine,
+                "company-quote-consensus",
+            )
+    return selected
+
+
 def refine_company_heading(
     refiner: OcrRegionRefiner, page: Page, gray: np.ndarray
 ) -> set[int]:
@@ -252,7 +311,7 @@ def refine_company_heading(
     removed: set[int] = set()
     for prefix in lines:
         if (
-            not re.fullmatch(r"[0\u041eO]{3}", prefix.text)
+            not re.fullmatch(r"[0oO\u041e\u043e]{3}", prefix.text)
             or prefix.rect.to_bounding_box().b > page.size.height * 0.3
         ):
             continue
@@ -278,11 +337,17 @@ def refine_company_heading(
             crop = rectified_text_crop(gray, rect, page.size)
             if crop is None:
                 continue
-            readings = refiner._text_row_readings(crop)
+            readings = [
+                *refiner._text_row_readings(crop),
+                *refiner._cyrillic_readings(crop),
+            ]
             for reading in sorted(
                 readings, key=lambda item: item.confidence, reverse=True
             ):
                 text = normalize_mixed_script(reading.text).strip()
+                text = re.sub(
+                    r'^[0oO\u041e\u043e]{3}\s*(?=["«])', "\u041e\u041e\u041e ", text
+                )
                 if reading.confidence < 0.95 or not re.match(
                     r'^\u041e{3}\s+["«]', text
                 ):
@@ -305,12 +370,19 @@ def refine_company_heading(
                     for other in readings
                 ):
                     continue
+                selected = retain_company_quotes(
+                    name.text,
+                    RegionReading(
+                        text, reading.confidence, reading.engine, reading.variant
+                    ),
+                    readings,
+                )
                 replacements[prefix.index] = prefix.model_copy(
                     update={
-                        "text": text,
+                        "text": selected.text,
                         "orig": prefix.orig + " " + name.orig,
                         "rect": rect,
-                        "confidence": reading.confidence,
+                        "confidence": selected.confidence,
                     }
                 )
                 removed.add(name.index)
@@ -351,7 +423,8 @@ def recover_total_caption(
             / 2,
         )
         if any(
-            field_row_distance(label, amount) < box.height * 0.8
+            receipt_field_distance(label, amount, lines, page.size.height)[0]
+            < box.height * 0.8
             and label.rect.to_bounding_box().r < box.l
             for label in labels
         ):

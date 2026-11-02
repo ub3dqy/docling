@@ -14,13 +14,40 @@ from docling.models.stages.ocr.ocr_receipt_text import (
     choose_amount_marks,
     choose_caption,
     remove_duplicate_fiscal_marks,
+    retain_company_quotes,
 )
 from docling.models.stages.ocr.ocr_region_refiner import RegionReading
 
 
+def test_company_merge_keeps_a_quote_observed_by_an_independent_reader():
+    original = '"Северная компания Б17"'
+    selected = RegionReading(
+        'ООО "Северная компания Б-17', 0.98, "cyrillic-v6-medium", "source"
+    )
+    other = RegionReading(
+        'о00 "Северная компания б 17"', 0.89, "cyrillic-v6-tiny", "source"
+    )
+    retained = retain_company_quotes(original, selected, [other])
+    assert retained.text == selected.text + '"'
+    assert retained.confidence == other.confidence
+    assert retain_company_quotes(original, selected, []).text == selected.text
+    assert (
+        retain_company_quotes(original.rstrip('"'), selected, [other]).text
+        == selected.text
+    )
+    for candidate in (
+        RegionReading(other.text, 0.99, selected.engine, "clean"),
+        RegionReading(other.text.replace("17", "18"), 0.99, other.engine, "source"),
+    ):
+        assert (
+            retain_company_quotes(original, selected, [candidate]).text == selected.text
+        )
+
+
+@pytest.mark.parametrize("suffix", ["2", "7"])
 @pytest.mark.parametrize("rate", [2, 5, 18, 22])
-def test_percent_glyph_repair_needs_an_independently_observed_same_rate(rate):
-    original = f"СУННА НС {rate}7"
+def test_percent_glyph_repair_needs_an_independently_observed_same_rate(rate, suffix):
+    original = f"СУННА НС {rate}{suffix}"
     readings = [
         RegionReading(f"СУММА НДС {rate}%", 0.98, "cyrillic-v6-medium", "source"),
         RegionReading(f"СУННА НДС {rate}%", 0.7, "tesseract", "clean"),
