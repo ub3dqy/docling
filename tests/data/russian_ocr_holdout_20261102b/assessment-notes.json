@@ -1,0 +1,80 @@
+{
+  "scope": "Visual interpretation of the unchanged first-run evidence. No reference, ROI, threshold, model, runtime or original score was changed.",
+  "reference_sha256": "c42fad8b3dabeac0761a9de4969e3fb42c5d2d0c8013585561a461e77574275b",
+  "original_case_scores_replaced": false,
+  "observations": [
+    {
+      "id": "vat20-center-region-false-negative",
+      "case": "receipt-grocery-discount-vat20",
+      "field": "vat-amount-20",
+      "source_amount": "6.67",
+      "frozen_roi": [
+        0.42,
+        0.331,
+        0.51,
+        0.35
+      ],
+      "ocr_line": {
+        "text": "Сумма НДС 20% 6.67",
+        "confidence": 0.9770401532833393,
+        "bbox": [
+          0.23458333333333334,
+          0.3045357142857143,
+          0.49916666666666665,
+          0.3546205357142857
+        ]
+      },
+      "line_y_midpoint": 0.329578125,
+      "present_in_export": true,
+      "assessment": "Correctly read VAT amount. The center of the merged line lies above the frozen field ROI. The original negative score is a measurement limitation, not an OCR omission."
+    },
+    {
+      "id": "clinic-source-separator-ambiguous",
+      "case": "receipt-clinic-13950",
+      "fields": [
+        "total",
+        "received"
+      ],
+      "frozen_numeric_value": "13950.00",
+      "actual_ocr": "13950:00",
+      "source_crops_pixels": [
+        [
+          675,
+          500,
+          975,
+          590
+        ],
+        [
+          805,
+          650,
+          980,
+          690
+        ]
+      ],
+      "assessment": "Magnified publisher-binarized source has visible upper and lower ink marks at the separator in both amounts. The reference records a conventional numeric value. The exact separator cannot be confidently adjudicated as a model error. No source pixels or reference bytes were altered."
+    },
+    {
+      "id": "clinical-bank-slip-merged",
+      "case": "receipt-clinic-13950",
+      "assessment": "BANK is visible on a neighboring terminal slip. The predicted combined line intersects the merchant ROI and therefore includes this source word in the score. There are also genuine character-class and hyphen differences within the merchant name. The extra word is not invented text."
+    },
+    {
+      "id": "discount-receipt-label-association",
+      "case": "receipt-grocery-discount-vat20",
+      "actual_caption": "БЕЗНАЛИЧНЫМИ: 10.00",
+      "source_card_payment": "39.99",
+      "assessment": "The correct 39.99 is present separately and passes the numeric field test, but the no-cash caption is incorrectly associated with 10.00. Region numeric presence alone does not prove label/value alignment."
+    },
+    {
+      "id": "table-empty-column-comparison",
+      "cases": [
+        "partners-balance-fixed",
+        "partners-balance-current"
+      ],
+      "original_runner_correct_cells": 70,
+      "same_ocr_with_empty_columns_preserved_correct_cells": 72,
+      "total_cells": 81,
+      "assessment": "The unchanged row checker removes empty cells before comparing, so correctly located 427 and 25 also receive a negative result after earlier dashes disappear. The supplemental column count keeps empty cells; it still rejects all five missing dashes and four misplaced numeric values."
+    }
+  ]
+}

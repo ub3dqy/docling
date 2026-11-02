@@ -1,0 +1,698 @@
+{
+  "scope": "New holdout 2026-11-02b: 10 pages from 8 previously unused originals. Visual controls were authored before OCR; runtime, models and thresholds remain fixed. This is selected-region quality, not full-document accuracy or a newly trained model.",
+  "exclusions": [
+    "Blank forms and digitally composed specimen letters are not scored as real scans. Candidates 000029, 000041, 000259, 000282 and 000383 were excluded before inference; 000305 is primarily handwriting, outside the printed-text scope. Other downloaded candidates were not selected before inference.",
+    "Handwriting, signatures, seals, logos as graphics, QR codes, passport holder identity, passport number and bank terminal slips are outside the controls. The printed merchant word in the grocery logo is included as text.",
+    "The folded right column of IMG_1001 has visually ambiguous strokes. Its totals are excluded before inference; the legible price before discount, discount, card payment and VAT on the left are included. No value is calculated from another field.",
+    "Only the specified text regions and numeric rows are scored. Receipt images are publisher-binarized photographs, not original colour photos; this cannot measure robustness to all camera/lighting conditions.",
+    "Images and PDFs are downloaded from public sources for local evaluation and are not redistributed in Git. Dataset-provided model transcriptions were not used as ground truth. Source copyright and dataset licensing remain with their respective publishers."
+  ],
+  "cases": [
+    {
+      "id": "partners-audit-opinion",
+      "file": "partners-audit-2025.pdf",
+      "page": 2,
+      "kind": "scanned-pdf-prose",
+      "source_url": "https://sstroi.ru/upload/iblock/870/4fq5hr9c1sduwii6jx4zz08w7eg295jm.pdf",
+      "texts": [
+        {
+          "name": "audit-heading",
+          "roi": [
+            0.12,
+            0.085,
+            0.92,
+            0.12
+          ],
+          "max_cer": 0.02,
+          "text": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГО АУДИТОРА"
+        },
+        {
+          "name": "audit-opinion",
+          "roi": [
+            0.12,
+            0.372,
+            0.93,
+            0.481
+          ],
+          "max_cer": 0.02,
+          "text": "По нашему мнению, прилагаемая годовая бухгалтерская отчётность отражает достоверно во всех существенных отношениях финансовое положение Ассоциации «Саморегулируемая организация строителей Воронежской области – региональное отраслевое объединение работодателей «Партнёры» по состоянию на 31 декабря 2025 года, целевое использование средств за 2025 год в соответствии с правилами составления бухгалтерской отчётности, установленными в Российской Федерации."
+        },
+        {
+          "name": "audit-basis",
+          "roi": [
+            0.12,
+            0.523,
+            0.93,
+            0.704
+          ],
+          "max_cer": 0.02,
+          "text": "Мы провели аудит в соответствии с Международными стандартами аудита (МСА). Наша ответственность в соответствии с этими стандартами раскрыта в разделе «Ответственность аудитора за аудит бухгалтерской отчётности» настоящего заключения. Мы являемся независимыми по отношению к аудируемому лицу в соответствии с этическими требованиями, принятыми в Российской Федерации, в том числе в Правилах независимости аудиторов и аудиторских организаций и Кодексе профессиональной этики аудиторов, включая требования независимости, применимыми к аудиту бухгалтерской отчетности, и нами выполнены прочие этические обязанности в соответствии с этими требованиями. Мы полагаем, что полученные нами аудиторские доказательства являются достаточными и надлежащими, чтобы служить основанием для выражения нашего мнения."
+        }
+      ],
+      "rows": [],
+      "fields": []
+    },
+    {
+      "id": "partners-balance-fixed",
+      "file": "partners-balance-2025.pdf",
+      "page": 1,
+      "kind": "scanned-pdf-table",
+      "source_url": "https://sstroi.ru/upload/iblock/341/a9qu5a2gwibspnmn37f8iwhnr058ofcq.pdf",
+      "texts": [
+        {
+          "name": "balance-heading",
+          "roi": [
+            0.3,
+            0.36,
+            0.63,
+            0.398
+          ],
+          "max_cer": 0.02,
+          "text": "Бухгалтерский баланс на 31 декабря 2025 г."
+        }
+      ],
+      "rows": [
+        {
+          "key": "1150",
+          "values": [
+            "-",
+            "-",
+            "427"
+          ]
+        },
+        {
+          "key": "1170",
+          "values": [
+            "10",
+            "10",
+            "10"
+          ]
+        },
+        {
+          "key": "1171",
+          "values": [
+            "10",
+            "10",
+            "10"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "partners-balance-current",
+      "file": "partners-balance-2025.pdf",
+      "page": 2,
+      "kind": "scanned-pdf-table",
+      "source_url": "https://sstroi.ru/upload/iblock/341/a9qu5a2gwibspnmn37f8iwhnr058ofcq.pdf",
+      "texts": [],
+      "rows": [
+        {
+          "key": "1100",
+          "values": [
+            "10",
+            "10",
+            "437"
+          ]
+        },
+        {
+          "key": "1230",
+          "values": [
+            "53807",
+            "53509",
+            "53526"
+          ]
+        },
+        {
+          "key": "1231",
+          "values": [
+            "134",
+            "72",
+            "98"
+          ]
+        },
+        {
+          "key": "1232",
+          "values": [
+            "12",
+            "17",
+            "-"
+          ]
+        },
+        {
+          "key": "1233",
+          "values": [
+            "-",
+            "-",
+            "25"
+          ]
+        },
+        {
+          "key": "1234",
+          "values": [
+            "53661",
+            "53420",
+            "53403"
+          ]
+        },
+        {
+          "key": "1250",
+          "values": [
+            "378215",
+            "301496",
+            "247401"
+          ]
+        },
+        {
+          "key": "1251",
+          "values": [
+            "27896",
+            "22031",
+            "20905"
+          ]
+        },
+        {
+          "key": "1252",
+          "values": [
+            "350319",
+            "279465",
+            "226495"
+          ]
+        },
+        {
+          "key": "1200",
+          "values": [
+            "432023",
+            "355005",
+            "300927"
+          ]
+        },
+        {
+          "key": "1600",
+          "values": [
+            "432033",
+            "355015",
+            "301364"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "partners-balance-liabilities",
+      "file": "partners-balance-2025.pdf",
+      "page": 3,
+      "kind": "scanned-pdf-table",
+      "source_url": "https://sstroi.ru/upload/iblock/341/a9qu5a2gwibspnmn37f8iwhnr058ofcq.pdf",
+      "texts": [],
+      "rows": [
+        {
+          "key": "1330",
+          "values": [
+            "26190",
+            "20395",
+            "19731"
+          ]
+        },
+        {
+          "key": "1370",
+          "values": [
+            "402029",
+            "331996",
+            "278610"
+          ]
+        },
+        {
+          "key": "1300",
+          "values": [
+            "428219",
+            "352391",
+            "298341"
+          ]
+        },
+        {
+          "key": "1520",
+          "values": [
+            "3814",
+            "2624",
+            "3023"
+          ]
+        },
+        {
+          "key": "1521",
+          "values": [
+            "248",
+            "9",
+            "5"
+          ]
+        },
+        {
+          "key": "1522",
+          "values": [
+            "720",
+            "637",
+            "284"
+          ]
+        },
+        {
+          "key": "1523",
+          "values": [
+            "255",
+            "217",
+            "440"
+          ]
+        },
+        {
+          "key": "1524",
+          "values": [
+            "149",
+            "118",
+            "101"
+          ]
+        },
+        {
+          "key": "1525",
+          "values": [
+            "-",
+            "1",
+            "-"
+          ]
+        },
+        {
+          "key": "1526",
+          "values": [
+            "-",
+            "22",
+            "22"
+          ]
+        },
+        {
+          "key": "1527",
+          "values": [
+            "2442",
+            "1620",
+            "2171"
+          ]
+        },
+        {
+          "key": "1500",
+          "values": [
+            "3814",
+            "2624",
+            "3023"
+          ]
+        },
+        {
+          "key": "1700",
+          "values": [
+            "432033",
+            "355015",
+            "301364"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "photo-passport-issuer",
+      "file": "doc-000232.jpg",
+      "page": 1,
+      "kind": "document-photograph",
+      "source_url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000232.jpg",
+      "texts": [
+        {
+          "name": "issuer",
+          "roi": [
+            0.2,
+            0.201,
+            0.77,
+            0.255
+          ],
+          "max_cer": 0.02,
+          "text": "УФМС РОССИИ ПО ПЕНЗЕНСКОЙ ОБЛ. В ПЕНЗЕНСКОМ РАЙОНЕ"
+        }
+      ],
+      "rows": [],
+      "fields": []
+    },
+    {
+      "id": "scan-award-diploma",
+      "file": "doc-000038.jpg",
+      "page": 1,
+      "kind": "document-scan",
+      "source_url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000038.jpg",
+      "texts": [
+        {
+          "name": "award-heading",
+          "roi": [
+            0.15,
+            0.301,
+            0.84,
+            0.444
+          ],
+          "max_cer": 0.02,
+          "text": "ЛУЧШИЕ ВЫСШИЕ УЧЕБНЫЕ ЗАВЕДЕНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ ДИПЛОМ ЛАУРЕАТА"
+        },
+        {
+          "name": "institution",
+          "roi": [
+            0.15,
+            0.5,
+            0.84,
+            0.618
+          ],
+          "max_cer": 0.02,
+          "text": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)"
+        },
+        {
+          "name": "award-date",
+          "roi": [
+            0.17,
+            0.777,
+            0.37,
+            0.806
+          ],
+          "max_cer": 0.02,
+          "text": "Дата выдачи диплома: 17 Апреля 2018 года."
+        }
+      ],
+      "rows": [],
+      "fields": []
+    },
+    {
+      "id": "receipt-clinic-13950",
+      "file": "IMG_0725_bin.jpg",
+      "page": 1,
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0725_bin.jpg",
+      "texts": [
+        {
+          "name": "merchant",
+          "roi": [
+            0.24,
+            0.204,
+            0.81,
+            0.233
+          ],
+          "max_cer": 0.05,
+          "text": "ООО \"Современная клиника И-25\""
+        },
+        {
+          "name": "thanks",
+          "roi": [
+            0.32,
+            0.912,
+            0.7,
+            0.949
+          ],
+          "max_cer": 0.05,
+          "text": "ЖДЕМ ВАС СНОВА!"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "unit-price",
+          "roi": [
+            0.24,
+            0.272,
+            0.81,
+            0.296
+          ],
+          "value": "13950.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.23,
+            0.312,
+            0.82,
+            0.346
+          ],
+          "value": "13950.00"
+        },
+        {
+          "name": "without-vat",
+          "roi": [
+            0.23,
+            0.347,
+            0.82,
+            0.373
+          ],
+          "value": "13950.00"
+        },
+        {
+          "name": "card-payment",
+          "roi": [
+            0.23,
+            0.383,
+            0.82,
+            0.404
+          ],
+          "value": "13950.00"
+        },
+        {
+          "name": "received",
+          "roi": [
+            0.23,
+            0.405,
+            0.82,
+            0.433
+          ],
+          "value": "13950.00"
+        }
+      ]
+    },
+    {
+      "id": "receipt-household-1760",
+      "file": "IMG_0857_bin.PNG",
+      "page": 1,
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0857_bin.PNG",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "roi": [
+            0.24,
+            0.49,
+            0.73,
+            0.522
+          ],
+          "max_cer": 0.05,
+          "text": "Кассовый чек"
+        },
+        {
+          "name": "without-vat-caption",
+          "roi": [
+            0.245,
+            0.665,
+            0.72,
+            0.693
+          ],
+          "max_cer": 0.05,
+          "text": "СУММА БЕЗ НДС =1760.00"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "unit-price",
+          "roi": [
+            0.25,
+            0.547,
+            0.72,
+            0.569
+          ],
+          "value": "1760.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.25,
+            0.57,
+            0.72,
+            0.597
+          ],
+          "value": "1760.00"
+        },
+        {
+          "name": "card-payment",
+          "roi": [
+            0.25,
+            0.597,
+            0.72,
+            0.619
+          ],
+          "value": "1760.00"
+        },
+        {
+          "name": "without-vat",
+          "roi": [
+            0.25,
+            0.665,
+            0.72,
+            0.693
+          ],
+          "value": "1760.00"
+        }
+      ]
+    },
+    {
+      "id": "receipt-grocery-vat10-9999",
+      "file": "IMG_0948_bin.jpg",
+      "page": 1,
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0948_bin.jpg",
+      "texts": [
+        {
+          "name": "merchant",
+          "roi": [
+            0.3,
+            0.22,
+            0.69,
+            0.267
+          ],
+          "max_cer": 0.05,
+          "text": "Перекрёсток"
+        },
+        {
+          "name": "thanks",
+          "roi": [
+            0.33,
+            0.692,
+            0.55,
+            0.71
+          ],
+          "max_cer": 0.05,
+          "text": "Спасибо за покупку!"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "unit-price",
+          "roi": [
+            0.23,
+            0.296,
+            0.7,
+            0.315
+          ],
+          "value": "99.99"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.23,
+            0.316,
+            0.7,
+            0.339
+          ],
+          "value": "99.99"
+        },
+        {
+          "name": "card-payment",
+          "roi": [
+            0.23,
+            0.367,
+            0.7,
+            0.385
+          ],
+          "value": "99.99"
+        },
+        {
+          "name": "vat-rate-10",
+          "roi": [
+            0.23,
+            0.385,
+            0.7,
+            0.4
+          ],
+          "value": "10"
+        },
+        {
+          "name": "vat-amount-10",
+          "roi": [
+            0.23,
+            0.385,
+            0.7,
+            0.4
+          ],
+          "value": "9.09"
+        }
+      ]
+    },
+    {
+      "id": "receipt-grocery-discount-vat20",
+      "file": "IMG_1001_bin.jpg",
+      "page": 1,
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1001_bin.jpg",
+      "texts": [
+        {
+          "name": "thanks",
+          "roi": [
+            0.31,
+            0.684,
+            0.55,
+            0.722
+          ],
+          "max_cer": 0.05,
+          "text": "Спасибо за покупку!"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "price-before-discount",
+          "roi": [
+            0.35,
+            0.212,
+            0.44,
+            0.238
+          ],
+          "value": "55.99"
+        },
+        {
+          "name": "discount",
+          "roi": [
+            0.45,
+            0.232,
+            0.52,
+            0.249
+          ],
+          "value": "16.00"
+        },
+        {
+          "name": "card-payment",
+          "roi": [
+            0.42,
+            0.312,
+            0.51,
+            0.334
+          ],
+          "value": "39.99"
+        },
+        {
+          "name": "vat-rate-20",
+          "roi": [
+            0.22,
+            0.308,
+            0.51,
+            0.342
+          ],
+          "value": "20"
+        },
+        {
+          "name": "vat-amount-20",
+          "roi": [
+            0.42,
+            0.331,
+            0.51,
+            0.35
+          ],
+          "value": "6.67"
+        }
+      ]
+    }
+  ]
+}

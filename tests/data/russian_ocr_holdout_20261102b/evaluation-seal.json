@@ -1,0 +1,261 @@
+{
+  "sealed_before_first_inference_utc": "2026-11-02T12:37:46.965489+00:00",
+  "commit": "0cfbbe7882f641b3123c6d95bc1cb6616b3e37d6",
+  "reference_sha256": "c42fad8b3dabeac0761a9de4969e3fb42c5d2d0c8013585561a461e77574275b",
+  "source_manifest_sha256": "f9f3b34d3ac613ecda06b393bae700d0d531d453906f492d1569f1e439d6c511",
+  "runner_sha256": "fa3935ed48ccc01c834a8ee4dfd742dc40e8d8bf2361e30ddaaaec5ecf24ac67",
+  "model_files": [
+    {
+      "path": "CyrillicOcrV6/medium/model.onnx",
+      "bytes": 62762162,
+      "sha256": "7e3412339fdb50e26149cce226cca2b0788377fa58a297cdb9df9d2353344b1b"
+    },
+    {
+      "path": "CyrillicOcrV6/medium/NOTICE",
+      "bytes": 115,
+      "sha256": "5a4a4b6c9e20d1a1be7e3a8ae6d0de82e7bbdd983d3c49404fc70c7b0e2e97e5"
+    },
+    {
+      "path": "CyrillicOcrV6/medium/README.md",
+      "bytes": 4589,
+      "sha256": "2b3928023d614d9d83c7d777ac6819ad31eff333071b61422c6cc81c29f928de"
+    },
+    {
+      "path": "CyrillicOcrV6/medium/rec_keys.txt",
+      "bytes": 3631,
+      "sha256": "54d92ec6d2873654d1def513c7a95951402eac2f3b90f5c9c382640bb3f6bbb5"
+    },
+    {
+      "path": "CyrillicOcrV6/tiny/model.onnx",
+      "bytes": 2497057,
+      "sha256": "87ad7e9c5681417b314ced82fccc8f703e05ae084edaf7a8aa31948a71a1a773"
+    },
+    {
+      "path": "CyrillicOcrV6/tiny/NOTICE",
+      "bytes": 115,
+      "sha256": "5a4a4b6c9e20d1a1be7e3a8ae6d0de82e7bbdd983d3c49404fc70c7b0e2e97e5"
+    },
+    {
+      "path": "CyrillicOcrV6/tiny/README.md",
+      "bytes": 4583,
+      "sha256": "2fa5ed810b9fb451016c9419ffea2398e1c91e575db9582cbab38935e1fc4a85"
+    },
+    {
+      "path": "CyrillicOcrV6/tiny/rec_keys.txt",
+      "bytes": 3631,
+      "sha256": "54d92ec6d2873654d1def513c7a95951402eac2f3b90f5c9c382640bb3f6bbb5"
+    },
+    {
+      "path": "docling-project--docling-layout-heron/.gitattributes",
+      "bytes": 1519,
+      "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"
+    },
+    {
+      "path": "docling-project--docling-layout-heron/config.json",
+      "bytes": 3268,
+      "sha256": "fdea30805ce2f5666b147fca941dcdd27ad468e27d6ed21902207d3da056a97d"
+    },
+    {
+      "path": "docling-project--docling-layout-heron/docling_heron_400.png",
+      "bytes": 96925,
+      "sha256": "e7f78610372b32a7938e480d2c7fa1c3037ee170bd82282a5bd026232f6e6f9e"
+    },
+    {
+      "path": "docling-project--docling-layout-heron/model.safetensors",
+      "bytes": 171658996,
+      "sha256": "00333a43451945aaf89db8ca9c0a17e75d1537c17db60fdb91aa95f4c7929e0c"
+    },
+    {
+      "path": "docling-project--docling-layout-heron/preprocessor_config.json",
+      "bytes": 444,
+      "sha256": "cd38cd59999e7a95d68e487fbe5132df3d4e5c32a0836add57e6126ba0c4eaf1"
+    },
+    {
+      "path": "docling-project--docling-layout-heron/README.md",
+      "bytes": 3219,
+      "sha256": "175700839bc7808eac6af1d0c23e4f483606ab2276fe01122f4093e61a1a65b6"
+    },
+    {
+      "path": "docling-project--docling-layout-heron-onnx/.gitattributes",
+      "bytes": 1519,
+      "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"
+    },
+    {
+      "path": "docling-project--docling-layout-heron-onnx/config.json",
+      "bytes": 878,
+      "sha256": "c6e67b6cdf64fa245779d0409bb994aa96e8c1790e15ec07a65843628e232180"
+    },
+    {
+      "path": "docling-project--docling-layout-heron-onnx/model.onnx",
+      "bytes": 171220471,
+      "sha256": "59c81a3a2923042d85034ffc487f8f47e4854117e879aef89b2b9f728fb4922a"
+    },
+    {
+      "path": "docling-project--docling-layout-heron-onnx/preprocessor_config.json",
+      "bytes": 445,
+      "sha256": "54d086cf0d7d371f7fac36e5d3a0dae31e211298affc816106cc376506799d58"
+    },
+    {
+      "path": "docling-project--docling-layout-heron-onnx/README.md",
+      "bytes": 294,
+      "sha256": "48de0f07390f6823a225ce8aab348e7b57408534b56b71f1433ed6280456597f"
+    },
+    {
+      "path": "docling-project--docling-models/.gitattributes",
+      "bytes": 1905,
+      "sha256": "360aba3ff7ce75396f13f0a77925fe9e79997e8d4bac064595ebb00c82700386"
+    },
+    {
+      "path": "docling-project--docling-models/.gitignore",
+      "bytes": 5180,
+      "sha256": "b44b404189eaff3631c470946e7350c2e88cead304d332a8ad50325e6f56e95d"
+    },
+    {
+      "path": "docling-project--docling-models/config.json",
+      "bytes": 41,
+      "sha256": "9c34024dc28ff47b75818f415e769809798c29bf9bde6f2ccc63a4acb62396d9"
+    },
+    {
+      "path": "docling-project--docling-models/model_artifacts/tableformer/accurate/tableformer_accurate.safetensors",
+      "bytes": 212758388,
+      "sha256": "2a7d6c924b3cd12fb99a09280ca9c33a89c5d60b93253617d2e088c1a40374d9"
+    },
+    {
+      "path": "docling-project--docling-models/model_artifacts/tableformer/accurate/tm_config.json",
+      "bytes": 7060,
+      "sha256": "984e122ceb8ccf84d84c9d2882f6f2302a44b4f1e577babd6289892c36f3cffd"
+    },
+    {
+      "path": "docling-project--docling-models/model_artifacts/tableformer/fast/tableformer_fast.safetensors",
+      "bytes": 145453276,
+      "sha256": "3119563aab5a7c96fda4d621119b63fd8806272b86c30936d15507616422f718"
+    },
+    {
+      "path": "docling-project--docling-models/model_artifacts/tableformer/fast/tm_config.json",
+      "bytes": 7060,
+      "sha256": "dca6762508dddfae6d57d6cb4ef822c6000119dff0f3b6489db7413118c2622a"
+    },
+    {
+      "path": "docling-project--docling-models/README.md",
+      "bytes": 3413,
+      "sha256": "d17f233378eff1240b623b36da76ee8b40afcca05d505949713bf03f7e00822a"
+    },
+    {
+      "path": "RapidOcr/ch_PP-OCRv5_det_mobile.onnx",
+      "bytes": 4819576,
+      "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae"
+    },
+    {
+      "path": "RapidOcr/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+      "bytes": 585532,
+      "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+    },
+    {
+      "path": "RapidOcr/cyrillic_PP-OCRv5_rec_mobile.onnx",
+      "bytes": 8074092,
+      "sha256": "90f761b4bfcce0c8c561c0cb5c887b0971d3ec01c32164bdf7374a35b0982711"
+    },
+    {
+      "path": "RapidOcr/eslav_PP-OCRv5_rec_mobile.onnx",
+      "bytes": 7911802,
+      "sha256": "08705d6721849b1347d26187f15a5e362c431963a2a62bfff4feac578c489aab"
+    },
+    {
+      "path": "RapidOcr/PP-OCRv6_det_small.onnx",
+      "bytes": 9929594,
+      "sha256": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f"
+    },
+    {
+      "path": "RapidOcr/PP-OCRv6_rec_small.onnx",
+      "bytes": 21234383,
+      "sha256": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884"
+    },
+    {
+      "path": "tessdata/eng.traineddata",
+      "bytes": 15400601,
+      "sha256": "8280aed0782fe27257a68ea10fe7ef324ca0f8d85bd2fd145d1c2b560bcb66ba"
+    },
+    {
+      "path": "tessdata/osd.traineddata",
+      "bytes": 10562727,
+      "sha256": "9cf5d576fcc47564f11265841e5ca839001e7e6f38ff7f7aacf46d15a96b00ff"
+    },
+    {
+      "path": "tessdata/rus.traineddata",
+      "bytes": 15301764,
+      "sha256": "b617eb6830ffabaaa795dd87ea7fd251adfe9cf0efe05eb9a2e8128b7728d6b6"
+    }
+  ],
+  "new_source_files": {
+    "partners-audit-2025.pdf": {
+      "sha256": "10531d4f7a3f7c6a8bb0e90242bf8536cbf9c5e3682bfe3d51159f1f23dacf47",
+      "bytes": 1231659,
+      "url": "https://sstroi.ru/upload/iblock/870/4fq5hr9c1sduwii6jx4zz08w7eg295jm.pdf"
+    },
+    "partners-balance-2025.pdf": {
+      "sha256": "f2c762c32858ab4989873a780fff1a4c633bf661c668c6d45784565d9a979fa9",
+      "bytes": 589967,
+      "url": "https://sstroi.ru/upload/iblock/341/a9qu5a2gwibspnmn37f8iwhnr058ofcq.pdf"
+    },
+    "IMG_0725_bin.jpg": {
+      "sha256": "87f7e20062e80abce72dbfc38f4135a34f131609fe112b1159a58b0931c79eb4",
+      "bytes": 810445,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0725_bin.jpg"
+    },
+    "IMG_0857_bin.PNG": {
+      "sha256": "8a32161ce43a72d21e927ac4f10366de3e004ec538cf8289c4c6f6d2c2cb0bf9",
+      "bytes": 425200,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0857_bin.PNG"
+    },
+    "IMG_0948_bin.jpg": {
+      "sha256": "24f4545f99246e2db8f9fad70aa699d28d4e4b804464615a94e21e8dd1623127",
+      "bytes": 955973,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0948_bin.jpg"
+    },
+    "IMG_1001_bin.jpg": {
+      "sha256": "25366f31f741d4aefa6735f33aa1bf2a4413ccfbdd203ed9513e652b321750ac",
+      "bytes": 1144498,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1001_bin.jpg"
+    },
+    "doc-000038.jpg": {
+      "sha256": "7a8ca46dedd2e20c7f7f9a82114dc99c01c4f88cde647ab77878f4f8929e616f",
+      "bytes": 2250860,
+      "url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000038.jpg"
+    },
+    "doc-000232.jpg": {
+      "sha256": "df188ddc08c69d7504f68ee99b5894f7e45e5e666200ebdf8102c49164217ff1",
+      "bytes": 613550,
+      "url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000232.jpg"
+    }
+  },
+  "novelty": {
+    "earlier_cohorts": [
+      "russian_ocr_holdout_20261102",
+      "russian_ocr_real",
+      "russian_ocr_unseen"
+    ],
+    "earlier_unique_source_count": 21,
+    "hash_overlap": [],
+    "url_overlap": [],
+    "same_original_visual_check": "Compared selected originals and receipt identities against previously used sources; no reused original document. The balance's three pages belong to one new original, not three independent documents."
+  },
+  "controls": {
+    "cases": 10,
+    "source_documents": 8,
+    "table_cells": 81,
+    "numeric_fields": 19,
+    "text_regions": 15
+  },
+  "inference": {
+    "profile": "ru",
+    "device": "cpu",
+    "threads": 4,
+    "timeout_seconds_per_case": 180,
+    "python_network_blocked": true,
+    "native_network_capture": false,
+    "reference_adjudications": false
+  },
+  "runtime_file_count": 334,
+  "runtime_manifest_sha256": "9e4ef68c5a8c4c5457e441e91754dbcd3e6dfe1940ec428c0f019aede846d64b",
+  "earlier_control_files": 16
+}

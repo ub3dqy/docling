@@ -1,0 +1,1449 @@
+{
+  "completed_utc": "2026-11-02T12:48:54.654293+00:00",
+  "runtime_commit": "0cfbbe7882f641b3123c6d95bc1cb6616b3e37d6",
+  "first_run": true,
+  "runtime_or_model_fixes_during_assessment": false,
+  "reference_sha256": "c42fad8b3dabeac0761a9de4969e3fb42c5d2d0c8013585561a461e77574275b",
+  "source_manifest_sha256": "f9f3b34d3ac613ecda06b393bae700d0d531d453906f492d1569f1e439d6c511",
+  "input_manifest_sha256": "117fdbc7e3843ce6667c76371368027b0bc2deebbcd8c75ca2369040ee54a1ba",
+  "raw_report_sha256": "9b62d5a96fdb0233a037db81d717c4df7080946eabd7450f44ad66c662e259f1",
+  "assessment_basis": "original_references",
+  "normalization": "NFC, casefold, collapsed whitespace for CER; no ё/e or Latin/Cyrillic correction. Numeric table comparisons ignore whitespace and accept decimal comma/point and equivalent negative notation.",
+  "assessment_notes": "assessment-notes.json",
+  "versions": {
+    "docling-slim": "2.145.0",
+    "docling-core": "2.105.0",
+    "docling-parse": "7.24.2",
+    "rapidocr": "3.10.0",
+    "onnxruntime": "1.31.1",
+    "torch": "2.15.0",
+    "tesserocr": "2.12.0",
+    "pymorphy3": "2.0.6",
+    "pymorphy3-dicts-ru": "2.4.417150.4580142"
+  },
+  "ocr_options": {
+    "mode": "full_page",
+    "lang": [
+      "iso:ru-Cyrl"
+    ],
+    "scale": 4.166666666666667,
+    "replace_broken_text_layer": false,
+    "use_word_boxes": true,
+    "use_multiscale": true,
+    "use_region_refinement": true,
+    "image_scale": 2.0,
+    "preserve_native_resolution": true,
+    "backend": "onnxruntime",
+    "model_size": "small",
+    "text_score": 0.25,
+    "use_det": null,
+    "use_cls": null,
+    "detect_orientation": false,
+    "use_rec": null,
+    "print_verbose": false,
+    "det_model_path": null,
+    "cls_model_path": null,
+    "rec_model_path": null,
+    "rec_keys_path": null,
+    "rec_font_path": null,
+    "font_path": null,
+    "rapidocr_params": {
+      "Global.max_side_len": 4096,
+      "Det.limit_side_len": 736,
+      "Det.limit_type": "min"
+    },
+    "force_full_page_ocr": true
+  },
+  "integrity": {
+    "started_utc": "2026-11-02T12:38:44.603683+00:00",
+    "finished_utc": "2026-11-02T12:48:57.362465+00:00",
+    "models_unchanged": true,
+    "runtime_unchanged": true,
+    "references_unchanged": true,
+    "sources_manifest_unchanged": true,
+    "runner_unchanged": true,
+    "earlier_controls_unchanged": true,
+    "source_files_unchanged": true
+  },
+  "supplemental_checks": {
+    "declared_after_first_run_started": true,
+    "empty_columns": "The unchanged runner drops empty table cells before matching. Supplemental counts keep the three physical year columns, including empty cells. Original runner results remain unchanged and are shown separately.",
+    "printed_precision": "The unchanged runner accepts equivalent numeric values. A supplemental check requires the printed decimal precision and comma/period separator; 13950:00 cannot match 13950.00. This does not replace original field pass flags or case scores.",
+    "not_full_document_accuracy": true
+  },
+  "summary": {
+    "source_documents": 8,
+    "pages": 10,
+    "conversion_success": 10,
+    "nonempty_exports": 10,
+    "cases_passed_original_runner": 4,
+    "text_regions_within_frozen_limit": 10,
+    "text_regions_exact_after_declared_normalization": 7,
+    "text_regions_total": 15,
+    "text_edits": 40,
+    "reference_characters": 1777,
+    "weighted_cer": 0.022509848058525603,
+    "table_cells_correct_original_runner": 70,
+    "table_cells_correct_preserving_empty_columns": 72,
+    "table_cells_total": 81,
+    "table_numeric_cells_correct": 69,
+    "table_numeric_cells_total": 73,
+    "table_dash_cells_correct": 3,
+    "table_dash_cells_total": 8,
+    "numeric_fields_correct_original_runner": 13,
+    "numeric_fields_total": 19,
+    "numeric_fields_with_printed_precision": 11,
+    "vat_amounts_correct": 0,
+    "vat_amounts_total": 2,
+    "vat_rates_correct": 1,
+    "vat_rates_total": 2,
+    "vat_amounts_source_verified_literal_correct": 1,
+    "format_disagreements_with_ambiguous_source_punctuation": 2,
+    "numeric_field_roi_false_negative_confirmed": 1,
+    "elapsed_conversion_seconds": 609.1415109998779
+  },
+  "cases": [
+    {
+      "id": "partners-audit-opinion",
+      "kind": "scanned-pdf-prose",
+      "source_url": "https://sstroi.ru/upload/iblock/870/4fq5hr9c1sduwii6jx4zz08w7eg295jm.pdf",
+      "file_sha256": "10531d4f7a3f7c6a8bb0e90242bf8536cbf9c5e3682bfe3d51159f1f23dacf47",
+      "source_page": 2,
+      "status": "success",
+      "elapsed_seconds": 64.14813379989937,
+      "text_scores": [
+        {
+          "name": "audit-heading",
+          "expected": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГО АУДИТОРА",
+          "actual": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГО АУДИТОРА",
+          "roi": [
+            0.12,
+            0.085,
+            0.92,
+            0.12
+          ],
+          "edits": 0,
+          "reference_characters": 44,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        },
+        {
+          "name": "audit-opinion",
+          "expected": "По нашему мнению, прилагаемая годовая бухгалтерская отчётность отражает достоверно во всех существенных отношениях финансовое положение Ассоциации «Саморегулируемая организация строителей Воронежской области – региональное отраслевое объединение работодателей «Партнёры» по состоянию на 31 декабря 2025 года, целевое использование средств за 2025 год в соответствии с правилами составления бухгалтерской отчётности, установленными в Российской Федерации.",
+          "actual": "По нашему мнению, прилагаемая годовая бухгалтерская отчётность отражает достоверно во всех существенных отношениях финансовое положение Ассоциации «Саморегулируемая организация строителей Воронежской области - региональное отраслевое объединение работодателей «Партнёры по состоянию на 31 декабря 2025 рода, целевое использование средств за 2025 год в соответствии с правилами составления бухгалтерской отчётности, установленными в Российской Федерации.",
+          "roi": [
+            0.12,
+            0.372,
+            0.93,
+            0.481
+          ],
+          "edits": 3,
+          "reference_characters": 454,
+          "cer": 0.006607929515418502,
+          "wer": 0.058823529411764705,
+          "limit": 0.02,
+          "passed": true
+        },
+        {
+          "name": "audit-basis",
+          "expected": "Мы провели аудит в соответствии с Международными стандартами аудита (МСА). Наша ответственность в соответствии с этими стандартами раскрыта в разделе «Ответственность аудитора за аудит бухгалтерской отчётности» настоящего заключения. Мы являемся независимыми по отношению к аудируемому лицу в соответствии с этическими требованиями, принятыми в Российской Федерации, в том числе в Правилах независимости аудиторов и аудиторских организаций и Кодексе профессиональной этики аудиторов, включая требования независимости, применимыми к аудиту бухгалтерской отчетности, и нами выполнены прочие этические обязанности в соответствии с этими требованиями. Мы полагаем, что полученные нами аудиторские доказательства являются достаточными и надлежащими, чтобы служить основанием для выражения нашего мнения.",
+          "actual": "Мы провели аудит в соответствии с Международными стандартами аудита (МСА). Наша ответственность в соответствии с этими стандартами раскрыта в разделе «Ответственность аудитора за аудит бухгалтерской отчетности» настоящего заключения. Мы являемся независимыми по отношению к аудируемому лицу в соответствии этическими требованиями, принятыми в Российской Федерации, в том числе в Правилах независимости аудиторов и аудиторских организаций и Кодексе профессиональной этики аудиторов, включая требования независимости, применимыми к аудиту бухгалтерской отчетности, и нами выполнены прочие этические обязанности в соответствии с ЭТИМИ требованиями. Мы полагаем, что полученные нами аудиторские доказательства являются достаточными и надлежащими, чтобы служить основанием для выражения нашего мнения.",
+          "roi": [
+            0.12,
+            0.523,
+            0.93,
+            0.704
+          ],
+          "edits": 3,
+          "reference_characters": 798,
+          "cer": 0.0037593984962406013,
+          "wer": 0.020618556701030927,
+          "limit": 0.02,
+          "passed": true
+        }
+      ],
+      "field_scores": [],
+      "passed": true,
+      "text_export_characters": 2709,
+      "error": null,
+      "file": "partners-audit-2025.pdf",
+      "column_checks": [],
+      "printed_number_checks": []
+    },
+    {
+      "id": "partners-balance-fixed",
+      "kind": "scanned-pdf-table",
+      "source_url": "https://sstroi.ru/upload/iblock/341/a9qu5a2gwibspnmn37f8iwhnr058ofcq.pdf",
+      "file_sha256": "f2c762c32858ab4989873a780fff1a4c633bf661c668c6d45784565d9a979fa9",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 87.43668440007605,
+      "text_scores": [
+        {
+          "name": "balance-heading",
+          "expected": "Бухгалтерский баланс на 31 декабря 2025 г.",
+          "actual": "Бухгалтерский баланс на 31 декабря 2 2025г.",
+          "roi": [
+            0.3,
+            0.36,
+            0.63,
+            0.398
+          ],
+          "edits": 3,
+          "reference_characters": 42,
+          "cer": 0.07142857142857142,
+          "wer": 0.2857142857142857,
+          "limit": 0.02,
+          "passed": false
+        }
+      ],
+      "field_scores": [],
+      "passed": false,
+      "text_export_characters": 2940,
+      "error": null,
+      "file": "partners-balance-2025.pdf",
+      "column_checks": [
+        {
+          "key": "1150",
+          "expected": [
+            "-",
+            "-",
+            "427"
+          ],
+          "actual": [
+            "",
+            "",
+            "427"
+          ],
+          "value_matches": [
+            false,
+            false,
+            true
+          ],
+          "original_runner_matches": [
+            false,
+            false,
+            false
+          ],
+          "original_runner_passed": false
+        },
+        {
+          "key": "1170",
+          "expected": [
+            "10",
+            "10",
+            "10"
+          ],
+          "actual": [
+            "10",
+            "10",
+            "427 10"
+          ],
+          "value_matches": [
+            true,
+            true,
+            false
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            false
+          ],
+          "original_runner_passed": false
+        },
+        {
+          "key": "1171",
+          "expected": [
+            "10",
+            "10",
+            "10"
+          ],
+          "actual": [
+            "",
+            "",
+            ""
+          ],
+          "value_matches": [
+            false,
+            false,
+            false
+          ],
+          "original_runner_matches": [
+            false,
+            false,
+            false
+          ],
+          "original_runner_passed": false
+        }
+      ],
+      "printed_number_checks": []
+    },
+    {
+      "id": "partners-balance-current",
+      "kind": "scanned-pdf-table",
+      "source_url": "https://sstroi.ru/upload/iblock/341/a9qu5a2gwibspnmn37f8iwhnr058ofcq.pdf",
+      "file_sha256": "f2c762c32858ab4989873a780fff1a4c633bf661c668c6d45784565d9a979fa9",
+      "source_page": 2,
+      "status": "success",
+      "elapsed_seconds": 28.909243599977344,
+      "text_scores": [],
+      "field_scores": [],
+      "passed": false,
+      "text_export_characters": 1127,
+      "error": null,
+      "file": "partners-balance-2025.pdf",
+      "column_checks": [
+        {
+          "key": "1100",
+          "expected": [
+            "10",
+            "10",
+            "437"
+          ],
+          "actual": [
+            "10",
+            "10",
+            "437"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1230",
+          "expected": [
+            "53807",
+            "53509",
+            "53526"
+          ],
+          "actual": [
+            "53807",
+            "53509",
+            "53526"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1231",
+          "expected": [
+            "134",
+            "72",
+            "98"
+          ],
+          "actual": [
+            "134",
+            "72",
+            "98"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1232",
+          "expected": [
+            "12",
+            "17",
+            "-"
+          ],
+          "actual": [
+            "12",
+            "17",
+            ""
+          ],
+          "value_matches": [
+            true,
+            true,
+            false
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            false
+          ],
+          "original_runner_passed": false
+        },
+        {
+          "key": "1233",
+          "expected": [
+            "-",
+            "-",
+            "25"
+          ],
+          "actual": [
+            "",
+            "",
+            "25"
+          ],
+          "value_matches": [
+            false,
+            false,
+            true
+          ],
+          "original_runner_matches": [
+            false,
+            false,
+            false
+          ],
+          "original_runner_passed": false
+        },
+        {
+          "key": "1234",
+          "expected": [
+            "53661",
+            "53420",
+            "53403"
+          ],
+          "actual": [
+            "53661",
+            "53 420",
+            "53 403"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1250",
+          "expected": [
+            "378215",
+            "301496",
+            "247401"
+          ],
+          "actual": [
+            "378215",
+            "301496",
+            "247401"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1251",
+          "expected": [
+            "27896",
+            "22031",
+            "20905"
+          ],
+          "actual": [
+            "27896",
+            "22031",
+            "20 905"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1252",
+          "expected": [
+            "350319",
+            "279465",
+            "226495"
+          ],
+          "actual": [
+            "350319",
+            "279 465",
+            "226 495"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1200",
+          "expected": [
+            "432023",
+            "355005",
+            "300927"
+          ],
+          "actual": [
+            "432 023",
+            "355 005",
+            "300 927"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1600",
+          "expected": [
+            "432033",
+            "355015",
+            "301364"
+          ],
+          "actual": [
+            "432033",
+            "355 015",
+            "301 364"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        }
+      ],
+      "printed_number_checks": []
+    },
+    {
+      "id": "partners-balance-liabilities",
+      "kind": "scanned-pdf-table",
+      "source_url": "https://sstroi.ru/upload/iblock/341/a9qu5a2gwibspnmn37f8iwhnr058ofcq.pdf",
+      "file_sha256": "f2c762c32858ab4989873a780fff1a4c633bf661c668c6d45784565d9a979fa9",
+      "source_page": 3,
+      "status": "success",
+      "elapsed_seconds": 62.768784799962305,
+      "text_scores": [],
+      "field_scores": [],
+      "passed": true,
+      "text_export_characters": 2693,
+      "error": null,
+      "file": "partners-balance-2025.pdf",
+      "column_checks": [
+        {
+          "key": "1330",
+          "expected": [
+            "26190",
+            "20395",
+            "19731"
+          ],
+          "actual": [
+            "26190",
+            "20395",
+            "19731"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1370",
+          "expected": [
+            "402029",
+            "331996",
+            "278610"
+          ],
+          "actual": [
+            "402 029",
+            "331996",
+            "278610"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1300",
+          "expected": [
+            "428219",
+            "352391",
+            "298341"
+          ],
+          "actual": [
+            "428219",
+            "352 391",
+            "298 341"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1520",
+          "expected": [
+            "3814",
+            "2624",
+            "3023"
+          ],
+          "actual": [
+            "3814",
+            "2624",
+            "3 023"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1521",
+          "expected": [
+            "248",
+            "9",
+            "5"
+          ],
+          "actual": [
+            "248",
+            "9",
+            "5"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1522",
+          "expected": [
+            "720",
+            "637",
+            "284"
+          ],
+          "actual": [
+            "720",
+            "637",
+            "284"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1523",
+          "expected": [
+            "255",
+            "217",
+            "440"
+          ],
+          "actual": [
+            "255",
+            "217",
+            "440"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1524",
+          "expected": [
+            "149",
+            "118",
+            "101"
+          ],
+          "actual": [
+            "149",
+            "118",
+            "101"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1525",
+          "expected": [
+            "-",
+            "1",
+            "-"
+          ],
+          "actual": [
+            "-",
+            "1",
+            "-"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1526",
+          "expected": [
+            "-",
+            "22",
+            "22"
+          ],
+          "actual": [
+            "-",
+            "22",
+            "22"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1527",
+          "expected": [
+            "2442",
+            "1620",
+            "2171"
+          ],
+          "actual": [
+            "2442",
+            "1620",
+            "2171"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1500",
+          "expected": [
+            "3814",
+            "2624",
+            "3023"
+          ],
+          "actual": [
+            "3814",
+            "2624",
+            "3023"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        },
+        {
+          "key": "1700",
+          "expected": [
+            "432033",
+            "355015",
+            "301364"
+          ],
+          "actual": [
+            "432 033",
+            "355015",
+            "301364"
+          ],
+          "value_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_matches": [
+            true,
+            true,
+            true
+          ],
+          "original_runner_passed": true
+        }
+      ],
+      "printed_number_checks": []
+    },
+    {
+      "id": "photo-passport-issuer",
+      "kind": "document-photograph",
+      "source_url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000232.jpg",
+      "file_sha256": "df188ddc08c69d7504f68ee99b5894f7e45e5e666200ebdf8102c49164217ff1",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 44.133104100008495,
+      "text_scores": [
+        {
+          "name": "issuer",
+          "expected": "УФМС РОССИИ ПО ПЕНЗЕНСКОЙ ОБЛ. В ПЕНЗЕНСКОМ РАЙОНЕ",
+          "actual": "УФМС РОССИИ ПО ПЕНЗЕНСКОЙ ОБЛ. В ПЕНЗЕНСКОМ РАЙОНЕ",
+          "roi": [
+            0.2,
+            0.201,
+            0.77,
+            0.255
+          ],
+          "edits": 0,
+          "reference_characters": 50,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        }
+      ],
+      "field_scores": [],
+      "passed": true,
+      "text_export_characters": 874,
+      "error": null,
+      "file": "doc-000232.jpg",
+      "column_checks": [],
+      "printed_number_checks": []
+    },
+    {
+      "id": "scan-award-diploma",
+      "kind": "document-scan",
+      "source_url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000038.jpg",
+      "file_sha256": "7a8ca46dedd2e20c7f7f9a82114dc99c01c4f88cde647ab77878f4f8929e616f",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 12.870174100040458,
+      "text_scores": [
+        {
+          "name": "award-heading",
+          "expected": "ЛУЧШИЕ ВЫСШИЕ УЧЕБНЫЕ ЗАВЕДЕНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ ДИПЛОМ ЛАУРЕАТА",
+          "actual": "ЛУЧШИЕ ВЫСШИЕ УЧЕБНЫЕ ЗАВЕДЕНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ ДИПЛОМ ЛАУРЕАТА",
+          "roi": [
+            0.15,
+            0.301,
+            0.84,
+            0.444
+          ],
+          "edits": 0,
+          "reference_characters": 68,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        },
+        {
+          "name": "institution",
+          "expected": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)",
+          "actual": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)",
+          "roi": [
+            0.15,
+            0.5,
+            0.84,
+            0.618
+          ],
+          "edits": 0,
+          "reference_characters": 152,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        },
+        {
+          "name": "award-date",
+          "expected": "Дата выдачи диплома: 17 Апреля 2018 года.",
+          "actual": "Дата выдачи диплома: 17 Апреля 2018 года.",
+          "roi": [
+            0.17,
+            0.777,
+            0.37,
+            0.806
+          ],
+          "edits": 0,
+          "reference_characters": 41,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        }
+      ],
+      "field_scores": [],
+      "passed": true,
+      "text_export_characters": 681,
+      "error": null,
+      "file": "doc-000038.jpg",
+      "column_checks": [],
+      "printed_number_checks": []
+    },
+    {
+      "id": "receipt-clinic-13950",
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0725_bin.jpg",
+      "file_sha256": "87f7e20062e80abce72dbfc38f4135a34f131609fe112b1159a58b0931c79eb4",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 62.208742700051516,
+      "text_scores": [
+        {
+          "name": "merchant",
+          "expected": "ООО \"Современная клиника И-25\"",
+          "actual": "о00 \"Современная клиника и25\" БАнк",
+          "roi": [
+            0.24,
+            0.204,
+            0.81,
+            0.233
+          ],
+          "edits": 8,
+          "reference_characters": 30,
+          "cer": 0.26666666666666666,
+          "wer": 0.75,
+          "limit": 0.05,
+          "passed": false
+        },
+        {
+          "name": "thanks",
+          "expected": "ЖДЕМ ВАС СНОВА!",
+          "actual": "ЖДЕМ ВАС СНОВА!",
+          "roi": [
+            0.32,
+            0.912,
+            0.7,
+            0.949
+          ],
+          "edits": 0,
+          "reference_characters": 15,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.05,
+          "passed": true
+        }
+      ],
+      "field_scores": [
+        {
+          "name": "unit-price",
+          "expected": "13950.00",
+          "actual_region": "01 13950.00 * 1:00 =13950:00 Fep6)",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "13950.00",
+          "actual_region": "ИТОГ ПОЛНЫЙ РАСЧЕТ ∴OM.22K3. 13950:00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "without-vat",
+          "expected": "13950.00",
+          "actual_region": "Е:Сумма без НДС 13950.001314EK",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "card-payment",
+          "expected": "13950.00",
+          "actual_region": "БЕЗНАЛИЧНЫМИ НАОС =13950.00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "received",
+          "expected": "13950.00",
+          "actual_region": "ПОЛУЧЕНО 13950:00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        }
+      ],
+      "passed": false,
+      "text_export_characters": 767,
+      "error": null,
+      "file": "IMG_0725_bin.jpg",
+      "column_checks": [],
+      "printed_number_checks": [
+        {
+          "name": "unit-price",
+          "expected": "13950.00",
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "13950.00",
+          "passed": false,
+          "assessment_note": "Source punctuation is ambiguous after publisher binarization; this is not a confirmed OCR error."
+        },
+        {
+          "name": "without-vat",
+          "expected": "13950.00",
+          "passed": false
+        },
+        {
+          "name": "card-payment",
+          "expected": "13950.00",
+          "passed": true
+        },
+        {
+          "name": "received",
+          "expected": "13950.00",
+          "passed": false,
+          "assessment_note": "Source punctuation is ambiguous after publisher binarization; this is not a confirmed OCR error."
+        }
+      ]
+    },
+    {
+      "id": "receipt-household-1760",
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0857_bin.PNG",
+      "file_sha256": "8a32161ce43a72d21e927ac4f10366de3e004ec538cf8289c4c6f6d2c2cb0bf9",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 61.51547909993678,
+      "text_scores": [
+        {
+          "name": "receipt-heading",
+          "expected": "Кассовый чек",
+          "actual": "Кассовый 4ek",
+          "roi": [
+            0.24,
+            0.49,
+            0.73,
+            0.522
+          ],
+          "edits": 3,
+          "reference_characters": 12,
+          "cer": 0.25,
+          "wer": 0.5,
+          "limit": 0.05,
+          "passed": false
+        },
+        {
+          "name": "without-vat-caption",
+          "expected": "СУММА БЕЗ НДС =1760.00",
+          "actual": "СУММА БЕЗ НДС 1760.00",
+          "roi": [
+            0.245,
+            0.665,
+            0.72,
+            0.693
+          ],
+          "edits": 1,
+          "reference_characters": 22,
+          "cer": 0.045454545454545456,
+          "wer": 0.25,
+          "limit": 0.05,
+          "passed": true
+        }
+      ],
+      "field_scores": [
+        {
+          "name": "unit-price",
+          "expected": "1760.00",
+          "actual_region": "1 x1760.00 =1760.00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "1760.00",
+          "actual_region": "ИТОГ 11(760.00",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "card-payment",
+          "expected": "1760.00",
+          "actual_region": "БЕЗНАЛИЧНЫМИ =1760.00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "without-vat",
+          "expected": "1760.00",
+          "actual_region": "СУММА БЕЗ НДС 1760.00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        }
+      ],
+      "passed": false,
+      "text_export_characters": 502,
+      "error": null,
+      "file": "IMG_0857_bin.PNG",
+      "column_checks": [],
+      "printed_number_checks": [
+        {
+          "name": "unit-price",
+          "expected": "1760.00",
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "1760.00",
+          "passed": false
+        },
+        {
+          "name": "card-payment",
+          "expected": "1760.00",
+          "passed": true
+        },
+        {
+          "name": "without-vat",
+          "expected": "1760.00",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "receipt-grocery-vat10-9999",
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0948_bin.jpg",
+      "file_sha256": "24f4545f99246e2db8f9fad70aa699d28d4e4b804464615a94e21e8dd1623127",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 91.34039489994757,
+      "text_scores": [
+        {
+          "name": "merchant",
+          "expected": "Перекрёсток",
+          "actual": "Перекрёсток",
+          "roi": [
+            0.3,
+            0.22,
+            0.69,
+            0.267
+          ],
+          "edits": 0,
+          "reference_characters": 11,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.05,
+          "passed": true
+        },
+        {
+          "name": "thanks",
+          "expected": "Спасибо за покупку!",
+          "actual": "10U 09",
+          "roi": [
+            0.33,
+            0.692,
+            0.55,
+            0.71
+          ],
+          "edits": 18,
+          "reference_characters": 19,
+          "cer": 0.9473684210526315,
+          "wer": 1.0,
+          "limit": 0.05,
+          "passed": false
+        }
+      ],
+      "field_scores": [
+        {
+          "name": "unit-price",
+          "expected": "99.99",
+          "actual_region": "НДС 10% 99.99 4 99.99*1 ET 99.99",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "99.99",
+          "actual_region": "Итог. с учетом скидок 6686",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "card-payment",
+          "expected": "99.99",
+          "actual_region": "БЕЗНАЛИЧНЫМИ  30 00 99.99 СДАЧА",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-rate-10",
+          "expected": "10",
+          "actual_region": "Сунна Ндс 102 9.08 000",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "vat-amount-10",
+          "expected": "9.09",
+          "actual_region": "Сунна Ндс 102 9.08 000",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        }
+      ],
+      "passed": false,
+      "text_export_characters": 1161,
+      "error": null,
+      "file": "IMG_0948_bin.jpg",
+      "column_checks": [],
+      "printed_number_checks": [
+        {
+          "name": "unit-price",
+          "expected": "99.99",
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "99.99",
+          "passed": false
+        },
+        {
+          "name": "card-payment",
+          "expected": "99.99",
+          "passed": true
+        },
+        {
+          "name": "vat-rate-10",
+          "expected": "10",
+          "passed": false
+        },
+        {
+          "name": "vat-amount-10",
+          "expected": "9.09",
+          "passed": false
+        }
+      ]
+    },
+    {
+      "id": "receipt-grocery-discount-vat20",
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1001_bin.jpg",
+      "file_sha256": "25366f31f741d4aefa6735f33aa1bf2a4413ccfbdd203ed9513e652b321750ac",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 93.81076949997805,
+      "text_scores": [
+        {
+          "name": "thanks",
+          "expected": "Спасибо за покупку!",
+          "actual": "Спасибо за ПОКУПКУ",
+          "roi": [
+            0.31,
+            0.684,
+            0.55,
+            0.722
+          ],
+          "edits": 1,
+          "reference_characters": 19,
+          "cer": 0.05263157894736842,
+          "wer": 0.3333333333333333,
+          "limit": 0.05,
+          "passed": false
+        }
+      ],
+      "field_scores": [
+        {
+          "name": "price-before-discount",
+          "expected": "55.99",
+          "actual_region": "Цвна до скидки Скидка. Цена Кол-во НАS Каран МЕНТ эКСтиед.24.5гон НАС 20% ара55.99",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "discount",
+          "expected": "16.00",
+          "actual_region": "16.00 39.99*1",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "card-payment",
+          "expected": "39.99",
+          "actual_region": "БЕЗНАЛИЧНЫМИ: 10.00 0.00 ПРИНЯТО: Сумма НДС 20% 6.67 39.99 СДА4А:",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-rate-20",
+          "expected": "20",
+          "actual_region": "БЕЗНАЛИЧНЫМИ: 10.00 0.00 ПРИНЯТО: Сумма НДС 20% 6.67 39.99 СДА4А:",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-amount-20",
+          "expected": "6.67",
+          "actual_region": "",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        }
+      ],
+      "passed": false,
+      "text_export_characters": 1195,
+      "error": null,
+      "file": "IMG_1001_bin.jpg",
+      "column_checks": [],
+      "printed_number_checks": [
+        {
+          "name": "price-before-discount",
+          "expected": "55.99",
+          "passed": true
+        },
+        {
+          "name": "discount",
+          "expected": "16.00",
+          "passed": true
+        },
+        {
+          "name": "card-payment",
+          "expected": "39.99",
+          "passed": true
+        },
+        {
+          "name": "vat-rate-20",
+          "expected": "20",
+          "passed": true
+        },
+        {
+          "name": "vat-amount-20",
+          "expected": "6.67",
+          "passed": false,
+          "assessment_note": "The correct 6.67 is in the source-corresponding OCR line and export; the merged line midpoint lies above the frozen ROI."
+        }
+      ]
+    }
+  ]
+}
