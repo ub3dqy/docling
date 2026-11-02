@@ -115,6 +115,29 @@ def _decimal_suffix_bounds(
         from statistics import median
 
         height = median(h for _, _, _, h in body)
+        if (
+            len(body) == integer_digits + fraction_digits
+            and 0 < integer_digits < len(body)
+            and all(
+                0.75 * height <= h <= 1.25 * height and w <= 1.5 * height
+                for _, _, w, h in body
+            )
+        ):
+            # Double-width receipt fonts need no assumed half-height pitch
+            # when every digit is already a distinct source component.
+            left, right = body[0][0], body[-1][0] + body[-1][2]
+            top = min(y for _, y, _, _ in body)
+            bottom = max(y + h for _, y, _, h in body)
+            before, after = body[integer_digits - 1], body[integer_digits]
+            if any(
+                before[0] + before[2] <= x
+                and x + w <= after[0]
+                and h <= height * 0.3
+                and area >= 3
+                and bottom - height * 0.3 <= y < bottom
+                for x, y, w, h, area in stats[1:]
+            ):
+                return left, top, right, bottom
         count = 0
         suffix = []
         for box in reversed(body):
@@ -181,7 +204,7 @@ def decimal_expression_equals(gray: np.ndarray, integer_digits: int) -> bool:
         (int(x), int(y), int(w), int(h))
         for x, y, w, h, _ in stats[1:]
         if left - height <= x + w <= left
-        and height * 0.25 <= w <= height
+        and height * 0.25 <= w <= height * 1.5
         and 1 <= h <= height * 0.6
         and top + height * 0.2 <= y + h / 2 <= top + height * 0.8
     ]
@@ -199,5 +222,7 @@ def decimal_expression_equals(gray: np.ndarray, integer_digits: int) -> bool:
     for group in groups:
         x0, y0 = min(m[0] for m in group), min(m[1] for m in group)
         x1, y1 = max(m[0] + m[2] for m in group), max(m[1] + m[3] for m in group)
-        supported += two_bar_marker(gray[y0:y1, x0:x1])
+        # A colon has two vertically stacked dots as well. A printed equals
+        # sign must have a horizontal outline, not just two occupied bands.
+        supported += x1 - x0 > y1 - y0 and two_bar_marker(gray[y0:y1, x0:x1])
     return supported == 1

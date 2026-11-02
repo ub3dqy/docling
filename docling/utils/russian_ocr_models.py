@@ -70,3 +70,6 @@ def download_refinement_models(
             finally:
                 file.close()
                 temporary.unlink(missing_ok=True)
+    from docling.utils.russian_ocr_text_models import download_cyrillic_models
+
+    download_cyrillic_models(directory, force=force)

@@ -64,7 +64,10 @@ def test_decimal_suffix_needs_the_printed_dot_and_complete_digit_count() -> None
 
 
 @pytest.mark.parametrize("equals", [False, True])
-def test_decimal_expression_preserves_a_real_minus(equals: bool) -> None:
+@pytest.mark.parametrize("horizontal_scale", [1, 2, 3])
+def test_decimal_expression_preserves_a_real_minus(
+    equals: bool, horizontal_scale: int
+) -> None:
     amount = _amount("488.86")
     image = Image.new("L", (amount.shape[1] + 20, amount.shape[0]), 255)
     image.paste(Image.fromarray(amount), (20, 0))
@@ -72,4 +75,15 @@ def test_decimal_expression_preserves_a_real_minus(equals: bool) -> None:
     draw.rectangle((9, 19, 18, 21), fill=0)
     if equals:
         draw.rectangle((9, 13, 18, 15), fill=0)
+    image = image.resize((image.width * horizontal_scale, image.height))
     assert decimal_expression_equals(np.asarray(image), 3) == equals
+
+
+def test_a_colon_before_an_amount_cannot_be_promoted_to_equals():
+    amount = _amount("488.86")
+    image = Image.new("L", (amount.shape[1] + 20, amount.shape[0]), 255)
+    image.paste(Image.fromarray(amount), (20, 0))
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((9, 9, 15, 15), fill=0)
+    draw.rectangle((9, 20, 15, 26), fill=0)
+    assert not decimal_expression_equals(np.asarray(image), 3)

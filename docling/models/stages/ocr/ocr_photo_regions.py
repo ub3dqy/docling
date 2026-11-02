@@ -6,7 +6,8 @@
 from __future__ import annotations
 
 import re
-from statistics import median
+from collections import defaultdict
+from statistics import mean, median
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -25,6 +26,84 @@ if TYPE_CHECKING:
     from tesserocr import PyTessBaseAPI
 
     from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
+
+
+def _label_key(text: str) -> str:
+    normalized = normalize_mixed_script(text).strip().casefold()
+    return " ".join(re.sub(r"^(\d{1,3})[.)]?\s*", r"\1 ", normalized).split())
+
+
+def _label_words(text: str) -> list[str]:
+    return re.findall(
+        r"[A-Za-z\u0410-\u044f\u0401\u0451]+(?:-[A-Za-z\u0410-\u044f\u0401\u0451]+)*",
+        text,
+    )
+
+
+def _confirmed_label(
+    refiner: OcrRegionRefiner, original: str, readings: list[RegionReading]
+) -> str | None:
+    groups: dict[str, dict[str, float]] = defaultdict(dict)
+    original_words = _label_words(original)
+    preserve_known = bool(original_words) and all(
+        refiner._dictionary.word_is_known(word) for word in original_words
+    )
+    for reading in readings:
+        key = _label_key(reading.text)
+        words = _label_words(normalize_mixed_script(reading.text))
+        if (
+            reading.confidence < 0.8
+            or not words
+            or any(not refiner._dictionary.word_is_known(word) for word in words)
+            or any(
+                len(word) <= 2 and word.casefold() not in {"и", "в", "на"}
+                for word in words
+            )
+            or (preserve_known and key != _label_key(original))
+        ):
+            continue
+        family = recognizer_family(reading.engine)
+        groups[key][family] = max(groups[key].get(family, 0), reading.confidence)
+    winners = [
+        key
+        for key, group in groups.items()
+        # A weaker agreeing reader cannot cancel two strong independent votes.
+        if len(group) >= 2 and mean(sorted(group.values(), reverse=True)[:2]) >= 0.9
+    ]
+    if len(winners) != 1:
+        return None
+    selected = refiner._choose_text(original, 0.65, readings, photo_label=True)
+    return winners[0] if _label_key(selected.text) == winners[0] else None
+
+
+def _read_photo_label(
+    refiner: OcrRegionRefiner, gray: np.ndarray, original: str
+) -> tuple[list[RegionReading], str | None]:
+    readings: list[RegionReading] = []
+    names = list(refiner._cyrillic_readers)
+    views = [
+        reader.read_views(
+            gray, known=refiner._dictionary.word_is_known, prefer_clean=True
+        )
+        for reader in refiner._cyrillic_readers.values()
+    ]
+    for index, batches in enumerate(zip(*views)):
+        for name, batch in zip(names, batches):
+            readings.extend(
+                RegionReading(
+                    path.text, path.confidence, f"cyrillic-v6-{name}", variant
+                )
+                for variant, path in batch
+            )
+        confirmed = _confirmed_label(refiner, original, readings)
+        if confirmed is not None:
+            return readings, confirmed
+        if index == 0:
+            readings.extend(refiner._rapid_readings(gray, numeric=False))
+            confirmed = _confirmed_label(refiner, original, readings)
+            if confirmed is not None:
+                return readings, confirmed
+    return readings, None
 
 
 def _word_region_readings(
@@ -141,10 +220,10 @@ def refine_photo_labels(
             )
         if gray is None or gray.size == 0:
             continue
-        readings = refiner._rapid_readings(gray, numeric=False)
+        readings, confirmed = _read_photo_label(refiner, gray, cell.text)
         selected = refiner._choose_text(cell.text, 0.65, readings, photo_label=True)
         words = re.findall(r"[\u0410-\u044f\u0401\u0451]+", selected.text)
-        if (
+        if confirmed is None and (
             not words
             or any(
                 not refiner._dictionary.word_is_known(word)
@@ -183,6 +262,8 @@ def refine_photo_labels(
         if smaller is not None and smaller.size != image.size:
             sources.append(smaller)
         for source in sources:
+            if confirmed is not None:
+                break
             words = re.findall(r"[\u0410-\u044f\u0401\u0451]+", selected.text)
             if (
                 selected.confidence >= 0.9

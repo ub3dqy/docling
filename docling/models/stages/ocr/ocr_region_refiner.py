@@ -604,6 +604,20 @@ class OcrRegionRefiner:
             ).reader
             for lang in ("iso:ru", "cyrillic", "ch")
         }
+        from docling.models.stages.ocr.ocr_cyrillic_text import create_cyrillic_readers
+
+        self._cyrillic_readers = create_cyrillic_readers(
+            root, num_threads=accelerator_options.num_threads
+        )
+
+    def _cyrillic_readings(self, gray: np.ndarray) -> list[RegionReading]:
+        return [
+            RegionReading(path.text, path.confidence, f"cyrillic-v6-{name}", variant)
+            for name, reader in self._cyrillic_readers.items()
+            for variant, path in reader.read_region(
+                gray, known=self._dictionary.word_is_known
+            )
+        ]
 
     @staticmethod
     def _crop(
@@ -1296,7 +1310,14 @@ class OcrRegionRefiner:
             for cluster in page.predictions.layout.clusters:
                 update(cluster)
         if receipt:
-            join_receipt_fields(page)
+            from docling.models.stages.ocr.ocr_receipt_fields import (
+                refine_receipt_fields,
+            )
+
+            with self._lock:
+                refine_receipt_fields(self, page, image)
+                join_receipt_fields(page)
+                refine_receipt_fields(self, page, image)
 
     def refine_tables(
         self, page: Page, elements: list[PageElement], *, image_input: bool = False

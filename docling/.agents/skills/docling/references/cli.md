@@ -153,17 +153,32 @@ full-page OCR at 300 DPI for PDFs and 144 DPI for images, word coordinates, and
 a second reading at 1536 pixels. Close fragments are joined in printed order.
 Uncertain image lines and numeric table cells are also read as separate crops.
 This needs the `russian` extra, independent RapidOCR recognizers, pinned Tesseract
-models and the local Russian dictionary. The dictionary ranks actual OCR readings;
+models, the pinned PP-OCRv6 Cyrillic Medium/Tiny models and the local Russian
+dictionary. Rerun the `russian_ocr_refinement` download after updating; it includes
+about 65 MB of additional weights, alphabets and upstream attribution. Inference
+uses local files and refuses missing or changed assets. The models and their
+Apache-2.0 model cards come from
+[Metrika Labs](https://github.com/metrika-labs/PP-OCRv6_rec_cyrillic).
+The dictionary ranks actual OCR readings;
 it does not supply replacement words. Totals and VAT are not inferred from arithmetic.
+In receipt fields, character alternatives for word refinement retain the most
+probable path's numbers and operators.
+An already readable fiscal caption retains its letters when a joined field
+is reread, while omitted letters can be restored. Short fragments and unknown
+captions remain eligible for correction.
 On small photographs, complete short-label regions retain the first letters and
 are read without the 72 DPI reduction. Light lettering on dark or medium-gray
 material receives separate contrast readings. Character alternatives come only
 from the recognizer's actual probabilities. Additional character paths for
-dark-on-light table labels require agreement between independent recognizers.
+dark-on-light table labels are compared across independent recognizers; larger
+label replacements require their agreement.
 Prices inside mixed receipt lines are also read
 as individual amounts, with digit count, decimal scale and printed markers retained.
 Punctuation refinement preserves the leading edge of amount lines. An omitted
-`=` requires a confident, ink-backed symbol in two crop readings. Caption
+`=` in a separate amount needs the unchanged value, confident recognition and
+two actual source bars. Full fiscal fields are read before and after joining
+their caption and amount; numbers, scale and existing operators are retained.
+Caption
 punctuation needs independent readers to agree on identical content; amount
 digits, decimal places, operators, percent signs and identifiers remain protected.
 Printed table rules can restore rows that the structure model merged. Image

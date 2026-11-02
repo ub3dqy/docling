@@ -104,7 +104,10 @@ def printed_dash(gray: np.ndarray) -> bool:
     # that a digit or a negative number cannot become a lone dash.
     supported = 0
     strong = False
-    for threshold in (96, 128, 160, 192, 208):
+    # Camera blur can leave an elongated core only between two coarse
+    # thresholds. Check finer intensity steps while retaining the same shape
+    # and repeated-support requirements that reject dots and digit fragments.
+    for threshold in range(64, 209, 16):
         _, ink = cv2.threshold(gray, threshold, 255, cv2.THRESH_BINARY_INV)
         segments = cv2.HoughLinesP(
             ink,

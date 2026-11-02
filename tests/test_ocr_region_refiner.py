@@ -454,6 +454,27 @@ def test_photo_contrast_exposes_faint_ink_without_turning_a_dot_into_a_dash(mark
     assert printed_dash(photo_contrast(np.asarray(image))) == (mark == "dash")
 
 
+@pytest.mark.parametrize(
+    "sigma_x,sigma_y,darkest", [(1.4, 1.0, 80), (1.8, 1.2, 140), (1.8, 1.4, 120)]
+)
+def test_camera_blur_keeps_a_small_dash_distinct_from_a_round_spot(
+    sigma_x, sigma_y, darkest
+):
+    y, x = np.mgrid[:34, :102]
+
+    def blurred_mark(vertical_sigma):
+        signal = np.exp(
+            -(
+                (x - 50) ** 2 / (2 * sigma_x**2)
+                + (y - 17) ** 2 / (2 * vertical_sigma**2)
+            )
+        )
+        return np.rint(210 - (210 - darkest) * signal).astype(np.uint8)
+
+    assert printed_dash(blurred_mark(sigma_y))
+    assert not printed_dash(blurred_mark(sigma_x))
+
+
 def test_a_minus_cannot_pass_the_two_bar_equals_check():
     marker = np.full((7, 10), 255, dtype=np.uint8)
     marker[1:3, :] = 0

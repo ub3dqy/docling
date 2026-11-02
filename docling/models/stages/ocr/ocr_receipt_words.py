@@ -143,6 +143,7 @@ def refine_receipt_words(
         readings = [
             *refiner._rapid_readings(gray, numeric=False),
             *refiner._tess_readings(api, gray, numeric=False),
+            *refiner._cyrillic_readings(gray),
         ]
         if caption:
             import cv2

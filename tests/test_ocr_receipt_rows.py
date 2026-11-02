@@ -89,3 +89,59 @@ def test_receipt_row_join_does_not_take_neighboring_or_native_amounts() -> None:
         "123.45",
         "200.00",
     ]
+
+
+def test_card_payment_is_joined_but_a_memory_card_product_is_not_a_fiscal_caption():
+    payment = _cell(0, "*Плат.картой", (40, 100, 180, 125))
+    amount = _cell(1, "=456.78", (260, 100, 340, 123))
+    product = _cell(2, "Карта памяти", (40, 145, 180, 170))
+    price = _cell(3, "321.00", (260, 145, 340, 165))
+    page = _page([payment, amount, product, price])
+    join_receipt_fields(page)
+    assert page.parsed_page is not None
+    assert [cell.text for cell in page.parsed_page.textline_cells] == [
+        "*Плат.картой =456.78",
+        "Карта памяти",
+        "321.00",
+    ]
+
+
+def test_wide_amount_gutter_needs_two_other_rows_that_confirm_both_columns():
+    captions = [
+        _cell(0, "ИТОГО", (40, 100, 120, 125)),
+        _cell(2, "НДС", (40, 140, 120, 165)),
+        _cell(4, "НАЛИЧНЫМИ", (40, 180, 120, 205)),
+    ]
+    amounts = [
+        _cell(1, "456.78", (450, 100, 530, 125)),
+        _cell(3, "12.34", (450, 140, 530, 165)),
+        _cell(5, "456.78", (450, 180, 530, 205)),
+    ]
+    isolated = _page([captions[0], amounts[0]])
+    join_receipt_fields(isolated)
+    assert isolated.parsed_page is not None
+    assert [cell.text for cell in isolated.parsed_page.textline_cells] == [
+        "ИТОГО",
+        "456.78",
+    ]
+    page = _page([*captions, *amounts])
+    join_receipt_fields(page)
+    assert page.parsed_page is not None
+    assert [cell.text for cell in page.parsed_page.textline_cells] == [
+        "ИТОГО 456.78",
+        "НДС 12.34",
+        "НАЛИЧНЫМИ 456.78",
+    ]
+
+
+def test_wide_gutter_does_not_use_fields_in_a_different_caption_column():
+    target = _cell(0, "ИТОГО", (40, 100, 120, 125))
+    amount = _cell(1, "456.78", (450, 100, 530, 125))
+    unrelated = [
+        _cell(2, "НДС 12.34", (300, 140, 530, 165)),
+        _cell(3, "НАЛИЧНЫМИ 456.78", (300, 180, 530, 205)),
+    ]
+    page = _page([target, amount, *unrelated])
+    join_receipt_fields(page)
+    assert page.parsed_page is not None
+    assert page.parsed_page.textline_cells[0].text == "ИТОГО"
