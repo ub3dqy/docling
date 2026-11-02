@@ -1,0 +1,27 @@
+{
+  "file": "mosreg-balance-2025.pdf",
+  "sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+  "pages": [
+    {
+      "page": 1,
+      "text_layer_characters": 0,
+      "embedded_images": 1
+    },
+    {
+      "page": 3,
+      "text_layer_characters": 0,
+      "embedded_images": 1
+    },
+    {
+      "page": 4,
+      "text_layer_characters": 0,
+      "embedded_images": 1
+    },
+    {
+      "page": 6,
+      "text_layer_characters": 0,
+      "embedded_images": 1
+    }
+  ],
+  "visual_review": "Real skewed raster forms; signatures/stamps and paper noise visible. No source OCR layer used for controls."
+}

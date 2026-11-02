@@ -1,0 +1,51 @@
+{
+  "reviewed_after_inference": true,
+  "original_scores_and_controls_unchanged": true,
+  "reference_corrections_applied": false,
+  "merged_table_columns": {
+    "case_id": "mosreg-assets",
+    "source_columns": 6,
+    "recognized_columns": 4,
+    "example_recognized_row": [
+      "1.1 Нематериальные активы 1110",
+      "585",
+      "682",
+      "682"
+    ],
+    "effect": "The exact standalone row-code lookup cannot match the code appended to its label. The source-row audit is separate and does not repair the table or its original pass flag."
+  },
+  "receipt_output_loss": {
+    "case_id": "receipt-canteen-507",
+    "intermediate_grid_rows": 116,
+    "intermediate_grid_columns": 6,
+    "unmatched_text_cells_dropped": 35,
+    "text_cells_in_warning": 87,
+    "final_document_table_rows": 3,
+    "final_document_table_columns": 1,
+    "correct_source_fields_not_exported": [
+      {
+        "name": "first-item-price",
+        "expected": "269.00",
+        "actual_region": "1 Бимтекс из гов. с яйцом 269.00*1 =269.00 25 3H"
+      },
+      {
+        "name": "bread-quantity",
+        "expected": "2",
+        "actual_region": "1 Хе6 5.00*2 =10.00 HAC 5Z"
+      },
+      {
+        "name": "bread-sum",
+        "expected": "10.00",
+        "actual_region": "1 Хе6 5.00*2 =10.00 HAC 5Z"
+      },
+      {
+        "name": "vat-amount-5",
+        "expected": "24.15",
+        "actual_region": "CУHMA HAC SZ =24.15 БЕЗНАЛИЧНЫМИ"
+      }
+    ]
+  },
+  "text_region_limit": "region_text includes horizontally intersecting whole recognized lines. A source-right shift label merged with the sale heading can therefore add characters outside the intended source text. Raw CER is retained without trimming or rescoring.",
+  "field_score_limit": "A field passes when its normalized number is present in its source-region text and somewhere in the exported document. This does not independently prove that the exported number retains its correct semantic field label.",
+  "scope": "Selected-region stress evaluation. Headings, chosen numeric rows and fields only; not full-document character accuracy or a representative population estimate."
+}

@@ -1,0 +1,40 @@
+{
+  "reference_sha256": "feb109dbd5c2578a01f959782e42d6d3272d54d0932071a4734bc49428316d56",
+  "files": {
+    "IMG_0784_bin.jpg": {
+      "sha256": "d9212833c0422e0eff347ee9d1da4b9bbecdf7486f8c2800f8b0829b6ec81382",
+      "bytes": 1090689,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0784_bin.jpg"
+    },
+    "IMG_0800_bin.jpg": {
+      "sha256": "02a6c198ab3c997f1d3ee4f49402a42cd3ff739df5f1c8fb4e3e9f4f78f08f36",
+      "bytes": 1141222,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0800_bin.jpg"
+    },
+    "IMG_0884_bin.jpg": {
+      "sha256": "fb97e310f9f65ee7ddc0ac7c26b199ac1927956e230aab03399652fe21d61f33",
+      "bytes": 1172517,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0884_bin.jpg"
+    },
+    "IMG_1054_bin.jpg": {
+      "sha256": "f52b1418a3c22d91d1ca676dfd91378cc36c01b83286c65a3385676e9fa2c9de",
+      "bytes": 827254,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1054_bin.jpg"
+    },
+    "IMG_1186_bin.jpg": {
+      "sha256": "e9ce518a15081abdc0ebb477c8cd95b2222350e801405a0a8cd6b2568825de3a",
+      "bytes": 1174253,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1186_bin.jpg"
+    },
+    "IMG_1244_bin.jpg": {
+      "sha256": "afcc8ad7971d9710c9e1065c4bddb4a477b32e731f04b19879d9a509bc9e5259",
+      "bytes": 1001884,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1244_bin.jpg"
+    },
+    "mosreg-balance-2025.pdf": {
+      "sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+      "bytes": 1358746,
+      "url": "https://www.mosreg-garant.ru/upload/iblock/863/Бух.отчетность%20на%2031.12.2025.pdf"
+    }
+  }
+}

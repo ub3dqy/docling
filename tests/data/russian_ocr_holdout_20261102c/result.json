@@ -1,0 +1,967 @@
+{
+  "schema_version": 1,
+  "first_inference": true,
+  "runtime_commit": "05a2a3a58742541c9e943972993619e5952c8b31",
+  "completed_utc": "2026-11-02T18:48:10.007156+00:00",
+  "assessment_basis": "original_references",
+  "scope": "Ten new locally unused pages from seven originals; selected-region stress evaluation, not a random population accuracy estimate. No fixes or repeat inference are included.",
+  "reference_sha256": "feb109dbd5c2578a01f959782e42d6d3272d54d0932071a4734bc49428316d56",
+  "raw_report_sha256": "06d5cc10b5d637445a76b968f06c9bfa4fd5d3e89cbc87fa6d134ce388a1dba0",
+  "input_manifest_sha256": "3fd1b2a4aea1021061993f001bd4bea302ce7fc659224569fce32d7175bf5485",
+  "summary": {
+    "cases_passed": 2,
+    "cases_total": 10,
+    "nonempty_successful": 10,
+    "table_values_correct": 96,
+    "table_values_total": 133,
+    "fields_correct_and_exported": 36,
+    "fields_total": 60,
+    "fields_correct_in_source_region": 40,
+    "fields_lost_after_correct_source_reading": 4,
+    "text_within_frozen_limits": 7,
+    "text_total": 12,
+    "text_exact": 6,
+    "text_edits": 49,
+    "reference_characters": 462,
+    "conversion_seconds": 854.8922193000326,
+    "weighted_cer": 0.10606060606060606
+  },
+  "integrity": {
+    "started_utc": "2026-11-02T18:33:50.045328+00:00",
+    "finished_utc": "2026-11-02T18:48:10.007156+00:00",
+    "before": {
+      "runtime_unchanged": true,
+      "models_unchanged": true,
+      "previous_controls_unchanged": true,
+      "references_unchanged": true,
+      "sources_manifest_unchanged": true,
+      "novelty_unchanged": true,
+      "sources_unchanged": true,
+      "runner_unchanged": true,
+      "supporting_runner_unchanged": true,
+      "dependencies_unchanged": true,
+      "commit_unchanged": true
+    },
+    "after": {
+      "runtime_unchanged": true,
+      "models_unchanged": true,
+      "previous_controls_unchanged": true,
+      "references_unchanged": true,
+      "sources_manifest_unchanged": true,
+      "novelty_unchanged": true,
+      "sources_unchanged": true,
+      "runner_unchanged": true,
+      "supporting_runner_unchanged": true,
+      "dependencies_unchanged": true,
+      "commit_unchanged": true
+    }
+  },
+  "supplementary_table_row_audit": {
+    "assessment_basis": "Supplementary post-inference source-row audit. Original scores and pass flags remain unchanged. The row key may be inside a merged label cell, but must identify exactly one row. Only its existing last N physical value cells are compared with the unchanged equal_value rule. No arithmetic, missing-cell fill, digit repair or OCR output editing.",
+    "table_values_correct": 131,
+    "table_values_total": 133,
+    "numbers_correct": 72,
+    "numbers_total": 72,
+    "dashes_correct": 59,
+    "dashes_total": 61,
+    "negative_values_correct": 8,
+    "negative_values_total": 8,
+    "rows": [
+      {"case_id": "mosreg-assets", "key": "1105", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 1},
+      {"case_id": "mosreg-assets", "key": "1110", "expected": ["585", "682", "682"], "actual": ["585", "682", "682"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 2},
+      {"case_id": "mosreg-assets", "key": "1130", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 4},
+      {"case_id": "mosreg-assets", "key": "1140", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 5},
+      {"case_id": "mosreg-assets", "key": "1150", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 6},
+      {"case_id": "mosreg-assets", "key": "1160", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 7},
+      {"case_id": "mosreg-assets", "key": "1170", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 8},
+      {"case_id": "mosreg-assets", "key": "1180", "expected": ["304097", "205228", "77189"], "actual": ["304 097", "205228", "77 189"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 10},
+      {"case_id": "mosreg-assets", "key": "1190", "expected": ["-", "-", "-"], "actual": ["-", "-", "- L"], "candidate_count": 1, "value_matches": [true, true, false], "table_index": 0, "row_index": 11},
+      {"case_id": "mosreg-assets", "key": "1100", "expected": ["304682", "205910", "77870"], "actual": ["304 682", "205910", "77 870"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 13},
+      {"case_id": "mosreg-assets", "key": "1220", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 17},
+      {"case_id": "mosreg-assets", "key": "1230", "expected": ["72074", "19695", "51113"], "actual": ["72074", "19695", "51113"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 18},
+      {"case_id": "mosreg-liabilities", "key": "1310", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 2},
+      {"case_id": "mosreg-liabilities", "key": "1320", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 3},
+      {"case_id": "mosreg-liabilities", "key": "1330", "expected": ["4007919", "3185972", "2394030"], "actual": ["4007919", "3 185 972", "2 394 030"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 4},
+      {"case_id": "mosreg-liabilities", "key": "1360", "expected": ["585", "682", "682"], "actual": ["585", "682", "682"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 9},
+      {"case_id": "mosreg-liabilities", "key": "1300", "expected": ["4008504", "3186654", "2394712"], "actual": ["4 008 504", "3 186 654", "2394712"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 13},
+      {"case_id": "mosreg-liabilities", "key": "1420", "expected": ["146", "171", "137"], "actual": ["146", "171", "137"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 16},
+      {"case_id": "mosreg-liabilities", "key": "1430", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 17},
+      {"case_id": "mosreg-liabilities", "key": "1400", "expected": ["146", "171", "137"], "actual": ["146", "171", "137"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 20},
+      {"case_id": "mosreg-liabilities", "key": "Кредиторская задолженность", "expected": ["23608", "23514", "8073"], "actual": ["23 608", "23514", "8073"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 23},
+      {"case_id": "mosreg-liabilities", "key": "1540", "expected": ["331146", "410766", "188919"], "actual": ["331146", "410766", "188 919"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 29},
+      {"case_id": "mosreg-liabilities", "key": "1550", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 30},
+      {"case_id": "mosreg-liabilities", "key": "1500", "expected": ["354754", "434280", "196992"], "actual": ["354 754", "434280", "196 992"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 31},
+      {"case_id": "mosreg-liabilities", "key": "1700", "expected": ["4363404", "3621105", "2591841"], "actual": ["4 363 404", "3 621 105", "2 591 841"], "candidate_count": 1, "value_matches": [true, true, true], "table_index": 0, "row_index": 32},
+      {"case_id": "mosreg-target-funds", "key": "6100", "expected": ["3185972", "2394030"], "actual": ["3 185 972", "2 394 030"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 1},
+      {"case_id": "mosreg-target-funds", "key": "6210", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 2},
+      {"case_id": "mosreg-target-funds", "key": "6215", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 3},
+      {"case_id": "mosreg-target-funds", "key": "6220", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 4},
+      {"case_id": "mosreg-target-funds", "key": "6230", "expected": ["500000", "500000"], "actual": ["500 000", "500 000"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 5},
+      {"case_id": "mosreg-target-funds", "key": "6240", "expected": ["321947", "347724"], "actual": ["321947", "347724"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 6},
+      {"case_id": "mosreg-target-funds", "key": "6250", "expected": ["-", "69783"], "actual": ["-", "69 783"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 7},
+      {"case_id": "mosreg-target-funds", "key": "6200", "expected": ["821947", "917507"], "actual": ["821947", "917507"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 8},
+      {"case_id": "mosreg-target-funds", "key": "6310", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 9},
+      {"case_id": "mosreg-target-funds", "key": "6311", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 10},
+      {"case_id": "mosreg-target-funds", "key": "6312", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 1, "row_index": 11},
+      {"case_id": "mosreg-financial-results", "key": "2110", "expected": ["116386", "152041"], "actual": ["116386", "152041"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 1},
+      {"case_id": "mosreg-financial-results", "key": "2120", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 3},
+      {"case_id": "mosreg-financial-results", "key": "2100", "expected": ["116386", "152041"], "actual": ["116386", "152041"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 5},
+      {"case_id": "mosreg-financial-results", "key": "2210", "expected": ["-", "-"], "actual": ["-", "- т"], "candidate_count": 1, "value_matches": [true, false], "table_index": 0, "row_index": 6},
+      {"case_id": "mosreg-financial-results", "key": "2220", "expected": ["(56695)", "(46523)"], "actual": ["(56 695)", "(46 523)"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 7},
+      {"case_id": "mosreg-financial-results", "key": "2200", "expected": ["59691", "105518"], "actual": ["59691", "105518"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 8},
+      {"case_id": "mosreg-financial-results", "key": "2310", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 9},
+      {"case_id": "mosreg-financial-results", "key": "2320", "expected": ["772874", "555309"], "actual": ["772 874", "555309"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 10},
+      {"case_id": "mosreg-financial-results", "key": "2330", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 13},
+      {"case_id": "mosreg-financial-results", "key": "2340", "expected": ["70616", "13533"], "actual": ["70616", "13533"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 15},
+      {"case_id": "mosreg-financial-results", "key": "2350", "expected": ["(473947)", "(320606)"], "actual": ["(473 947)", "(320 606)"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 19},
+      {"case_id": "mosreg-financial-results", "key": "2300", "expected": ["429234", "353754"], "actual": ["429234", "353754"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 23},
+      {"case_id": "mosreg-financial-results", "key": "2410", "expected": ["(107287)", "(6030)"], "actual": ["(107 287)", "(6 030)"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 24},
+      {"case_id": "mosreg-financial-results", "key": "2411", "expected": ["(206180)", "(134035)"], "actual": ["(206180)", "(134035)"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 25},
+      {"case_id": "mosreg-financial-results", "key": "2412", "expected": ["98893", "128005"], "actual": ["98 893", "128 005"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 26},
+      {"case_id": "mosreg-financial-results", "key": "2420", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 27},
+      {"case_id": "mosreg-financial-results", "key": "2460", "expected": ["-", "-"], "actual": ["-", "-"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 29},
+      {"case_id": "mosreg-financial-results", "key": "2400", "expected": ["321947", "347724"], "actual": ["321 947", "347724"], "candidate_count": 1, "value_matches": [true, true], "table_index": 0, "row_index": 30}
+    ]
+  },
+  "versions": {
+    "docling-slim": "2.145.0",
+    "docling-core": "2.105.0",
+    "docling-parse": "7.24.2",
+    "rapidocr": "3.10.0",
+    "onnxruntime": "1.31.1",
+    "torch": "2.15.0",
+    "tesserocr": "2.12.0",
+    "pymorphy3": "2.0.6",
+    "pymorphy3-dicts-ru": "2.4.417150.4580142"
+  },
+  "normalization": "NFC, casefold, collapsed whitespace for CER; no ё/e or Latin/Cyrillic correction. Numeric table comparisons ignore whitespace and accept decimal comma/point and equivalent negative notation.",
+  "cases": [
+    {
+      "id": "mosreg-assets",
+      "file_sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 50.159761600079946,
+      "passed": false,
+      "text_export_characters": 3973,
+      "text_scores": [
+        {
+          "name": "heading",
+          "expected": "Бухгалтерский баланс на 31 декабря 2025 г.",
+          "actual": "Бухгалтерский баланс на 31 декабря 2025 г.",
+          "roi": [0.37, 0.395, 0.66, 0.432],
+          "edits": 0,
+          "reference_characters": 42,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        }
+      ],
+      "row_scores": [
+        {"key": "1105", "expected": ["-", "-", "-"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1110", "expected": ["585", "682", "682"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1130", "expected": ["-", "-", "-"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1140", "expected": ["-", "-", "-"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1150", "expected": ["-", "-", "-"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1160", "expected": ["-", "-", "-"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1170", "expected": ["-", "-", "-"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1180", "expected": ["304097", "205228", "77189"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1190", "expected": ["-", "-", "-"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1100", "expected": ["304682", "205910", "77870"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1220", "expected": ["-", "-", "-"], "actual": [], "value_matches": [false, false, false], "passed": false},
+        {"key": "1230", "expected": ["72074", "19695", "51113"], "actual": [], "value_matches": [false, false, false], "passed": false}
+      ],
+      "field_scores": [],
+      "error": null
+    },
+    {
+      "id": "mosreg-liabilities",
+      "file_sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+      "source_page": 3,
+      "status": "success",
+      "elapsed_seconds": 116.0341881000204,
+      "passed": true,
+      "text_export_characters": 6956,
+      "text_scores": [],
+      "row_scores": [
+        {"key": "1310", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1320", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1330", "expected": ["4007919", "3185972", "2394030"], "actual": ["4007919", "3 185 972", "2 394 030"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1360", "expected": ["585", "682", "682"], "actual": ["585", "682", "682"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1300", "expected": ["4008504", "3186654", "2394712"], "actual": ["4 008 504", "3 186 654", "2394712"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1420", "expected": ["146", "171", "137"], "actual": ["146", "171", "137"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1430", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1400", "expected": ["146", "171", "137"], "actual": ["146", "171", "137"], "value_matches": [true, true, true], "passed": true},
+        {"key": "Кредиторская задолженность", "expected": ["23608", "23514", "8073"], "actual": ["23 608", "23514", "8073"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1540", "expected": ["331146", "410766", "188919"], "actual": ["331146", "410766", "188 919"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1550", "expected": ["-", "-", "-"], "actual": ["-", "-", "-"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1500", "expected": ["354754", "434280", "196992"], "actual": ["354 754", "434280", "196 992"], "value_matches": [true, true, true], "passed": true},
+        {"key": "1700", "expected": ["4363404", "3621105", "2591841"], "actual": ["4 363 404", "3 621 105", "2 591 841"], "value_matches": [true, true, true], "passed": true}
+      ],
+      "field_scores": [],
+      "error": null
+    },
+    {
+      "id": "mosreg-target-funds",
+      "file_sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+      "source_page": 4,
+      "status": "success",
+      "elapsed_seconds": 27.66641659999732,
+      "passed": true,
+      "text_export_characters": 2372,
+      "text_scores": [
+        {
+          "name": "heading",
+          "expected": "Отчет о целевом использовании средств за 2025 г.",
+          "actual": "Отчет о целевом использовании средств за 2025 г.",
+          "roi": [0.3, 0.046, 0.73, 0.082],
+          "edits": 0,
+          "reference_characters": 48,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        }
+      ],
+      "row_scores": [
+        {"key": "6100", "expected": ["3185972", "2394030"], "actual": ["3 185 972", "2 394 030"], "value_matches": [true, true], "passed": true},
+        {"key": "6210", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "6215", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "6220", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "6230", "expected": ["500000", "500000"], "actual": ["500 000", "500 000"], "value_matches": [true, true], "passed": true},
+        {"key": "6240", "expected": ["321947", "347724"], "actual": ["321947", "347724"], "value_matches": [true, true], "passed": true},
+        {"key": "6250", "expected": ["-", "69783"], "actual": ["-", "69 783"], "value_matches": [true, true], "passed": true},
+        {"key": "6200", "expected": ["821947", "917507"], "actual": ["821947", "917507"], "value_matches": [true, true], "passed": true},
+        {"key": "6310", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "6311", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "6312", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true}
+      ],
+      "field_scores": [],
+      "error": null
+    },
+    {
+      "id": "mosreg-financial-results",
+      "file_sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+      "source_page": 6,
+      "status": "success",
+      "elapsed_seconds": 42.84986990003381,
+      "passed": false,
+      "text_export_characters": 5548,
+      "text_scores": [
+        {
+          "name": "heading",
+          "expected": "Отчет о финансовых результатах за 2025 г.",
+          "actual": "Отчет о финансовых результатах за 2025 г.",
+          "roi": [0.32, 0.047, 0.72, 0.083],
+          "edits": 0,
+          "reference_characters": 41,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        }
+      ],
+      "row_scores": [
+        {"key": "2110", "expected": ["116386", "152041"], "actual": ["116386", "152041"], "value_matches": [true, true], "passed": true},
+        {"key": "2120", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "2100", "expected": ["116386", "152041"], "actual": ["116386", "152041"], "value_matches": [true, true], "passed": true},
+        {"key": "2210", "expected": ["-", "-"], "actual": ["-", "- т"], "value_matches": [true, false], "passed": false},
+        {"key": "2220", "expected": ["(56695)", "(46523)"], "actual": ["(56 695)", "(46 523)"], "value_matches": [true, true], "passed": true},
+        {"key": "2200", "expected": ["59691", "105518"], "actual": ["59691", "105518"], "value_matches": [true, true], "passed": true},
+        {"key": "2310", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "2320", "expected": ["772874", "555309"], "actual": ["772 874", "555309"], "value_matches": [true, true], "passed": true},
+        {"key": "2330", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "2340", "expected": ["70616", "13533"], "actual": ["70616", "13533"], "value_matches": [true, true], "passed": true},
+        {"key": "2350", "expected": ["(473947)", "(320606)"], "actual": ["(473 947)", "(320 606)"], "value_matches": [true, true], "passed": true},
+        {"key": "2300", "expected": ["429234", "353754"], "actual": ["429234", "353754"], "value_matches": [true, true], "passed": true},
+        {"key": "2410", "expected": ["(107287)", "(6030)"], "actual": ["(107 287)", "(6 030)"], "value_matches": [true, true], "passed": true},
+        {"key": "2411", "expected": ["(206180)", "(134035)"], "actual": ["(206180)", "(134035)"], "value_matches": [true, true], "passed": true},
+        {"key": "2412", "expected": ["98893", "128005"], "actual": ["98 893", "128 005"], "value_matches": [true, true], "passed": true},
+        {"key": "2420", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "2460", "expected": ["-", "-"], "actual": ["-", "-"], "value_matches": [true, true], "passed": true},
+        {"key": "2400", "expected": ["321947", "347724"], "actual": ["321 947", "347724"], "value_matches": [true, true], "passed": true}
+      ],
+      "field_scores": [],
+      "error": null
+    },
+    {
+      "id": "receipt-lenta-two-vat-rates",
+      "file_sha256": "d9212833c0422e0eff347ee9d1da4b9bbecdf7486f8c2800f8b0829b6ec81382",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 86.2724511999404,
+      "passed": false,
+      "text_export_characters": 614,
+      "text_scores": [
+        {
+          "name": "sale-heading",
+          "expected": "ДОКУМЕНТ НА ПРОДАЖУ 63 (ПРИХОД)",
+          "actual": "ДОКУМЕНТ НА ПРОДАЖУ 63 СПРИХОД СМЕНА №: 0371: ).",
+          "roi": [0.17083333333333334, 0.3925, 0.4716666666666667, 0.41125],
+          "edits": 18,
+          "reference_characters": 31,
+          "cer": 0.5806451612903226,
+          "wer": 1.0,
+          "limit": 0.05,
+          "passed": false
+        },
+        {
+          "name": "total-payment-vat",
+          "expected": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =233.96 БЕЗНАЛИЧНЫМИ =233.96 Сумма НДС 20% =1.50 Сумма НДС 10% =20.45",
+          "actual": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =233.96 БЕЗНАЛИЧНЫМИ =233.96 сии НДС 2д -1.50 C10 =20.45",
+          "roi": [0.1625, 0.566875, 0.6825, 0.631875],
+          "edits": 18,
+          "reference_characters": 100,
+          "cer": 0.18,
+          "wer": 0.35294117647058826,
+          "limit": 0.05,
+          "passed": false
+        }
+      ],
+      "row_scores": [],
+      "field_scores": [
+        {
+          "name": "bag-price",
+          "expected": "8.99",
+          "actual_region": "Пакет ЛЕНТА 9кг 8.99 1 ..=8.99 НДС 202",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-price",
+          "expected": "74.99",
+          "actual_region": "20H 262660101H0",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "bread-quantity",
+          "expected": "3",
+          "actual_region": "20H 262660101H0",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "bread-sum",
+          "expected": "224.97",
+          "actual_region": "20H 262660101H0",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "total",
+          "expected": "233.96",
+          "actual_region": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =233.96",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "paid",
+          "expected": "233.96",
+          "actual_region": "БЕЗНАЛИЧНЫМИ =233.96",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-rate-20",
+          "expected": "20",
+          "actual_region": "сии НДС 2д -1.50",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "vat-amount-20",
+          "expected": "1.50",
+          "actual_region": "сии НДС 2д -1.50",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "vat-rate-10",
+          "expected": "10",
+          "actual_region": "C10 =20.45",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-amount-10",
+          "expected": "20.45",
+          "actual_region": "C10 =20.45",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "receipt-lenta-handwritten-overlay",
+      "file_sha256": "02a6c198ab3c997f1d3ee4f49402a42cd3ff739df5f1c8fb4e3e9f4f78f08f36",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 81.37212910002563,
+      "passed": false,
+      "text_export_characters": 685,
+      "text_scores": [
+        {
+          "name": "sale-heading",
+          "expected": "ДОКУМЕНТ НА ПРОДАЖУ 46 (ПРИХОД)",
+          "actual": "ДОКУМЕНТ НА ПРОДАЛУ 46\" СПРИКОД",
+          "roi": [0.25, 0.4725, 0.5325, 0.49375],
+          "edits": 5,
+          "reference_characters": 31,
+          "cer": 0.16129032258064516,
+          "wer": 0.6,
+          "limit": 0.05,
+          "passed": false
+        },
+        {
+          "name": "total-payment-vat",
+          "expected": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =571.93 БЕЗНАЛИЧНЫМИ =571.93 Сумма НДС 10% =52.00",
+          "actual": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ 571.93 БЕЗНАЛИЧНЫМИ 571.93 СУММА НДС 10% .00",
+          "roi": [0.2375, 0.566875, 0.71, 0.6225],
+          "edits": 5,
+          "reference_characters": 80,
+          "cer": 0.0625,
+          "wer": 0.23076923076923078,
+          "limit": 0.05,
+          "passed": false
+        }
+      ],
+      "row_scores": [],
+      "field_scores": [
+        {
+          "name": "bread-first-price",
+          "expected": "69.99",
+          "actual_region": "Хлеб хебй дом Герку.69.99 92=1398 HC 102 Xno6",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-baton-price",
+          "expected": "74.99",
+          "actual_region": "Хлеб ТЕПЛЫЙ ДАР ТоСТОВ 2 74.99 *2.=149.98 НДС",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-baton-quantity",
+          "expected": "2",
+          "actual_region": "Хлеб ТЕПЛЫЙ ДАР ТоСТОВ 2 74.99 *2.=149.98 НДС",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-baton-sum",
+          "expected": "149.98",
+          "actual_region": "Хлеб ТЕПЛЫЙ ДАР ТоСТОВ 2 74.99 *2.=149.98 НДС",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-last-price",
+          "expected": "119.99",
+          "actual_region": "66 61 HO X GX *21=239.38 HC102",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "bread-last-sum",
+          "expected": "239.98",
+          "actual_region": "66 61 HO X GX *21=239.38 HC102",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "total",
+          "expected": "571.93",
+          "actual_region": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ 571.93",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "paid",
+          "expected": "571.93",
+          "actual_region": "БЕЗНАЛИЧНЫМИ 571.93",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-rate-10",
+          "expected": "10",
+          "actual_region": "СУММА НДС 10% .00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-amount-10",
+          "expected": "52.00",
+          "actual_region": "СУММА НДС 10% .00",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "receipt-aromatny-mir",
+      "file_sha256": "fb97e310f9f65ee7ddc0ac7c26b199ac1927956e230aab03399652fe21d61f33",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 108.70909040002152,
+      "passed": false,
+      "text_export_characters": 1375,
+      "text_scores": [
+        {
+          "name": "receipt-heading",
+          "expected": "Кассовый чек",
+          "actual": "Кассовы чек",
+          "roi": [0.36833333333333335, 0.230625, 0.5525, 0.246875],
+          "edits": 1,
+          "reference_characters": 12,
+          "cer": 0.08333333333333333,
+          "wer": 0.5,
+          "limit": 0.05,
+          "passed": false
+        },
+        {
+          "name": "payment-and-vat",
+          "expected": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+          "actual": "БЕЗНАЛИЧНЫМИ =355.96 УМА НДС 20% =59.34",
+          "roi": [0.2125, 0.735625, 0.6416666666666667, 0.766875],
+          "edits": 2,
+          "reference_characters": 41,
+          "cer": 0.04878048780487805,
+          "wer": 0.16666666666666666,
+          "limit": 0.05,
+          "passed": true
+        }
+      ],
+      "row_scores": [],
+      "field_scores": [
+        {
+          "name": "first-item-price",
+          "expected": "87.99",
+          "actual_region": "4670025476126ПИВ.НАЛ ЧЕСТЕР С ЛЕСНЕ ЯГОДЫ ОР *1 0f. =87.99 СМ+J 2897 АТМ HAC20=14.67 4670025476126 ПИВ. НАЛ ЧЕСТЕРС ЛЕСНЕ ЯГОДЫ",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "first-item-vat",
+          "expected": "14.67",
+          "actual_region": "4670025476126ПИВ.НАЛ ЧЕСТЕР С ЛЕСНЕ ЯГОДЫ ОР *1 0f. =87.99 СМ+J 2897 АТМ HAC20=14.67 4670025476126 ПИВ. НАЛ ЧЕСТЕРС ЛЕСНЕ ЯГОДЫ",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "third-item-price",
+          "expected": "89.99",
+          "actual_region": "4600682042303 ПИВО ГРИНБИТ СВЕТ.ПАСТЕР.0.45 *1T. =89.99 СМ+О 4710 АТМ H2015.00 4600682042303 ПИВ0 ГРИНБИТ СВЕТ.ПАСТЕР.0.45.",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "third-item-vat",
+          "expected": "15.00",
+          "actual_region": "4600682042303 ПИВО ГРИНБИТ СВЕТ.ПАСТЕР.0.45 *1T. =89.99 СМ+О 4710 АТМ H2015.00 4600682042303 ПИВ0 ГРИНБИТ СВЕТ.ПАСТЕР.0.45.",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "before-discount",
+          "expected": "399.96",
+          "actual_region": "Бе3 скд0к руб.: :1399.96",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "total",
+          "expected": "355.96",
+          "actual_region": "3.96",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "card",
+          "expected": "355.96",
+          "actual_region": "ПОЛУЧЕНО . КАРТА. =355.96",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "discount",
+          "expected": "44.00",
+          "actual_region": "ВАША СКИДКА:РУБ 44.00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-rate-20",
+          "expected": "20",
+          "actual_region": "УМА НДС 20% =59.34",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-amount-20",
+          "expected": "59.34",
+          "actual_region": "УМА НДС 20% =59.34",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "receipt-canteen-507",
+      "file_sha256": "f52b1418a3c22d91d1ca676dfd91378cc36c01b83286c65a3385676e9fa2c9de",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 162.91023519996088,
+      "passed": false,
+      "text_export_characters": 1031,
+      "text_scores": [
+        {
+          "name": "receipt-heading",
+          "expected": "Кассовый чек",
+          "actual": "Кассовый чек",
+          "roi": [0.41523809523809524, 0.18214285714285713, 0.5895238095238096, 0.20357142857142857],
+          "edits": 0,
+          "reference_characters": 12,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.05,
+          "passed": true
+        }
+      ],
+      "row_scores": [],
+      "field_scores": [
+        {
+          "name": "first-item-price",
+          "expected": "269.00",
+          "actual_region": "1 Бимтекс из гов. с яйцом 269.00*1 =269.00 25 3H",
+          "roi_number_correct": true,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "bread-price",
+          "expected": "5.00",
+          "actual_region": "1 Хе6 5.00*2 =10.00 HAC 5Z",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-quantity",
+          "expected": "2",
+          "actual_region": "1 Хе6 5.00*2 =10.00 HAC 5Z",
+          "roi_number_correct": true,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "bread-sum",
+          "expected": "10.00",
+          "actual_region": "1 Хе6 5.00*2 =10.00 HAC 5Z",
+          "roi_number_correct": true,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "total",
+          "expected": "507.00",
+          "actual_region": "ИТОГ -507:00",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "vat-rate-5",
+          "expected": "5",
+          "actual_region": "CУHMA HAC SZ =24.15 БЕЗНАЛИЧНЫМИ",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "vat-amount-5",
+          "expected": "24.15",
+          "actual_region": "CУHMA HAC SZ =24.15 БЕЗНАЛИЧНЫМИ",
+          "roi_number_correct": true,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "paid",
+          "expected": "507.00",
+          "actual_region": "БЕЗНАЛИЧНЫМИ =24.15 Кассир 0020",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "receipt-canteen-964",
+      "file_sha256": "e9ce518a15081abdc0ebb477c8cd95b2222350e801405a0a8cd6b2568825de3a",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 69.23038920003455,
+      "passed": false,
+      "text_export_characters": 635,
+      "text_scores": [
+        {
+          "name": "receipt-heading",
+          "expected": "Кассовый чек",
+          "actual": "Кассовый чек",
+          "roi": [0.42857142857142855, 0.2576530612244898, 0.576530612244898, 0.28188775510204084],
+          "edits": 0,
+          "reference_characters": 12,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.05,
+          "passed": true
+        }
+      ],
+      "row_scores": [],
+      "field_scores": [
+        {
+          "name": "first-item-price",
+          "expected": "489.00",
+          "actual_region": "AEU EH 489.00*1 =489.00 HAC57",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "cauliflower-price",
+          "expected": "125.00",
+          "actual_region": "1 Цветная капуста на пару 125.00*1 =125.00 HAC57",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "pear-price",
+          "expected": "185.00",
+          "actual_region": "1 Груша запеченая с твогом и ГР. орехон НДС 5% 185.00*1 =185.00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "salad-price",
+          "expected": "125.00",
+          "actual_region": "1 Салат из проростков Фасоли 125.00*1 =125.00 HAC57",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "tea-price",
+          "expected": "40.00",
+          "actual_region": "1 чай Никтиа: .40.00*1 =40.00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "964.00",
+          "actual_region": "ИТОГ =964.00",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-rate-5",
+          "expected": "5",
+          "actual_region": "СУММА НДС 5% .=45.90",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-amount-5",
+          "expected": "45.90",
+          "actual_region": "СУММА НДС 5% .=45.90",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "paid",
+          "expected": "964.00",
+          "actual_region": "БЕЗНАЛИЧНЫМИ 0096",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "receipt-canteen-discount",
+      "file_sha256": "afcc8ad7971d9710c9e1065c4bddb4a477b32e731f04b19879d9a509bc9e5259",
+      "source_page": 1,
+      "status": "success",
+      "elapsed_seconds": 109.68768799991813,
+      "passed": false,
+      "text_export_characters": 676,
+      "text_scores": [
+        {
+          "name": "receipt-heading",
+          "expected": "Кассовый чек",
+          "actual": "Кассовый чек",
+          "roi": [0.4066780821917808, 0.2939666238767651, 0.550513698630137, 0.31322207958921694],
+          "edits": 0,
+          "reference_characters": 12,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.05,
+          "passed": true
+        }
+      ],
+      "row_scores": [],
+      "field_scores": [
+        {
+          "name": "container-price",
+          "expected": "13.50",
+          "actual_region": "1 контейнер для второго 13.54 =54.00 HAC5",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "container-quantity",
+          "expected": "4",
+          "actual_region": "1 контейнер для второго 13.54 =54.00 HAC5",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "container-sum",
+          "expected": "54.00",
+          "actual_region": "1 контейнер для второго 13.54 =54.00 HAC5",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "soup-container-sum",
+          "expected": "27.00",
+          "actual_region": "1 Контелер для супа 13.50*2 -27.00 HAC57",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "rice-price",
+          "expected": "89.10",
+          "actual_region": "1и из снежей капусты 89.10*4 =6.40 HAC5",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "rice-sum",
+          "expected": "356.40",
+          "actual_region": "1и из снежей капусты 89.10*4 =6.40 HAC5",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "buckwheat-price",
+          "expected": "62.10",
+          "actual_region": "1 Греча отварная 62.10*3 .=186.30 HOC5",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "buckwheat-sum",
+          "expected": "186.30",
+          "actual_region": "1 Греча отварная 62.10*3 .=186.30 HOC5",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "discount",
+          "expected": "-118.10",
+          "actual_region": "Скика 11 .-118.10",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "1062.90",
+          "actual_region": "ИТОГ =1062.90",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "vat-rate-5",
+          "expected": "5",
+          "actual_region": "CYA HAC SZ =50.61",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "vat-amount-5",
+          "expected": "50.61",
+          "actual_region": "CYA HAC SZ =50.61",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "paid",
+          "expected": "1062.90",
+          "actual_region": "БЕЗНАЛИЧНЫМИ =1062.90",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        }
+      ],
+      "error": null
+    }
+  ]
+}

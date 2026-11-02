@@ -1,0 +1,42 @@
+{
+  "dataset_revision": "50a7383534b3fe498c49eff9e7bb35b20f300eba",
+  "metadata_source": "Previously cached image-file tree for the same immutable revision; no annotation files were read.",
+  "files": [
+    {
+      "file": "IMG_0784_bin.jpg",
+      "publisher_sha256": "d9212833c0422e0eff347ee9d1da4b9bbecdf7486f8c2800f8b0829b6ec81382",
+      "downloaded_sha256": "d9212833c0422e0eff347ee9d1da4b9bbecdf7486f8c2800f8b0829b6ec81382",
+      "matches": true
+    },
+    {
+      "file": "IMG_0800_bin.jpg",
+      "publisher_sha256": "02a6c198ab3c997f1d3ee4f49402a42cd3ff739df5f1c8fb4e3e9f4f78f08f36",
+      "downloaded_sha256": "02a6c198ab3c997f1d3ee4f49402a42cd3ff739df5f1c8fb4e3e9f4f78f08f36",
+      "matches": true
+    },
+    {
+      "file": "IMG_0884_bin.jpg",
+      "publisher_sha256": "fb97e310f9f65ee7ddc0ac7c26b199ac1927956e230aab03399652fe21d61f33",
+      "downloaded_sha256": "fb97e310f9f65ee7ddc0ac7c26b199ac1927956e230aab03399652fe21d61f33",
+      "matches": true
+    },
+    {
+      "file": "IMG_1054_bin.jpg",
+      "publisher_sha256": "f52b1418a3c22d91d1ca676dfd91378cc36c01b83286c65a3385676e9fa2c9de",
+      "downloaded_sha256": "f52b1418a3c22d91d1ca676dfd91378cc36c01b83286c65a3385676e9fa2c9de",
+      "matches": true
+    },
+    {
+      "file": "IMG_1186_bin.jpg",
+      "publisher_sha256": "e9ce518a15081abdc0ebb477c8cd95b2222350e801405a0a8cd6b2568825de3a",
+      "downloaded_sha256": "e9ce518a15081abdc0ebb477c8cd95b2222350e801405a0a8cd6b2568825de3a",
+      "matches": true
+    },
+    {
+      "file": "IMG_1244_bin.jpg",
+      "publisher_sha256": "afcc8ad7971d9710c9e1065c4bddb4a477b32e731f04b19879d9a509bc9e5259",
+      "downloaded_sha256": "afcc8ad7971d9710c9e1065c4bddb4a477b32e731f04b19879d9a509bc9e5259",
+      "matches": true
+    }
+  ]
+}

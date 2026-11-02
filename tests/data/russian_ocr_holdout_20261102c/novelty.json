@@ -1,0 +1,71 @@
+{
+  "scope": "New relative to every locally available previous original and candidate, before inference; no claim about pretrained model training data.",
+  "previous_files": 124,
+  "previous_unique_sha256": 89,
+  "previous_inventory_sha256": "a6b01a4c609a2e150725b8e31af1e0f62146197ec3e342791f6ffef5f1e6d285",
+  "selection_before_inference": true,
+  "originals": 7,
+  "cases": 10,
+  "files": [
+    {
+      "file": "IMG_0784_bin.jpg",
+      "sha256": "d9212833c0422e0eff347ee9d1da4b9bbecdf7486f8c2800f8b0829b6ec81382",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 22,
+        "file": "output/real-russian-ocr-2026-11-01/sources/receipt-2.jpg"
+      }
+    },
+    {
+      "file": "IMG_0800_bin.jpg",
+      "sha256": "02a6c198ab3c997f1d3ee4f49402a42cd3ff739df5f1c8fb4e3e9f4f78f08f36",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 12,
+        "file": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_0753_bin.jpg"
+      }
+    },
+    {
+      "file": "IMG_0884_bin.jpg",
+      "sha256": "fb97e310f9f65ee7ddc0ac7c26b199ac1927956e230aab03399652fe21d61f33",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 22,
+        "file": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0891_bin.jpg"
+      }
+    },
+    {
+      "file": "IMG_1054_bin.jpg",
+      "sha256": "f52b1418a3c22d91d1ca676dfd91378cc36c01b83286c65a3385676e9fa2c9de",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 18,
+        "file": "output/real-russian-ocr-new-2026-11-01/sources/IMG_0667_bin.PNG"
+      }
+    },
+    {
+      "file": "IMG_1186_bin.jpg",
+      "sha256": "e9ce518a15081abdc0ebb477c8cd95b2222350e801405a0a8cd6b2568825de3a",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 18,
+        "file": "output/real-russian-ocr-2026-11-01/sources/receipt-3.jpg"
+      }
+    },
+    {
+      "file": "IMG_1244_bin.jpg",
+      "sha256": "afcc8ad7971d9710c9e1065c4bddb4a477b32e731f04b19879d9a509bc9e5259",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 18,
+        "file": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0724_bin.PNG"
+      }
+    },
+    {
+      "file": "mosreg-balance-2025.pdf",
+      "sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+      "exact_previous_duplicate": false
+    }
+  ],
+  "limitations": "Perceptual hashes are a similarity screen only. Receipt backgrounds and layouts can resemble older receipts; source-visible merchant, transaction, items and amounts were reviewed before inference. The group contains one PDF original and three same-merchant canteen originals."
+}
