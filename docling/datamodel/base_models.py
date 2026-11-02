@@ -504,6 +504,8 @@ class FieldRegionElement(ContainerElement):
 class Table(BasePageElement):
     otsl_seq: list[str]
     from_ocr_grid: bool = False
+    # Only these PDF grids need rectified source crops for numeric refinement.
+    ocr_grid_rectified: bool = False
     num_rows: int = 0
     num_cols: int = 0
     orientation: Orientation = Orientation.ROT_0

@@ -225,6 +225,7 @@ def table_from_photo_grid(
             )
     return Table(
         from_ocr_grid=True,
+        ocr_grid_rectified=True,
         id=cluster.id,
         label=cluster.label,
         page_no=page_no,

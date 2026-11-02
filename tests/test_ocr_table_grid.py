@@ -59,6 +59,8 @@ def test_dense_grid_keeps_adjacent_amounts_in_separate_rows(uneven_light: bool) 
     )
     assert table is not None
     assert (table.num_rows, table.num_cols) == (18, 4)
+    if not uneven_light:
+        assert not table.ocr_grid_rectified
     rows = {}
     for cell in table.table_cells:
         rows.setdefault(cell.start_row_offset_idx, []).append(cell.text)
@@ -106,6 +108,7 @@ def test_photo_grid_recovers_skewed_rules_without_duplicate_rows(
     )
     assert table is not None
     assert (table.num_rows, table.num_cols) == (19, 4)
+    assert table.ocr_grid_rectified
     assert [
         cell.text for cell in table.table_cells if cell.start_row_offset_idx == 11
     ] == [f"r11c{col}" for col in range(4)]

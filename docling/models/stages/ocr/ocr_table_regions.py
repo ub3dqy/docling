@@ -72,8 +72,14 @@ def refine_table_regions(
 
             # Recover skewed source cells in either a photo or a scanned PDF.
             # Axis-aligned bounds can otherwise include the neighboring rule.
-            regions = photo_table_regions(
-                image, table, scale=photo_scale if image_input else 600 / 72
+            # Straight PDF cells retain the established source crop. An
+            # unnecessary warp can join a faint digit to its neighbouring rule.
+            regions = (
+                photo_table_regions(
+                    image, table, scale=photo_scale if image_input else 600 / 72
+                )
+                if image_input or table.ocr_grid_rectified
+                else {}
             )
             if image_input:
                 refine_photo_labels(refiner, api, page, image, table, regions)
