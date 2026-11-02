@@ -80,3 +80,7 @@ Handwriting, signatures, stamps, QR/barcodes,
 authentication of the originals, covered details and text outside the stated
 controls are not graded. This small, deliberately varied sample does not
 estimate general production accuracy.
+
+The subsequent development recheck is documented in [RECHECK.md](RECHECK.md)
+and [recheck-result.json](recheck-result.json). The first-run files above remain
+unchanged. These documents are now known development/regression cases.

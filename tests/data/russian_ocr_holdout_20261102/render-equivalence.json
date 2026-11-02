@@ -1,0 +1,455 @@
+{
+  "conversion_runtime_commit": "a44e5e75e31143510a8456e82e694bbc9f3eadac",
+  "final_runtime_commit": "d242eb5fe9455421182fecf75db853795be68e01",
+  "changed_runtime_files": [
+    "datamodel/pipeline_options.py",
+    "models/stages/ocr/rapid_ocr_model.py"
+  ],
+  "only_inference_change_is_the_image_compensation_bound": true,
+  "all_30_inputs_equivalent": true,
+  "image_pixel_hashes_checked": 14,
+  "pdf_scales_checked": 16,
+  "runtime_sha256": "d5d4852dd633cae98a05f27c3ee1adef27b1deee853de030faf4d4fce308e283",
+  "cases": [
+    {
+      "cohort": "newest",
+      "case": "kadastr-assets",
+      "source_sha256": "10267673f463e6005f17bf683a420ff1022804349bfe01b8b3bbc0da3f99f6e1",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "newest",
+      "case": "kadastr-liabilities",
+      "source_sha256": "10267673f463e6005f17bf683a420ff1022804349bfe01b8b3bbc0da3f99f6e1",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "newest",
+      "case": "kadastr-cash-flow",
+      "source_sha256": "10267673f463e6005f17bf683a420ff1022804349bfe01b8b3bbc0da3f99f6e1",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "newest",
+      "case": "kadastr-cash-balances",
+      "source_sha256": "10267673f463e6005f17bf683a420ff1022804349bfe01b8b3bbc0da3f99f6e1",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "newest",
+      "case": "kadastr-audit-text",
+      "source_sha256": "bd446fab3d40f958a2e79e4922339318b305457b0c2104b0503f885bf3d9d9fd",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "newest",
+      "case": "receipt-clinic-no-vat",
+      "source_sha256": "d4f9d4c090672c2c43e74cdb42d39cab794d5902d7e4ff384ee650aeddda7784",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        3200,
+        4616
+      ],
+      "after_pixels": [
+        3200,
+        4616
+      ],
+      "before_pixel_sha256": "48999447bd0ffa1e73dbb40578096e3de5f970df3c8dbcd49bc0b2c208e22c1d",
+      "after_pixel_sha256": "48999447bd0ffa1e73dbb40578096e3de5f970df3c8dbcd49bc0b2c208e22c1d",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "newest",
+      "case": "receipt-appliance-vat-20",
+      "source_sha256": "2d22bb4713e930784005937ddb281da971b7bd6651aebb6577683bb50a562991",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        2400,
+        3200
+      ],
+      "after_pixels": [
+        2400,
+        3200
+      ],
+      "before_pixel_sha256": "ddaa973490cf47006cef695a5ac52d1cf0370ce0bd679f1e0d57459cb79c6889",
+      "after_pixel_sha256": "ddaa973490cf47006cef695a5ac52d1cf0370ce0bd679f1e0d57459cb79c6889",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "newest",
+      "case": "receipt-pharmacy-mixed-vat",
+      "source_sha256": "79e4d4dadd683b266d8185eb8abff89703258bade599ff123e170b0cd0d0f184",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        2400,
+        3200
+      ],
+      "after_pixels": [
+        2400,
+        3200
+      ],
+      "before_pixel_sha256": "e623f7141fb2cd42313576fa3d6fb52d90255d3cd10d5bb5d1243d6fc3a68eba",
+      "after_pixel_sha256": "e623f7141fb2cd42313576fa3d6fb52d90255d3cd10d5bb5d1243d6fc3a68eba",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "newest",
+      "case": "photo-passport-open",
+      "source_sha256": "ab1dc7c5580e5d98060ffee5a717985d15c839dcb40a3be9c9aec0e15688df76",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        3840,
+        2158
+      ],
+      "after_pixels": [
+        3840,
+        2158
+      ],
+      "before_pixel_sha256": "88b640826544fe8224db5691ae89af6e83d6f00161b7cfcead978202b4101165",
+      "after_pixel_sha256": "88b640826544fe8224db5691ae89af6e83d6f00161b7cfcead978202b4101165",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "newest",
+      "case": "scan-birth-certificate",
+      "source_sha256": "00529c0a8816578bff62c387b7c297a7468ce7fce01a94680de6d3b07abe72af",
+      "format": "image",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "before_pixels": [
+        660,
+        861
+      ],
+      "after_pixels": [
+        660,
+        861
+      ],
+      "before_pixel_sha256": "ebf525974be8f13ae63515aabfa83b5417f236323dced3e5a44a7a8c13bbef46",
+      "after_pixel_sha256": "ebf525974be8f13ae63515aabfa83b5417f236323dced3e5a44a7a8c13bbef46",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "unseen",
+      "case": "bi-balance-sideways",
+      "source_sha256": "0b60170a158217da5c1203d18da5a12434191071b845f7e32e5712756e83ed1a",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "unseen",
+      "case": "bi-results-sideways",
+      "source_sha256": "00633d5fc56d8582a630d629b6827b7e30fba53fdfc43e3785f3afad10346543",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "unseen",
+      "case": "amfbc-audit-text",
+      "source_sha256": "1121246441a782bbd6bccd152694ff4c7ac08aa2f121305f717de595fc9c03d1",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "unseen",
+      "case": "amfbc-assets",
+      "source_sha256": "1121246441a782bbd6bccd152694ff4c7ac08aa2f121305f717de595fc9c03d1",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "unseen",
+      "case": "amfbc-liabilities",
+      "source_sha256": "1121246441a782bbd6bccd152694ff4c7ac08aa2f121305f717de595fc9c03d1",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "unseen",
+      "case": "photo-school-tables",
+      "source_sha256": "b5b683b731cfd52f4438d4db66cbe036066510c7c44cbdeb45005eea13e02381",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        1272,
+        810
+      ],
+      "after_pixels": [
+        1272,
+        810
+      ],
+      "before_pixel_sha256": "1934942385ef97b4ce40b37b3361655d2fe2aa845d5938bfeac4e81d2edbd1e6",
+      "after_pixel_sha256": "1934942385ef97b4ce40b37b3361655d2fe2aa845d5938bfeac4e81d2edbd1e6",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "unseen",
+      "case": "photo-passport-cover",
+      "source_sha256": "bd64105f792b82344c5562c4395adef41c494fb30f2720a360974ab26e61f1a7",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        3840,
+        2160
+      ],
+      "after_pixels": [
+        3840,
+        2160
+      ],
+      "before_pixel_sha256": "00e8b435b76656e65a50e215f1692cbb3d4f2ec9785e0f5681836c32f029f0a2",
+      "after_pixel_sha256": "00e8b435b76656e65a50e215f1692cbb3d4f2ec9785e0f5681836c32f029f0a2",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "unseen",
+      "case": "receipt-grocery-mixed-vat",
+      "source_sha256": "bc3787f800a4c40bc1e348296c7a3468ee0eb2ab9af111e57e0f4632e6dccd7a",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        3200,
+        4266
+      ],
+      "after_pixels": [
+        3200,
+        4266
+      ],
+      "before_pixel_sha256": "a02118a6e828fa8959b541e304ba7bf2ec7d7f3a6afe31496f51320144f34e07",
+      "after_pixel_sha256": "a02118a6e828fa8959b541e304ba7bf2ec7d7f3a6afe31496f51320144f34e07",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "unseen",
+      "case": "receipt-grocery-vat-10",
+      "source_sha256": "a8b3e632a6e91e9c0812651aadae9eb7cd60f5b539584e8b6ab53a93dd25234b",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        2400,
+        3200
+      ],
+      "after_pixels": [
+        2400,
+        3200
+      ],
+      "before_pixel_sha256": "8f4f74b762dd2f6ec57c8136794a66da9c71b5ce68d8b92bba9703d7bb712b38",
+      "after_pixel_sha256": "8f4f74b762dd2f6ec57c8136794a66da9c71b5ce68d8b92bba9703d7bb712b38",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "unseen",
+      "case": "receipt-electronics-vat-20",
+      "source_sha256": "c2d89cbbb8b22d162f67f2c4854e78d52626a01d100616ab8c6f85fd988ef253",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        2400,
+        3200
+      ],
+      "after_pixels": [
+        2400,
+        3200
+      ],
+      "before_pixel_sha256": "3e951297adb93131d945e6d3f493a2613e16f124f9028b5c5ea1e45b38632aa1",
+      "after_pixel_sha256": "3e951297adb93131d945e6d3f493a2613e16f124f9028b5c5ea1e45b38632aa1",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "previous",
+      "case": "rosseti-text",
+      "source_sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "previous",
+      "case": "rosseti-balance",
+      "source_sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "previous",
+      "case": "rosseti-results",
+      "source_sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "previous",
+      "case": "bank-text",
+      "source_sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "previous",
+      "case": "bank-assets",
+      "source_sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "previous",
+      "case": "bank-liabilities",
+      "source_sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+      "format": "pdf",
+      "before_scale": 4.166666666666667,
+      "after_scale": 4.166666666666667,
+      "equivalent": true,
+      "basis": "The compensation branch is image-only; PDF scale and all other inference code are unchanged."
+    },
+    {
+      "cohort": "previous",
+      "case": "photo-certificate",
+      "source_sha256": "288a0b476aeea3512e835555b65e53c39498834b22ccb878f3260d3acde0611f",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        1688,
+        1174
+      ],
+      "after_pixels": [
+        1688,
+        1174
+      ],
+      "before_pixel_sha256": "f2f6fd79bb9871c37c3a3d3cc1a1b54185679d806f61471d89644ea62fcf0e1e",
+      "after_pixel_sha256": "f2f6fd79bb9871c37c3a3d3cc1a1b54185679d806f61471d89644ea62fcf0e1e",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "previous",
+      "case": "photo-grades",
+      "source_sha256": "4213813a40408691d8cd8b5740e50a18b99647cb55baa84bd6c8e2db7256aab7",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        2668,
+        1500
+      ],
+      "after_pixels": [
+        2668,
+        1500
+      ],
+      "before_pixel_sha256": "82638df1b8b30048f3ded7211743800abef2b4f1308b9c33ac970d5410636cb8",
+      "after_pixel_sha256": "82638df1b8b30048f3ded7211743800abef2b4f1308b9c33ac970d5410636cb8",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "previous",
+      "case": "receipt-sugar",
+      "source_sha256": "f737a502e69e8d854663513c946402b8851fb54c788a738fd840370bfce1e9ad",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        2400,
+        3200
+      ],
+      "after_pixels": [
+        2400,
+        3200
+      ],
+      "before_pixel_sha256": "938729d256cb0b5d47fce6481d709af22f141c8c986499b65b358eeaeebf39c8",
+      "after_pixel_sha256": "938729d256cb0b5d47fce6481d709af22f141c8c986499b65b358eeaeebf39c8",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    },
+    {
+      "cohort": "previous",
+      "case": "receipt-products",
+      "source_sha256": "de94c9a76d7e5bfd904ab312022755cc9f5a07728df623a89093e21a47c6ce20",
+      "format": "image",
+      "before_scale": 2.0,
+      "after_scale": 2.0,
+      "before_pixels": [
+        2152,
+        2870
+      ],
+      "after_pixels": [
+        2152,
+        2870
+      ],
+      "before_pixel_sha256": "b4d83f8e71be59ee71e59e8da7585b52f7c233ed6ef456809ea2bf87be2c2b9a",
+      "after_pixel_sha256": "b4d83f8e71be59ee71e59e8da7585b52f7c233ed6ef456809ea2bf87be2c2b9a",
+      "equivalent": true,
+      "basis": "Two independent renders through the actual image backend have identical pixel bytes."
+    }
+  ]
+}
