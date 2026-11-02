@@ -44,6 +44,7 @@ from docling.utils.ocr_region_pixels import (
 )
 
 if TYPE_CHECKING:
+    from docling_core.types.doc.page import TextCell
     from tesserocr import PyTessBaseAPI
 
 _CYRILLIC = re.compile(r"[\u0410-\u044f\u0401\u0451]")
@@ -619,6 +620,30 @@ class OcrRegionRefiner:
             )
         ]
 
+    def _text_row_readings(self, gray: np.ndarray) -> list[RegionReading]:
+        """Use one aligned source view per independent Cyrillic model."""
+        return [
+            RegionReading(
+                path.text, path.confidence, f"cyrillic-v6-{name}", "row-source"
+            )
+            for name, reader in self._cyrillic_readers.items()
+            if (path := reader.read_text_row(gray)) is not None
+        ]
+
+    def _aligned_text_readings(
+        self, gray_page: np.ndarray | None, cell: TextCell, page: Page
+    ) -> tuple[np.ndarray | None, list[RegionReading]]:
+        from docling.utils.ocr_text_geometry import rectified_text_crop
+
+        if gray_page is None or page.size is None:
+            return None, []
+        aligned = rectified_text_crop(gray_page, cell.rect, page.size)
+        return (
+            (None, [])
+            if aligned is None
+            else (aligned, self._text_row_readings(aligned))
+        )
+
     @staticmethod
     def _crop(
         image: Image.Image, box: BoundingBox, page: Page, *, inset: float
@@ -1126,7 +1151,12 @@ class OcrRegionRefiner:
         return refine_receipt_prices(self, page, image, api)
 
     def refine_lines(self, page: Page, *, image_input: bool) -> None:
-        if not image_input or page.parsed_page is None or page.size is None:
+        if page.parsed_page is None or page.size is None:
+            return
+        if not image_input:
+            from docling.models.stages.ocr.ocr_prose_regions import refine_pdf_prose
+
+            refine_pdf_prose(self, page)
             return
         lines = [cell for cell in page.parsed_page.textline_cells if cell.from_ocr]
         if not lines:
@@ -1150,6 +1180,7 @@ class OcrRegionRefiner:
             >= 2
         ) or is_receipt_page(cell.text for cell in lines)
         replacements: dict[int, RegionReading] = {}
+        verified_captions: set[int] = set()
         with (
             self._lock,
             self._tesserocr.PyTessBaseAPI(
@@ -1165,18 +1196,27 @@ class OcrRegionRefiner:
                 )
 
                 receipt = verify_receipt_page(self, page, image)
+            gray_page = np.asarray(image.convert("L")) if receipt else None
             if receipt:
                 from docling.models.stages.ocr.ocr_receipt_expressions import (
                     refine_receipt_expressions,
+                )
+                from docling.models.stages.ocr.ocr_receipt_text import (
+                    refine_receipt_captions,
                 )
                 from docling.models.stages.ocr.ocr_receipt_words import (
                     refine_receipt_words,
                 )
 
+                verified_captions = refine_receipt_captions(self, page, image, api)
+                lines = [
+                    cell for cell in page.parsed_page.textline_cells if cell.from_ocr
+                ]
                 for index in (
                     refine_receipt_expressions(self, page, image)
                     | self._receipt_prices(page, image, api)
                     | refine_receipt_words(self, page, image, api)
+                    | verified_captions
                 ):
                     cell = next(cell for cell in lines if cell.index == index)
                     replacements[index] = RegionReading(
@@ -1201,9 +1241,11 @@ class OcrRegionRefiner:
                         and re.fullmatch(r"\d{4,8}|\d+\.\d{2}", key) is not None
                     )
                 )
-                if (cell.confidence >= 0.95 and not receipt_field) or not 4 <= len(
-                    cell.text
-                ) <= 120:
+                if (
+                    cell.index in verified_captions
+                    or (cell.confidence >= 0.95 and not receipt_field)
+                    or not 4 <= len(cell.text) <= 120
+                ):
                     continue
                 box = cell.rect.to_bounding_box()
                 if box.height > 2.5 * line_height:
@@ -1299,6 +1341,11 @@ class OcrRegionRefiner:
                             leading_equals=leading_equals,
                         )
                 else:
+                    aligned, aligned_readings = self._aligned_text_readings(
+                        gray_page, cell, page
+                    )
+                    if aligned is not None:
+                        gray = aligned
                     photo_readings = self._photo_readings(api, gray) if photo else []
                     selected = self._choose_text(
                         cell.text,
@@ -1307,6 +1354,7 @@ class OcrRegionRefiner:
                             *self._rapid_readings(gray, numeric=False),
                             *tess,
                             *photo_readings,
+                            *aligned_readings,
                         ],
                         extended_photo_word=not receipt and light_on_dark(gray),
                     )

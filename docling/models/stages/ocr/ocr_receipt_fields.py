@@ -22,6 +22,7 @@ from docling.models.stages.ocr.ocr_region_refiner import (
 )
 from docling.utils.ocr_digit_templates import decimal_expression_equals
 from docling.utils.ocr_receipt_rows import is_receipt_field_caption
+from docling.utils.ocr_text_geometry import rectified_text_crop
 
 if TYPE_CHECKING:
     from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
@@ -126,6 +127,7 @@ def refine_receipt_fields(
     assert page.parsed_page is not None
     replacements: dict[int, RegionReading] = {}
     removed: set[int] = set()
+    gray_page = np.asarray(image.convert("L"))
     for cell in page.parsed_page.textline_cells:
         if not cell.from_ocr:
             continue
@@ -134,6 +136,14 @@ def refine_receipt_fields(
         if not triangle and not numeric and not is_receipt_field_caption(cell.text):
             continue
         gray = refiner._crop(image, cell.rect.to_bounding_box(), page, inset=-1)
+        rect = cell.rect
+        if (
+            page.size is not None
+            and abs(rect.r_y2 - rect.r_y3) > abs(rect.r_x2 - rect.r_x3) * 0.01
+        ):
+            aligned = rectified_text_crop(gray_page, rect, page.size)
+            if aligned is not None:
+                gray = aligned
         if gray is None:
             continue
         if triangle:

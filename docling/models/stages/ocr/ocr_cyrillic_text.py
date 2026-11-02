@@ -42,7 +42,11 @@ class CyrillicTextReader:
         self._input = self._session.get_inputs()[0].name
 
     def _paths(
-        self, gray: np.ndarray, *, known: Callable[[str], bool]
+        self,
+        gray: np.ndarray,
+        *,
+        known: Callable[[str], bool],
+        greedy_only: bool = False,
     ) -> list[CharacterPath]:
         import cv2
 
@@ -65,9 +69,17 @@ class CyrillicTextReader:
             r"[A-Za-z\u0410-\u044f\u0401\u0451]+(?:-[A-Za-z\u0410-\u044f\u0401\u0451]+)*",
             greedy[0].text,
         )
-        if greedy[0].confidence >= 0.95 and all(known(word) for word in words):
+        if greedy_only or (
+            greedy[0].confidence >= 0.95 and all(known(word) for word in words)
+        ):
             return greedy
         return character_paths(probabilities, self._alphabet)
+
+    def read_text_row(self, gray: np.ndarray) -> CharacterPath | None:
+        """Read one verified row without searching dictionary alternatives."""
+        source = gray[:, 2:-2] if gray.shape[1] > 20 else gray
+        paths = self._paths(source, known=lambda _: False, greedy_only=True)
+        return paths[0] if paths else None
 
     def read_views(
         self,

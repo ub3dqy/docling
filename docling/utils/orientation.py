@@ -9,6 +9,47 @@ from docling_core.types.doc.page import BoundingRectangle
 CLIPPED_ORIENTATIONS = [0, 90, 180, 270]
 
 
+def ocr_quad_to_bounding_rectangle(
+    points: list[list[float]],
+    *,
+    original_offset: BoundingBox,
+    scale: float,
+    orientation: int,
+    im_size: tuple[int, int],
+) -> BoundingRectangle:
+    """Map the actual OCR quadrilateral back without losing its text slope."""
+    angle = orientation % 360
+    if angle not in CLIPPED_ORIENTATIONS:
+        raise ValueError(f"Invalid OCR orientation: {orientation}")
+    if original_offset.coord_origin != CoordOrigin.TOPLEFT or scale <= 0:
+        raise ValueError("OCR coordinates require a positive scale and top-left offset")
+    if len(points) != 4 or any(len(point) != 2 for point in points):
+        raise ValueError("An OCR quadrilateral must contain four coordinate pairs")
+    width, height = im_size
+    mapped = []
+    # RapidOCR uses TL, TR, BR, BL; the page model uses BL, BR, TR, TL.
+    for index in (3, 2, 1, 0):
+        x, y = points[index]
+        if angle == 90:
+            x, y = y, width - x
+        elif angle == 180:
+            x, y = width - x, height - y
+        elif angle == 270:
+            x, y = height - y, x
+        mapped.append((x / scale + original_offset.l, y / scale + original_offset.t))
+    return BoundingRectangle(
+        r_x0=mapped[0][0],
+        r_y0=mapped[0][1],
+        r_x1=mapped[1][0],
+        r_y1=mapped[1][1],
+        r_x2=mapped[2][0],
+        r_y2=mapped[2][1],
+        r_x3=mapped[3][0],
+        r_y3=mapped[3][1],
+        coord_origin=CoordOrigin.TOPLEFT,
+    )
+
+
 def rotate_bounding_box(
     bbox: BoundingBox, angle: int, im_size: Tuple[int, int]
 ) -> BoundingRectangle:

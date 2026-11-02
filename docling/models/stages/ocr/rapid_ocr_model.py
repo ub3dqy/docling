@@ -37,7 +37,7 @@ from docling.utils.ocr_language import (
 )
 from docling.utils.ocr_region_pixels import light_on_dark
 from docling.utils.ocr_word_overlap import deduplicate_line_words
-from docling.utils.orientation import ocr_box_to_bounding_rectangle
+from docling.utils.orientation import ocr_quad_to_bounding_rectangle
 from docling.utils.profiling import TimeRecorder
 from docling.utils.utils import download_url_with_progress, safe_version
 
@@ -963,16 +963,8 @@ class RapidOcrModel(BaseOcrModel):
                 orig=text,
                 confidence=score,
                 from_ocr=True,
-                rect=ocr_box_to_bounding_rectangle(
-                    BoundingBox.from_tuple(
-                        coord=(
-                            min(point[0] for point in box),
-                            min(point[1] for point in box),
-                            max(point[0] for point in box),
-                            max(point[1] for point in box),
-                        ),
-                        origin=CoordOrigin.TOPLEFT,
-                    ),
+                rect=ocr_quad_to_bounding_rectangle(
+                    box,
                     original_offset=offset,
                     scale=scale,
                     orientation=orientation,

@@ -145,3 +145,23 @@ def test_wide_gutter_does_not_use_fields_in_a_different_caption_column():
     join_receipt_fields(page)
     assert page.parsed_page is not None
     assert page.parsed_page.textline_cells[0].text == "ИТОГО"
+
+
+def test_tilted_field_uses_its_own_amount_despite_neighboring_axis_overlap():
+    caption = _cell(0, "НДС", (40, 100, 120, 118))
+    amount = _cell(1, "12.34", (300, 100, 400, 118))
+    neighbor = _cell(2, "999.00", (300, 78, 400, 96))
+    for cell in (caption, amount, neighbor):
+        rect = cell.rect
+        # Project every corner using the same physical paper tilt.
+        cell.rect = rect.model_copy(
+            update={
+                "r_y0": rect.r_y0 + rect.r_x0 * 0.07,
+                "r_y1": rect.r_y1 + rect.r_x1 * 0.07,
+                "r_y2": rect.r_y2 + rect.r_x2 * 0.07,
+                "r_y3": rect.r_y3 + rect.r_x3 * 0.07,
+            }
+        )
+    page = _page([caption, neighbor, amount])
+    join_receipt_fields(page)
+    assert [cell.text for cell in page.cells] == ["НДС 12.34", "999.00"]
