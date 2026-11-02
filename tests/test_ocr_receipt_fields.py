@@ -9,11 +9,64 @@ from PIL import Image, ImageDraw
 
 from docling.models.stages.ocr.ocr_cyrillic_text import CyrillicTextReader
 from docling.models.stages.ocr.ocr_receipt_fields import (
+    choose_field_equals,
     preserves_known_caption,
     retain_field_numbers,
     triangle_is_line_noise,
 )
+from docling.models.stages.ocr.ocr_region_refiner import RegionReading
 from docling.utils.ocr_character_paths import CharacterPath
+
+
+def _marker_readings(text="TOTAL WITHOUT VAT =456.78"):
+    return [
+        RegionReading(text, 0.975, "cyrillic-v6-medium", "source"),
+        RegionReading(text, 0.93, "cyrillic-v6-tiny", "source"),
+    ]
+
+
+def test_visible_fiscal_marker_keeps_original_caption_and_amount():
+    original = "TOTAL WITHOUT VAT 456.78"
+    readings = _marker_readings("TOTAI WITHOUT VAT =456.78")
+    selected = choose_field_equals(original, readings, printed_marker=True)
+    assert selected is not None and selected.text == "TOTAL WITHOUT VAT =456.78"
+    assert choose_field_equals(original, readings, printed_marker=False) is None
+
+
+@pytest.mark.parametrize(
+    "original,observed",
+    [
+        ("TOTAL -456.78", "TOTAL =456.78"),
+        ("TOTAL: 456.78", "TOTAL =456.78"),
+        ("TOTAL *456.78", "TOTAL =456.78"),
+        ("TOTAL +456.78", "TOTAL =456.78"),
+        ("TOTAL =456.78", "TOTAL =456.78"),
+        ("VAT 7% 456.78", "VAT 17% =456.78"),
+        ("TOTAL 456.78", "TOTAL =456.79"),
+    ],
+)
+def test_fiscal_marker_votes_cannot_change_existing_operators_or_numbers(
+    original, observed
+):
+    assert (
+        choose_field_equals(original, _marker_readings(observed), printed_marker=True)
+        is None
+    )
+
+
+@pytest.mark.parametrize("conflict", [False, True])
+def test_marker_needs_two_families_without_a_strong_conflicting_operator(conflict):
+    readings = _marker_readings()
+    if conflict:
+        readings.append(
+            RegionReading("TOTAL WITHOUT VAT -456.78", 0.99, "eslav", "source")
+        )
+    else:
+        readings[1] = RegionReading(readings[1].text, 0.99, readings[0].engine, "clean")
+    assert (
+        choose_field_equals("TOTAL WITHOUT VAT 456.78", readings, printed_marker=True)
+        is None
+    )
 
 
 def test_a_complete_caption_keeps_the_existing_value_and_decimal_style():

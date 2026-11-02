@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Docling Contributors
 # SPDX-License-Identifier: MIT
+# ruff: noqa: RUF001 -- Observed Cyrillic, digit and dash variants are regression inputs.
 
 """A prose repair must preserve real numbers and their actual source positions."""
 
@@ -9,9 +10,11 @@ from docling_core.types.doc.page import BoundingRectangle, TextCell
 
 from docling.models.stages.ocr.ocr_prose_regions import (
     ProseRow,
+    confirm_prose_row,
     confirmed_quote_repair,
     numbers_have_source_positions,
     prose_numbers,
+    prose_operators,
     repair_prose_words,
 )
 from docling.models.stages.ocr.ocr_region_refiner import RegionReading
@@ -100,3 +103,56 @@ def test_only_observed_quotes_can_reduce_imbalance_without_moving_existing_quote
     assert confirmed_quote_repair(original, [row], deficit) is expected
     unconfirmed = ProseRow(candidate, 0.99, word.rect, (word,))
     assert not confirmed_quote_repair(original, [unconfirmed], deficit)
+
+
+def test_complete_source_rows_can_confirm_a_known_word_and_a_quote_together():
+    original = "Решение «Союз за 2027 рода"
+    observed = "Решение «Союз» за 2027 года"
+    words = tuple(_word(i, token, i * 40) for i, token in enumerate(observed.split()))
+    row = ProseRow(observed, 0.94, words[0].rect, words)
+    readings = [
+        RegionReading(observed, 0.99, engine, "source")
+        for engine in ("cyrillic-v6-medium", "cyrillic-v6-tiny")
+    ]
+    assert not confirmed_quote_repair(original, [row], -1)
+    confirmed = confirm_prose_row(row, readings, _known)
+    assert confirmed.source_confirmed
+    assert confirmed_quote_repair(original, [confirmed], -1)
+    assert confirmed.words[0].rect == row.words[0].rect
+    assert confirmed.words[0].orig == row.words[0].orig
+    assert not confirmed_quote_repair(original.replace("2027", "2028"), [confirmed], -1)
+    assert not confirmed_quote_repair(original + "»", [confirmed], -1)
+
+
+def test_row_consensus_cannot_move_numbers_or_reuse_one_model():
+    text = "Решение за 2027 год"
+    words = tuple(_word(i, token, i * 40) for i, token in enumerate(text.split()))
+    row = ProseRow(text, 0.94, words[0].rect, words)
+    same_model = [
+        RegionReading(text, 0.99, "iso:ru", variant) for variant in ("source", "clean")
+    ]
+    assert not confirm_prose_row(row, same_model, _known).source_confirmed
+    for candidate in (
+        "Решение за 2028 год",
+        "Решение 2027 за год",
+        "Решение за2027 год",
+    ):
+        readings = [
+            RegionReading(candidate, 0.99, engine, "source")
+            for engine in ("cyrillic-v6-medium", "cyrillic-v6-tiny")
+        ]
+        assert confirm_prose_row(row, readings, _known) == row
+
+
+def test_typographic_prose_dashes_do_not_relax_amount_or_identifier_signs():
+    assert prose_operators(
+        "Организация области - региональное объединение"
+    ) == prose_operators("Организация области – региональное объединение")
+    assert prose_operators(
+        "Организация области - региональное объединение"
+    ) == prose_operators("Организация области — региональное объединение")
+    assert prose_operators("Убыток -120.50") != prose_operators("Убыток 120.50")
+    assert prose_operators("Период 2026 - 2027") != prose_operators(
+        "Период 2026 – 2027"
+    )
+    assert prose_operators("Код РД-7") != prose_operators("Код РД7")

@@ -49,6 +49,7 @@ class ProseRow:
     rect: BoundingRectangle
     words: tuple[TextCell, ...]
     quotes_confirmed: bool = False
+    source_confirmed: bool = False
 
 
 def prose_numbers(text: str, known: Callable[[str], bool]) -> tuple[str, ...]:
@@ -265,7 +266,14 @@ def confirmed_quote_repair(original: str, rows: list[ProseRow], deficit: int) ->
     if (
         not deficit
         or not all(row.quotes_confirmed for row in rows)
-        or _key(original) != _key(candidate)
+        or (
+            _key(original) != _key(candidate)
+            and not (
+                rows
+                and all(row.source_confirmed for row in rows)
+                and _NUMBER.findall(original) == _NUMBER.findall(candidate)
+            )
+        )
     ):
         return False
     before, after = Counter(quote_pattern(original)), Counter(quote_pattern(candidate))
@@ -278,6 +286,56 @@ def confirmed_quote_repair(original: str, rows: list[ProseRow], deficit: int) ->
         bool(added)
         and all(mark == ("«" if deficit > 0 else "»") for mark in added)
         and len(added) <= abs(deficit)
+    )
+
+
+def prose_operators(text: str) -> Counter[str]:
+    """Separate a prose dash between Cyrillic words from numeric operators."""
+    text = re.sub(
+        r"(?<=[\u0400-\u04ff])\s+[-\u2013\u2014]\s+(?=[\u0400-\u04ff])",
+        " ",
+        text,
+    )
+    return Counter(char for char in text if char in "-%=/№()[]")
+
+
+def confirm_prose_row(
+    row: ProseRow, readings: list[RegionReading], known: Callable[[str], bool]
+) -> ProseRow:
+    """Use a complete row only when two strong source readers agree exactly."""
+    groups: dict[str, dict[str, RegionReading]] = defaultdict(dict)
+    for reading in readings:
+        text = " ".join(normalize_mixed_script(reading.text).split())
+        if reading.confidence < 0.95 or prose_numbers(text, known) != prose_numbers(
+            row.text, known
+        ):
+            continue
+        family = recognizer_family(reading.engine)
+        previous = groups[text.casefold()].get(family)
+        if previous is None or previous.confidence < reading.confidence:
+            groups[text.casefold()][family] = reading
+    supported = [group for group in groups.values() if len(group) >= 2]
+    if len(supported) != 1:
+        return row
+    group = supported[0]
+    best = max(group.values(), key=lambda reading: reading.confidence)
+    text = " ".join(normalize_mixed_script(best.text).split())
+    tokens = text.split()
+    if len(tokens) != len(row.words) or any(
+        prose_numbers(word.text, known) != prose_numbers(token, known)
+        for word, token in zip(row.words, tokens)
+    ):
+        return row
+    return replace(
+        row,
+        text=text,
+        confidence=min(reading.confidence for reading in group.values()),
+        words=tuple(
+            word.model_copy(update={"text": token})
+            for word, token in zip(row.words, tokens)
+        ),
+        quotes_confirmed=True,
+        source_confirmed=True,
     )
 
 
@@ -336,6 +394,7 @@ def _confirmed_rows(
             and SequenceMatcher(None, key, _key(reading.text), autojunk=False).ratio()
             >= 0.97
         ]
+        row = confirm_prose_row(row, readings, refiner._dictionary.word_is_known)
         row = repair_prose_words(row, readings, refiner._dictionary.word_is_known)
         key = _key(row.text)
         if len(
@@ -417,9 +476,7 @@ def refine_pdf_prose(refiner: OcrRegionRefiner, page: Page) -> None:
             if not _confirmed_rows(refiner, rows, gray, page):
                 continue
             candidate = " ".join(row.text for row in rows)
-            if Counter(char for char in original if char in "-%=/№()[]") != Counter(
-                char for char in candidate if char in "-%=/№()[]"
-            ):
+            if prose_operators(original) != prose_operators(candidate):
                 continue
             if (
                 _bad_letters(candidate, known) >= _bad_letters(original, known)

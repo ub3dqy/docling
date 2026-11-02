@@ -4,6 +4,7 @@
 
 """Separate neighboring papers without losing numbers or native text."""
 
+import pytest
 from docling_core.types.doc import BoundingBox, DocItemLabel, Size
 from docling_core.types.doc.page import BoundingRectangle, SegmentedPdfPage, TextCell
 
@@ -93,3 +94,92 @@ def test_sparse_ctc_alignment_keeps_the_whole_sentence_for_source_rereading():
     split_receipt_lines(page)
     assert [c.text for c in page.cells] == ["10U09"]
     assert page.cells[0].rect.to_bounding_box().r == 410
+
+
+def test_widely_spaced_tax_caption_stays_together_before_its_amount():
+    words = [
+        _cell(0, "СУММА", 20, 75),
+        _cell(1, "НДС", 130, 165),
+        _cell(2, "20%", 180, 210),
+        _cell(3, "=43.20", 310, 400),
+    ]
+    page = _page([_cell(0, "СУММА НДС 20% =43.20", 20, 400)], words)
+    split_receipt_lines(page)
+    assert [c.text for c in page.cells] == ["СУММА НДС 20%", "=43.20"]
+
+
+def test_split_keeps_the_original_spacing_inside_a_payment_abbreviation():
+    words = [
+        _cell(0, "*Плат.", 20, 90),
+        _cell(1, "картой", 95, 160),
+        _cell(2, "=120.00", 300, 400),
+    ]
+    page = _page([_cell(0, "*Плат.картой =120.00", 20, 400)], words)
+    split_receipt_lines(page)
+    assert [c.text for c in page.cells] == ["*Плат.картой", "=120.00"]
+
+
+def test_geometry_only_split_cannot_enable_a_weaker_price_replacement():
+    from docling.models.stages.ocr.ocr_region_refiner import (
+        RegionReading,
+        choose_line_number,
+    )
+
+    words = [
+        _cell(0, "86.52", 100, 170).model_copy(update={"confidence": 0.55}),
+        _cell(1, "77ID", 200, 245),
+    ]
+    page = _page([_cell(0, "86.5277ID", 100, 245)], words)
+    split_receipt_lines(page)
+    amount = page.cells[0]
+    alternatives = [
+        RegionReading("88.52", 0.99, engine, "wide")
+        for engine in ("tesseract-7", "tesseract-13")
+    ]
+    assert (
+        choose_line_number(amount.text, alternatives, confidence=amount.confidence)
+        == "86.52"
+    )
+
+
+def test_product_price_quantity_and_tax_code_keep_the_original_expression():
+    words = [
+        _cell(0, "86.52", 100, 170),
+        _cell(1, "3=259.5B", 200, 280),
+        _cell(2, "HC10Z", 300, 360),
+    ]
+    text = "86.52 3=259.5B HC10Z"
+    page = _page([_cell(0, text, 100, 360)], words)
+    split_receipt_lines(page)
+    assert [c.text for c in page.cells] == [text]
+
+
+@pytest.mark.parametrize("price_first", [False, True])
+def test_product_description_and_price_keep_the_original_detector_region(price_first):
+    words = [
+        _cell(0, "Хлеб", 20, 75),
+        _cell(1, "Дом", 95, 135),
+        _cell(2, "86.52", 220, 290),
+    ]
+    if price_first:
+        words[0].text, words[1].text, words[2].text = "86.52", "Хлеб", "Дом"
+    text = " ".join(w.text for w in words)
+    page = _page([_cell(0, text, 20, 290)], words)
+    split_receipt_lines(page)
+    assert [c.text for c in page.cells] == [text]
+
+
+def test_split_numeric_parts_keep_the_detector_edge_and_request_strict_reading():
+    words = [_cell(0, "86.52", 112, 170), _cell(1, "77ID", 200, 240)]
+    page = _page([_cell(0, "86.5277ID", 100, 245)], words)
+    protected = split_receipt_lines(page)
+    assert page.cells[0].rect.to_bounding_box().l == 100
+    assert protected == {page.cells[0].index}
+    assert page.cells[1].index not in protected
+
+
+def test_numeric_identifiers_are_not_reinterpreted_as_fiscal_amounts():
+    words = [_cell(0, "12345", 100, 170), _cell(1, "77ID", 200, 245)]
+    page = _page([_cell(0, "1234577ID", 100, 245)], words)
+    assert split_receipt_lines(page) == set()
+    assert [c.text for c in page.cells] == ["1234577ID"]

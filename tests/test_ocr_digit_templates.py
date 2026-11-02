@@ -87,3 +87,27 @@ def test_a_colon_before_an_amount_cannot_be_promoted_to_equals():
     draw.rectangle((9, 9, 15, 15), fill=0)
     draw.rectangle((9, 20, 15, 26), fill=0)
     assert not decimal_expression_equals(np.asarray(image), 3)
+    assert not decimal_expression_equals(np.asarray(image), 3, allow_uneven_bars=True)
+
+
+@pytest.mark.parametrize("marker", ["bleeding-equals", "minus", "colon", "plus"])
+def test_bleeding_equals_requires_two_horizontal_bars_before_the_decimal(marker):
+    amount = _amount("488.86")
+    image = Image.new("L", (amount.shape[1] + 32, 38), 255)
+    image.paste(Image.fromarray(amount), (32, 0))
+    draw = ImageDraw.Draw(image)
+    if marker == "bleeding-equals":
+        draw.rectangle((8, 10, 27, 12), fill=0)
+        draw.rectangle((8, 15, 27, 27), fill=0)
+    elif marker == "minus":
+        draw.rectangle((8, 15, 27, 19), fill=0)
+    elif marker == "colon":
+        draw.rectangle((15, 10, 21, 16), fill=0)
+        draw.rectangle((15, 23, 21, 29), fill=0)
+    else:
+        draw.rectangle((8, 17, 27, 19), fill=0)
+        draw.rectangle((16, 9, 19, 27), fill=0)
+    assert not decimal_expression_equals(np.asarray(image), 3)
+    assert decimal_expression_equals(np.asarray(image), 3, allow_uneven_bars=True) == (
+        marker == "bleeding-equals"
+    )

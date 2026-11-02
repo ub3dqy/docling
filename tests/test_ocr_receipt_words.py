@@ -7,6 +7,7 @@
 from docling.models.stages.ocr.ocr_receipt_words import (
     choose_cyrillic_caption,
     choose_observed_text,
+    choose_receipt_text,
     compatible_receipt_text,
     preserves_receipt_codes,
     receipt_word_pattern,
@@ -99,3 +100,41 @@ def test_caption_reading_cannot_import_arithmetic_from_a_neighboring_amount():
         assert not compatible_receipt_text("СУННА БЕЗ НДС", candidate)
     assert compatible_receipt_text("ДОЛГ -23.45", "ДОЛГ -23.45")
     assert compatible_receipt_text("СУММА 23.45", "СУММА =23.45")
+
+
+def test_terminal_mark_recovery_cannot_add_an_exclamation_to_a_fiscal_caption():
+    import numpy as np
+    from PIL import Image, ImageDraw
+
+    image = Image.new("L", (190, 42), "white")
+    draw = ImageDraw.Draw(image)
+    for x in range(10, 140, 18):
+        draw.rectangle((x, 8, x + 10, 30), fill=0)
+    draw.rectangle((165, 8, 168, 25), fill=0)
+    draw.rectangle((165, 30, 168, 33), fill=0)
+    gray = np.asarray(image)
+    caption = RegionReading("СУММА", 0.92, "cyrillic-v6-medium", "source")
+    selected = choose_receipt_text("СУНМА", 0.8, gray, [], caption, lambda _: True)
+    assert selected.text == caption.text
+    sentence = RegionReading("Ждем вас снова", 0.92, "cyrillic-v6-medium", "source")
+    selected = choose_receipt_text(
+        sentence.text, 0.8, gray, [], sentence, lambda _: True
+    )
+    assert selected.text == sentence.text + "!"
+
+
+def test_leading_payment_marker_requires_two_sources_and_stays_at_the_start():
+    readings = [
+        RegionReading("*Плат.картой", 0.98, engine, "source")
+        for engine in ("cyrillic-v6-medium", "cyrillic-v6-tiny")
+    ]
+    assert compatible_receipt_text("Плат.картой", "*Плат.картой", readings=readings)
+    assert not compatible_receipt_text(
+        "Плат.картой", "*Плат.картой", readings=readings[:1]
+    )
+    assert not compatible_receipt_text(
+        "Плат.картой", "Плат.картой *", readings=readings
+    )
+    assert not compatible_receipt_text(
+        "Плат.картой", "*Плат.картой *", readings=readings
+    )

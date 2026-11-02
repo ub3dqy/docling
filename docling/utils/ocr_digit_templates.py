@@ -187,7 +187,9 @@ def decimal_suffix_region(
     ]
 
 
-def decimal_expression_equals(gray: np.ndarray, integer_digits: int) -> bool:
+def decimal_expression_equals(
+    gray: np.ndarray, integer_digits: int, *, allow_uneven_bars: bool = False
+) -> bool:
     """Require a source two-bar glyph directly before a verified decimal suffix."""
     import cv2
 
@@ -224,5 +226,8 @@ def decimal_expression_equals(gray: np.ndarray, integer_digits: int) -> bool:
         x1, y1 = max(m[0] + m[2] for m in group), max(m[1] + m[3] for m in group)
         # A colon has two vertically stacked dots as well. A printed equals
         # sign must have a horizontal outline, not just two occupied bands.
-        supported += x1 - x0 > y1 - y0 and two_bar_marker(gray[y0:y1, x0:x1])
+        wide = x1 - x0 > y1 - y0 or (allow_uneven_bars and x1 - x0 >= (y1 - y0) * 0.8)
+        supported += wide and two_bar_marker(
+            gray[y0:y1, x0:x1], allow_uneven_bars=allow_uneven_bars
+        )
     return supported == 1

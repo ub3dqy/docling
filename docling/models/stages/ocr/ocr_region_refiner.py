@@ -995,7 +995,7 @@ class OcrRegionRefiner:
                     compatible_receipt_text,
                 )
 
-                if not compatible_receipt_text(original, text):
+                if not compatible_receipt_text(original, text, readings=readings):
                     return -1
             ending = re.search(r"[!?]+$", original.strip())
             if (
@@ -1224,6 +1224,7 @@ class OcrRegionRefiner:
         replacements: dict[int, RegionReading] = {}
         verified_captions: set[int] = set()
         verified_numbers: set[int] = set()
+        segmented_amounts: set[int] = set()
         with (
             self._lock,
             self._tesserocr.PyTessBaseAPI(
@@ -1243,7 +1244,7 @@ class OcrRegionRefiner:
             if receipt:
                 from docling.utils.ocr_receipt_segments import split_receipt_lines
 
-                split_receipt_lines(page)
+                segmented_amounts = split_receipt_lines(page)
                 from docling.models.stages.ocr.ocr_receipt_expressions import (
                     refine_receipt_expressions,
                 )
@@ -1287,7 +1288,7 @@ class OcrRegionRefiner:
                     replacements[index] = RegionReading(
                         cell.text, cell.confidence, "page", "verified-number"
                     )
-            protected_lines = verified_captions | verified_numbers
+            protected_lines = verified_captions | verified_numbers | segmented_amounts
             for cell in lines:
                 key = number_key(cell.text)
                 receipt_field = receipt and (

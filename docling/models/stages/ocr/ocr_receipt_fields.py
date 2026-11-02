@@ -19,15 +19,126 @@ from docling.models.stages.ocr.ocr_region_refiner import (
     RegionReading,
     normalize_mixed_script,
     number_key,
+    recognizer_family,
 )
 from docling.utils.ocr_digit_templates import decimal_expression_equals
 from docling.utils.ocr_receipt_rows import is_receipt_field_caption
-from docling.utils.ocr_text_geometry import rectified_text_crop
+from docling.utils.ocr_text_geometry import extend_text_rect, rectified_text_crop
 
 if TYPE_CHECKING:
+    from docling_core.types.doc.page import TextCell
+
     from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
 
 _NUMBER = re.compile(r"\d+(?:[.,]\d+)?")
+_SUFFIX = re.compile(
+    r"(?<![\d.,])([=+*:\-\u2013\u2014\u2212]?)\s*(\d[\d ]*[.,]\d{2})\s*$"
+)
+
+
+def choose_field_equals(
+    original: str, readings: list[RegionReading], *, printed_marker: bool
+) -> RegionReading | None:
+    """Restore only a visible field marker; keep every established word and digit."""
+    match = _SUFFIX.search(original)
+    if not printed_marker or match is None or match[1]:
+        return None
+    prefix, amount = original[: match.start()], match[2]
+    if prefix.rstrip().endswith(
+        ("(", "=", "*", "+", "-", ":", "\u2013", "\u2014", "\u2212")
+    ):
+        return None
+    votes: dict[str, float] = {}
+    for reading in readings:
+        observed = _SUFFIX.search(reading.text)
+        if (
+            observed is None
+            or number_key(observed[2]) != number_key(amount)
+            or _NUMBER.findall(reading.text[: observed.start()])
+            != _NUMBER.findall(prefix)
+        ):
+            continue
+        if observed[1] not in {"", "="} and reading.confidence >= 0.97:
+            return None
+        if observed[1] == "=" and reading.confidence >= 0.9:
+            family = recognizer_family(reading.engine)
+            votes[family] = max(votes.get(family, 0), reading.confidence)
+    strongest = sorted(votes.values(), reverse=True)
+    if len(strongest) < 2 or strongest[0] < 0.97 or sum(strongest[:2]) / 2 < 0.94:
+        return None
+    return RegionReading(
+        prefix.rstrip() + " =" + amount,
+        min(strongest[:2]),
+        "field-marker-consensus",
+        "source-bars",
+    )
+
+
+def _field_equals(
+    refiner: OcrRegionRefiner,
+    page: Page,
+    cell: TextCell,
+    gray_page: np.ndarray,
+    selected: RegionReading,
+    readings: list[RegionReading],
+) -> RegionReading | None:
+    if page.parsed_page is None or page.size is None:
+        return None
+    match = _SUFFIX.search(selected.text)
+    if match is None or match[1]:
+        return None
+    box = cell.rect.to_bounding_box()
+    words = [
+        word
+        for word in page.parsed_page.word_cells
+        if word.from_ocr
+        and number_key(word.text) == number_key(match[2])
+        and word.rect.to_bounding_box().intersection_over_self(box) >= 0.8
+    ]
+    if len(words) != 1:
+        return None
+    word = words[0]
+    amount_box = word.rect.to_bounding_box()
+    caption_right = max(
+        (
+            other.rect.to_bounding_box().r
+            for other in page.parsed_page.word_cells
+            if other.from_ocr
+            and any(ch.isalpha() for ch in other.text)
+            and other.rect.to_bounding_box().r <= amount_box.l
+            and other.rect.to_bounding_box().intersection_over_self(box) >= 0.8
+        ),
+        default=amount_box.l - amount_box.height,
+    )
+    left = min(
+        amount_box.height * 0.95,
+        max(0, amount_box.l - caption_right - page.size.width / gray_page.shape[1]),
+    )
+    crop = rectified_text_crop(
+        gray_page, extend_text_rect(word.rect, left=left), page.size
+    )
+    if crop is None:
+        return None
+    amount_key = number_key(match[2])
+    if amount_key is None:
+        return None
+    digits = len(amount_key.partition(".")[0])
+    if not decimal_expression_equals(crop, digits, allow_uneven_bars=True):
+        return None
+    marker = choose_field_equals(selected.text, readings, printed_marker=True)
+    if marker is not None:
+        return marker
+    # A shallow slope may not require straightening for normal caption repair,
+    # but its thin marker can disappear in an axis-aligned, low-contrast view.
+    # Retry the complete source quadrilateral only after the bars are visible.
+    aligned = rectified_text_crop(gray_page, cell.rect, page.size)
+    if aligned is None:
+        return None
+    return choose_field_equals(
+        selected.text,
+        [*readings, *refiner._cyrillic_readings(aligned)],
+        printed_marker=True,
+    )
 
 
 def preserves_known_caption(
@@ -150,9 +261,10 @@ def refine_receipt_fields(
             if triangle_is_line_noise(gray):
                 removed.add(cell.index)
             continue
+        source_readings = refiner._cyrillic_readings(gray)
         readings = [
             reading
-            for reading in refiner._cyrillic_readings(gray)
+            for reading in source_readings
             if preserves_known_caption(
                 cell.text, reading.text, refiner._dictionary.word_is_known
             )
@@ -173,6 +285,16 @@ def refine_receipt_fields(
             selected = refiner._choose_text(
                 cell.text, cell.confidence, readings, receipt_text=True
             )
+            marker = _field_equals(
+                refiner, page, cell, gray_page, selected, source_readings
+            )
+            if marker is not None:
+                selected = RegionReading(
+                    marker.text,
+                    min(selected.confidence, marker.confidence),
+                    marker.engine,
+                    marker.variant,
+                )
         text = retain_field_numbers(cell.text, selected.text)
         if text is None or text == cell.text:
             continue

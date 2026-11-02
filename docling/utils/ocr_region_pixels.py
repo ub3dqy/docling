@@ -282,14 +282,19 @@ def photo_contrast(gray: np.ndarray) -> np.ndarray:
     return np.clip(255 - difference * 255 / maximum, 0, 255).astype(np.uint8)
 
 
-def two_bar_marker(gray: np.ndarray) -> bool:
+def two_bar_marker(gray: np.ndarray, *, allow_uneven_bars: bool = False) -> bool:
     if gray.size == 0 or gray.shape[1] < 2:
         return False
     ink = gray < 128
-    return any(_two_bar_shape(ink, coverage) for coverage in (0.4, 0.55, 0.65))
+    return any(
+        _two_bar_shape(ink, coverage, allow_uneven_bars=allow_uneven_bars)
+        for coverage in (0.4, 0.55, 0.65)
+    )
 
 
-def _two_bar_shape(ink: np.ndarray, coverage: float) -> bool:
+def _two_bar_shape(
+    ink: np.ndarray, coverage: float, *, allow_uneven_bars: bool = False
+) -> bool:
     # Tesseract can include unrelated horizontal padding inside a glyph box.
     occupied = ink.sum(axis=1) >= max(2, ink.shape[1] * coverage)
     bands: list[tuple[int, int]] = []
@@ -312,11 +317,18 @@ def _two_bar_shape(ink: np.ndarray, coverage: float) -> bool:
         return False
     first, second = groups[-1]
     heights = (first[1] - first[0], second[1] - second[0])
-    if max(heights) > 2 * min(heights):
+    if not allow_uneven_bars and max(heights) > 2 * min(heights):
         return False
     first_ink = ink[first[0] : first[1]].mean(axis=0) >= 0.5
     second_ink = ink[second[0] : second[1]].mean(axis=0) >= 0.5
     if min(first_ink.sum(), second_ink.sum()) < max(2, ink.shape[1] * 0.3):
+        return False
+    if allow_uneven_bars and (
+        min(first_ink.sum(), second_ink.sum())
+        < max(first_ink.sum(), second_ink.sum()) * 0.85
+        or first_ink.sum() < heights[0] * 1.2
+        or second_ink.sum() < heights[1] * 1.2
+    ):
         return False
     return bool(
         (first_ink & second_ink).sum() >= 0.75 * min(first_ink.sum(), second_ink.sum())

@@ -127,9 +127,10 @@ def _table_from_ocr_grid(
         return None
 
     box = cluster.bbox.scaled(scale)
-    # Width-based padding can consume most of a short, wide table's height
-    # and make its real outer rules fail the completeness check.
-    padding = max(3, round(min(box.width, box.height) * 0.02))
+    padding = max(
+        3,
+        round((min(box.width, box.height) if allow_open_labels else box.width) * 0.02),
+    )
     left = max(0, int(box.l) - padding)
     top = max(0, int(box.t) - padding)
     right = min(image.width, ceil(box.r) + padding)
@@ -221,8 +222,12 @@ def _table_from_ocr_grid(
         if allow_open_labels
         else _centers(positions, 2 * tolerance + 2)
     )
+    # Retain the capture margin needed by slightly clipped model boxes.
+    # In a wide table that margin can exceed six percent of its short side.
+    row_margin = max(height * 0.06, padding + height * 0.04)
     if len(rows) < 6 or (
-        not allow_open_labels and (rows[0] > height * 0.06 or rows[-1] < height * 0.94)
+        not allow_open_labels
+        and (rows[0] > row_margin or rows[-1] < height - row_margin)
     ):
         return None
     if any(end - start <= 2 * tolerance for start, end in pairwise(rows)):

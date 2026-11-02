@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import re
 from collections import defaultdict
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from statistics import mean
 from typing import TYPE_CHECKING
 
@@ -103,13 +103,38 @@ def preserves_receipt_codes(original: str, candidate: str) -> bool:
     return all(token in content for token in protected)
 
 
-def compatible_receipt_text(original: str, candidate: str) -> bool:
+def compatible_receipt_text(
+    original: str, candidate: str, *, readings: Sequence[RegionReading] = ()
+) -> bool:
     """Keep caption-only crops free of invented amounts and calculation marks."""
-    if not re.search(r"\d", original) and (
-        re.search(r"\d", candidate)
-        or any(mark in candidate and mark not in original for mark in "*=+")
-    ):
-        return False
+    if not re.search(r"\d", original):
+        if re.search(r"\d", candidate):
+            return False
+        additions = {
+            mark for mark in "*=+" if mark in candidate and mark not in original
+        }
+        if additions:
+            content = "".join(ch for ch in candidate.casefold() if ch.isalnum())
+            supporters = {
+                recognizer_family(r.engine)
+                for r in readings
+                if r.confidence >= 0.8
+                and r.text.lstrip().startswith("*")
+                and r.text.count("*") == 1
+                and "".join(
+                    ch
+                    for ch in normalize_mixed_script(r.text).casefold()
+                    if ch.isalnum()
+                )
+                == content
+            }
+            if (
+                additions != {"*"}
+                or not candidate.lstrip().startswith("*")
+                or candidate.count("*") != 1
+                or len(supporters) < 2
+            ):
+                return False
     return preserves_receipt_codes(original, candidate)
 
 
@@ -185,6 +210,8 @@ def choose_receipt_text(
         selected.text
         and selected.text[-1].isalpha()
         and not any(ch.isdigit() for ch in selected.text)
+        and not is_receipt_field_caption(selected.text)
+        and len(re.findall(r"[^\W\d_]+", selected.text)) >= 2
         and all(known(word) for word in re.findall(r"[^\W\d_]+", selected.text))
         and terminal_exclamation(gray)
     ):

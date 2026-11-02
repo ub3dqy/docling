@@ -43,7 +43,7 @@ class PhotoGrid:
         )
 
 
-def photo_grid(gray: np.ndarray) -> PhotoGrid | None:
+def photo_grid(gray: np.ndarray, *, padding: int = 0) -> PhotoGrid | None:
     import cv2
 
     height, width = gray.shape
@@ -96,8 +96,12 @@ def photo_grid(gray: np.ndarray) -> PhotoGrid | None:
     # Rectifying a sloped outer rule leaves corner clearance in the original
     # axis-aligned canvas. Account for that geometric clearance separately
     # from the tolerated margin; a wide table magnifies the vertical offset.
-    column_margin = width * 0.06 + abs(vertical_slope) * height / 2
-    row_margin = height * 0.06 + abs(horizontal_slope) * width / 2
+    column_margin = (
+        max(width * 0.06, padding + width * 0.04) + abs(vertical_slope) * height / 2
+    )
+    row_margin = (
+        max(height * 0.06, padding + height * 0.04) + abs(horizontal_slope) * width / 2
+    )
     if (
         len(columns) < 4
         or len(rows) < 6
@@ -121,14 +125,14 @@ def photo_table_regions(
     if not table.from_ocr_grid:
         return {}
     box = table.cluster.bbox.scaled(scale)
-    padding = max(3, round(min(box.width, box.height) * 0.02))
+    padding = max(3, round(box.width * 0.02))
     left, top = max(0, int(box.l) - padding), max(0, int(box.t) - padding)
     right = min(image.width, ceil(box.r) + padding)
     bottom = min(image.height, ceil(box.b) + padding)
     if right - left < 100 or bottom - top < 100:
         return {}
     gray = np.asarray(image.crop((left, top, right, bottom)).convert("L"))
-    grid = photo_grid(gray)
+    grid = photo_grid(gray, padding=padding)
     if (
         grid is None
         or len(grid.rows) != table.num_rows + 1
@@ -175,14 +179,14 @@ def table_from_photo_grid(
     except ImportError:
         return None
     box = cluster.bbox.scaled(scale)
-    padding = max(3, round(min(box.width, box.height) * 0.02))
+    padding = max(3, round(box.width * 0.02))
     left, top = max(0, int(box.l) - padding), max(0, int(box.t) - padding)
     right = min(image.width, ceil(box.r) + padding)
     bottom = min(image.height, ceil(box.b) + padding)
     if right - left < 100 or bottom - top < 100:
         return None
     gray = np.asarray(image.crop((left, top, right, bottom)).convert("L"))
-    grid = photo_grid(gray)
+    grid = photo_grid(gray, padding=padding)
     if grid is None:
         return None
     contents: dict[tuple[int, int], list[TextCell]] = defaultdict(list)

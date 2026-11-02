@@ -70,8 +70,9 @@ def test_dense_grid_keeps_adjacent_amounts_in_separate_rows(uneven_light: bool) 
 
 @pytest.mark.parametrize("adaptive", [False, True])
 @pytest.mark.parametrize("skewed", [False, True])
+@pytest.mark.parametrize("short_bbox", [False, True])
 def test_short_wide_grid_keeps_the_last_financial_row(
-    adaptive: bool, skewed: bool
+    adaptive: bool, skewed: bool, short_bbox: bool
 ) -> None:
     import cv2
 
@@ -112,7 +113,7 @@ def test_short_wide_grid_keeps_the_last_financial_row(
             l=min(p[0] for p in corners) - 6,
             t=min(p[1] for p in corners) - 6,
             r=max(p[0] for p in corners) + 6,
-            b=max(p[1] for p in corners) + 6,
+            b=max(p[1] for p in corners) + (-15 if short_bbox else 6),
         ),
     )
     table = table_from_ocr_grid(
