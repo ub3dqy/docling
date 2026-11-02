@@ -1,0 +1,848 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-02",
+  "runtime_commit": "309cdbf549071364899a01ba138fad7dc676cf80",
+  "baseline_commit": "cd28cd3e426eb56061411aeac72f58144c227a4d",
+  "scope": "Repeat of the same 30 known real-document development/regression cases. No fresh holdout or whole-document accuracy claim.",
+  "baseline_newest": {
+    "assessment_basis": "original_references",
+    "reference_sha256": "b6d3a6876ebc5cf40f1b7fa1fe285504eb9b3a0f25c9bebf5a4fe94f3fea5ffe",
+    "source_manifest_sha256": "530309e2ce3ced71655ddb174185c1d9a90944eb69356241b80cdf958fcfc576",
+    "raw_report_sha256": "38bddfe583c35f13ba8ede33d59bc78f1302d71075233d933aa98c271e7be1d1",
+    "input_manifest_sha256": "7efd6b9316d499048c8a8205a81da4ebce8962b53ddc67546ad01f025fb6203d",
+    "passed_cases": 5,
+    "total_cases": 10,
+    "successful_conversions": 10,
+    "nonempty_exports": 10,
+    "table_cells": {
+      "correct": 192,
+      "total": 192
+    },
+    "table_numbers_in_correct_rows": {
+      "correct": 55,
+      "total": 55
+    },
+    "table_dashes": {
+      "correct": 137,
+      "total": 137
+    },
+    "numeric_fields": {
+      "correct": 30,
+      "total": 31
+    },
+    "text_regions": {
+      "correct": 8,
+      "total": 14
+    },
+    "text_edits": 122,
+    "reference_characters": 1487,
+    "conversion_seconds": 529.0561850999948
+  },
+  "cohorts": {
+    "newest": {
+      "assessment_basis": "original_references",
+      "passed_cases": 8,
+      "total_cases": 10,
+      "successful_conversions": 10,
+      "nonempty_exports": 10,
+      "table_cells": {
+        "correct": 192,
+        "total": 192
+      },
+      "numeric_fields": {
+        "correct": 30,
+        "total": 31
+      },
+      "text_regions": {
+        "correct": 12,
+        "total": 14
+      },
+      "text_edits": 41,
+      "reference_characters": 1487,
+      "conversion_seconds": 642.8708112996537,
+      "cases": [
+        {
+          "id": "kadastr-assets",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 54,
+          "cells_total": 54,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "balance-title",
+              "actual": "Бухгалтерский баланс на 31 декабря 2025 г.",
+              "edits": 0,
+              "reference_characters": 42,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "kadastr-liabilities",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 54,
+          "cells_total": 54,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "kadastr-cash-flow",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 52,
+          "cells_total": 52,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "cash-flow-title",
+              "actual": "Отчет о движении денежных средств за Январь - Декабрь 2025 г.",
+              "edits": 0,
+              "reference_characters": 61,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "kadastr-cash-balances",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 32,
+          "cells_total": 32,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "kadastr-audit-text",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "audit-heading",
+              "actual": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГО АУДИТОРА",
+              "edits": 0,
+              "reference_characters": 44,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            },
+            {
+              "name": "audit-scope",
+              "actual": "Мы провели аудит прилагаемой годовой бухгалтерской отчетности Ассоциации «Союз кадастровых инженеров» (ОГРН 1167700052112) состоящей из бухгалтерского баланса по состоянию на 31 декабря 2025 года, отчета о целевом использовании средств за 2025 год, приложений к бухгалтерскому балансу и отчету о целевом использовании средств, в том числе отчета о финансовых результатах за 2025 год, отчета об изменениях капитала за 2025 год, отчета о движении денежных средств за 2025 г. и пояснений к бухгалтерскому балансу и отчету о целевом использовании средств, включая основные положения учетной политики.",
+              "edits": 0,
+              "reference_characters": 596,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            },
+            {
+              "name": "audit-opinion",
+              "actual": "По нашему мнению, прилагаемая годовая бухгалтерская отчетность отражает достоверно во всех существенных отношениях финансовое положение Ассоциации «Союз кадастровых инженеров» по состоянию на 31 декабря 2025 года, финансовые результаты его деятельности и целевое использование средств за 2025 год в соответствии с правилами составления бухгалтерской отчетности, установленными в Российской Федерации.",
+              "edits": 0,
+              "reference_characters": 400,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "receipt-clinic-no-vat",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "service-price": true,
+            "service-quantity": true,
+            "service-line-total": true,
+            "total": true,
+            "amount-without-vat": true,
+            "cashless": true,
+            "received": true
+          },
+          "texts": [
+            {
+              "name": "clinic-heading",
+              "actual": "ООО \"Современная клиника И-25\" КАССОВЫЙ ЧЕК",
+              "edits": 0,
+              "reference_characters": 43,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            },
+            {
+              "name": "clinic-thanks",
+              "actual": "ЖДЕМ ВАС СНОВА!",
+              "edits": 0,
+              "reference_characters": 15,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "receipt-appliance-vat-20",
+          "status": "success",
+          "passed": false,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "battery": true,
+            "installation": true,
+            "appliance": true,
+            "subscription": true,
+            "total": true,
+            "vat-20": true,
+            "cashless": true,
+            "card": false
+          },
+          "texts": [
+            {
+              "name": "appliance-total-and-vat",
+              "actual": "ИТОГ =39617.00 СУММА НДС 20% =6602.83 БЕЗНАЛИЧНЫМИ =39617.00",
+              "edits": 23,
+              "reference_characters": 37,
+              "cer": 0.6216216216216216,
+              "limit": 0.03,
+              "passed": false
+            }
+          ]
+        },
+        {
+          "id": "receipt-pharmacy-mixed-vat",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "calendula-price": true,
+            "calendula-sum": true,
+            "sorbifer-price": true,
+            "sorbifer-sum": true,
+            "undevit-price": true,
+            "undevit-sum": true,
+            "discount": true,
+            "total": true,
+            "cashless": true,
+            "card": true,
+            "vat-20": true,
+            "vat-10": true
+          },
+          "texts": [
+            {
+              "name": "pharmacy-total-payment-vat",
+              "actual": "ИТОГ =2191:00 БЕЗНАЛИЧНЫМИ =2191.00 ПОЛУЧЕНО: ПЛАТ.КАРТОЙ =2191.00 СУММА НДС 20% =33.14 СУММА НДС 10% =181.10",
+              "edits": 2,
+              "reference_characters": 110,
+              "cer": 0.01818181818181818,
+              "limit": 0.03,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "photo-passport-open",
+          "status": "success",
+          "passed": false,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "passport-bilingual-heading",
+              "actual": "РОССИЙСКАЯ ФЕДЕРАЦИЯ RUSSIAN FEDERATION",
+              "edits": 0,
+              "reference_characters": 39,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            },
+            {
+              "name": "passport-issue-and-expiry",
+              "actual": "12.07.2017 12.07.2022 Ор ва боуе/ Аи",
+              "edits": 15,
+              "reference_characters": 21,
+              "cer": 0.7142857142857143,
+              "limit": 0.03,
+              "passed": false
+            },
+            {
+              "name": "passport-issuer",
+              "actual": "УФМС 786",
+              "edits": 0,
+              "reference_characters": 8,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "scan-birth-certificate",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "birth-year": true,
+            "record-number": true,
+            "issue-year": true,
+            "certificate-number": true
+          },
+          "texts": [
+            {
+              "name": "certificate-heading",
+              "actual": "ПОВТОРНОЕ СВИДЕТЕЛЬСТВО О РОЖДЕНИИ",
+              "edits": 0,
+              "reference_characters": 34,
+              "cer": 0.0,
+              "limit": 0.03,
+              "passed": true
+            },
+            {
+              "name": "certificate-registration-office",
+              "actual": "Верх-Исетского района г.Екатеринбург",
+              "edits": 1,
+              "reference_characters": 37,
+              "cer": 0.02702702702702703,
+              "limit": 0.03,
+              "passed": true
+            }
+          ]
+        }
+      ],
+      "report_sha256": "62dcf123631fac63cc63a217bb073043224bc3f5262931cebc010124896b9cd9",
+      "input_manifest_sha256": "388e12483a22d5178eeaea9148165b4db3c05dd03ce3bb99e53f7fe97c48910f",
+      "reference_sha256": "b6d3a6876ebc5cf40f1b7fa1fe285504eb9b3a0f25c9bebf5a4fe94f3fea5ffe"
+    },
+    "previous": {
+      "assessment_basis": "source_review",
+      "passed_cases": 10,
+      "total_cases": 10,
+      "successful_conversions": 10,
+      "nonempty_exports": 10,
+      "table_cells": {
+        "correct": 117,
+        "total": 117
+      },
+      "numeric_fields": {
+        "correct": 12,
+        "total": 12
+      },
+      "text_regions": {
+        "correct": 5,
+        "total": 5
+      },
+      "text_edits": 12,
+      "reference_characters": 1617,
+      "conversion_seconds": 617.1889418000355,
+      "cases": [
+        {
+          "id": "rosseti-text",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "opinion-introduction",
+              "actual": "Акционерам акционерного общества «Калининградская генерирующая компания». Мнение Мы провели аудит прилагаемой годовой бухгалтерской (финансовой) отчетности акционерного общества «Калининградская генерирующая компания» (ОГРН 1083925011466), состоящей из бухгалтерского баланса по состоянию на 31 декабря 2021 года, отчета о финансовых результатах за 2021 год, приложений к бухгалтерскому балансу и отчету о финансовых результатах, в том числе отчета об изменениях капитала и отчета о движении денежных средств за 2021 год, пояснений к бухгалтерскому балансу и отчету о финансовых результатах, включая основные положения учетной политики.",
+              "edits": 0,
+              "reference_characters": 636,
+              "cer": 0.0,
+              "limit": 0.05,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "rosseti-balance",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 27,
+          "cells_total": 27,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "rosseti-results",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 24,
+          "cells_total": 24,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "bank-text",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "audit-scope",
+              "actual": "ЗАКЛЮЧЕНИЕ О БУХГАЛТЕРСКОЙ ОТЧЕТНОСТИ Мы провели аудит прилагаемой бухгалтерской (финансовой) отчетности Коммерческого банка \"Хлынов\" (открытое акционерное общество), состоящей из: бухгалтерского баланса (публикуемая форма) на 1 января 2015 года; отчета о финансовых результатах (публикуемая форма) за 2014 год; отчета об уровне достаточности капитала для покрытия рисков, величине резервов на покрытие сомнительных ссуд и иных активов (публикуемая форма) на 1 января 2015 года; сведений об обязательных нормативах (публикуемая форма) на 1 января 2015 года; отчета о движении денежных средств (публикуемая форма) за 2014 год; - пояснительной информации.",
+              "edits": 11,
+              "reference_characters": 663,
+              "cer": 0.016591251885369532,
+              "limit": 0.05,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "bank-assets",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 24,
+          "cells_total": 24,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "bank-liabilities",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 26,
+          "cells_total": 26,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "photo-certificate",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "unredacted-education-text",
+              "actual": "в 2019 году.окончил(а) Муниципальное бюджетное общеобразовательное учреждение \"Гимназия № 1\" города Бийска Алтайского края и получил(а) среднее общее образование",
+              "edits": 1,
+              "reference_characters": 161,
+              "cer": 0.006211180124223602,
+              "limit": 0.1,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "photo-grades",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 16,
+          "cells_total": 16,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "receipt-sugar",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "unit-price": true,
+            "quantity": true,
+            "item-sum": true,
+            "total": true,
+            "paid": true,
+            "vat": true
+          },
+          "texts": [
+            {
+              "name": "totals-block",
+              "actual": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =170.97 БЕЗНАЛИЧНЫМИ =170.97 СУММА НДС 10% =15.64",
+              "edits": 0,
+              "reference_characters": 80,
+              "cer": 0.0,
+              "limit": 0.1,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "receipt-products",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "unit-price-1": true,
+            "unit-price-2": true,
+            "unit-price-3": true,
+            "total": true,
+            "paid": true,
+            "vat": true
+          },
+          "texts": [
+            {
+              "name": "totals-block",
+              "actual": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =464.00 НАЛИЧНЫМИ =464.00 СУММА НДС 10% =42.19",
+              "edits": 0,
+              "reference_characters": 77,
+              "cer": 0.0,
+              "limit": 0.1,
+              "passed": true
+            }
+          ]
+        }
+      ],
+      "original_reference_results": {
+        "assessment_basis": "original_references",
+        "passed_cases": 9,
+        "total_cases": 10,
+        "successful_conversions": 10,
+        "nonempty_exports": 10,
+        "table_cells": {
+          "correct": 116,
+          "total": 117
+        },
+        "numeric_fields": {
+          "correct": 12,
+          "total": 12
+        },
+        "text_regions": {
+          "correct": 5,
+          "total": 5
+        },
+        "text_edits": 12,
+        "reference_characters": 1617,
+        "conversion_seconds": 617.1889418000355
+      },
+      "report_sha256": "c1cb8120d2d73e7117650763eddbfe696becc4375410cfd2f4f09944fc53656d",
+      "input_manifest_sha256": "aa707f3357082e4989a0d567921fe766e2802f92eb3fff16d7c99b5def546079",
+      "reference_sha256": "db1c672c5ba070155209738d6169f0967eadc5ec287b6649831fc4e6dee3f07e"
+    },
+    "unseen": {
+      "assessment_basis": "source_review",
+      "passed_cases": 10,
+      "total_cases": 10,
+      "successful_conversions": 10,
+      "nonempty_exports": 10,
+      "table_cells": {
+        "correct": 249,
+        "total": 249
+      },
+      "numeric_fields": {
+        "correct": 34,
+        "total": 34
+      },
+      "text_regions": {
+        "correct": 5,
+        "total": 5
+      },
+      "text_edits": 2,
+      "reference_characters": 985,
+      "conversion_seconds": 716.2000502001029,
+      "cases": [
+        {
+          "id": "bi-balance-sideways",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 80,
+          "cells_total": 80,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "bi-results-sideways",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 48,
+          "cells_total": 48,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "amfbc-audit-text",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "main-paragraph",
+              "actual": "Из тех вопросов, которые мы довели до сведения Наблюдательного совета, мы определяем вопросы, которые были наиболее значимыми для а аудита годовой бухгалтерской (финансовой) отчетности за текущий период и которые, следовательно, являются ключевыми вопросами аудита. Мы описываем эти вопросы в нашем аудиторском заключении, кроме случаев, когда публичное раскрытие информации об этих вопросах запрещено законом или нормативным актом, или когда в крайне редких случаях мы приходим к выводу о том, что информация о каком-либо вопросе не должна быть сообщена в нашем заключении, так как можно обоснованно предположить, что отрицательные последствия сообщения такой информации превысят общественно значимую пользу от ее сообщения.",
+              "edits": 2,
+              "reference_characters": 723,
+              "cer": 0.0027662517289073307,
+              "limit": 0.05,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "amfbc-assets",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 22,
+          "cells_total": 22,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "amfbc-liabilities",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 18,
+          "cells_total": 18,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "photo-school-tables",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 81,
+          "cells_total": 81,
+          "field_passes": {},
+          "texts": []
+        },
+        {
+          "id": "photo-passport-cover",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {},
+          "texts": [
+            {
+              "name": "printed-cover",
+              "actual": "РОССИЙСКАЯ ФЕДЕРАЦИЯ СЛУЖЕБНЫЙ ПАСПОРТ",
+              "edits": 0,
+              "reference_characters": 38,
+              "cer": 0.0,
+              "limit": 0.05,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "receipt-grocery-mixed-vat",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "unit-price-milk": true,
+            "unit-price-drink": true,
+            "unit-price-cheese": true,
+            "unit-price-loin": true,
+            "item-sum-loin": true,
+            "unit-price-water": true,
+            "unit-price-sausage": true,
+            "unit-price-chocolate": true,
+            "unit-price-cookie-1": true,
+            "unit-price-cookie-2": true,
+            "unit-price-cocktail-1": true,
+            "unit-price-cocktail-2": true,
+            "item-sum-cocktail-2": true,
+            "total": true,
+            "paid": true,
+            "vat-20": true,
+            "vat-10": true
+          },
+          "texts": [
+            {
+              "name": "totals-caption",
+              "actual": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =1522.93 БЕЗНАЛИЧНЫМИ =1522.93",
+              "edits": 0,
+              "reference_characters": 61,
+              "cer": 0.0,
+              "limit": 0.1,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "receipt-grocery-vat-10",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "unit-price-bread-1": true,
+            "unit-price-bread-2": true,
+            "unit-price-cheese-1": true,
+            "unit-price-cheese-2": true,
+            "unit-price-cheese-3": true,
+            "unit-price-lemons": true,
+            "item-sum-lemons": true,
+            "unit-price-milk": true,
+            "item-sum-milk": true,
+            "total": true,
+            "paid": true,
+            "vat-10": true
+          },
+          "texts": [
+            {
+              "name": "totals-block",
+              "actual": "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =1179.33 БЕЗНАЛИЧНЫМИ =1179.33 СУММА НДС 10% =107.21",
+              "edits": 0,
+              "reference_characters": 83,
+              "cer": 0.0,
+              "limit": 0.1,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "receipt-electronics-vat-20",
+          "status": "success",
+          "passed": true,
+          "cells_correct": 0,
+          "cells_total": 0,
+          "field_passes": {
+            "unit-price-heater": true,
+            "total": true,
+            "vat-20": true,
+            "paid": true,
+            "paid-by-card": true
+          },
+          "texts": [
+            {
+              "name": "totals-block",
+              "actual": "ИТОГ =9999.00 СУММА НДС 20% =1666.50 БЕЗНАЛИЧНЫМИ =9999.00 *Плат.картой =9999.00",
+              "edits": 0,
+              "reference_characters": 80,
+              "cer": 0.0,
+              "limit": 0.1,
+              "passed": true
+            }
+          ]
+        }
+      ],
+      "original_reference_results": {
+        "assessment_basis": "original_references",
+        "passed_cases": 8,
+        "total_cases": 10,
+        "successful_conversions": 10,
+        "nonempty_exports": 10,
+        "table_cells": {
+          "correct": 245,
+          "total": 249
+        },
+        "numeric_fields": {
+          "correct": 33,
+          "total": 34
+        },
+        "text_regions": {
+          "correct": 5,
+          "total": 5
+        },
+        "text_edits": 2,
+        "reference_characters": 985,
+        "conversion_seconds": 716.2000502001029
+      },
+      "report_sha256": "a1e00d251616fa66855f296a3fb4318719db7eb228c044008f2914db222facdb",
+      "input_manifest_sha256": "e06b56c7903360b3e4c6d2ecf9be90607a86c7256b54013ea88b2fcb14371ca3",
+      "reference_sha256": "3bb832441a96558b11f4f1aa559e9ec250f83b2798ac2d6301e850cc215ae0f9"
+    }
+  },
+  "supplemental_source_checks": {
+    "scope": "Added after source review. Does not replace, alter or silently exclude any original score.",
+    "audit_address": {
+      "expected": "Членам Ассоциации «Союз кадастровых инженеров»",
+      "actual": "членам ассоциации «союз кадастровых инженеров»",
+      "passed": true,
+      "reason": "The original prose controls excluded this printed salutation. A missing opening quote was found during whole-export inspection and independently verified in source pixels before this final run."
+    },
+    "appliance_complete_fiscal_rows": {
+      "source_sha256": "2d22bb4713e930784005937ddb281da971b7bd6651aebb6577683bb50a562991",
+      "original_control_problem": "The original text control omits two printed payment rows in its ROI. Their correct recognition must not be treated as invented text.",
+      "rows": [
+        {
+          "expected": "ИТОГ =39617.00",
+          "exact_source_rows": 1,
+          "passed": true,
+          "bbox": [
+            0.36083333333333334,
+            0.6185420209750566,
+            0.7934027777777778,
+            0.6574573058390024
+          ]
+        },
+        {
+          "expected": "СУММА НДС 20% =6602.83",
+          "exact_source_rows": 1,
+          "passed": true,
+          "bbox": [
+            0.365,
+            0.6418193763399285,
+            0.7942708333333335,
+            0.6683389564308393
+          ]
+        },
+        {
+          "expected": "БЕЗНАЛИЧНЫМИ =39617.00",
+          "exact_source_rows": 1,
+          "passed": true,
+          "bbox": [
+            0.3641666666666667,
+            0.6513248239436621,
+            0.7933333333333333,
+            0.6778851232394366
+          ]
+        },
+        {
+          "expected": "*Плат.картой =39617.00",
+          "exact_source_rows": 1,
+          "passed": true,
+          "bbox": [
+            0.3620833333333333,
+            0.6605850318247408,
+            0.795138888888889,
+            0.6875224508107514
+          ]
+        }
+      ],
+      "correct_order": true,
+      "passed": true
+    }
+  },
+  "verification": {
+    "runtime_unchanged_during_all_runs": true,
+    "models_unchanged_during_all_runs": true,
+    "original_controls_unchanged": true,
+    "all_36_model_files_match_baseline": true,
+    "models_match_final_review": true,
+    "runtime_matches_final_review": true,
+    "original_control_files_match_final_review": true,
+    "python_network_connections_blocked": true,
+    "native_network_capture_performed": false,
+    "versions_match_baseline": true,
+    "qualification_runner_matches_baseline": true,
+    "options_sources_and_references_match_baseline": true,
+    "all_runner_runtime_hashes_match_seal": true
+  },
+  "code_checks": {
+    "affected_tests_passed": 238,
+    "cli_tests_passed": 12,
+    "validation": "prek, equivalent to make validate on Windows",
+    "affected_tests_log_sha256": "c2fb879406dd3ad7e9248175392e72de636ed2b66b202b1b8069c00b63ef2446",
+    "cli_tests_log_sha256": "99d8780a34aa1d3a005468184609398fd3987bbf12953d8b999eaaddaf2c5612"
+  },
+  "synthetic_integration": {
+    "passed": true,
+    "pages": 8,
+    "report_sha256": "1850fb73ce2e80a79c777921fb2d41585f66040115ef96aa33f91b69e00eec11",
+    "reference_sha256": "9a47ba3ec3fc8c277bcec5669ed67a31237ed86cd70294b643c9411f30d64c69",
+    "scope": "Generated printed pages, separate from real-document cases."
+  }
+}
