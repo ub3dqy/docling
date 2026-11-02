@@ -9,6 +9,7 @@ from docling_core.types.doc.page import BoundingRectangle, TextCell
 
 from docling.models.stages.ocr.ocr_prose_regions import (
     ProseRow,
+    confirmed_quote_repair,
     numbers_have_source_positions,
     prose_numbers,
     repair_prose_words,
@@ -78,3 +79,24 @@ def test_secondary_word_repair_needs_two_models_and_cannot_change_a_number():
         for r in readings
     ]
     assert repair_prose_words(row, readings, known).words[1].text == "2025"
+
+
+@pytest.mark.parametrize(
+    "original,candidate,deficit,expected",
+    [
+        ("Членам объединения Союз", "Членам объединения «Союз", 1, True),
+        ("Членам объединения «Союз»,2025", "Членам объединения «Союз»,2025", 1, False),
+        ("Объединение «Союз", "Объединение «Союз»", -1, True),
+        ("Объединение «Союз", "«Объединение Союз»,2025", -1, False),
+        ("Объединение Союз,2025", "Объединение «Союз,2026", 1, False),
+        ("Объединение Союз", "«Объединение «Союз", 1, False),
+    ],
+)
+def test_only_observed_quotes_can_reduce_imbalance_without_moving_existing_quotes_or_numbers(
+    original, candidate, deficit, expected
+):
+    word = _word(0, candidate, 10)
+    row = ProseRow(candidate, 0.99, word.rect, (word,), quotes_confirmed=True)
+    assert confirmed_quote_repair(original, [row], deficit) is expected
+    unconfirmed = ProseRow(candidate, 0.99, word.rect, (word,))
+    assert not confirmed_quote_repair(original, [unconfirmed], deficit)

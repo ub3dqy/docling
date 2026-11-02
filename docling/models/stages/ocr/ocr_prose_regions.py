@@ -48,6 +48,7 @@ class ProseRow:
     confidence: float
     rect: BoundingRectangle
     words: tuple[TextCell, ...]
+    quotes_confirmed: bool = False
 
 
 def prose_numbers(text: str, known: Callable[[str], bool]) -> tuple[str, ...]:
@@ -120,7 +121,9 @@ def _bad_letters(text: str, known: Callable[[str], bool]) -> int:
     )
 
 
-def _needs_reading(cluster: Cluster, known: Callable[[str], bool]) -> bool:
+def _needs_reading(
+    cluster: Cluster, known: Callable[[str], bool], *, verify_quotes: bool = False
+) -> bool:
     if (
         cluster.label
         not in {DocItemLabel.TEXT, DocItemLabel.SECTION_HEADER, DocItemLabel.TITLE}
@@ -137,7 +140,8 @@ def _needs_reading(cluster: Cluster, known: Callable[[str], bool]) -> bool:
     ):
         return False
     return bool(
-        _bad_letters(text, known) >= 3
+        verify_quotes
+        or _bad_letters(text, known) >= 3
         or (
             len(cluster.cells) >= 4
             and median(cell.rect.to_bounding_box().width for cell in cluster.cells)
@@ -243,6 +247,40 @@ def _key(text: str) -> str:
     )
 
 
+def quote_pattern(text: str) -> tuple[tuple[int, str], ...]:
+    """Keep source quote positions relative to letters and digits."""
+    offset = 0
+    result = []
+    for char in text:
+        if char.isalnum():
+            offset += 1
+        elif char in "«»":
+            result.append((offset, char))
+    return tuple(result)
+
+
+def confirmed_quote_repair(original: str, rows: list[ProseRow], deficit: int) -> bool:
+    """Only add independently observed quotes that reduce a page imbalance."""
+    candidate = " ".join(row.text for row in rows)
+    if (
+        not deficit
+        or not all(row.quotes_confirmed for row in rows)
+        or _key(original) != _key(candidate)
+    ):
+        return False
+    before, after = Counter(quote_pattern(original)), Counter(quote_pattern(candidate))
+    if not before <= after:
+        return False
+    added = [
+        mark for (_, mark), count in (after - before).items() for _ in range(count)
+    ]
+    return (
+        bool(added)
+        and all(mark == ("«" if deficit > 0 else "»") for mark in added)
+        and len(added) <= abs(deficit)
+    )
+
+
 def repair_prose_words(
     row: ProseRow, readings: list[RegionReading], known: Callable[[str], bool]
 ) -> ProseRow:
@@ -304,7 +342,17 @@ def _confirmed_rows(
             {recognizer_family(reading.engine) for reading in readings}
         ) < 2 or not any(_key(reading.text) == key for reading in readings):
             return False
-        rows[index] = row
+        rows[index] = replace(
+            row,
+            quotes_confirmed=len(
+                {
+                    recognizer_family(reading.engine)
+                    for reading in readings
+                    if quote_pattern(reading.text) == quote_pattern(row.text)
+                }
+            )
+            >= 2,
+        )
     return True
 
 
@@ -312,6 +360,8 @@ def refine_pdf_prose(refiner: OcrRegionRefiner, page: Page) -> None:
     if page.parsed_page is None or page.size is None or page.predictions.layout is None:
         return
     known = refiner._dictionary.word_is_known
+    page_text = " ".join(cell.text for cell in page.parsed_page.textline_cells)
+    quote_deficit = page_text.count("»") - page_text.count("«")
     table_boxes = [
         cluster.bbox
         for cluster in page.predictions.layout.clusters
@@ -320,7 +370,7 @@ def refine_pdf_prose(refiner: OcrRegionRefiner, page: Page) -> None:
     clusters = [
         cluster
         for cluster in page.predictions.layout.clusters
-        if _needs_reading(cluster, known)
+        if _needs_reading(cluster, known, verify_quotes=quote_deficit != 0)
         and not any(
             cluster.bbox.intersection_over_self(box) >= 0.2 for box in table_boxes
         )
@@ -374,10 +424,14 @@ def refine_pdf_prose(refiner: OcrRegionRefiner, page: Page) -> None:
             if (
                 _bad_letters(candidate, known) >= _bad_letters(original, known)
                 and len(cluster.cells) <= len(rows) * 1.5
+                and not confirmed_quote_repair(original, rows, quote_deficit)
             ):
                 continue
             if not numbers_have_source_positions(rows, words, known):
                 continue
+            quote_deficit += (candidate.count("»") - candidate.count("«")) - (
+                original.count("»") - original.count("«")
+            )
             removed = {cell.index for cell in cluster.cells}
             line_index = (
                 max(
