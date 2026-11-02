@@ -1,0 +1,71 @@
+{
+  "previous_run_manifests": 53,
+  "previous_unique_originals": 25,
+  "previous_downloaded_candidates_also_excluded": true,
+  "new_documents": 7,
+  "all_exact_hashes_new": true,
+  "all_source_urls_new": true,
+  "all_filenames_new": true,
+  "perceptual_comparison": "256-bit dHash of five new images against all previous source images in four rotations; heuristic plus source identity and visual comparison, not a proof of global dataset uniqueness.",
+  "checks": [
+    {
+      "file": "IMG_0724_bin.PNG",
+      "sha256": "d4f9d4c090672c2c43e74cdb42d39cab794d5902d7e4ff384ee650aeddda7784",
+      "exact_hash_is_new": true,
+      "source_url_is_new": true,
+      "filename_is_new": true,
+      "dhash256_nearest_distance": 99,
+      "nearest_previous_image": "output/real-russian-ocr-new-2026-11-01/sources/IMG_0752_bin.jpg"
+    },
+    {
+      "file": "IMG_0872_bin.PNG",
+      "sha256": "2d22bb4713e930784005937ddb281da971b7bd6651aebb6577683bb50a562991",
+      "exact_hash_is_new": true,
+      "source_url_is_new": true,
+      "filename_is_new": true,
+      "dhash256_nearest_distance": 96,
+      "nearest_previous_image": "output/real-russian-ocr-new-2026-11-01/sources/IMG_0863_bin.PNG"
+    },
+    {
+      "file": "IMG_0891_bin.jpg",
+      "sha256": "79e4d4dadd683b266d8185eb8abff89703258bade599ff123e170b0cd0d0f184",
+      "exact_hash_is_new": true,
+      "source_url_is_new": true,
+      "filename_is_new": true,
+      "dhash256_nearest_distance": 100,
+      "nearest_previous_image": "output/real-russian-ocr-new-2026-11-01/sources/doc-000029.jpg"
+    },
+    {
+      "file": "doc-000244.jpg",
+      "sha256": "ab1dc7c5580e5d98060ffee5a717985d15c839dcb40a3be9c9aec0e15688df76",
+      "exact_hash_is_new": true,
+      "source_url_is_new": true,
+      "filename_is_new": true,
+      "dhash256_nearest_distance": 106,
+      "nearest_previous_image": "output/real-russian-ocr-new-2026-11-01/sources/doc-000030.jpg"
+    },
+    {
+      "file": "doc-000300.jpg",
+      "sha256": "00529c0a8816578bff62c387b7c297a7468ce7fce01a94680de6d3b07abe72af",
+      "exact_hash_is_new": true,
+      "source_url_is_new": true,
+      "filename_is_new": true,
+      "dhash256_nearest_distance": 80,
+      "nearest_previous_image": "output/real-russian-ocr-new-2026-11-01/sources/doc-000038.jpg"
+    },
+    {
+      "file": "kadastr-audit-2025.pdf",
+      "sha256": "bd446fab3d40f958a2e79e4922339318b305457b0c2104b0503f885bf3d9d9fd",
+      "exact_hash_is_new": true,
+      "source_url_is_new": true,
+      "filename_is_new": true
+    },
+    {
+      "file": "kadastr-balance-2025.pdf",
+      "sha256": "10267673f463e6005f17bf683a420ff1022804349bfe01b8b3bbc0da3f99f6e1",
+      "exact_hash_is_new": true,
+      "source_url_is_new": true,
+      "filename_is_new": true
+    }
+  ]
+}

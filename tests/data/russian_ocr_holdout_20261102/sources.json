@@ -1,0 +1,40 @@
+{
+  "reference_sha256": "b6d3a6876ebc5cf40f1b7fa1fe285504eb9b3a0f25c9bebf5a4fe94f3fea5ffe",
+  "files": {
+    "IMG_0724_bin.PNG": {
+      "sha256": "d4f9d4c090672c2c43e74cdb42d39cab794d5902d7e4ff384ee650aeddda7784",
+      "bytes": 204870,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0724_bin.PNG"
+    },
+    "IMG_0872_bin.PNG": {
+      "sha256": "2d22bb4713e930784005937ddb281da971b7bd6651aebb6577683bb50a562991",
+      "bytes": 270737,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0872_bin.PNG"
+    },
+    "IMG_0891_bin.jpg": {
+      "sha256": "79e4d4dadd683b266d8185eb8abff89703258bade599ff123e170b0cd0d0f184",
+      "bytes": 1160465,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0891_bin.jpg"
+    },
+    "doc-000244.jpg": {
+      "sha256": "ab1dc7c5580e5d98060ffee5a717985d15c839dcb40a3be9c9aec0e15688df76",
+      "bytes": 283680,
+      "url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000244.jpg"
+    },
+    "doc-000300.jpg": {
+      "sha256": "00529c0a8816578bff62c387b7c297a7468ce7fce01a94680de6d3b07abe72af",
+      "bytes": 132234,
+      "url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000300.jpg"
+    },
+    "kadastr-audit-2025.pdf": {
+      "sha256": "bd446fab3d40f958a2e79e4922339318b305457b0c2104b0503f885bf3d9d9fd",
+      "bytes": 1803713,
+      "url": "https://www.srokadastr.ru/files/2700"
+    },
+    "kadastr-balance-2025.pdf": {
+      "sha256": "10267673f463e6005f17bf683a420ff1022804349bfe01b8b3bbc0da3f99f6e1",
+      "bytes": 1848374,
+      "url": "https://www.srokadastr.ru/files/2699"
+    }
+  }
+}

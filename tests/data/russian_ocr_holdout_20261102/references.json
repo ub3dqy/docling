@@ -1,0 +1,1176 @@
+{
+  "scope": "Fresh public Russian originals selected and visually transcribed before inference on baseline 653dc0c04dae1c95bc923006f3f57b3ef4d625df. Ten page cases from seven distinct documents: five scanned PDF pages, three binarized receipt photographs, one colour camera photograph and one scanned certificate image. No runtime tuning or source-review corrections in this run.",
+  "exclusions": [
+    "Only the stated text regions, table value cells and numeric fields are scored; this is not a full-document transcription score.",
+    "Handwriting, covered/redacted details, portrait recognition, QR/barcode decoding and authentication of the source documents are excluded.",
+    "Document selection is purposive and small; it does not estimate population-wide production accuracy.",
+    "Receipt photos were already binarized by their public dataset publisher; original colour receipt photos are not available in this cohort.",
+    "Numeric comparisons accept decimal comma/point and equivalent negative notation; text comparisons use NFC, casefold and collapsed whitespace only.",
+    "The printed financial figures are preserved even where their arithmetic is inconsistent (page 2: 1310=11, 1350=1388, 1300=1398). No arithmetic-derived gold corrections.",
+    "The blurred grocery receipt IMG_0777_bin.jpg was rejected before inference because its tiny totals/VAT glyphs were ambiguous; empty templates and an electronic PDF were also rejected."
+  ],
+  "cases": [
+    {
+      "id": "kadastr-assets",
+      "file": "kadastr-balance-2025.pdf",
+      "page": 1,
+      "kind": "scanned-pdf-table",
+      "source_url": "https://www.srokadastr.ru/files/2699",
+      "texts": [
+        {
+          "name": "balance-title",
+          "roi": [
+            0.36,
+            0.06,
+            0.65,
+            0.105
+          ],
+          "max_cer": 0.03,
+          "text": "Бухгалтерский баланс на 31 декабря 2025 г."
+        }
+      ],
+      "rows": [
+        {
+          "key": "1110",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1120",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1130",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1140",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1150",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1160",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1170",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1180",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1190",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1100",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1210",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1220",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1230",
+          "values": [
+            "121",
+            "155",
+            "140"
+          ]
+        },
+        {
+          "key": "1240",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1250",
+          "values": [
+            "1130",
+            "642",
+            "39"
+          ]
+        },
+        {
+          "key": "1260",
+          "values": [
+            "211",
+            "117",
+            "313"
+          ]
+        },
+        {
+          "key": "1200",
+          "values": [
+            "1462",
+            "914",
+            "493"
+          ]
+        },
+        {
+          "key": "1600",
+          "values": [
+            "1462",
+            "914",
+            "493"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "kadastr-liabilities",
+      "file": "kadastr-balance-2025.pdf",
+      "page": 2,
+      "kind": "scanned-pdf-table",
+      "source_url": "https://www.srokadastr.ru/files/2699",
+      "texts": [],
+      "rows": [
+        {
+          "key": "1310",
+          "values": [
+            "11",
+            "11",
+            "11"
+          ]
+        },
+        {
+          "key": "1320",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1350",
+          "values": [
+            "1388",
+            "854",
+            "454"
+          ]
+        },
+        {
+          "key": "1360",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1370",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1300",
+          "values": [
+            "1398",
+            "864",
+            "464"
+          ]
+        },
+        {
+          "key": "1410",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1420",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1430",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1450",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1400",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1510",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1520",
+          "values": [
+            "64",
+            "50",
+            "29"
+          ]
+        },
+        {
+          "key": "1530",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1540",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1550",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1500",
+          "values": [
+            "64",
+            "50",
+            "29"
+          ]
+        },
+        {
+          "key": "1700",
+          "values": [
+            "1462",
+            "914",
+            "493"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "kadastr-cash-flow",
+      "file": "kadastr-balance-2025.pdf",
+      "page": 5,
+      "kind": "scanned-pdf-table",
+      "source_url": "https://www.srokadastr.ru/files/2699",
+      "texts": [
+        {
+          "name": "cash-flow-title",
+          "roi": [
+            0.31,
+            0.025,
+            0.72,
+            0.062
+          ],
+          "max_cer": 0.03,
+          "text": "Отчет о движении денежных средств за Январь - Декабрь 2025 г."
+        }
+      ],
+      "rows": [
+        {
+          "key": "4110",
+          "values": [
+            "10325",
+            "9475"
+          ]
+        },
+        {
+          "key": "4111",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4112",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4113",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4114",
+          "values": [
+            "10295",
+            "9454"
+          ]
+        },
+        {
+          "key": "4119",
+          "values": [
+            "30",
+            "21"
+          ]
+        },
+        {
+          "key": "4120",
+          "values": [
+            "(9837)",
+            "(8872)"
+          ]
+        },
+        {
+          "key": "4121",
+          "values": [
+            "(1623)",
+            "(1387)"
+          ]
+        },
+        {
+          "key": "4122",
+          "values": [
+            "(7591)",
+            "(6877)"
+          ]
+        },
+        {
+          "key": "4123",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4124",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4129",
+          "values": [
+            "(623)",
+            "(608)"
+          ]
+        },
+        {
+          "key": "4100",
+          "values": [
+            "488",
+            "603"
+          ]
+        },
+        {
+          "key": "4210",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4211",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4212",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4213",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4214",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4219",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4220",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4221",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4222",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4223",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4224",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4229",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4200",
+          "values": [
+            "-",
+            "-"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "kadastr-cash-balances",
+      "file": "kadastr-balance-2025.pdf",
+      "page": 6,
+      "kind": "scanned-pdf-table",
+      "source_url": "https://www.srokadastr.ru/files/2699",
+      "texts": [],
+      "rows": [
+        {
+          "key": "4310",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4311",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4312",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4313",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4314",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4319",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4320",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4321",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4322",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4323",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4329",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4300",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "4400",
+          "values": [
+            "488",
+            "603"
+          ]
+        },
+        {
+          "key": "4450",
+          "values": [
+            "642",
+            "39"
+          ]
+        },
+        {
+          "key": "4500",
+          "values": [
+            "1130",
+            "642"
+          ]
+        },
+        {
+          "key": "4490",
+          "values": [
+            "-",
+            "-"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "kadastr-audit-text",
+      "file": "kadastr-audit-2025.pdf",
+      "page": 1,
+      "kind": "scanned-pdf-text",
+      "source_url": "https://www.srokadastr.ru/files/2700",
+      "texts": [
+        {
+          "name": "audit-heading",
+          "roi": [
+            0.39,
+            0.065,
+            0.77,
+            0.12
+          ],
+          "max_cer": 0.03,
+          "text": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГО АУДИТОРА"
+        },
+        {
+          "name": "audit-scope",
+          "roi": [
+            0.15,
+            0.23,
+            0.98,
+            0.367
+          ],
+          "max_cer": 0.03,
+          "text": "Мы провели аудит прилагаемой годовой бухгалтерской отчетности Ассоциации «Союз кадастровых инженеров» (ОГРН 1167700052112) состоящей из бухгалтерского баланса по состоянию на 31 декабря 2025 года, отчета о целевом использовании средств за 2025 год, приложений к бухгалтерскому балансу и отчету о целевом использовании средств, в том числе отчета о финансовых результатах за 2025 год, отчета об изменениях капитала за 2025 год, отчета о движении денежных средств за 2025 г. и пояснений к бухгалтерскому балансу и отчету о целевом использовании средств, включая основные положения учетной политики."
+        },
+        {
+          "name": "audit-opinion",
+          "roi": [
+            0.15,
+            0.38,
+            0.98,
+            0.485
+          ],
+          "max_cer": 0.03,
+          "text": "По нашему мнению, прилагаемая годовая бухгалтерская отчетность отражает достоверно во всех существенных отношениях финансовое положение Ассоциации «Союз кадастровых инженеров» по состоянию на 31 декабря 2025 года, финансовые результаты его деятельности и целевое использование средств за 2025 год в соответствии с правилами составления бухгалтерской отчетности, установленными в Российской Федерации."
+        }
+      ],
+      "rows": [],
+      "fields": []
+    },
+    {
+      "id": "receipt-clinic-no-vat",
+      "file": "IMG_0724_bin.PNG",
+      "page": 1,
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0724_bin.PNG",
+      "texts": [
+        {
+          "name": "clinic-heading",
+          "roi": [
+            0.185,
+            0.075,
+            0.91,
+            0.14
+          ],
+          "max_cer": 0.03,
+          "text": "ООО \"Современная клиника И-25\" КАССОВЫЙ ЧЕК"
+        },
+        {
+          "name": "clinic-thanks",
+          "roi": [
+            0.28,
+            0.886,
+            0.73,
+            0.936
+          ],
+          "max_cer": 0.03,
+          "text": "ЖДЕМ ВАС СНОВА!"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "service-price",
+          "roi": [
+            0.4,
+            0.16,
+            0.62,
+            0.192
+          ],
+          "value": "11630.00"
+        },
+        {
+          "name": "service-quantity",
+          "roi": [
+            0.6,
+            0.16,
+            0.72,
+            0.192
+          ],
+          "value": "1.000"
+        },
+        {
+          "name": "service-line-total",
+          "roi": [
+            0.71,
+            0.16,
+            0.92,
+            0.192
+          ],
+          "value": "11630.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.57,
+            0.206,
+            0.92,
+            0.25
+          ],
+          "value": "11630.00"
+        },
+        {
+          "name": "amount-without-vat",
+          "roi": [
+            0.6,
+            0.25,
+            0.94,
+            0.282
+          ],
+          "value": "11630.00"
+        },
+        {
+          "name": "cashless",
+          "roi": [
+            0.55,
+            0.29,
+            0.93,
+            0.326
+          ],
+          "value": "11630.00"
+        },
+        {
+          "name": "received",
+          "roi": [
+            0.55,
+            0.326,
+            0.93,
+            0.351
+          ],
+          "value": "11630.00"
+        }
+      ]
+    },
+    {
+      "id": "receipt-appliance-vat-20",
+      "file": "IMG_0872_bin.PNG",
+      "page": 1,
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0872_bin.PNG",
+      "texts": [
+        {
+          "name": "appliance-total-and-vat",
+          "roi": [
+            0.35,
+            0.632,
+            0.83,
+            0.67
+          ],
+          "max_cer": 0.03,
+          "text": "ИТОГ =39617.00 СУММА НДС 20% =6602.83"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "battery",
+          "roi": [
+            0.63,
+            0.277,
+            0.81,
+            0.306
+          ],
+          "value": "209.00"
+        },
+        {
+          "name": "installation",
+          "roi": [
+            0.63,
+            0.327,
+            0.81,
+            0.351
+          ],
+          "value": "140.00"
+        },
+        {
+          "name": "appliance",
+          "roi": [
+            0.63,
+            0.393,
+            0.82,
+            0.418
+          ],
+          "value": "38499.00"
+        },
+        {
+          "name": "subscription",
+          "roi": [
+            0.63,
+            0.461,
+            0.82,
+            0.486
+          ],
+          "value": "769.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.61,
+            0.632,
+            0.83,
+            0.655
+          ],
+          "value": "39617.00"
+        },
+        {
+          "name": "vat-20",
+          "roi": [
+            0.63,
+            0.653,
+            0.83,
+            0.67
+          ],
+          "value": "6602.83"
+        },
+        {
+          "name": "cashless",
+          "roi": [
+            0.62,
+            0.669,
+            0.83,
+            0.684
+          ],
+          "value": "39617.00"
+        },
+        {
+          "name": "card",
+          "roi": [
+            0.62,
+            0.679,
+            0.83,
+            0.697
+          ],
+          "value": "39617.00"
+        }
+      ]
+    },
+    {
+      "id": "receipt-pharmacy-mixed-vat",
+      "file": "IMG_0891_bin.jpg",
+      "page": 1,
+      "kind": "receipt-photo-binarized",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0891_bin.jpg",
+      "texts": [
+        {
+          "name": "pharmacy-total-payment-vat",
+          "roi": [
+            0.32,
+            0.505,
+            0.69,
+            0.603
+          ],
+          "max_cer": 0.03,
+          "text": "ИТОГ: =2191.00 БЕЗНАЛИЧНЫМИ =2191.00 ПОЛУЧЕНО: ПЛАТ.КАРТОЙ =2191.00 СУММА НДС 20% =33.14 СУММА НДС 10% =181.10"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "calendula-price",
+          "roi": [
+            0.49,
+            0.339,
+            0.68,
+            0.363
+          ],
+          "value": "89.10"
+        },
+        {
+          "name": "calendula-sum",
+          "roi": [
+            0.49,
+            0.355,
+            0.68,
+            0.376
+          ],
+          "value": "89.10"
+        },
+        {
+          "name": "sorbifer-price",
+          "roi": [
+            0.49,
+            0.38,
+            0.68,
+            0.403
+          ],
+          "value": "1903.05"
+        },
+        {
+          "name": "sorbifer-sum",
+          "roi": [
+            0.49,
+            0.395,
+            0.68,
+            0.417
+          ],
+          "value": "1903.05"
+        },
+        {
+          "name": "undevit-price",
+          "roi": [
+            0.49,
+            0.421,
+            0.68,
+            0.44
+          ],
+          "value": "198.85"
+        },
+        {
+          "name": "undevit-sum",
+          "roi": [
+            0.49,
+            0.436,
+            0.68,
+            0.454
+          ],
+          "value": "198.85"
+        },
+        {
+          "name": "discount",
+          "roi": [
+            0.33,
+            0.458,
+            0.68,
+            0.485
+          ],
+          "value": "27.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.49,
+            0.505,
+            0.69,
+            0.535
+          ],
+          "value": "2191.00"
+        },
+        {
+          "name": "cashless",
+          "roi": [
+            0.49,
+            0.53,
+            0.69,
+            0.551
+          ],
+          "value": "2191.00"
+        },
+        {
+          "name": "card",
+          "roi": [
+            0.49,
+            0.556,
+            0.69,
+            0.578
+          ],
+          "value": "2191.00"
+        },
+        {
+          "name": "vat-20",
+          "roi": [
+            0.49,
+            0.572,
+            0.69,
+            0.59
+          ],
+          "value": "33.14"
+        },
+        {
+          "name": "vat-10",
+          "roi": [
+            0.49,
+            0.587,
+            0.69,
+            0.603
+          ],
+          "value": "181.10"
+        }
+      ]
+    },
+    {
+      "id": "photo-passport-open",
+      "file": "doc-000244.jpg",
+      "page": 1,
+      "kind": "camera-document",
+      "source_url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000244.jpg",
+      "texts": [
+        {
+          "name": "passport-bilingual-heading",
+          "roi": [
+            0.37,
+            0.292,
+            0.59,
+            0.35
+          ],
+          "max_cer": 0.03,
+          "text": "РОССИЙСКАЯ ФЕДЕРАЦИЯ RUSSIAN FEDERATION"
+        },
+        {
+          "name": "passport-issue-and-expiry",
+          "roi": [
+            0.44,
+            0.771,
+            0.63,
+            0.803
+          ],
+          "max_cer": 0.03,
+          "text": "12.07.2017 12.07.2022"
+        },
+        {
+          "name": "passport-issuer",
+          "roi": [
+            0.45,
+            0.81,
+            0.52,
+            0.831
+          ],
+          "max_cer": 0.03,
+          "text": "УФМС 786"
+        }
+      ],
+      "rows": [],
+      "fields": []
+    },
+    {
+      "id": "scan-birth-certificate",
+      "file": "doc-000300.jpg",
+      "page": 1,
+      "kind": "scanned-document-image",
+      "source_url": "https://huggingface.co/datasets/Omar-2002/ru_benchmark_data/resolve/6cc8ed1c3345db0874e27944c8d3d034fd342bd0/non_handwritten_real_data/images/000300.jpg",
+      "texts": [
+        {
+          "name": "certificate-heading",
+          "roi": [
+            0.3,
+            0.055,
+            0.8,
+            0.19
+          ],
+          "max_cer": 0.03,
+          "text": "ПОВТОРНОЕ СВИДЕТЕЛЬСТВО О РОЖДЕНИИ"
+        },
+        {
+          "name": "certificate-registration-office",
+          "roi": [
+            0.05,
+            0.709,
+            0.9,
+            0.736
+          ],
+          "max_cer": 0.03,
+          "text": "Верх-Исетского района г.Екатеринбурга"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "birth-year",
+          "roi": [
+            0.21,
+            0.431,
+            0.3,
+            0.459
+          ],
+          "value": "2002"
+        },
+        {
+          "name": "record-number",
+          "roi": [
+            0.46,
+            0.455,
+            0.57,
+            0.485
+          ],
+          "value": "167"
+        },
+        {
+          "name": "issue-year",
+          "roi": [
+            0.76,
+            0.762,
+            0.88,
+            0.8
+          ],
+          "value": "2004"
+        },
+        {
+          "name": "certificate-number",
+          "roi": [
+            0.48,
+            0.882,
+            0.62,
+            0.913
+          ],
+          "value": "807401"
+        }
+      ]
+    }
+  ]
+}

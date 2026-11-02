@@ -1,0 +1,1047 @@
+{
+  "schema_version": 1,
+  "client_date": "2026-11-02",
+  "baseline_commit": "653dc0c04dae1c95bc923006f3f57b3ef4d625df",
+  "completed_utc": "2026-11-02T05:29:54.241148+00:00",
+  "reference_sha256": "b6d3a6876ebc5cf40f1b7fa1fe285504eb9b3a0f25c9bebf5a4fe94f3fea5ffe",
+  "source_manifest_sha256": "530309e2ce3ced71655ddb174185c1d9a90944eb69356241b80cdf958fcfc576",
+  "raw_report_sha256": "099b0a8afb0e0c2c64d8241f2e5998d0195ff5977d45b7094c3a44df8fb7732f",
+  "assessment": "Original first-run controls, unchanged. Consult reference_review_notes.json for three limitations; these raw scores are not a population accuracy estimate.",
+  "raw_case_passes": {
+    "correct": 2,
+    "total": 10
+  },
+  "table_values": {
+    "correct": 143,
+    "total": 192
+  },
+  "table_numbers_in_correct_rows": {
+    "correct": 53,
+    "total": 55
+  },
+  "table_dashes": {
+    "correct": 90,
+    "total": 137
+  },
+  "raw_numeric_fields": {
+    "correct": 28,
+    "total": 31
+  },
+  "vat_amounts": {
+    "correct": 3,
+    "total": 3
+  },
+  "raw_text_regions": {
+    "correct": 7,
+    "total": 14
+  },
+  "raw_text_edits": 125,
+  "raw_reference_characters": 1487,
+  "elapsed_conversion_seconds": 479.08344720012974,
+  "verification": {
+    "ten_cases_completed": true,
+    "seven_new_originals": true,
+    "all_conversions_successful": true,
+    "all_exports_nonempty": true,
+    "runtime_models_frozen_before_inference": true,
+    "models_unchanged": true,
+    "runtime_unchanged": true,
+    "runner_recorded_same_runtime": true,
+    "baseline_commit_matches": true,
+    "runtime_has_no_git_diff": true,
+    "reference_unchanged": true,
+    "source_manifest_unchanged": true,
+    "runner_copy_unchanged": true,
+    "reference_copy_unchanged": true,
+    "source_bytes_unchanged": true,
+    "versions_unchanged": true,
+    "python_network_connections_blocked": true,
+    "original_references_only": true,
+    "novelty_hashes_and_urls": true,
+    "all_selected_pdfs_are_scans": true,
+    "published_image_hashes_match": true
+  },
+  "versions": {
+    "docling-slim": "2.145.0",
+    "docling-core": "2.105.0",
+    "docling-parse": "7.24.2",
+    "rapidocr": "3.10.0",
+    "onnxruntime": "1.31.1",
+    "torch": "2.15.0",
+    "tesserocr": "2.12.0",
+    "pymorphy3": "2.0.6",
+    "pymorphy3-dicts-ru": "2.4.417150.4580142"
+  },
+  "cases": [
+    {
+      "id": "kadastr-assets",
+      "status": "success",
+      "raw_passed": true,
+      "seconds": 66.166,
+      "export_characters": 4366,
+      "table_values": {
+        "correct": 54,
+        "total": 54
+      },
+      "raw_fields": {
+        "correct": 0,
+        "total": 0
+      },
+      "text_cer_percent": [
+        0.0
+      ],
+      "failed_rows": [],
+      "failed_fields": [],
+      "text_scores": [
+        {
+          "name": "balance-title",
+          "expected": "Бухгалтерский баланс на 31 декабря 2025 г.",
+          "actual": "Бухгалтерский баланс на 31 декабря 2025 г.",
+          "roi": [
+            0.36,
+            0.06,
+            0.65,
+            0.105
+          ],
+          "edits": 0,
+          "reference_characters": 42,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.03,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "kadastr-liabilities",
+      "status": "success",
+      "raw_passed": false,
+      "seconds": 25.35,
+      "export_characters": 3592,
+      "table_values": {
+        "correct": 30,
+        "total": 54
+      },
+      "raw_fields": {
+        "correct": 0,
+        "total": 0
+      },
+      "text_cer_percent": [],
+      "failed_rows": [
+        {
+          "key": "1360",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [
+            "-"
+          ],
+          "actual_row": [
+            "",
+            "Фонд недвижимого и особо ценного движимого имущества",
+            "1360",
+            "",
+            "-",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            true,
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "1410",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "",
+            "IV. ДОЛГОСРОЧНЫЕ ОБЯЗАТЕЛЬСТВА Заемные средства",
+            "1410",
+            "",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "1420",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "",
+            "Отложенные налоговые обязательства",
+            "1420",
+            "",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "1430",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "",
+            "Оценочные обязательства",
+            "1430",
+            "",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "1450",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "",
+            "Прочие обязательства",
+            "1450",
+            "",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "1400",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "",
+            "Итого по разделу IV",
+            "1400",
+            "",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "1510",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "",
+            "V. КРАТКОСРОЧНЫЕ ОБЯЗАТЕЛЬСТВА Заемные средства",
+            "1510",
+            "",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "1530",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [
+            "-"
+          ],
+          "actual_row": [
+            "",
+            "Доходы будущих периодов",
+            "1530",
+            "",
+            "",
+            "-"
+          ],
+          "table_index": 0,
+          "value_matches": [
+            true,
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "1540",
+          "expected": [
+            "-",
+            "-",
+            "-"
+          ],
+          "actual": [
+            "-"
+          ],
+          "actual_row": [
+            "",
+            "Оценочные обязательства",
+            "1540",
+            "",
+            "-",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            true,
+            false,
+            false
+          ],
+          "passed": false
+        }
+      ],
+      "failed_fields": [],
+      "text_scores": []
+    },
+    {
+      "id": "kadastr-cash-flow",
+      "status": "success",
+      "raw_passed": true,
+      "seconds": 52.14,
+      "export_characters": 7175,
+      "table_values": {
+        "correct": 52,
+        "total": 52
+      },
+      "raw_fields": {
+        "correct": 0,
+        "total": 0
+      },
+      "text_cer_percent": [
+        0.0
+      ],
+      "failed_rows": [],
+      "failed_fields": [],
+      "text_scores": [
+        {
+          "name": "cash-flow-title",
+          "expected": "Отчет о движении денежных средств за Январь - Декабрь 2025 г.",
+          "actual": "Отчет о движении денежных средств за Январь - Декабрь 2025 г.",
+          "roi": [
+            0.31,
+            0.025,
+            0.72,
+            0.062
+          ],
+          "edits": 0,
+          "reference_characters": 61,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.03,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "kadastr-cash-balances",
+      "status": "success",
+      "raw_passed": false,
+      "seconds": 31.322,
+      "export_characters": 4203,
+      "table_values": {
+        "correct": 7,
+        "total": 32
+      },
+      "raw_fields": {
+        "correct": 0,
+        "total": 0
+      },
+      "text_cer_percent": [],
+      "failed_rows": [
+        {
+          "key": "4310",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "в том числе:",
+            "4310",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4311",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "получение кредитов и займов",
+            "4311",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4312",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "денежных вкладов собственников (участников)",
+            "4312",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4313",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "выпуска акций,увеличения участия OT долей",
+            "4313",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4314",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "от выпуска облигаций, векселей и других долговых ценных 6умаг и др.",
+            "4314",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4319",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "прочие поступления Платежи всего -",
+            "4319",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4320",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "в",
+            "4320",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4321",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "том числе: собственникам (участникам) в связи с выкупом у них акций (долей участия) организации или их выходом из состава участников",
+            "4321",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4322",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "на уплату дивидендов и иных платежей й по распределению прибыли в пользу собственников (участников)",
+            "4322",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4323",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "в связи с погашением (выкупом) векселей и других долговых ценных бумаг, возврат кредитов и займов",
+            "4323",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4329",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [
+            "-"
+          ],
+          "actual_row": [
+            "прочие платежи Сальдо денежных потоков от финансовых",
+            "4329",
+            "",
+            "-"
+          ],
+          "table_index": 0,
+          "value_matches": [
+            true,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4500",
+          "expected": [
+            "1130",
+            "642"
+          ],
+          "actual": [],
+          "actual_row": [
+            "Остаток денежных средств и денежных эквивалентов на конец отчетного perioda",
+            "4500",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        },
+        {
+          "key": "4490",
+          "expected": [
+            "-",
+            "-"
+          ],
+          "actual": [],
+          "actual_row": [
+            "отношению к рублю",
+            "4490",
+            "",
+            ""
+          ],
+          "table_index": 0,
+          "value_matches": [
+            false,
+            false
+          ],
+          "passed": false
+        }
+      ],
+      "failed_fields": [],
+      "text_scores": []
+    },
+    {
+      "id": "kadastr-audit-text",
+      "status": "success",
+      "raw_passed": false,
+      "seconds": 30.504,
+      "export_characters": 2531,
+      "table_values": {
+        "correct": 0,
+        "total": 0
+      },
+      "raw_fields": {
+        "correct": 0,
+        "total": 0
+      },
+      "text_cer_percent": [
+        2.2727,
+        0.8389,
+        11.5
+      ],
+      "failed_rows": [],
+      "failed_fields": [],
+      "text_scores": [
+        {
+          "name": "audit-heading",
+          "expected": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГО АУДИТОРА",
+          "actual": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГОАУДИТОРА",
+          "roi": [
+            0.39,
+            0.065,
+            0.77,
+            0.12
+          ],
+          "edits": 1,
+          "reference_characters": 44,
+          "cer": 0.022727272727272728,
+          "wer": 0.5,
+          "limit": 0.03,
+          "passed": true
+        },
+        {
+          "name": "audit-scope",
+          "expected": "Мы провели аудит прилагаемой годовой бухгалтерской отчетности Ассоциации «Союз кадастровых инженеров» (ОГРН 1167700052112) состоящей из бухгалтерского баланса по состоянию на 31 декабря 2025 года, отчета о целевом использовании средств за 2025 год, приложений к бухгалтерскому балансу и отчету о целевом использовании средств, в том числе отчета о финансовых результатах за 2025 год, отчета об изменениях капитала за 2025 год, отчета о движении денежных средств за 2025 г. и пояснений к бухгалтерскому балансу и отчету о целевом использовании средств, включая основные положения учетной политики.",
+          "actual": "Мы провели аудит прилагаемой годовой бухгалтерской отчетности Ассоциации «С0ю3 кадастровых инженеров» (ОГРН 1167700052112) состоящей И3 бухгалтерского баланса по состоянию на 31 декабря 2025 года, отчета о целевом использовании средств за 2025 год, приложений к бухгалтерскому балансу и отчету о целевом использовании средств, в том числе отчета о финансовых результатах за 2025 год, отчета об изменениях капитала за 2025 год, отчета о движении денежных средств за 2025 г. и пояснений к бухгалтерскому балансу и отчету о целевом и использовании средств, включая основные положения учетной политики.",
+          "roi": [
+            0.15,
+            0.23,
+            0.98,
+            0.367
+          ],
+          "edits": 5,
+          "reference_characters": 596,
+          "cer": 0.008389261744966443,
+          "wer": 0.03614457831325301,
+          "limit": 0.03,
+          "passed": true
+        },
+        {
+          "name": "audit-opinion",
+          "expected": "По нашему мнению, прилагаемая годовая бухгалтерская отчетность отражает достоверно во всех существенных отношениях финансовое положение Ассоциации «Союз кадастровых инженеров» по состоянию на 31 декабря 2025 года, финансовые результаты его деятельности и целевое использование средств за 2025 год в соответствии с правилами составления бухгалтерской отчетности, установленными в Российской Федерации.",
+          "actual": "По нашему мнению, прилагаемая годовая бухгалтерская отчетность отражает достоверно во всех существенных отношениях е положение Ассоциации «Союз финансовое кадастровых инженеров» по состоянию на  декабря года,финансовые результаты 31 2025 ero деятельности И целевое использование средств 3a 2025 род B соответствии C правилами составления бухгалтерской отчетности, установленными B Российской Федерации.",
+          "roi": [
+            0.15,
+            0.38,
+            0.98,
+            0.485
+          ],
+          "edits": 46,
+          "reference_characters": 400,
+          "cer": 0.115,
+          "wer": 0.2708333333333333,
+          "limit": 0.03,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "id": "receipt-clinic-no-vat",
+      "status": "success",
+      "raw_passed": false,
+      "seconds": 101.678,
+      "export_characters": 701,
+      "table_values": {
+        "correct": 0,
+        "total": 0
+      },
+      "raw_fields": {
+        "correct": 7,
+        "total": 7
+      },
+      "text_cer_percent": [
+        16.2791,
+        6.6667
+      ],
+      "failed_rows": [],
+      "failed_fields": [],
+      "text_scores": [
+        {
+          "name": "clinic-heading",
+          "expected": "ООО \"Современная клиника И-25\" КАССОВЫЙ ЧЕК",
+          "actual": "000 Современная: клиника И-25 КАССОВЫЙ.ЧЕК",
+          "roi": [
+            0.185,
+            0.075,
+            0.91,
+            0.14
+          ],
+          "edits": 7,
+          "reference_characters": 43,
+          "cer": 0.16279069767441862,
+          "wer": 0.8333333333333334,
+          "limit": 0.03,
+          "passed": false
+        },
+        {
+          "name": "clinic-thanks",
+          "expected": "ЖДЕМ ВАС СНОВА!",
+          "actual": "ЖДЕМ ВАС СНОВА?",
+          "roi": [
+            0.28,
+            0.886,
+            0.73,
+            0.936
+          ],
+          "edits": 1,
+          "reference_characters": 15,
+          "cer": 0.06666666666666667,
+          "wer": 0.3333333333333333,
+          "limit": 0.03,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "id": "receipt-appliance-vat-20",
+      "status": "success",
+      "raw_passed": false,
+      "seconds": 56.782,
+      "export_characters": 1050,
+      "table_values": {
+        "correct": 0,
+        "total": 0
+      },
+      "raw_fields": {
+        "correct": 6,
+        "total": 8
+      },
+      "text_cer_percent": [
+        100.0
+      ],
+      "failed_rows": [],
+      "failed_fields": [
+        {
+          "name": "total",
+          "expected": "39617.00",
+          "actual_region": "-39617.00",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "card",
+          "expected": "39617.00",
+          "actual_region": ".Прд М  Сг",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        }
+      ],
+      "text_scores": [
+        {
+          "name": "appliance-total-and-vat",
+          "expected": "ИТОГ =39617.00 СУММА НДС 20% =6602.83",
+          "actual": "СУННА НС 207 -39617.00 Н =6602.83 ОТ. КАТОЙ 39617.00",
+          "roi": [
+            0.35,
+            0.632,
+            0.83,
+            0.67
+          ],
+          "edits": 37,
+          "reference_characters": 37,
+          "cer": 1.0,
+          "wer": 1.3333333333333333,
+          "limit": 0.03,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "id": "receipt-pharmacy-mixed-vat",
+      "status": "success",
+      "raw_passed": false,
+      "seconds": 57.15,
+      "export_characters": 681,
+      "table_values": {
+        "correct": 0,
+        "total": 0
+      },
+      "raw_fields": {
+        "correct": 12,
+        "total": 12
+      },
+      "text_cer_percent": [
+        9.0909
+      ],
+      "failed_rows": [],
+      "failed_fields": [],
+      "text_scores": [
+        {
+          "name": "pharmacy-total-payment-vat",
+          "expected": "ИТОГ: =2191.00 БЕЗНАЛИЧНЫМИ =2191.00 ПОЛУЧЕНО: ПЛАТ.КАРТОЙ =2191.00 СУММА НДС 20% =33.14 СУММА НДС 10% =181.10",
+          "actual": "ИТОГ =2191:00 БЕЗНАЛИЧНЫМИ =2191.00 ПОЛУЧЕНО: ПЛАТ.КАРТОЙ :≡2191.00 СУММА НДС 20% +33.14 + СУММА НАС: 10% .181.10",
+          "roi": [
+            0.32,
+            0.505,
+            0.69,
+            0.603
+          ],
+          "edits": 10,
+          "reference_characters": 110,
+          "cer": 0.09090909090909091,
+          "wer": 0.4666666666666667,
+          "limit": 0.03,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "id": "photo-passport-open",
+      "status": "success",
+      "raw_passed": false,
+      "seconds": 41.123,
+      "export_characters": 530,
+      "table_values": {
+        "correct": 0,
+        "total": 0
+      },
+      "raw_fields": {
+        "correct": 0,
+        "total": 0
+      },
+      "text_cer_percent": [
+        0.0,
+        71.4286,
+        0.0
+      ],
+      "failed_rows": [],
+      "failed_fields": [],
+      "text_scores": [
+        {
+          "name": "passport-bilingual-heading",
+          "expected": "РОССИЙСКАЯ ФЕДЕРАЦИЯ RUSSIAN FEDERATION",
+          "actual": "РОССИЙСКАЯ ФЕДЕРАЦИЯ RUSSIAN FEDERATION",
+          "roi": [
+            0.37,
+            0.292,
+            0.59,
+            0.35
+          ],
+          "edits": 0,
+          "reference_characters": 39,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.03,
+          "passed": true
+        },
+        {
+          "name": "passport-issue-and-expiry",
+          "expected": "12.07.2017 12.07.2022",
+          "actual": "12.07.2017 12.07.2022 Ор ва боуе/ Аи",
+          "roi": [
+            0.44,
+            0.771,
+            0.63,
+            0.803
+          ],
+          "edits": 15,
+          "reference_characters": 21,
+          "cer": 0.7142857142857143,
+          "wer": 2.0,
+          "limit": 0.03,
+          "passed": false
+        },
+        {
+          "name": "passport-issuer",
+          "expected": "УФМС 786",
+          "actual": "УФМС 786",
+          "roi": [
+            0.45,
+            0.81,
+            0.52,
+            0.831
+          ],
+          "edits": 0,
+          "reference_characters": 8,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.03,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "scan-birth-certificate",
+      "status": "success",
+      "raw_passed": false,
+      "seconds": 16.868,
+      "export_characters": 387,
+      "table_values": {
+        "correct": 0,
+        "total": 0
+      },
+      "raw_fields": {
+        "correct": 3,
+        "total": 4
+      },
+      "text_cer_percent": [
+        0.0,
+        8.1081
+      ],
+      "failed_rows": [],
+      "failed_fields": [
+        {
+          "name": "record-number",
+          "expected": "167",
+          "actual_region": "состана залис акт о рожден № 491",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        }
+      ],
+      "text_scores": [
+        {
+          "name": "certificate-heading",
+          "expected": "ПОВТОРНОЕ СВИДЕТЕЛЬСТВО О РОЖДЕНИИ",
+          "actual": "ПОВТОРНОЕ СВИДЕТЕЛЬСТВО О РОЖДЕНИИ",
+          "roi": [
+            0.3,
+            0.055,
+            0.8,
+            0.19
+          ],
+          "edits": 0,
+          "reference_characters": 34,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.03,
+          "passed": true
+        },
+        {
+          "name": "certificate-registration-office",
+          "expected": "Верх-Исетского района г.Екатеринбурга",
+          "actual": "Верх-Исетского района 2.Ехатеринбура",
+          "roi": [
+            0.05,
+            0.709,
+            0.9,
+            0.736
+          ],
+          "edits": 3,
+          "reference_characters": 37,
+          "cer": 0.08108108108108109,
+          "wer": 0.3333333333333333,
+          "limit": 0.03,
+          "passed": false
+        }
+      ]
+    }
+  ]
+}

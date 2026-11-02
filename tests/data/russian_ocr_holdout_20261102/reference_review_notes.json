@@ -1,0 +1,36 @@
+{
+  "reference_sha256": "b6d3a6876ebc5cf40f1b7fa1fe285504eb9b3a0f25c9bebf5a4fe94f3fea5ffe",
+  "reviewed_after_inference": true,
+  "frozen_references_modified": false,
+  "raw_scores_modified": false,
+  "recognition_rerun": false,
+  "notes": [
+    {
+      "case_id": "photo-passport-open",
+      "control": "passport-issue-and-expiry",
+      "category": "reference_region_includes_an_untranscribed_caption",
+      "source_sha256": "ab1dc7c5580e5d98060ffee5a717985d15c839dcb40a3be9c9aec0e15688df76",
+      "source_page": 1,
+      "finding": "Both intended dates, 12.07.2017 and 12.07.2022, are recognized exactly. The frozen region also selects part of the following issuer caption, which was omitted from the expected text. Its 71.43% raw CER must not be reported as a date-reading error. The caption itself contains recognition errors.",
+      "evidence": "The source crop and saved OCR lines show both dates followed by extra caption text. No corrected score replaces the original result."
+    },
+    {
+      "case_id": "receipt-appliance-vat-20",
+      "control": "card",
+      "category": "reference_region_starts_below_the_number_centre",
+      "source_sha256": "2d22bb4713e930784005937ddb281da971b7bd6651aebb6577683bb50a562991",
+      "source_page": 1,
+      "finding": "The source card-payment amount is centred around y=1081 on the 1600-pixel image. The frozen region starts at y=1086.4. Its failed check is a region-definition defect, not evidence that the card amount was misread. The saved recognition contains the positive 39617.00 payment amounts. The separate negative total -39617.00 is a confirmed recognition error.",
+      "evidence": "Coordinate review of the original rows y=1000..1125 and the original field crop, retained in the local evidence directory."
+    },
+    {
+      "case_id": "receipt-pharmacy-mixed-vat",
+      "control": "calendula-price",
+      "category": "ambiguous_source_glyph_and_overlapping_numeric_region",
+      "source_sha256": "79e4d4dadd683b266d8185eb8abff89703258bade599ff123e170b0cd0d0f184",
+      "source_page": 1,
+      "finding": "The small unit-price glyph can be read as 83.10 or 89.10 after the publisher's binarization. The source line amount is clearly 89.10. The original pre-inference reference chose 89.10 for the unit price. OCR reads the unit price as 83.10 and the line amount as 89.10. The numeric region overlaps both lines, so its raw pass does not prove that the unit-price reference is correct. This unit price is excluded from confirmed digit-error claims.",
+      "evidence": "Coordinate review of the original rows y=505..598 and the saved OCR line '1X83.10 E89.10_HAC 10%'. No expected value or threshold was changed."
+    }
+  ]
+}
