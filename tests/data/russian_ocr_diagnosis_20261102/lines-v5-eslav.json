@@ -1,0 +1,429 @@
+{
+  "scope": "Fixed automatically detected and rectified line quadrilaterals; every recognizer reads every line. No layout, table assembly, export, expected-answer selection, or retraining.",
+  "recognizer": "v5-eslav",
+  "correct": 42,
+  "total": 60,
+  "line_count": 309,
+  "rows": [
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "bag-price",
+      "expected": "8.99",
+      "text": "Пакет ЛЕНТА 9Ж. 8.99 1 =8.99 HAC 20%",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "bread-price",
+      "expected": "74.99",
+      "text": "Хлеб X OН Тосо 74.993-224.97 H 10",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "bread-quantity",
+      "expected": "3",
+      "text": "Хлеб X OН Тосо 74.993-224.97 H 10",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "bread-sum",
+      "expected": "224.97",
+      "text": "Хлеб X OН Тосо 74.993-224.97 H 10",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "total",
+      "expected": "233.96",
+      "text": "ИТОГО К ОПЛАТЕ С УЧЕТОН СКИАКИ =233.96",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "paid",
+      "expected": "233.96",
+      "text": "БЕЗНАЛИЧНЫНИ =233.96",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "vat-rate-20",
+      "expected": "20",
+      "text": "CM H0C 2 1.50",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "vat-amount-20",
+      "expected": "1.50",
+      "text": "CM H0C 2 1.50",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "vat-rate-10",
+      "expected": "10",
+      "text": "C10 20.45",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "vat-amount-10",
+      "expected": "20.45",
+      "text": "C10 20.45",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-first-price",
+      "expected": "69.99",
+      "text": "Хлбхрк9.99139.10 Xnoб",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-baton-price",
+      "expected": "74.99",
+      "text": "Хлеб ТЕПЫЙ ДАР ТостОв  74.99 2 149. 98 H",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-baton-quantity",
+      "expected": "2",
+      "text": "Хлеб ТЕПЫЙ ДАР ТостОв  74.99 2 149. 98 H",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-baton-sum",
+      "expected": "149.98",
+      "text": "Хлеб ТЕПЫЙ ДАР ТостОв  74.99 2 149. 98 H",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-last-price",
+      "expected": "119.99",
+      "text": "Хлеб Х Н Горку 11999 *21=239.38 HC102",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-last-sum",
+      "expected": "239.98",
+      "text": "Хлеб Х Н Горку 11999 *21=239.38 HC102",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "total",
+      "expected": "571.93",
+      "text": "ИТОГО К ОПЛАТЕ С УЧЕТОН СКИДКИ 571.93 БЕЗНАЛИЧНЫНИ",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "paid",
+      "expected": "571.93",
+      "text": "БЕЗНАЛИЧНЫНИ 571.93 571.93",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "vat-rate-10",
+      "expected": "10",
+      "text": "CVM4 HC 10. 00",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "vat-amount-10",
+      "expected": "52.00",
+      "text": "CVM4 HC 10. 00",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "first-item-price",
+      "expected": "87.99",
+      "text": "4670025476126 ПИВ.НП 4ЕСТР С ЛЕCНЕ ЯОДОP 1UT. =87.99 [H+] 2897 ATH HAC204=14.67 4670025478126 .НАЧЕСТЕРС ЛЕСНЕЯГОЫ",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "first-item-vat",
+      "expected": "14.67",
+      "text": "4670025476126 ПИВ.НП 4ЕСТР С ЛЕCНЕ ЯОДОP 1UT. =87.99 [H+] 2897 ATH HAC204=14.67 4670025478126 .НАЧЕСТЕРС ЛЕСНЕЯГОЫ",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "third-item-price",
+      "expected": "89.99",
+      "text": "460068202303 О ГРТ CВЕТ.ПАСТР.0.45 *1 T. =89.99 [H+] 4710 ATM : H2015.00 460682042303 0 ГРИБИТ СВЕТ.ПAСТEР.0.45.",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "third-item-vat",
+      "expected": "15.00",
+      "text": "460068202303 О ГРТ CВЕТ.ПАСТР.0.45 *1 T. =89.99 [H+] 4710 ATM : H2015.00 460682042303 0 ГРИБИТ СВЕТ.ПAСТEР.0.45.",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "before-discount",
+      "expected": "399.96",
+      "text": "Бе3 сдок руб.: :399.96",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "total",
+      "expected": "355.96",
+      "text": "396",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "card",
+      "expected": "355.96",
+      "text": "ПОЛУЧЕНО  КАРТА =355.96",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "discount",
+      "expected": "44.00",
+      "text": "BAA CKKAP 44.00",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "vat-rate-20",
+      "expected": "20",
+      "text": "HHA HC 20% =59.34",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "vat-amount-20",
+      "expected": "59.34",
+      "text": "HHA HC 20% =59.34",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "first-item-price",
+      "expected": "269.00",
+      "text": "1 БИФАТЕКС ИЗ ГОВ. С ЯИОМ 269.00*1 =269.00 HAC57",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "bread-price",
+      "expected": "5.00",
+      "text": "1 5.00*2 *10.00 HAC",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "bread-quantity",
+      "expected": "2",
+      "text": "1 5.00*2 *10.00 HAC",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "bread-sum",
+      "expected": "10.00",
+      "text": "1 5.00*2 *10.00 HAC",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "total",
+      "expected": "507.00",
+      "text": "ИТОГ -507:00",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "vat-rate-5",
+      "expected": "5",
+      "text": "CYMMA HAC 57 =24.15 БЕЗАЛИТН",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "vat-amount-5",
+      "expected": "24.15",
+      "text": "CYMMA HAC 57 =24.15 БЕЗАЛИТН",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "paid",
+      "expected": "507.00",
+      "text": "БЕЗАЛИТН =24.15 Кастир 507.00",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "first-item-price",
+      "expected": "489.00",
+      "text": ": 1 ле рели на пару 489.00*1 =489.00 HAC57",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "cauliflower-price",
+      "expected": "125.00",
+      "text": "1 Цветная калуста на пару 125.00*1 =125.00 HAC5",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "pear-price",
+      "expected": "185.00",
+      "text": "1 Груша запеченая с твогон и гр. орехон HAC5% 185.00*1 =185.00",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "salad-price",
+      "expected": "125.00",
+      "text": "1 Салат из проростков фасоли 125.00*1 -125.00 HAC57",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "tea-price",
+      "expected": "40.00",
+      "text": "1 ЧОЙ НИКТИА .40.00*1 40.00",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "total",
+      "expected": "964.00",
+      "text": "ИТОГ =964.00",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "vat-rate-5",
+      "expected": "5",
+      "text": "CYMHA HAC 5Z =45.90",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "vat-amount-5",
+      "expected": "45.90",
+      "text": "CYMHA HAC 5Z =45.90",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "paid",
+      "expected": "964.00",
+      "text": "БЕЗНАЛИЧНЫМИ 964.00",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "container-price",
+      "expected": "13.50",
+      "text": "1 КОНТЕЙНЕР ДЛЯ ВТОРОГО 13.54 =54.00 HAC5",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "container-quantity",
+      "expected": "4",
+      "text": "1 КОНТЕЙНЕР ДЛЯ ВТОРОГО 13.54 =54.00 HAC5",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "container-sum",
+      "expected": "54.00",
+      "text": "1 КОНТЕЙНЕР ДЛЯ ВТОРОГО 13.54 =54.00 HAC5",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "soup-container-sum",
+      "expected": "27.00",
+      "text": "1 КОнтне для сУтА 13.502 -27.00 HAC57",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "rice-price",
+      "expected": "89.10",
+      "text": "1 П ИЗ САЕНЕЙ КАПУСты 89.10*4 =6.40 HAC",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "rice-sum",
+      "expected": "356.40",
+      "text": "1 П ИЗ САЕНЕЙ КАПУСты 89.10*4 =6.40 HAC",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "buckwheat-price",
+      "expected": "62.10",
+      "text": "1 Греча отварная. 62.10*3 .=186.30 HOC5",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "buckwheat-sum",
+      "expected": "186.30",
+      "text": "1 Греча отварная. 62.10*3 .=186.30 HOC5",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "discount",
+      "expected": "-118.10",
+      "text": "Ска 11 -118.10",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "total",
+      "expected": "1062.90",
+      "text": "ИТОГ =1062.90",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "vat-rate-5",
+      "expected": "5",
+      "text": "CYA HAC SZ =50.61",
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "vat-amount-5",
+      "expected": "50.61",
+      "text": "CYA HAC SZ =50.61",
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "paid",
+      "expected": "1062.90",
+      "text": "ЕНАЛИНН =1162.90",
+      "number_correct": false
+    }
+  ]
+}

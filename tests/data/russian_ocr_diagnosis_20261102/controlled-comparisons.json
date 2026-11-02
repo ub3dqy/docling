@@ -1,0 +1,109 @@
+{
+  "scope": "Temporary diagnostic interventions, not deployed fixes or full-corpus quality results.",
+  "comparisons": [
+    {
+      "variant": "tableformer",
+      "case_id": "mosreg-assets",
+      "initial_ocr_and_merged_lines_identical": true,
+      "original_table_shapes": [
+        [
+          19,
+          4
+        ]
+      ],
+      "experimental_table_shapes": [
+        [
+          19,
+          6
+        ]
+      ],
+      "original_strict_table_values": 0,
+      "experimental_strict_table_values": 19,
+      "original_fields_available": 0,
+      "experimental_fields_available": 0,
+      "experimental_fields": []
+    },
+    {
+      "variant": "linear-layout",
+      "case_id": "receipt-canteen-507",
+      "initial_ocr_and_merged_lines_identical": true,
+      "original_table_shapes": [
+        [
+          3,
+          1
+        ]
+      ],
+      "experimental_table_shapes": [],
+      "original_strict_table_values": 0,
+      "experimental_strict_table_values": 0,
+      "original_fields_available": 1,
+      "experimental_fields_available": 5,
+      "experimental_fields": [
+        {
+          "name": "first-item-price",
+          "expected": "269.00",
+          "actual_region": "1 Бимтекс из гов. с яйцом 269.00*1 =269.00 25 3H",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-price",
+          "expected": "5.00",
+          "actual_region": "1 Хе6 5.00*2 =10.00 HAC 5Z",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-quantity",
+          "expected": "2",
+          "actual_region": "1 Хе6 5.00*2 =10.00 HAC 5Z",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "bread-sum",
+          "expected": "10.00",
+          "actual_region": "1 Хе6 5.00*2 =10.00 HAC 5Z",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "total",
+          "expected": "507.00",
+          "actual_region": "ИТОГ -507:00",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "vat-rate-5",
+          "expected": "5",
+          "actual_region": "CУHMA HAC SZ =24.15 БЕЗНАЛИЧНЫМИ",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        },
+        {
+          "name": "vat-amount-5",
+          "expected": "24.15",
+          "actual_region": "CУHMA HAC SZ =24.15 БЕЗНАЛИЧНЫМИ",
+          "roi_number_correct": true,
+          "available_in_export": true,
+          "passed": true
+        },
+        {
+          "name": "paid",
+          "expected": "507.00",
+          "actual_region": "БЕЗНАЛИЧНЫМИ =24.15 Кассир 0020",
+          "roi_number_correct": false,
+          "available_in_export": false,
+          "passed": false
+        }
+      ]
+    }
+  ]
+}

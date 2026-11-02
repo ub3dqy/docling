@@ -1,0 +1,230 @@
+{
+  "scope": "Same frozen selected controls as C; diagnostic replay, not an independent evaluation.",
+  "numeric_fields": 60,
+  "stage_totals": {
+    "read.primary": 38,
+    "read.reduced": 41,
+    "read.alternate-detector": 43,
+    "ocr.cells": 40,
+    "refine-lines.after": 40,
+    "page.assembled": 40,
+    "exported": 36
+  },
+  "cases": [
+    {
+      "case_id": "mosreg-assets",
+      "source": "mosreg-balance-2025.pdf",
+      "page": 1,
+      "status": "success",
+      "field_count": 0,
+      "roi_correct_by_stage": {
+        "read.primary": 0,
+        "read.reduced": 0,
+        "ocr.cells": 0,
+        "refine-lines.after": 0,
+        "page.assembled": 0,
+        "exported": 0
+      },
+      "table_shapes": [
+        [
+          19,
+          4
+        ]
+      ],
+      "strict_table_values": 0,
+      "strict_table_values_total": 36
+    },
+    {
+      "case_id": "mosreg-liabilities",
+      "source": "mosreg-balance-2025.pdf",
+      "page": 3,
+      "status": "success",
+      "field_count": 0,
+      "roi_correct_by_stage": {
+        "read.primary": 0,
+        "read.reduced": 0,
+        "ocr.cells": 0,
+        "refine-lines.after": 0,
+        "page.assembled": 0,
+        "exported": 0
+      },
+      "table_shapes": [
+        [
+          33,
+          6
+        ]
+      ],
+      "strict_table_values": 39,
+      "strict_table_values_total": 39
+    },
+    {
+      "case_id": "mosreg-target-funds",
+      "source": "mosreg-balance-2025.pdf",
+      "page": 4,
+      "status": "success",
+      "field_count": 0,
+      "roi_correct_by_stage": {
+        "read.primary": 0,
+        "read.reduced": 0,
+        "ocr.cells": 0,
+        "refine-lines.after": 0,
+        "page.assembled": 0,
+        "exported": 0
+      },
+      "table_shapes": [
+        [
+          4,
+          5
+        ],
+        [
+          13,
+          5
+        ]
+      ],
+      "strict_table_values": 22,
+      "strict_table_values_total": 22
+    },
+    {
+      "case_id": "mosreg-financial-results",
+      "source": "mosreg-balance-2025.pdf",
+      "page": 6,
+      "status": "success",
+      "field_count": 0,
+      "roi_correct_by_stage": {
+        "read.primary": 0,
+        "read.reduced": 0,
+        "ocr.cells": 0,
+        "refine-lines.after": 0,
+        "page.assembled": 0,
+        "exported": 0
+      },
+      "table_shapes": [
+        [
+          31,
+          5
+        ]
+      ],
+      "strict_table_values": 35,
+      "strict_table_values_total": 36
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "source": "IMG_0784_bin.jpg",
+      "page": 1,
+      "status": "success",
+      "field_count": 10,
+      "roi_correct_by_stage": {
+        "read.primary": 5,
+        "read.reduced": 9,
+        "read.alternate-detector": 8,
+        "ocr.cells": 5,
+        "refine-lines.after": 5,
+        "page.assembled": 5,
+        "exported": 5
+      },
+      "table_shapes": [],
+      "strict_table_values": 0,
+      "strict_table_values_total": 0
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "source": "IMG_0800_bin.jpg",
+      "page": 1,
+      "status": "success",
+      "field_count": 10,
+      "roi_correct_by_stage": {
+        "read.primary": 7,
+        "read.reduced": 3,
+        "read.alternate-detector": 8,
+        "ocr.cells": 7,
+        "refine-lines.after": 7,
+        "page.assembled": 7,
+        "exported": 7
+      },
+      "table_shapes": [],
+      "strict_table_values": 0,
+      "strict_table_values_total": 0
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "source": "IMG_0884_bin.jpg",
+      "page": 1,
+      "status": "success",
+      "field_count": 10,
+      "roi_correct_by_stage": {
+        "read.primary": 7,
+        "read.reduced": 7,
+        "read.alternate-detector": 8,
+        "ocr.cells": 7,
+        "refine-lines.after": 7,
+        "page.assembled": 7,
+        "exported": 7
+      },
+      "table_shapes": [],
+      "strict_table_values": 0,
+      "strict_table_values_total": 0
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "source": "IMG_1054_bin.jpg",
+      "page": 1,
+      "status": "success",
+      "field_count": 8,
+      "roi_correct_by_stage": {
+        "read.primary": 5,
+        "read.reduced": 6,
+        "read.alternate-detector": 5,
+        "ocr.cells": 5,
+        "refine-lines.after": 5,
+        "page.assembled": 5,
+        "exported": 1
+      },
+      "table_shapes": [
+        [
+          3,
+          1
+        ]
+      ],
+      "strict_table_values": 0,
+      "strict_table_values_total": 0
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "source": "IMG_1186_bin.jpg",
+      "page": 1,
+      "status": "success",
+      "field_count": 9,
+      "roi_correct_by_stage": {
+        "read.primary": 7,
+        "read.reduced": 8,
+        "read.alternate-detector": 8,
+        "ocr.cells": 8,
+        "refine-lines.after": 8,
+        "page.assembled": 8,
+        "exported": 8
+      },
+      "table_shapes": [],
+      "strict_table_values": 0,
+      "strict_table_values_total": 0
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "source": "IMG_1244_bin.jpg",
+      "page": 1,
+      "status": "success",
+      "field_count": 13,
+      "roi_correct_by_stage": {
+        "read.primary": 7,
+        "read.reduced": 8,
+        "read.alternate-detector": 6,
+        "ocr.cells": 8,
+        "refine-lines.after": 8,
+        "page.assembled": 8,
+        "exported": 8
+      },
+      "table_shapes": [],
+      "strict_table_values": 0,
+      "strict_table_values_total": 0
+    }
+  ]
+}

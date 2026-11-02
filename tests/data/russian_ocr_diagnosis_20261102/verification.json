@@ -1,0 +1,286 @@
+{
+  "runtime_commit": "d41241a788907a8d6de89d272ccb6b362745e2ab",
+  "runtime_file_count": 336,
+  "model_asset_count": 36,
+  "sealed_baseline_checks": {
+    "runtime_matches_original_C": true,
+    "models_match_original_C": true,
+    "references_match_original_C": true,
+    "previous_controls_unchanged": true
+  },
+  "runs": {
+    "full": {
+      "started_utc": "2026-11-02T19:35:34.353258+00:00",
+      "finished_utc": "2026-11-02T19:42:26.079615+00:00",
+      "variant": "full",
+      "expected_cases": [
+        "mosreg-assets",
+        "receipt-lenta-two-vat-rates",
+        "receipt-canteen-507",
+        "receipt-canteen-discount"
+      ],
+      "completed_cases": [
+        "mosreg-assets",
+        "receipt-lenta-two-vat-rates",
+        "receipt-canteen-507",
+        "receipt-canteen-discount"
+      ],
+      "checks": {
+        "runtime": true,
+        "models": true,
+        "references": true,
+        "manifest": true,
+        "sources": true,
+        "evaluator": true,
+        "normalizer": true,
+        "dependencies": true,
+        "diagnostic_script": true,
+        "commit": true
+      }
+    },
+    "full-remaining": {
+      "started_utc": "2026-11-02T19:44:03.943945+00:00",
+      "finished_utc": "2026-11-02T19:52:31.831688+00:00",
+      "variant": "full",
+      "expected_cases": [
+        "mosreg-liabilities",
+        "mosreg-target-funds",
+        "mosreg-financial-results",
+        "receipt-lenta-handwritten-overlay",
+        "receipt-aromatny-mir",
+        "receipt-canteen-964"
+      ],
+      "completed_cases": [
+        "mosreg-liabilities",
+        "mosreg-target-funds",
+        "mosreg-financial-results",
+        "receipt-lenta-handwritten-overlay",
+        "receipt-aromatny-mir",
+        "receipt-canteen-964"
+      ],
+      "checks": {
+        "runtime": true,
+        "models": true,
+        "references": true,
+        "manifest": true,
+        "sources": true,
+        "evaluator": true,
+        "normalizer": true,
+        "dependencies": true,
+        "diagnostic_script": true,
+        "commit": true
+      }
+    },
+    "tableformer": {
+      "started_utc": "2026-11-02T19:54:15.633792+00:00",
+      "finished_utc": "2026-11-02T19:55:19.711197+00:00",
+      "variant": "tableformer",
+      "expected_cases": [
+        "mosreg-assets"
+      ],
+      "completed_cases": [
+        "mosreg-assets"
+      ],
+      "checks": {
+        "runtime": true,
+        "models": true,
+        "references": true,
+        "manifest": true,
+        "sources": true,
+        "evaluator": true,
+        "normalizer": true,
+        "dependencies": true,
+        "diagnostic_script": true,
+        "commit": true
+      }
+    },
+    "linear-layout": {
+      "started_utc": "2026-11-02T19:55:38.682527+00:00",
+      "finished_utc": "2026-11-02T19:57:18.287245+00:00",
+      "variant": "linear-layout",
+      "expected_cases": [
+        "receipt-canteen-507"
+      ],
+      "completed_cases": [
+        "receipt-canteen-507"
+      ],
+      "checks": {
+        "runtime": true,
+        "models": true,
+        "references": true,
+        "manifest": true,
+        "sources": true,
+        "evaluator": true,
+        "normalizer": true,
+        "dependencies": true,
+        "diagnostic_script": true,
+        "commit": true
+      }
+    },
+    "oracle-crops": {
+      "checks": {
+        "runtime": true,
+        "models": true,
+        "references": true,
+        "manifest": true,
+        "sources": true,
+        "evaluator": true,
+        "normalizer": true,
+        "dependencies": true,
+        "diagnostic_script": true,
+        "commit": true,
+        "probe_script": true
+      },
+      "completed_fields": 60
+    },
+    "detected-lines": {
+      "checks": {
+        "runtime": true,
+        "models": true,
+        "references": true,
+        "manifest": true,
+        "sources": true,
+        "evaluator": true,
+        "normalizer": true,
+        "dependencies": true,
+        "diagnostic_script": true,
+        "commit": true,
+        "probe_script": true,
+        "trace_inputs": true
+      },
+      "completed_fields": 60,
+      "completed_lines": 309
+    },
+    "detected-lines-final": {
+      "checks": {
+        "runtime": true,
+        "models": true,
+        "references": true,
+        "manifest": true,
+        "sources": true,
+        "evaluator": true,
+        "normalizer": true,
+        "dependencies": true,
+        "diagnostic_script": true,
+        "commit": true,
+        "probe_script": true,
+        "trace_inputs": true
+      },
+      "completed_fields": 60,
+      "completed_lines": 309
+    },
+    "control-regions-final": {
+      "checks": {
+        "runtime": true,
+        "models": true,
+        "references": true,
+        "manifest": true,
+        "sources": true,
+        "evaluator": true,
+        "normalizer": true,
+        "dependencies": true,
+        "diagnostic_script": true,
+        "commit": true,
+        "probe_script": true,
+        "trace_inputs": true
+      },
+      "completed_fields": 60,
+      "completed_lines": 0
+    }
+  },
+  "original_C_output_comparisons": [
+    {
+      "case_id": "mosreg-assets",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "mosreg-liabilities",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "mosreg-target-funds",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "mosreg-financial-results",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "text_export_identical": true,
+      "numeric_field_scores_identical": true,
+      "table_row_scores_identical": true,
+      "text_scores_identical": true
+    }
+  ],
+  "final_probe_repetition": {
+    "detected-lines-final": {
+      "predictions_identical": true,
+      "fields_identical": true,
+      "totals_identical": true
+    },
+    "control-regions-final": {
+      "predictions_identical": true,
+      "fields_identical": true,
+      "totals_identical": true
+    }
+  },
+  "saved_score_replay": {
+    "saved_stage_scores_replayed": 152,
+    "all_identical": true
+  },
+  "references_sha256": "feb109dbd5c2578a01f959782e42d6d3272d54d0932071a4734bc49428316d56",
+  "sources_manifest_sha256": "5075deed3bdd6ec953b9d4a9b48b278c08a92d64948861200d7c1f6075baca1f",
+  "original_C_result_sha256": "1f41f58e4fcfe2a5d5837da32dedd4306515772eb9499d8d55ab354327d73018",
+  "scripts": {
+    "scripts/diagnose_russian_ocr.py": "59f977783061d33b577fd111eaa71c292579968e22db1da984a3c4b9d6889b86",
+    "scripts/probe_russian_ocr_regions.py": "c5663cf04c8886b47d4eae4de80307284440deb172df8daafaea1b1ee74a10f4"
+  }
+}

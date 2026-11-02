@@ -1,0 +1,488 @@
+{
+  "scope": "Compare existing recognizers on frozen human-provided image regions.\n\nThis deliberately removes automatic localization. Its result is diagnostic and\nmust not be reported as end-to-end document accuracy or a new blind evaluation.\n",
+  "recognizer": "v5-eslav",
+  "correct": 10,
+  "total": 60,
+  "rows": [
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "bag-price",
+      "expected": "8.99",
+      "text": "Пакет ЛЕНТА 9к 8.99 *1=8.99 НДС 202",
+      "confidence": 0.77176,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "bread-price",
+      "expected": "74.99",
+      "text": "Хлеб XE6 GOM Тосто  74.99*3% -224.97 HC10Z",
+      "confidence": 0.67222,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "bread-quantity",
+      "expected": "3",
+      "text": "Хлеб XE6 GOM Тосто  74.99*3% -224.97 HC10Z",
+      "confidence": 0.67222,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "bread-sum",
+      "expected": "224.97",
+      "text": "Хлеб XE6 GOM Тосто  74.99*3% -224.97 HC10Z",
+      "confidence": 0.67222,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "total",
+      "expected": "233.96",
+      "text": "ИТОГО К ОПЛАТЕ С УЧЕТОН СКМАКИ=233.",
+      "confidence": 0.82272,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "paid",
+      "expected": "233.96",
+      "text": "БЕЗНАМЧНИ=233.96",
+      "confidence": 0.70872,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "vat-rate-20",
+      "expected": "20",
+      "text": "Cm250",
+      "confidence": 0.52437,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "vat-amount-20",
+      "expected": "1.50",
+      "text": "Cm250",
+      "confidence": 0.52437,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "vat-rate-10",
+      "expected": "10",
+      "text": "∴C12.5.",
+      "confidence": 0.55369,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-two-vat-rates",
+      "field": "vat-amount-10",
+      "expected": "20.45",
+      "text": "∴C12.5.",
+      "confidence": 0.55369,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-first-price",
+      "expected": "69.99",
+      "text": "69.99139.",
+      "confidence": 0.70079,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-baton-price",
+      "expected": "74.99",
+      "text": "Xл6 TE4TтOB74.992.149.38",
+      "confidence": 0.6193,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-baton-quantity",
+      "expected": "2",
+      "text": "Xл6 TE4TтOB74.992.149.38",
+      "confidence": 0.6193,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-baton-sum",
+      "expected": "149.98",
+      "text": "Xл6 TE4TтOB74.992.149.38",
+      "confidence": 0.6193,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-last-price",
+      "expected": "119.99",
+      "text": "Xлeб ×нрку19.9=239.1",
+      "confidence": 0.52177,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "bread-last-sum",
+      "expected": "239.98",
+      "text": "Xлeб ×нрку19.9=239.1",
+      "confidence": 0.52177,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "total",
+      "expected": "571.93",
+      "text": "ТЕС УЕТОН СКИИ",
+      "confidence": 0.54173,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "paid",
+      "expected": "571.93",
+      "text": "БE",
+      "confidence": 0.29419,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "vat-rate-10",
+      "expected": "10",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-lenta-handwritten-overlay",
+      "field": "vat-amount-10",
+      "expected": "52.00",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "first-item-price",
+      "expected": "87.99",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "first-item-vat",
+      "expected": "14.67",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "third-item-price",
+      "expected": "89.99",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "third-item-vat",
+      "expected": "15.00",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "before-discount",
+      "expected": "399.96",
+      "text": "Бе9",
+      "confidence": 0.3385,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "total",
+      "expected": "355.96",
+      "text": "И6",
+      "confidence": 0.49271,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "card",
+      "expected": "355.96",
+      "text": "ПОЕHO_КАРТА=355.96",
+      "confidence": 0.61014,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "discount",
+      "expected": "44.00",
+      "text": "BAA CKHKAPE44.00",
+      "confidence": 0.60442,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "vat-rate-20",
+      "expected": "20",
+      "text": "2059.34",
+      "confidence": 0.81156,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-aromatny-mir",
+      "field": "vat-amount-20",
+      "expected": "59.34",
+      "text": "2059.34",
+      "confidence": 0.81156,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "first-item-price",
+      "expected": "269.00",
+      "text": "1текиз гв.см269.20",
+      "confidence": 0.5427,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "bread-price",
+      "expected": "5.00",
+      "text": "1095.00210.00",
+      "confidence": 0.6412,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "bread-quantity",
+      "expected": "2",
+      "text": "1095.00210.00",
+      "confidence": 0.6412,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "bread-sum",
+      "expected": "10.00",
+      "text": "1095.00210.00",
+      "confidence": 0.6412,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "total",
+      "expected": "507.00",
+      "text": "ИТО-507:00",
+      "confidence": 0.54532,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "vat-rate-5",
+      "expected": "5",
+      "text": "30. 24.15",
+      "confidence": 0.57823,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "vat-amount-5",
+      "expected": "24.15",
+      "text": "30. 24.15",
+      "confidence": 0.57823,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-507",
+      "field": "paid",
+      "expected": "507.00",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "first-item-price",
+      "expected": "489.00",
+      "text": "1ерелру489.1-409. 0",
+      "confidence": 0.55456,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "cauliflower-price",
+      "expected": "125.00",
+      "text": "1е капустап125.0-125.001",
+      "confidence": 0.70201,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "pear-price",
+      "expected": "185.00",
+      "text": "1зс",
+      "confidence": 0.48123,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "salad-price",
+      "expected": "125.00",
+      "text": "1а и3 проросков Фасоли125.001-125.00",
+      "confidence": 0.63613,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "tea-price",
+      "expected": "40.00",
+      "text": "1740.00140.00",
+      "confidence": 0.8665,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "total",
+      "expected": "964.00",
+      "text": "ИТОГ10-964.001",
+      "confidence": 0.67967,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "vat-rate-5",
+      "expected": "5",
+      "text": "C4A.HAG.545.901",
+      "confidence": 0.63014,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "vat-amount-5",
+      "expected": "45.90",
+      "text": "C4A.HAG.545.901",
+      "confidence": 0.63014,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-964",
+      "field": "paid",
+      "expected": "964.00",
+      "text": "4",
+      "confidence": 0.48178,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "container-price",
+      "expected": "13.50",
+      "text": "/1го13.54.00",
+      "confidence": 0.68038,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "container-quantity",
+      "expected": "4",
+      "text": "/1го13.54.00",
+      "confidence": 0.68038,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "container-sum",
+      "expected": "54.00",
+      "text": "/1го13.54.00",
+      "confidence": 0.68038,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "soup-container-sum",
+      "expected": "27.00",
+      "text": "1 C13.522.",
+      "confidence": 0.61763,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "rice-price",
+      "expected": "89.10",
+      "text": " 0.1045.0",
+      "confidence": 0.62693,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "rice-sum",
+      "expected": "356.40",
+      "text": " 0.1045.0",
+      "confidence": 0.62693,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "buckwheat-price",
+      "expected": "62.10",
+      "text": "062.103-186.0",
+      "confidence": 0.6745,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "buckwheat-sum",
+      "expected": "186.30",
+      "text": "062.103-186.0",
+      "confidence": 0.6745,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "discount",
+      "expected": "-118.10",
+      "text": "k1810",
+      "confidence": 0.56958,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "total",
+      "expected": "1062.90",
+      "text": "Ит0г=1062.90",
+      "confidence": 0.70432,
+      "number_correct": true
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "vat-rate-5",
+      "expected": "5",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "vat-amount-5",
+      "expected": "50.61",
+      "text": "",
+      "confidence": 0.0,
+      "number_correct": false
+    },
+    {
+      "case_id": "receipt-canteen-discount",
+      "field": "paid",
+      "expected": "1062.90",
+      "text": "12.",
+      "confidence": 0.54619,
+      "number_correct": false
+    }
+  ]
+}
