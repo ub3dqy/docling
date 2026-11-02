@@ -942,7 +942,10 @@ class RapidOcrModel(BaseOcrModel):
                 required = max(
                     native[0] / page.size.width, native[1] / page.size.height
                 )
-                scale = max(scale, min(required, 4096 / max(page.size.as_tuple())))
+                # Compensate small high-DPI photos without forcing a dense
+                # full-page scan beyond the established 1536-pixel OCR view.
+                # The explicitly configured scale is still a lower bound.
+                scale = max(scale, min(required, 1536 / max(page.size.as_tuple())))
         return scale
 
     def _to_cells(

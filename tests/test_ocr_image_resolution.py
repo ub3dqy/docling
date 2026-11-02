@@ -38,7 +38,18 @@ def test_anisotropic_dpi_cannot_expand_automatic_compensation_beyond_canvas():
     model.scale = 300 / 72
 
     scale = model._render_scale(page, InputFormat.IMAGE)
-    assert max(backend.get_page_image(scale=scale).size) == 4096
+    assert max(backend.get_page_image(scale=scale).size) == 1536
 
     model.options.image_scale = 2
+    assert model._render_scale(page, InputFormat.IMAGE) == 2
+
+
+def test_dense_high_dpi_page_keeps_its_already_sufficient_configured_view():
+    backend = _ImagePageBackend(Image.new("RGB", (2480, 3508)), 0, (300, 300))
+    page = Page(page_no=1, size=backend.get_size())
+    page._backend = backend
+    model = RapidOcrModel.__new__(RapidOcrModel)
+    model.options = RapidOcrOptions(image_scale=2, preserve_native_resolution=True)
+    model.scale = 300 / 72
+
     assert model._render_scale(page, InputFormat.IMAGE) == 2

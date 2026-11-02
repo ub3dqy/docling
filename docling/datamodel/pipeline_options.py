@@ -412,7 +412,7 @@ class RapidOcrOptions(OcrOptions):
     preserve_native_resolution: Annotated[
         bool,
         Field(
-            description="Avoid shrinking image-native source pixels before OCR. Native-resolution compensation is bounded to a 4096-pixel canvas; an explicitly larger image_scale remains supported."
+            description="Avoid shrinking small image-native sources before OCR. Native-resolution compensation is bounded to a 1536-pixel canvas; an explicitly larger image_scale remains supported."
         ),
     ] = False
     lang: Annotated[

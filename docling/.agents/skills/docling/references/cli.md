@@ -192,7 +192,7 @@ and legacy PDF/image pipelines; it is not a remote-service setting.
 `scale` controls PDF rendering; `image_scale` controls image rendering.
 The Russian profile enables `preserve_native_resolution`: high-DPI image metadata
 must not reduce the source pixels before OCR. Automatic compensation is bounded
-to a 4096-pixel canvas; a larger explicitly configured `image_scale` still applies.
+to a 1536-pixel canvas; a larger explicitly configured `image_scale` still applies.
 Use `--ocr-option preserve_native_resolution=false` to disable compensation.
 Skewed scanned-PDF grids also use the strict rectified-grid fallback. Full receipt
 price/quantity expressions need independent recognizer agreement; a filled `=`
