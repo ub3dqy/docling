@@ -149,7 +149,7 @@ docling photo.jpg --ocr-profile ru --artifacts-path model_artifacts/ru --device 
 ```
 
 `ru` selects RapidOCR, ONNX Runtime, `iso:ru` (the PP-OCRv5 `eslav` recognizer),
-full-page OCR at 300 DPI for PDFs and 144 DPI for images, word coordinates, and
+full-page OCR at 300 DPI for PDFs and at least 144 DPI for images, word coordinates, and
 a second reading at 1536 pixels. Close fragments are joined in printed order.
 Uncertain image lines and numeric table cells are also read as separate crops.
 This needs the `russian` extra, independent RapidOCR recognizers, pinned Tesseract
@@ -190,6 +190,13 @@ settings override the profile defaults. The profile applies to local standard
 and legacy PDF/image pipelines; it is not a remote-service setting.
 
 `scale` controls PDF rendering; `image_scale` controls image rendering.
+The Russian profile enables `preserve_native_resolution`: high-DPI image metadata
+must not reduce the source pixels before OCR. Automatic compensation is bounded
+to a 4096-pixel canvas; a larger explicitly configured `image_scale` still applies.
+Use `--ocr-option preserve_native_resolution=false` to disable compensation.
+Skewed scanned-PDF grids also use the strict rectified-grid fallback. Full receipt
+price/quantity expressions need independent recognizer agreement; a filled `=`
+mistaken for `-` additionally needs source-shape and unchanged-digit confirmation.
 Use `--ocr-option use_multiscale=false` to disable the second reading, or
 `--table-structure-option prefer_ocr_grid=false` to disable rule-based table
 recovery. `--no-tables` also disables recovery of overlooked OCR tables.

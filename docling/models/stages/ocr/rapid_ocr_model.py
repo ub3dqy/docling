@@ -842,12 +842,7 @@ class RapidOcrModel(BaseOcrModel):
             else:
                 with TimeRecorder(conv_res, "ocr"):
                     ocr_rects = self.get_ocr_rects(page)
-                    scale = (
-                        self.options.image_scale
-                        if conv_res.input.format == InputFormat.IMAGE
-                        and self.options.image_scale is not None
-                        else self.scale
-                    )
+                    scale = self._render_scale(page, conv_res.input.format)
 
                     all_ocr_cells = []
                     all_ocr_words = []
@@ -928,6 +923,27 @@ class RapidOcrModel(BaseOcrModel):
                     self.draw_ocr_rects_and_cells(conv_res, page, ocr_rects)
 
                 yield page
+
+    def _render_scale(self, page: Page, input_format: InputFormat) -> float:
+        scale = (
+            self.options.image_scale
+            if input_format == InputFormat.IMAGE
+            and self.options.image_scale is not None
+            else self.scale
+        )
+        if (
+            input_format == InputFormat.IMAGE
+            and self.options.preserve_native_resolution
+            and page._backend is not None
+            and page.size is not None
+        ):
+            native = page._backend.get_native_image_size()
+            if native is not None:
+                required = max(
+                    native[0] / page.size.width, native[1] / page.size.height
+                )
+                scale = max(scale, min(required, 4096 / max(page.size.as_tuple())))
+        return scale
 
     def _to_cells(
         self,
@@ -1290,58 +1306,9 @@ class RapidOcrModel(BaseOcrModel):
     def _order_and_join(
         cls, selected: list[tuple[_OcrLine, list[_OcrLine]]]
     ) -> _OcrPrediction:
-        rows: list[list[tuple[_OcrLine, list[_OcrLine]]]] = []
-        for item in sorted(selected, key=lambda item: cls._line_bbox(item[0]).t):
-            box = cls._line_bbox(item[0])
-            for row in rows:
-                if all(
-                    cls._same_printed_row(box, cls._line_bbox(other[0]))
-                    for other in row
-                ):
-                    row.append(item)
-                    break
-            else:
-                rows.append([item])
-        ordered: list[tuple[_OcrLine, list[_OcrLine]]] = []
-        for row in rows:
-            row_start = len(ordered)
-            for line, words in sorted(row, key=lambda item: cls._line_bbox(item[0]).l):
-                if len(ordered) > row_start:
-                    previous, previous_words = ordered[-1]
-                    box, previous_box = cls._line_bbox(line), cls._line_bbox(previous)
-                    if cls._same_printed_row(
-                        box, previous_box
-                    ) and box.l - previous_box.r <= 0.5 * min(
-                        box.height, previous_box.height
-                    ):
-                        left, top = (
-                            min(box.l, previous_box.l),
-                            min(box.t, previous_box.t),
-                        )
-                        right, bottom = (
-                            max(box.r, previous_box.r),
-                            max(box.b, previous_box.b),
-                        )
-                        text = f"{previous[1].strip()} {line[1].strip()}"
-                        score = (
-                            len(previous[1]) * previous[2] + len(line[1]) * line[2]
-                        ) / max(1, len(previous[1]) + len(line[1]))
-                        ordered[-1] = (
-                            (
-                                [
-                                    [left, top],
-                                    [right, top],
-                                    [right, bottom],
-                                    [left, bottom],
-                                ],
-                                text,
-                                score,
-                            ),
-                            (previous_words or [previous]) + (words or [line]),
-                        )
-                        continue
-                ordered.append((line, words))
-        ordered = [deduplicate_line_words(line, words) for line, words in ordered]
+        from docling.utils.ocr_line_order import order_ocr_lines
+
+        ordered = order_ocr_lines(selected, line_band=cls._line_band)
         return _OcrPrediction(
             [line for line, _ in ordered], [words for _, words in ordered]
         )

@@ -66,7 +66,10 @@ def test_dense_grid_keeps_adjacent_amounts_in_separate_rows(uneven_light: bool) 
     assert rows[12] == ["1112", "Article 12", "12 123", "12 456"]
 
 
-def test_photo_grid_recovers_skewed_rules_without_duplicate_rows() -> None:
+@pytest.mark.parametrize("adaptive", [False, True])
+def test_photo_grid_recovers_skewed_rules_without_duplicate_rows(
+    adaptive: bool,
+) -> None:
     import cv2
 
     image = Image.fromarray(
@@ -99,7 +102,7 @@ def test_photo_grid_recovers_skewed_rules_without_duplicate_rows() -> None:
         id=0, label=DocItemLabel.TABLE, bbox=BoundingBox(l=20, t=12, r=681, b=410)
     )
     table = table_from_ocr_grid(
-        skewed, cluster, words, page_no=1, scale=1, adaptive_thresholds=True
+        skewed, cluster, words, page_no=1, scale=1, adaptive_thresholds=adaptive
     )
     assert table is not None
     assert (table.num_rows, table.num_cols) == (19, 4)

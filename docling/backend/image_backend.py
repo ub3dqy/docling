@@ -93,6 +93,9 @@ class _ImagePageBackend(PdfPageBackend):
         # No text extraction from raw images without OCR
         return ""
 
+    def get_native_image_size(self) -> tuple[int, int] | None:
+        return self._image.size if self._image is not None else None
+
     def get_segmented_page(self) -> SegmentedPdfPage:
         # Return empty segmented page with proper dimensions for raw images
         assert self._image is not None

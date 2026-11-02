@@ -29,6 +29,7 @@ def ocr_options_for_profile(profile: OcrProfile) -> RapidOcrOptions:
         mode=OcrMode.FULL_PAGE,
         scale=300 / 72,
         image_scale=2.0,
+        preserve_native_resolution=True,
         use_word_boxes=True,
         use_multiscale=True,
         use_region_refinement=True,

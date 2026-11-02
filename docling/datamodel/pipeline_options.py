@@ -409,6 +409,12 @@ class RapidOcrOptions(OcrOptions):
             description="Optional rendering scale for image inputs, independent of the PDF scale.",
         ),
     ] = None
+    preserve_native_resolution: Annotated[
+        bool,
+        Field(
+            description="Avoid shrinking image-native source pixels before OCR. Native-resolution compensation is bounded to a 4096-pixel canvas; an explicitly larger image_scale remains supported."
+        ),
+    ] = False
     lang: Annotated[
         list[str],
         Field(

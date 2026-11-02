@@ -44,6 +44,10 @@ class PdfPageBackend(ABC):
         """
         return None
 
+    def get_native_image_size(self) -> tuple[int, int] | None:
+        """Return source pixel dimensions for an image-native page, if available."""
+        return None
+
     @abstractmethod
     def get_bitmap_rects(self, scale: float = 1) -> Iterable[BoundingBox]:
         """Return bitmap bounds in 72-DPI document coordinates, scaled by ``scale``."""

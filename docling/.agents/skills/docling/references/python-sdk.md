@@ -137,7 +137,10 @@ result = converter.convert("scan.pdf")  # Also accepts scan.png or photo.jpg.
 print(result.document.export_to_markdown())
 ```
 
-The profile reads the full page at scale 2.0, even if the PDF has native text.
+The profile reads the full page at scale `300 / 72` for PDF and `2.0` for images,
+even if the PDF has native text. `preserve_native_resolution=True` retains source
+image detail when DPI metadata would shrink it, with automatic compensation
+bounded to a 4096-pixel canvas. Explicitly requested larger scales still apply.
 Set `options.ocr_options.mode = OcrMode.DEFAULT` (import `OcrMode` from
 `docling.datamodel.pipeline_options`) to keep normal text-layer handling.
 It uses local ONNX models and needs no remote service.

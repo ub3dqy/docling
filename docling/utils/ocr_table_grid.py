@@ -83,7 +83,7 @@ def table_from_ocr_grid(
         )
         if photographed is not None:
             return photographed
-    return _table_from_ocr_grid(
+    table = _table_from_ocr_grid(
         image,
         cluster,
         words,
@@ -92,6 +92,14 @@ def table_from_ocr_grid(
         allow_open_labels=allow_open_labels,
         adaptive_thresholds=adaptive_thresholds,
     )
+    if table is None and not adaptive_thresholds:
+        # A scanned PDF can have the same skew as a camera image. Keep the
+        # existing straight-grid path first, then require a complete ruled
+        # grid in rectified coordinates before replacing predicted cells.
+        return table_from_photo_grid(
+            image, cluster, words, page_no=page_no, scale=scale
+        )
+    return table
 
 
 def _table_from_ocr_grid(
