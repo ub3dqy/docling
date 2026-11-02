@@ -1,0 +1,34 @@
+{
+  "reference_sha256": "c42fad8b3dabeac0761a9de4969e3fb42c5d2d0c8013585561a461e77574275b",
+  "reviewed_after_inference": true,
+  "applied_to_original_automated_scores": false,
+  "supplementary_review": "The recheck report also compares a copy of expected text with these two source transcriptions. That separate post-inference metric does not replace original automated scores or change OCR output.",
+  "original_references_and_thresholds_unchanged": true,
+  "source": {
+    "file": "partners-audit-2025.pdf",
+    "page": 2,
+    "sha256": "10531d4f7a3f7c6a8bb0e90242bf8536cbf9c5e3682bfe3d51159f1f23dacf47",
+    "url": "https://sstroi.ru/upload/iblock/870/4fq5hr9c1sduwii6jx4zz08w7eg295jm.pdf",
+    "render_dpi": 220,
+    "render_size_pixels": [1819, 2573],
+    "evidence_crop_pixels": [200, 1385, 1690, 1575],
+    "evidence_image": "audit-basis-source-detail.png",
+    "evidence_image_sha256": "fde6f3fbff97f2e4ecb90802c525296322adaeadad57f6daaba86862289589c0"
+  },
+  "observations": [
+    {
+      "case_id": "partners-audit-opinion",
+      "text_name": "audit-basis",
+      "original_reference_excerpt": "бухгалтерской отчётности» настоящего заключения",
+      "visible_source_excerpt": "бухгалтерской отчетности» настоящего заключения",
+      "evidence": "The enlarged source has an е without diaeresis here. The current OCR follows the printed source; the frozen reference had normalized this occurrence to ё. The other occurrences are assessed separately."
+    },
+    {
+      "case_id": "partners-audit-opinion",
+      "text_name": "audit-basis",
+      "original_reference_excerpt": "в соответствии с этическими требованиями",
+      "visible_source_excerpt": "в соответствии этическими требованиями",
+      "evidence": "The source line ends with 'в соответствии'; the next line starts with 'этическими'. There is no intervening с. The OCR correctly preserves the source's grammatical omission. The original score still counts the missing character and space."
+    }
+  ]
+}
