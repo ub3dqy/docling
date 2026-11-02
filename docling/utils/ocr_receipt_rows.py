@@ -5,6 +5,7 @@
 
 import re
 from collections.abc import Iterable
+from statistics import median
 
 from docling_core.types.doc import BoundingBox
 from docling_core.types.doc.page import BoundingRectangle, TextCell
@@ -116,12 +117,58 @@ def _supported_wide_field(
         ) or any(
             candidate.index != amount.index
             and abs(candidate.rect.to_bounding_box().r - right.r) <= height
-            and field_row_distance(peer, candidate)
+            and _receipt_field_distance(peer, candidate, lines, page_height)[0]
             <= min(other.height, candidate.rect.to_bounding_box().height) * 0.6
             for candidate in amounts
         ):
             row_centers.append(peer_center)
     return len(row_centers) >= 2
+
+
+def _receipt_field_distance(
+    label: TextCell, amount: TextCell, lines: list[TextCell], page_height: float
+) -> tuple[float, bool]:
+    """Use a nearby wide caption to measure tilt before extrapolating digits.
+
+    A short amount can have misleading corners on curved receipt paper.
+    A caption at least twice as wide gives a more stable local baseline.
+    """
+    box, other = label.rect.to_bounding_box(), amount.rect.to_bounding_box()
+    center = (box.t + box.b) / 2
+    slopes = []
+    for anchor in lines:
+        region = anchor.rect.to_bounding_box()
+        if (
+            anchor.confidence < 0.8
+            or region.width < 2 * max(box.width, other.width)
+            or abs((region.t + region.b) / 2 - center) > page_height * 0.12
+            or not is_receipt_field_caption(anchor.text)
+            or re.search(r"\d", anchor.text)
+        ):
+            continue
+        rect = anchor.rect
+        dx = (rect.r_x1 + rect.r_x2 - rect.r_x0 - rect.r_x3) / 2
+        if dx <= 0:
+            continue
+        slope = (rect.r_y1 + rect.r_y2 - rect.r_y0 - rect.r_y3) / (2 * dx)
+        if abs(slope) <= 0.15:
+            slopes.append(slope)
+    if not slopes:
+        return field_row_distance(label, amount), False
+    tilt = median(slopes)
+    rect = amount.rect
+    dx = (rect.r_x1 + rect.r_x2 - rect.r_x0 - rect.r_x3) / 2
+    local_tilt = (
+        (rect.r_y1 + rect.r_y2 - rect.r_y0 - rect.r_y3) / (2 * dx) if dx > 0 else tilt
+    )
+    distance = abs(
+        (other.t + other.b) / 2
+        - center
+        - tilt * ((other.l + other.r - box.l - box.r) / 2)
+    )
+    # Curved paper can make source text and digit quads disagree. Retain the
+    # original pixels instead of warping that uncertain combined quadrilateral.
+    return distance, abs(local_tilt - tilt) > 0.02
 
 
 def join_receipt_fields(page: Page) -> None:
@@ -146,7 +193,9 @@ def join_receipt_fields(page: Page) -> None:
             if amount.index in used:
                 continue
             other = amount.rect.to_bounding_box()
-            distance = field_row_distance(label, amount)
+            distance, preserve_pixels = _receipt_field_distance(
+                label, amount, lines, page.size.height
+            )
             height = min(box.height, other.height)
             same_row = (
                 other.l >= box.r - height * 0.1
@@ -166,17 +215,28 @@ def join_receipt_fields(page: Page) -> None:
                     )
                 )
             ):
-                candidates.append((distance, amount))
+                candidates.append((distance, amount, preserve_pixels))
         if not candidates:
             continue
-        _, amount = min(candidates, key=lambda item: item[0])
+        _, amount, preserve_pixels = min(candidates, key=lambda item: item[0])
         other = amount.rect.to_bounding_box()
         merged[label.index] = label.model_copy(
             update={
                 "text": f"{label.text} {amount.text}",
                 "orig": f"{label.orig} {amount.orig}",
                 "confidence": min(label.confidence, amount.confidence),
-                "rect": field_row_rect(label, amount),
+                "rect": (
+                    BoundingRectangle.from_bounding_box(
+                        BoundingBox(
+                            l=box.l,
+                            t=min(box.t, other.t),
+                            r=other.r,
+                            b=max(box.b, other.b),
+                        )
+                    )
+                    if preserve_pixels
+                    else field_row_rect(label, amount)
+                ),
             }
         )
         used.add(amount.index)

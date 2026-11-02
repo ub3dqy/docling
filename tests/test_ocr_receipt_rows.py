@@ -3,6 +3,8 @@
 
 """Receipt amounts must retain their printed caption and row in text exports."""
 
+# ruff: noqa: RUF001 -- Russian fiscal captions are the test source text.
+
 from docling_core.types.doc import BoundingBox, DocItemLabel, Size
 from docling_core.types.doc.page import (
     BoundingRectangle,
@@ -165,3 +167,58 @@ def test_tilted_field_uses_its_own_amount_despite_neighboring_axis_overlap():
     page = _page([caption, neighbor, amount])
     join_receipt_fields(page)
     assert [cell.text for cell in page.cells] == ["НДС 12.34", "999.00"]
+
+
+def test_curved_paper_uses_wide_text_instead_of_misleading_short_digit_baseline():
+    cells = [
+        _cell(0, "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ", (228, 991, 577, 1038)),
+        _cell(1, "=1234.50", (760, 989.5, 858, 1019)),
+        _cell(2, "БЕЗНАЛИЧНЫМИ", (233, 1025, 398, 1063)),
+        _cell(3, "=1234.50", (762, 1015.5, 860, 1046.5)),
+        _cell(4, "СУММА НДС 18%", (555, 1055, 683, 1076.5)),
+        _cell(5, "=188.31", (765, 1044, 841, 1077)),
+    ]
+    cells[0].rect = BoundingRectangle(
+        r_x0=229.5,
+        r_y0=1037.5,
+        r_x1=576.5,
+        r_y1=1028.5,
+        r_x2=575.5,
+        r_y2=991,
+        r_x3=228.5,
+        r_y3=1000,
+        coord_origin=cells[0].rect.coord_origin,
+    )
+    cells[2].rect = BoundingRectangle(
+        r_x0=235,
+        r_y0=1062.5,
+        r_x1=397.5,
+        r_y1=1055.5,
+        r_x2=396,
+        r_y2=1025,
+        r_x3=233.5,
+        r_y3=1032,
+        coord_origin=cells[2].rect.coord_origin,
+    )
+    cells[5].rect = BoundingRectangle(
+        r_x0=765.625,
+        r_y0=1073.958333,
+        r_x1=839.583333,
+        r_y1=1076.041666,
+        r_x2=840.625,
+        r_y2=1045.833333,
+        r_x3=766.666666,
+        r_y3=1044.791666,
+        coord_origin=cells[5].rect.coord_origin,
+    )
+    page = _page(cells)
+    page.size = Size(width=1200, height=1600)
+    join_receipt_fields(page)
+    assert [cell.text for cell in page.cells] == [
+        "ИТОГО К ОПЛАТЕ С УЧЕТОМ СКИДКИ =1234.50",
+        "БЕЗНАЛИЧНЫМИ =1234.50",
+        "СУММА НДС 18% =188.31",
+    ]
+    for cell in page.cells[1:]:
+        assert cell.rect.r_y0 == cell.rect.r_y1
+        assert cell.rect.r_y2 == cell.rect.r_y3
