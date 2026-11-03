@@ -1,0 +1,44 @@
+{
+  "scope": "Identical original table words and OCR lines; the corrected line now replaces its stale source span in place.",
+  "source_words_and_lines_identical": true,
+  "before_positions": {
+    "corrected_line": [
+      193
+    ],
+    "following_line": [
+      50
+    ]
+  },
+  "after_positions": {
+    "corrected_line": [
+      50
+    ],
+    "following_line": [
+      52
+    ]
+  },
+  "before_sha256": "9c7bab6566a9bb3c5caa45703d890344efb34c5229d0b46d08941469b2353c26",
+  "after_sha256": "03466a7b62e0dfc0e4d3982801938fff57df2f88d688990c4cae8abd327bdac6",
+  "previous_caption": "Резервы Ha возможные потери no условным обязательствам кредитного характера, прочим ВОЗМОЖНЫМ И потерям и операциям с резидентами офшорных зон",
+  "final_caption": "Резервы Ha возможные потери no условным обязательствам кредитного характера, прочим ВОЗМОЖНЫМИ потерям и операциям с резидентами офшорных зон",
+  "caption_character_order_preserved_ignoring_whitespace": true,
+  "normalization": "Supplementary order check removes whitespace and casefolds. Original official text scores still use their unchanged stricter normalization.",
+  "literal_spacing_differences": [
+    {
+      "before": " ",
+      "after": ""
+    }
+  ],
+  "source_order_visually_confirmed": true,
+  "source_page": 6,
+  "source_pdf_sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+  "source_preview_sha256": "5150b41dfba391d4cd1f9d9aadb60e633a22a7caa7c2165c63b9841a0fad3152",
+  "source_excerpt": "прочим возможным потерям и операциям с резидентами офшорных зон",
+  "reading_limit": "The order is restored, not every character. The selected current OCR line still reads ВОЗМОЖНЫМИ with an extra И; spacing around the following conjunction is also imperfect. The former correct character order means preserved ordering relative to the prior output, not a perfect source transcription.",
+  "development_v20_official_final_repeat_caption": "Резервы Ha возможные потери no условным обязательствам кредитного характера, прочим ВОЗМОЖНЫМИ потерям и операциям с резидентами офшорных зон",
+  "development_v20_official_final_repeat_character_order_matches_prior": true,
+  "development_v20_official_final_repeat_score_sha256": "efeead79337de9d881ff03f08c88058b76d691db7cb045b4aa28a2f40a3ac8e7",
+  "official_final_repeat_caption": "Резервы Ha возможные потери no условным обязательствам кредитного характера, прочим ВОЗМОЖНЫМИ потерям и операциям с резидентами офшорных зон",
+  "official_final_repeat_character_order_matches_prior": true,
+  "official_final_repeat_score_sha256": "1e35c56558f61b1ca3a1bb3bd3a1ae53538bc877fed8742e94867535bfda16b7"
+}

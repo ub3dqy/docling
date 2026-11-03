@@ -1,0 +1,51 @@
+[
+  {
+    "version": "old_baseline",
+    "ocr_lines_sha256": "c83e7b623a770fbde8f115dbe318e362cee774159bfe599f12410ab390d2d5e5",
+    "line_count": 111,
+    "table_values_correct": 48,
+    "table_values_total": 48
+  },
+  {
+    "version": "rejected_v11",
+    "ocr_lines_sha256": "c83e7b623a770fbde8f115dbe318e362cee774159bfe599f12410ab390d2d5e5",
+    "line_count": 111,
+    "table_values_correct": 7,
+    "table_values_total": 48
+  },
+  {
+    "version": "fixed_v12_milestone",
+    "ocr_lines_sha256": "c83e7b623a770fbde8f115dbe318e362cee774159bfe599f12410ab390d2d5e5",
+    "line_count": 111,
+    "table_values_correct": 48,
+    "table_values_total": 48
+  },
+  {
+    "version": "v16_real_cohorts_before_terminal_period_fix",
+    "ocr_lines_sha256": "c83e7b623a770fbde8f115dbe318e362cee774159bfe599f12410ab390d2d5e5",
+    "line_count": 111,
+    "table_values_correct": 48,
+    "table_values_total": 48
+  },
+  {
+    "version": "v18_before_faint_separator_and_token_order_fixes",
+    "ocr_lines_sha256": "c83e7b623a770fbde8f115dbe318e362cee774159bfe599f12410ab390d2d5e5",
+    "line_count": 111,
+    "table_values_correct": 48,
+    "table_values_total": 48
+  },
+  {
+    "version": "v20_before_dot_only_compatibility_fix",
+    "ocr_lines_sha256": "c83e7b623a770fbde8f115dbe318e362cee774159bfe599f12410ab390d2d5e5",
+    "line_count": 111,
+    "table_values_correct": 48,
+    "table_values_total": 48
+  },
+  {
+    "version": "final_v21",
+    "ocr_lines_sha256": "c83e7b623a770fbde8f115dbe318e362cee774159bfe599f12410ab390d2d5e5",
+    "line_count": 111,
+    "table_values_correct": 48,
+    "table_values_total": 48
+  }
+]

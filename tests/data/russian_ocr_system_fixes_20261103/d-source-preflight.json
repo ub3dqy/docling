@@ -1,0 +1,63 @@
+{
+  "utc": "2026-11-03T06:40:04.685824+00:00",
+  "first_d_inference_started": false,
+  "original_reference_and_manifest_unchanged": true,
+  "previous_inventory_files": 190,
+  "previous_inventory_unique_hashes": 148,
+  "files": [
+    {
+      "file": "2025-10-21 16.17.59_bin.PNG",
+      "sha256": "aa62683148dc144c3df4331ef9405d74bbae8d1f79d745a749de0f5f3df89ff1",
+      "bytes": 273684,
+      "novel_relative_to_previous_inventory": true
+    },
+    {
+      "file": "IMG_0936_bin.jpg",
+      "sha256": "08206dc4a39d12f9c7b0a8aff39e243ccf0c65854a8ddd9220251146ce8e051b",
+      "bytes": 1249768,
+      "novel_relative_to_previous_inventory": true
+    },
+    {
+      "file": "IMG_1108_bin.jpg",
+      "sha256": "501632460c141f9b3da43a507404b8546229128c4c430a7fdbb2aa3191e1921f",
+      "bytes": 1201552,
+      "novel_relative_to_previous_inventory": true
+    },
+    {
+      "file": "IMG_1319_bin.png",
+      "sha256": "de478580b1e58026a79a78b5ca5378c017be0b8aac2ddcbac26d658b13069c1d",
+      "bytes": 533020,
+      "novel_relative_to_previous_inventory": true
+    },
+    {
+      "file": "IMG_1437_bin.png",
+      "sha256": "7000ed47468630e2b4f9627deea172e82e8ef6a424d1f35b67d28963fe7e8de2",
+      "bytes": 314813,
+      "novel_relative_to_previous_inventory": true
+    },
+    {
+      "file": "IMG_1664_bin.png",
+      "sha256": "4c05a928e1e5e35baac6973d3022206f417978ae9397d1dd073477550ed76416",
+      "bytes": 301633,
+      "novel_relative_to_previous_inventory": true
+    },
+    {
+      "file": "volgograd-balance-2025.pdf",
+      "sha256": "1fc0da4a2f882da94b795be9f8c12f6d213ff7a3119afc108a09c7a11dc73464",
+      "bytes": 1219066,
+      "novel_relative_to_previous_inventory": true
+    },
+    {
+      "file": "volgograd-audit-2025.pdf",
+      "sha256": "8e7602a89bd9b662d60b2ee96cd5bac1d26234211b8d9801aa61f75acb7869cc",
+      "bytes": 953561,
+      "novel_relative_to_previous_inventory": true
+    },
+    {
+      "file": "volgograd-results-2025.pdf",
+      "sha256": "e0078bad7d32347d65f9b80243c614811014ea59348b074e4fcb187f20c54cfe",
+      "bytes": 697501,
+      "novel_relative_to_previous_inventory": true
+    }
+  ]
+}

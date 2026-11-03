@@ -1,0 +1,32 @@
+{
+  "scope": "Supplementary source-to-export evidence; official field, table and text scores remain unchanged.",
+  "canteen_507": {
+    "source_stage_path": "output/russian-ocr-diagnosis-2026-11-02/full/receipt-canteen-507/10-refine-lines.after.json",
+    "source_stage_sha256": "94d9d8559bd1d852cced03766c80ad24ed5df7ae10c4d3d7fe4321cc882130ce",
+    "source_captions": [
+      "Кассовый чек",
+      "БЕЗНАЛИЧНЫМИ"
+    ],
+    "captions": [
+      {
+        "text": "Кассовый чек",
+        "before_present": false,
+        "after_present": true
+      },
+      {
+        "text": "БЕЗНАЛИЧНЫМИ",
+        "before_present": false,
+        "after_present": true
+      }
+    ],
+    "old_export_sha256": "4d221310e2288c26dbefbaab9ca61aa7d668a5d441f9286f94cad2de9bcc1cec",
+    "new_export_sha256": "e65ade54593d34a704b7032fac43d2411262db8c619d108e8ea05d9803599b25"
+  },
+  "known_vat": {
+    "document_sha256": "79801d2859a68e77551fcc4a64f393d87fd278643488edae10a858a8bdd4fdae",
+    "vat_lines": [
+      "Сунна НДС 10% 9.08"
+    ],
+    "printed_value_preserved_with_caption": true
+  }
+}

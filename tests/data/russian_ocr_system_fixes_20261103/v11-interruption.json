@@ -1,0 +1,19 @@
+{
+  "status": "interrupted_after_regression",
+  "completed_full_cohorts": [
+    "latest-b",
+    "newest"
+  ],
+  "completed_partial_unseen_cases": [
+    "bi-balance-sideways",
+    "bi-results-sideways",
+    "amfbc-audit-text"
+  ],
+  "trigger": "bi-results-sideways fell from 48/48 to 7/48 table values",
+  "no_full_40_case_result": true,
+  "integrity_at_interruption": {
+    "runtime_unchanged": true,
+    "models_unchanged": true,
+    "fixed_inputs_unchanged": true
+  }
+}

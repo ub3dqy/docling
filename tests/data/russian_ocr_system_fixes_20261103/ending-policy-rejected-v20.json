@@ -1,0 +1,92 @@
+{
+  "id": "receipt-clinic-13950",
+  "kind": "receipt-photo-binarized",
+  "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0725_bin.jpg",
+  "file_sha256": "87f7e20062e80abce72dbfc38f4135a34f131609fe112b1159a58b0931c79eb4",
+  "source_page": 1,
+  "status": "success",
+  "elapsed_seconds": 78.17621210007928,
+  "text_scores": [
+    {
+      "name": "merchant",
+      "expected": "ООО \"Современная клиника И-25\"",
+      "actual": "ООО \"Современная клиника И-25\"",
+      "roi": [
+        0.24,
+        0.204,
+        0.81,
+        0.233
+      ],
+      "edits": 0,
+      "reference_characters": 30,
+      "cer": 0.0,
+      "wer": 0.0,
+      "limit": 0.05,
+      "passed": true
+    },
+    {
+      "name": "thanks",
+      "expected": "ЖДЕМ ВАС СНОВА!",
+      "actual": "ЖДЕМ : ВАС: СНОВА?",
+      "roi": [
+        0.32,
+        0.912,
+        0.7,
+        0.949
+      ],
+      "edits": 4,
+      "reference_characters": 15,
+      "cer": 0.26666666666666666,
+      "wer": 1.0,
+      "limit": 0.05,
+      "passed": false
+    }
+  ],
+  "row_scores": [],
+  "field_scores": [
+    {
+      "name": "unit-price",
+      "expected": "13950.00",
+      "actual_region": "01 13950.00 * 1:00 =13950:00 Fep6)",
+      "roi_number_correct": true,
+      "available_in_export": true,
+      "passed": true
+    },
+    {
+      "name": "total",
+      "expected": "13950.00",
+      "actual_region": "ИТОГ ПОЛНЫЙ РАСЧЕТ ∴OM.22K3. 13950:00",
+      "roi_number_correct": true,
+      "available_in_export": true,
+      "passed": true
+    },
+    {
+      "name": "without-vat",
+      "expected": "13950.00",
+      "actual_region": "Е:Сумма без НДС 13950.00",
+      "roi_number_correct": true,
+      "available_in_export": true,
+      "passed": true
+    },
+    {
+      "name": "card-payment",
+      "expected": "13950.00",
+      "actual_region": "БЕЗНАЛИЧНЫМИ НАОС =13950.00",
+      "roi_number_correct": true,
+      "available_in_export": true,
+      "passed": true
+    },
+    {
+      "name": "received",
+      "expected": "13950.00",
+      "actual_region": "ПОЛУЧЕНО 13950:00",
+      "roi_number_correct": true,
+      "available_in_export": true,
+      "passed": true
+    }
+  ],
+  "tables": [],
+  "passed": false,
+  "text_export_characters": 780,
+  "error": null
+}

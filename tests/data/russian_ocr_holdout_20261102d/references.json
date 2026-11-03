@@ -1,0 +1,1039 @@
+{
+  "scope": "Holdout D: first inference after the systemic selection/retention/grid fixes. Ten pages from nine new public originals: four scan pages from three PDFs and six receipt photographs. Visual references frozen before any OCR on D. No model training or weight changes.",
+  "exclusions": [
+    "Selection used unused publisher image hashes spaced evenly through the pinned receipt listing, before visual inspection. No OCR labels or publisher transcriptions were read. PDF pages 1/2 of balance, 1 of results and 1 of audit were selected before inference.",
+    "Image backgrounds, logos, QR/barcodes, signatures, personal identifiers and unselected text are outside scoring. This measures selected regions, not whole-document accuracy. Original colour photos are not available; the publisher supplies binarized photographs.",
+    "IMG_1437 has faded final VAT-amount glyphs; that amount is excluded before inference, not calculated from the total. Its legible price, quantity, sum, VAT rate, total and paid amount stay included. Its original sideways input is not rotated or cropped for inference.",
+    "The results page repeats code 2410 with different captions. The simplified-tax row uses its full printed caption as key; the other row uses 2410. Balance page 2 repeats code 1220 with identical dash values; it is scored once. No reference value is derived arithmetically.",
+    "Two balance pages share one original, and three canteen photos share a merchant and layout. Novelty is relative to all local previous originals and candidates; no claim of independence from pretrained training data or population-wide accuracy.",
+    "The audit body is rasterized but each PDF page has one selectable page-number digit. Balance and results pages have no selectable text. Public originals stay local; source metadata and authored controls retain attribution. Receipts dataset MIT, PDF rights remain with their publishers."
+  ],
+  "cases": [
+    {
+      "id": "volgograd-noncurrent-assets",
+      "file": "volgograd-balance-2025.pdf",
+      "page": 1,
+      "kind": "scanned-pdf",
+      "source_url": "https://nprgf.com/upload/iblock/0ca/epuzwsmes05dfz1kbxxqql49becksmpd/Bukhgalterskiy-balans-za-yanvar-_-dekabr-2025.pdf",
+      "texts": [
+        {
+          "name": "balance-heading",
+          "roi": [
+            0.39,
+            0.35,
+            0.61,
+            0.39
+          ],
+          "max_cer": 0.02,
+          "text": "Бухгалтерский баланс на 31 декабря 2025 г."
+        }
+      ],
+      "rows": [
+        {
+          "key": "1105",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1110",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1130",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1140",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1150",
+          "values": [
+            "737",
+            "1842",
+            "2073"
+          ]
+        },
+        {
+          "key": "1160",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1170",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1180",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1190",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "volgograd-current-assets",
+      "file": "volgograd-balance-2025.pdf",
+      "page": 2,
+      "kind": "scanned-pdf",
+      "source_url": "https://nprgf.com/upload/iblock/0ca/epuzwsmes05dfz1kbxxqql49becksmpd/Bukhgalterskiy-balans-za-yanvar-_-dekabr-2025.pdf",
+      "texts": [
+        {
+          "name": "current-assets-heading",
+          "roi": [
+            0.24,
+            0.046,
+            0.54,
+            0.063
+          ],
+          "max_cer": 0.02,
+          "text": "II. Оборотные активы"
+        }
+      ],
+      "rows": [
+        {
+          "key": "1100",
+          "values": [
+            "737",
+            "1842",
+            "2073"
+          ]
+        },
+        {
+          "key": "1210",
+          "values": [
+            "4",
+            "3",
+            "3"
+          ]
+        },
+        {
+          "key": "1215",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1220",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1230",
+          "values": [
+            "709",
+            "2453",
+            "2528"
+          ]
+        },
+        {
+          "key": "1240",
+          "values": [
+            "756900",
+            "651750",
+            "525600"
+          ]
+        },
+        {
+          "key": "1250",
+          "values": [
+            "38821",
+            "22882",
+            "53229"
+          ]
+        },
+        {
+          "key": "1260",
+          "values": [
+            "-",
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "1200",
+          "values": [
+            "796434",
+            "677088",
+            "581360"
+          ]
+        },
+        {
+          "key": "1600",
+          "values": [
+            "797171",
+            "678930",
+            "583433"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "volgograd-financial-results",
+      "file": "volgograd-results-2025.pdf",
+      "page": 1,
+      "kind": "scanned-pdf",
+      "source_url": "https://nprgf.com/upload/iblock/6a9/atitnp7e1txhijf15db15ei1evs9brub/Otchet-o-finansovykh-rezultatakh-za-yanvar-_-dekabr-2025.pdf",
+      "texts": [
+        {
+          "name": "results-heading",
+          "roi": [
+            0.345,
+            0.031,
+            0.662,
+            0.063
+          ],
+          "max_cer": 0.02,
+          "text": "Отчет о финансовых результатах за 2025 г."
+        }
+      ],
+      "rows": [
+        {
+          "key": "2110",
+          "values": [
+            "24892",
+            "14720"
+          ]
+        },
+        {
+          "key": "2120",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "2100",
+          "values": [
+            "24892",
+            "14720"
+          ]
+        },
+        {
+          "key": "2210",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "2220",
+          "values": [
+            "(16553)",
+            "(12291)"
+          ]
+        },
+        {
+          "key": "2200",
+          "values": [
+            "8339",
+            "2429"
+          ]
+        },
+        {
+          "key": "2310",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "2320",
+          "values": [
+            "137014",
+            "109137"
+          ]
+        },
+        {
+          "key": "2330",
+          "values": [
+            "(236)",
+            "-"
+          ]
+        },
+        {
+          "key": "2340",
+          "values": [
+            "8956",
+            "11845"
+          ]
+        },
+        {
+          "key": "2350",
+          "values": [
+            "(33656)",
+            "(48395)"
+          ]
+        },
+        {
+          "key": "2300",
+          "values": [
+            "120417",
+            "75016"
+          ]
+        },
+        {
+          "key": "2410",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "2411",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "2412",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "Налог при упрощенной системе налогообложения",
+          "values": [
+            "(6879)",
+            "(5215)"
+          ]
+        },
+        {
+          "key": "2420",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "2460",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "2400",
+          "values": [
+            "113538",
+            "69801"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "volgograd-independent-audit",
+      "file": "volgograd-audit-2025.pdf",
+      "page": 1,
+      "kind": "scanned-pdf",
+      "source_url": "https://nprgf.com/upload/iblock/312/4q5990f21izxpr2yvt6uog5apqxk0rc2/Auditorskoe-zaklyuchenie-za-2025-god.pdf",
+      "texts": [
+        {
+          "name": "audit-heading",
+          "roi": [
+            0.195,
+            0.08,
+            0.884,
+            0.132
+          ],
+          "max_cer": 0.02,
+          "text": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГО АУДИТОРА"
+        },
+        {
+          "name": "audited-statements",
+          "roi": [
+            0.14,
+            0.275,
+            0.935,
+            0.454
+          ],
+          "max_cer": 0.01,
+          "text": "Мы провели аудит бухгалтерской отчетности Ассоциации (некоммерческое партнерство) «Гарантийный фонд Волгоградской области» (ОГРН 1073400004314), состоящей из бухгалтерского баланса по состоянию на 31 декабря 2025 года, отчета о целевом использовании средств за 2025 год, приложений к бухгалтерскому балансу и отчету о целевом использовании средств, в том числе отчета о финансовых результатах за 2025 год, отчета о движении денежных средств за 2025 год, пояснений к бухгалтерскому балансу и отчету о целевом использовании средств, включая основные положения учетной политики."
+        },
+        {
+          "name": "auditor-opinion",
+          "roi": [
+            0.14,
+            0.469,
+            0.935,
+            0.624
+          ],
+          "max_cer": 0.01,
+          "text": "По нашему мнению, прилагаемая бухгалтерская (финансовая) отчетность отражает достоверно во всех существенных отношениях финансовое положение Ассоциации (некоммерческое партнерство) «Гарантийный фонд Волгоградской области» по состоянию на 31 декабря 2025 года, целевое использование средств и их движение в 2025 году, а также финансовые результаты ее деятельности за 2025 год в соответствии с правилами составления бухгалтерской (финансовой) отчетности, установленными в Российской Федерации."
+        }
+      ],
+      "rows": [],
+      "fields": []
+    },
+    {
+      "id": "receipt-order-222-no-vat",
+      "file": "2025-10-21 16.17.59_bin.PNG",
+      "page": 1,
+      "kind": "publisher-binarized-receipt-photograph",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/2025-10-21%2016.17.59_bin.PNG?download=true",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "roi": [
+            0.4,
+            0.409,
+            0.56,
+            0.437
+          ],
+          "max_cer": 0.02,
+          "text": "Кассовый чек"
+        },
+        {
+          "name": "vat-exemption",
+          "roi": [
+            0.188,
+            0.462,
+            0.4,
+            0.483
+          ],
+          "max_cer": 0.02,
+          "text": "НДС не облагается"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "item-price",
+          "roi": [
+            0.18,
+            0.444,
+            0.79,
+            0.465
+          ],
+          "value": "89.00"
+        },
+        {
+          "name": "item-quantity",
+          "roi": [
+            0.18,
+            0.444,
+            0.79,
+            0.465
+          ],
+          "value": "1"
+        },
+        {
+          "name": "item-sum",
+          "roi": [
+            0.18,
+            0.444,
+            0.79,
+            0.465
+          ],
+          "value": "89.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.17,
+            0.49,
+            0.8,
+            0.52
+          ],
+          "value": "89.00"
+        },
+        {
+          "name": "vat-exempt-base",
+          "roi": [
+            0.17,
+            0.521,
+            0.8,
+            0.542
+          ],
+          "value": "89.00"
+        },
+        {
+          "name": "paid",
+          "roi": [
+            0.17,
+            0.542,
+            0.8,
+            0.56
+          ],
+          "value": "89.00"
+        }
+      ]
+    },
+    {
+      "id": "receipt-engels-torg",
+      "file": "IMG_0936_bin.jpg",
+      "page": 1,
+      "kind": "publisher-binarized-receipt-photograph",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0936_bin.jpg?download=true",
+      "texts": [
+        {
+          "name": "vat-caption-and-amount",
+          "roi": [
+            0.21,
+            0.568,
+            0.46,
+            0.587
+          ],
+          "max_cer": 0.02,
+          "text": "Сумма НДС 10% 55.87"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "dumpling-price",
+          "roi": [
+            0.47,
+            0.181,
+            0.65,
+            0.209
+          ],
+          "value": "294.00"
+        },
+        {
+          "name": "dumpling-quantity",
+          "roi": [
+            0.47,
+            0.181,
+            0.65,
+            0.209
+          ],
+          "value": "1.020"
+        },
+        {
+          "name": "dumpling-sum",
+          "roi": [
+            0.47,
+            0.181,
+            0.65,
+            0.209
+          ],
+          "value": "299.88"
+        },
+        {
+          "name": "pancake-price",
+          "roi": [
+            0.47,
+            0.212,
+            0.65,
+            0.24
+          ],
+          "value": "305.00"
+        },
+        {
+          "name": "pancake-quantity",
+          "roi": [
+            0.47,
+            0.212,
+            0.65,
+            0.24
+          ],
+          "value": "1.032"
+        },
+        {
+          "name": "pancake-sum",
+          "roi": [
+            0.47,
+            0.212,
+            0.65,
+            0.24
+          ],
+          "value": "314.76"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.2,
+            0.467,
+            0.69,
+            0.515
+          ],
+          "value": "614.64"
+        },
+        {
+          "name": "paid",
+          "roi": [
+            0.21,
+            0.501,
+            0.7,
+            0.55
+          ],
+          "value": "614.64"
+        },
+        {
+          "name": "vat-rate-10",
+          "roi": [
+            0.21,
+            0.568,
+            0.46,
+            0.587
+          ],
+          "value": "10"
+        },
+        {
+          "name": "vat-amount-10",
+          "roi": [
+            0.21,
+            0.568,
+            0.46,
+            0.587
+          ],
+          "value": "55.87"
+        }
+      ]
+    },
+    {
+      "id": "receipt-canteen-breakfast",
+      "file": "IMG_1108_bin.jpg",
+      "page": 1,
+      "kind": "publisher-binarized-receipt-photograph",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1108_bin.jpg?download=true",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "roi": [
+            0.39,
+            0.293,
+            0.52,
+            0.315
+          ],
+          "max_cer": 0.02,
+          "text": "Кассовый чек"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "tea-price",
+          "roi": [
+            0.49,
+            0.303,
+            0.72,
+            0.329
+          ],
+          "value": "40.00"
+        },
+        {
+          "name": "egg-price",
+          "roi": [
+            0.49,
+            0.332,
+            0.72,
+            0.358
+          ],
+          "value": "35.00"
+        },
+        {
+          "name": "sausage-price",
+          "roi": [
+            0.49,
+            0.361,
+            0.72,
+            0.388
+          ],
+          "value": "69.00"
+        },
+        {
+          "name": "syrniki-price",
+          "roi": [
+            0.49,
+            0.389,
+            0.72,
+            0.416
+          ],
+          "value": "99.00"
+        },
+        {
+          "name": "syrniki-quantity",
+          "roi": [
+            0.49,
+            0.389,
+            0.72,
+            0.416
+          ],
+          "value": "2"
+        },
+        {
+          "name": "syrniki-sum",
+          "roi": [
+            0.49,
+            0.389,
+            0.72,
+            0.416
+          ],
+          "value": "198.00"
+        },
+        {
+          "name": "sour-cream-price",
+          "roi": [
+            0.49,
+            0.421,
+            0.72,
+            0.446
+          ],
+          "value": "10.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.18,
+            0.46,
+            0.73,
+            0.484
+          ],
+          "value": "352.00"
+        },
+        {
+          "name": "vat-rate-5",
+          "roi": [
+            0.18,
+            0.484,
+            0.73,
+            0.501
+          ],
+          "value": "5"
+        },
+        {
+          "name": "vat-amount-5",
+          "roi": [
+            0.18,
+            0.484,
+            0.73,
+            0.501
+          ],
+          "value": "16.77"
+        },
+        {
+          "name": "paid",
+          "roi": [
+            0.18,
+            0.5,
+            0.73,
+            0.518
+          ],
+          "value": "352.00"
+        }
+      ]
+    },
+    {
+      "id": "receipt-canteen-three-eggs",
+      "file": "IMG_1319_bin.png",
+      "page": 1,
+      "kind": "publisher-binarized-receipt-photograph",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1319_bin.png?download=true",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "roi": [
+            0.39,
+            0.212,
+            0.59,
+            0.239
+          ],
+          "max_cer": 0.02,
+          "text": "Кассовый чек"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "egg-price",
+          "roi": [
+            0.57,
+            0.229,
+            0.96,
+            0.265
+          ],
+          "value": "35.00"
+        },
+        {
+          "name": "egg-quantity",
+          "roi": [
+            0.57,
+            0.229,
+            0.96,
+            0.265
+          ],
+          "value": "3"
+        },
+        {
+          "name": "egg-sum",
+          "roi": [
+            0.57,
+            0.229,
+            0.96,
+            0.265
+          ],
+          "value": "105.00"
+        },
+        {
+          "name": "potato-price",
+          "roi": [
+            0.57,
+            0.275,
+            0.96,
+            0.31
+          ],
+          "value": "59.00"
+        },
+        {
+          "name": "potato-sum",
+          "roi": [
+            0.57,
+            0.275,
+            0.96,
+            0.31
+          ],
+          "value": "59.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.04,
+            0.334,
+            0.96,
+            0.375
+          ],
+          "value": "164.00"
+        },
+        {
+          "name": "vat-rate-5",
+          "roi": [
+            0.035,
+            0.378,
+            0.96,
+            0.408
+          ],
+          "value": "5"
+        },
+        {
+          "name": "vat-amount-5",
+          "roi": [
+            0.035,
+            0.378,
+            0.96,
+            0.408
+          ],
+          "value": "7.81"
+        },
+        {
+          "name": "paid",
+          "roi": [
+            0.035,
+            0.408,
+            0.96,
+            0.44
+          ],
+          "value": "164.00"
+        }
+      ]
+    },
+    {
+      "id": "receipt-sideways-business-lunch",
+      "file": "IMG_1437_bin.png",
+      "page": 1,
+      "kind": "publisher-binarized-receipt-photograph",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1437_bin.png?download=true",
+      "texts": [],
+      "rows": [],
+      "fields": [
+        {
+          "name": "lunch-price",
+          "roi": [
+            0.36,
+            0.25,
+            0.398,
+            0.7
+          ],
+          "value": "419.00"
+        },
+        {
+          "name": "lunch-quantity",
+          "roi": [
+            0.36,
+            0.25,
+            0.398,
+            0.7
+          ],
+          "value": "1"
+        },
+        {
+          "name": "lunch-sum",
+          "roi": [
+            0.36,
+            0.25,
+            0.398,
+            0.7
+          ],
+          "value": "419.00"
+        },
+        {
+          "name": "vat-rate-5",
+          "roi": [
+            0.389,
+            0.5700000000000001,
+            0.411,
+            0.7
+          ],
+          "value": "5"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.397,
+            0.25,
+            0.429,
+            0.7
+          ],
+          "value": "419.00"
+        },
+        {
+          "name": "paid",
+          "roi": [
+            0.421,
+            0.25,
+            0.454,
+            0.7
+          ],
+          "value": "419.00"
+        }
+      ]
+    },
+    {
+      "id": "receipt-clinic-no-vat",
+      "file": "IMG_1664_bin.png",
+      "page": 1,
+      "kind": "publisher-binarized-receipt-photograph",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1664_bin.png?download=true",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "roi": [
+            0.42,
+            0.359,
+            0.53,
+            0.379
+          ],
+          "max_cer": 0.02,
+          "text": "Кассовый чек"
+        },
+        {
+          "name": "vat-exemption",
+          "roi": [
+            0.2,
+            0.383,
+            0.354,
+            0.407
+          ],
+          "max_cer": 0.02,
+          "text": "НДС не облагается"
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "service-price",
+          "roi": [
+            0.5,
+            0.389,
+            0.59,
+            0.412
+          ],
+          "value": "2420.00"
+        },
+        {
+          "name": "service-quantity",
+          "roi": [
+            0.5,
+            0.389,
+            0.59,
+            0.412
+          ],
+          "value": "1"
+        },
+        {
+          "name": "payment-summary-total",
+          "roi": [
+            0.19,
+            0.42,
+            0.56,
+            0.457
+          ],
+          "value": "2420.00"
+        },
+        {
+          "name": "total",
+          "roi": [
+            0.18,
+            0.502,
+            0.73,
+            0.535
+          ],
+          "value": "2420.00"
+        },
+        {
+          "name": "vat-exempt-base",
+          "roi": [
+            0.18,
+            0.528,
+            0.73,
+            0.553
+          ],
+          "value": "2420.00"
+        },
+        {
+          "name": "paid",
+          "roi": [
+            0.18,
+            0.544,
+            0.73,
+            0.571
+          ],
+          "value": "2420.00"
+        }
+      ]
+    }
+  ]
+}

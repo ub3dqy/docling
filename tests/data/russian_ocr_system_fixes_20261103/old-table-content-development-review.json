@@ -1,0 +1,442 @@
+[
+  {
+    "cohort": "previous",
+    "id": "rosseti-balance",
+    "position": [
+      3,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-balance",
+    "position": [
+      3,
+      5
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-balance",
+    "position": [
+      5,
+      4
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-balance",
+    "position": [
+      17,
+      1
+    ],
+    "before": "Сырье и материалы, предназначенные для использования при создании основных срдста",
+    "after": "Сырье и материалы, предназначенные для использования при создании основных средств",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-balance",
+    "position": [
+      21,
+      3
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-balance",
+    "position": [
+      40,
+      4
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-balance",
+    "position": [
+      66,
+      2
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-results",
+    "position": [
+      0,
+      2
+    ],
+    "before": "20 21 г",
+    "after": "20 21 r.",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-results",
+    "position": [
+      2,
+      0
+    ],
+    "before": "5.3.1. 5.1.1.",
+    "after": "5.1.1. 5.3.1.",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-results",
+    "position": [
+      2,
+      1
+    ],
+    "before": "чистую СПРАВОЧНО Результат прибыль от переоценки (убыток) периода внеоборотных активов, не включаемый в",
+    "after": "СПРАВОЧНО Результат от переоценки внеоборотных активов, не включаемый в чистую прибыль (убыток) периода",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-results",
+    "position": [
+      3,
+      1
+    ],
+    "before": "Результат (убыток) периода от прочих операций, не включаемый в чистую прибыль",
+    "after": "Результат от прочих операций, не включаемый в чистую прибыль (убыток) периода",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "rosseti-results",
+    "position": [
+      4,
+      1
+    ],
+    "before": "Налог чистую на прибыль прибыль (убыток)периода от операций, результат которых не включается в",
+    "after": "Налог на прибыль от операций, результат которых не включается в чистую прибыль (убыток)периода",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "bank-assets",
+    "position": [
+      3,
+      1
+    ],
+    "before": "O",
+    "after": "по ОКПО",
+    "numeric_change": false
+  },
+  {
+    "cohort": "previous",
+    "id": "bank-liabilities",
+    "position": [
+      5,
+      1
+    ],
+    "before": "Резервы Ha возможные потери no условным обязательствам кредитного характера, прочим ВОЗМОЖНЫМ И потерям и операциям с резидентами офшорных зон",
+    "after": "Резервы Ha возможные потери no условным обязательствам кредитного характера, прочим офшорных зон ВОЗМОЖНЫМИ потерям и операциям с резидентами",
+    "numeric_change": false
+  },
+  {
+    "cohort": "unseen",
+    "id": "bi-balance-sideways",
+    "position": [
+      1,
+      2
+    ],
+    "before": "деятельность с",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "unseen",
+    "id": "bi-balance-sideways",
+    "position": [
+      1,
+      6
+    ],
+    "before": "деятельность с",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "unseen",
+    "id": "bi-balance-sideways",
+    "position": [
+      2,
+      6
+    ],
+    "before": "целевыми средствами",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-current",
+    "position": [
+      1,
+      4
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-current",
+    "position": [
+      1,
+      5
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-current",
+    "position": [
+      2,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-current",
+    "position": [
+      10,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-liabilities",
+    "position": [
+      1,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-liabilities",
+    "position": [
+      2,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-liabilities",
+    "position": [
+      3,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-liabilities",
+    "position": [
+      4,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-liabilities",
+    "position": [
+      7,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-liabilities",
+    "position": [
+      14,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "partners-balance-liabilities",
+    "position": [
+      15,
+      0
+    ],
+    "before": "",
+    "after": "-",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "photo-passport-issuer",
+    "position": [
+      3,
+      0
+    ],
+    "before": "ЖЕH. Δara 12.05.1996 Πoλ рождения",
+    "after": "12.05.1996 Πoλ рождения ЖЕН Дата",
+    "numeric_change": false
+  },
+  {
+    "cohort": "latest-b",
+    "id": "photo-passport-issuer",
+    "position": [
+      4,
+      0
+    ],
+    "before": "Mecro ФОП. ПЕНЗА рождения",
+    "after": "рождения Место ГОР. ПЕНЗА",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      0,
+      3
+    ],
+    "before": "На 31 2025г. декабря",
+    "after": "На 31 декабря 2025г.",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      0,
+      4
+    ],
+    "before": "На 31 2024г. декабря",
+    "after": "На 31 декабря 2024г.",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      0,
+      5
+    ],
+    "before": "На 31 2023г. декабря",
+    "after": "На 31 декабря 2023г.",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      1,
+      1
+    ],
+    "before": "Паевой III. фонд ЦЕЛЕВОЕ ПАССИВ ФИНАНСИРОВАНИЕ",
+    "after": "ПАССИВ III. ЦЕЛЕВОЕ ФИНАНСИРОВАНИЕ Паевой фонд",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      4,
+      1
+    ],
+    "before": "вступительные В Членские ТОМ числе: взносы, взносы целевые взносы,",
+    "after": "числе: В ТОМ Членские взносы, целевые взносы, вступительные взносы",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      5,
+      1
+    ],
+    "before": "движимого Фонд недвижимого имущества и особо ценного",
+    "after": "Фонд недвижимого и особо ценного движимого имущества",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      8,
+      1
+    ],
+    "before": "Заемные IV. ДОЛГОСРОЧНЫЕ средства ОБЯЗАТЕЛЬСТВА",
+    "after": "IV. ДОЛГОСРОЧНЫЕ ОБЯЗАТЕЛЬСТВА Заемные средства",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      13,
+      1
+    ],
+    "before": "Заемные V. КРАТКОСРОЧНЫЕ средства ОБЯЗАТЕЛЬСТВА",
+    "after": "V. КРАТКОСРОЧНЫЕ ОБЯЗАТЕЛЬСТВА Заемные средства",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-liabilities",
+    "position": [
+      18,
+      1
+    ],
+    "before": "Итого ou разделуV",
+    "after": "разделуV Итого ou",
+    "numeric_change": false
+  },
+  {
+    "cohort": "newest",
+    "id": "kadastr-cash-flow",
+    "position": [
+      4,
+      0
+    ],
+    "before": "Vid 3кoномичeсkой",
+    "after": "Виd экономической",
+    "numeric_change": false
+  }
+]

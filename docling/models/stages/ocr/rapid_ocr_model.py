@@ -35,6 +35,11 @@ from docling.utils.ocr_language import (
     OcrLanguageResolver,
     OcrLanguageSupport,
 )
+from docling.utils.ocr_reading_choice import (
+    number_signature as _number_signature,
+    protected_numbers,
+    reading_may_replace,
+)
 from docling.utils.ocr_region_pixels import light_on_dark
 from docling.utils.ocr_word_overlap import deduplicate_line_words
 from docling.utils.orientation import ocr_quad_to_bounding_rectangle
@@ -73,17 +78,6 @@ _ORIENTATION_MIN_LINES = 3
 _OcrLine = tuple[list[list[float]], str, float]
 _RapidWord = tuple[str, float, list[list[float]] | None]
 _RapidWordLine = tuple[_RapidWord, ...] | _RapidWord
-
-
-def _number_signature(text: str) -> list[str]:
-    values: list[str] = []
-    for match in re.finditer(r"\(?[-\u2212]?\d[\d ]*(?:[.,]\d+)?\)?", text):
-        token = match.group(0)
-        value = token.replace(" ", "").replace(",", ".").replace("\u2212", "-")
-        if value.startswith("(") and value.endswith(")"):
-            value = "-" + value[1:-1]
-        values.append(value)
-    return values
 
 
 @dataclass(frozen=True)
@@ -1065,32 +1059,25 @@ class RapidOcrModel(BaseOcrModel):
         selected = list(zip(prediction.lines, prediction.line_words))
         for candidate, words in zip(alternative.lines, alternative.line_words):
             candidate = rescale(candidate)
-            if candidate[2] < 0.8:
-                continue
             conflicts = [
                 index
                 for index, (line, _) in enumerate(selected)
                 if self._same_text_region(candidate, line)
             ]
             if conflicts:
-                previous = [selected[index][0] for index in conflicts]
-                previous_chars = sum(len("".join(line[1].split())) for line in previous)
-                candidate_chars = len("".join(candidate[1].split()))
-                previous_quality = sum(
-                    len("".join(line[1].split())) * line[2] for line in previous
-                )
-                better = candidate_chars * candidate[2] > previous_quality * 1.05
-                better_confidence = (
-                    candidate[2] >= max(line[2] for line in previous) + 0.1
-                    and candidate_chars >= 0.85 * previous_chars
-                )
-                if not (better or better_confidence):
+                if not reading_may_replace(
+                    [selected[index] for index in conflicts],
+                    candidate,
+                    preserve_numbers=False,
+                ):
                     continue
                 selected = [
                     item
                     for index, item in enumerate(selected)
                     if index not in conflicts
                 ]
+            elif candidate[2] < 0.8:
+                continue
             selected.append((candidate, [rescale(word) for word in words]))
         merged = self._order_and_join(selected)
         return (
@@ -1170,7 +1157,7 @@ class RapidOcrModel(BaseOcrModel):
                 and self._line_bbox(candidate).height <= box.height * 0.8
             ]
             if (line[2] < 0.65 or concatenated) and len(contained) >= 2:
-                original_values = _number_signature(line[1])
+                original_values = protected_numbers(line, words)
                 observed_values = [
                     value
                     for candidate in contained
@@ -1223,37 +1210,8 @@ class RapidOcrModel(BaseOcrModel):
                 )
             ]
             if conflicts:
-                previous = [selected[index][0] for index in conflicts]
-                original_numbers = [
-                    value for line in previous for value in _number_signature(line[1])
-                ]
-                if original_numbers and original_numbers != _number_signature(
-                    candidate[1]
-                ):
-                    continue
-                original_markers = [
-                    match.group(1)
-                    for line in previous
-                    for match in re.finditer(r"([=*])\s*-?\d", line[1])
-                ]
-                candidate_markers = [
-                    match.group(1)
-                    for match in re.finditer(r"([=*])\s*-?\d", candidate[1])
-                ]
-                if original_markers and original_markers != candidate_markers:
-                    continue
-                quality = sum(
-                    len("".join(line[1].split())) * line[2] for line in previous
-                )
-                characters = len("".join(candidate[1].split()))
-                if not (
-                    characters * candidate[2] > quality * 1.05
-                    or (
-                        candidate[2] >= max(line[2] for line in previous) + 0.1
-                        and characters
-                        >= 0.85
-                        * sum(len("".join(line[1].split())) for line in previous)
-                    )
+                if not reading_may_replace(
+                    [selected[index] for index in conflicts], candidate
                 ):
                     continue
                 selected = [

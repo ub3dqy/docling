@@ -1,0 +1,57 @@
+{
+  "scope": "One runtime and unchanged model assets for all four final runs. Canonical runtime manifest is compact JSON with sorted keys; its full mapping is published in frozen-inputs.json.",
+  "runs": [
+    {
+      "cohort": "synthetic",
+      "sealed_utc": "2026-11-03T05:34:50.635871+00:00",
+      "base_commit": "66f265387373bd6f2308db2d78145133eafb0e8e",
+      "frozen_inputs_sha256": "b38b12fde3c41a600b0b0e8cd3d14e231eed9dbc3afa924a32ae968cb4c2a812",
+      "verification_sha256": "613b3e9741a24d15b4af6a059809c4c8b440833fbe4aa9185850a66704eb9344",
+      "runtime_file_count": 339,
+      "runtime_manifest_sha256": "c1fe9c0811084e7b56ca07738b1c059c2e60cac9106910f5b22a060a630863c1",
+      "model_asset_count": 36,
+      "models_identical_to_task_start": true,
+      "fixed_input_count": 55,
+      "runner_sha256": "025ca57d7f54bf8b59bcccc89a0a13269f0e2f67e304b25c533188aa44c8e8ba"
+    },
+    {
+      "cohort": "c",
+      "sealed_utc": "2026-11-03T05:37:34.495811+00:00",
+      "base_commit": "66f265387373bd6f2308db2d78145133eafb0e8e",
+      "frozen_inputs_sha256": "e1cb4914a743dc6917fecfc786dc9b46b993a25e18d1c0e2971b2e1d94999ed4",
+      "verification_sha256": "f08f62af5e8cb5d17eaba93925e3ae76fe9c663d2e861c58a2f47af70db665e3",
+      "runtime_file_count": 339,
+      "runtime_manifest_sha256": "c1fe9c0811084e7b56ca07738b1c059c2e60cac9106910f5b22a060a630863c1",
+      "model_asset_count": 36,
+      "models_identical_to_task_start": true,
+      "fixed_input_count": 58,
+      "runner_sha256": "025ca57d7f54bf8b59bcccc89a0a13269f0e2f67e304b25c533188aa44c8e8ba"
+    },
+    {
+      "cohort": "regression",
+      "sealed_utc": "2026-11-03T05:50:44.458406+00:00",
+      "base_commit": "66f265387373bd6f2308db2d78145133eafb0e8e",
+      "frozen_inputs_sha256": "b2ddbeb63112c7190f640399da6fcd597de900183dc3a7681bcc5d11bca507dc",
+      "verification_sha256": "8830f5dca7efd225b3cb138aba85ac75873b8278fcd859ce2145bd2b6061097a",
+      "runtime_file_count": 339,
+      "runtime_manifest_sha256": "c1fe9c0811084e7b56ca07738b1c059c2e60cac9106910f5b22a060a630863c1",
+      "model_asset_count": 36,
+      "models_identical_to_task_start": true,
+      "fixed_input_count": 110,
+      "runner_sha256": "025ca57d7f54bf8b59bcccc89a0a13269f0e2f67e304b25c533188aa44c8e8ba"
+    },
+    {
+      "cohort": "d",
+      "sealed_utc": "2026-11-03T06:41:40.686270+00:00",
+      "base_commit": "66f265387373bd6f2308db2d78145133eafb0e8e",
+      "frozen_inputs_sha256": "b94fd445a5d838ec2018a0916e718f50d9da4f0a2f3d00fc60d2b8a9003204f2",
+      "verification_sha256": "901b693b4d9daa46185e6123109b078b751af4715cc4f0cd46a2829eeb36bed5",
+      "runtime_file_count": 339,
+      "runtime_manifest_sha256": "c1fe9c0811084e7b56ca07738b1c059c2e60cac9106910f5b22a060a630863c1",
+      "model_asset_count": 36,
+      "models_identical_to_task_start": true,
+      "fixed_input_count": 66,
+      "runner_sha256": "025ca57d7f54bf8b59bcccc89a0a13269f0e2f67e304b25c533188aa44c8e8ba"
+    }
+  ]
+}

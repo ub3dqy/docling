@@ -1,0 +1,262 @@
+{
+  "scope": "Focused known-case check with the SAME prior source review as the old previous-cohort baseline. No new adjudication.",
+  "reference_sha256": "db1c672c5ba070155209738d6169f0967eadc5ec287b6649831fc4e6dee3f07e",
+  "adjudication_sha256": "5505d4791aeaa308a9546a9f96ab90b16fe35cc7cd725a6684845ce4fd4f65e9",
+  "raw_reference_values_correct": 26,
+  "source_reviewed_values_correct": 27,
+  "total_values": 27,
+  "scores": [
+    {
+      "key": "1150",
+      "expected": [
+        "1 383 225",
+        "1 408 891",
+        "1 435 242"
+      ],
+      "actual": [
+        "1 383 225",
+        "1 408 891",
+        "1 435 242"
+      ],
+      "actual_row": [
+        "531.-5.36",
+        "Основные средства",
+        "1150",
+        "1 383 225",
+        "1 408 891",
+        "1 435 242"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    },
+    {
+      "key": "1180",
+      "expected": [
+        "48 873",
+        "70 876",
+        "75 393"
+      ],
+      "actual": [
+        "48 873",
+        "70 876",
+        "75 393"
+      ],
+      "actual_row": [
+        "572",
+        "Отложенные налоговые активы",
+        "1180",
+        "48 873",
+        "70 876",
+        "75 393"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    },
+    {
+      "key": "1100",
+      "expected": [
+        "1 434 493",
+        "1 481 626",
+        "1 513 250"
+      ],
+      "actual": [
+        "1 434 493",
+        "1 481 626",
+        "1 513 250"
+      ],
+      "actual_row": [
+        "-",
+        "Итого по разделу",
+        "1100",
+        "1 434 493",
+        "1 481 626",
+        "1 513 250"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    },
+    {
+      "key": "1210",
+      "expected": [
+        "74 428",
+        "80 013",
+        "78 095"
+      ],
+      "actual": [
+        "74 428",
+        "80013",
+        "78 095"
+      ],
+      "actual_row": [
+        "551-5.52",
+        "I1. ОБОРОТНЫЕ АКТИВЫ Запасы",
+        "1210",
+        "74 428",
+        "80013",
+        "78 095"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    },
+    {
+      "key": "1220",
+      "expected": [
+        "169 507",
+        "173 844",
+        "177 746"
+      ],
+      "actual": [
+        "169 507",
+        "173 844",
+        "177 746"
+      ],
+      "actual_row": [
+        "",
+        "Налог на добавленную стоимость по приобретенным ценностям",
+        "1220",
+        "169 507",
+        "173 844",
+        "177 746"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    },
+    {
+      "key": "1230",
+      "expected": [
+        "270 894",
+        "214 607",
+        "183 433"
+      ],
+      "actual": [
+        "270 894",
+        "214607",
+        "183 433"
+      ],
+      "actual_row": [
+        "561-564",
+        "Дебиторская задолженность",
+        "1230",
+        "270 894",
+        "214607",
+        "183 433"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    },
+    {
+      "key": "1250",
+      "expected": [
+        "48 981",
+        "3 179",
+        "16 736"
+      ],
+      "actual": [
+        "48 981",
+        "3179",
+        "16736"
+      ],
+      "actual_row": [
+        "Φ4",
+        "Денежные средства и денежные зквиваленты",
+        "1250",
+        "48 981",
+        "3179",
+        "16736"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    },
+    {
+      "key": "1200",
+      "expected": [
+        "574 118",
+        "487 694",
+        "472 041"
+      ],
+      "actual": [
+        "574118",
+        "487 694",
+        "472 041"
+      ],
+      "actual_row": [
+        "",
+        "Итого по разделу II",
+        "1200",
+        "574118",
+        "487 694",
+        "472 041"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    },
+    {
+      "key": "1600",
+      "expected": [
+        "2 008 611",
+        "1 969 220",
+        "1 985 291"
+      ],
+      "actual": [
+        "2 008 611",
+        "1 969 220",
+        "1 985 291"
+      ],
+      "actual_row": [
+        "",
+        "БАЛАНС",
+        "1600",
+        "2 008 611",
+        "1 969 220",
+        "1 985 291"
+      ],
+      "table_index": 0,
+      "value_matches": [
+        true,
+        true,
+        true
+      ],
+      "passed": true
+    }
+  ]
+}

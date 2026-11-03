@@ -1,0 +1,35 @@
+{
+  "scope": "Supplementary structure inspection; the unchanged official amount score remains18/18. Notes were visually verified in the same original source, not added to the runtime.",
+  "former_shape": [
+    11,
+    5
+  ],
+  "rejected_v18_shape": [
+    11,
+    4
+  ],
+  "final_shape": [
+    11,
+    5
+  ],
+  "notes": [
+    {
+      "row": 2,
+      "column": 2,
+      "text": "26"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "text": "29"
+    },
+    {
+      "row": 6,
+      "column": 2,
+      "text": "30"
+    }
+  ],
+  "notes_match_old_source_verified_cells": true,
+  "diagnostic_input_sha256": "fea2481eb8376bdef03cb7a090ee22c1d29f99dbd5260a8528d305166bdcf57f",
+  "diagnostic_image_sha256": "09bbf2cf23e54c4e2e6436c491bf70ea4c2f5153e455d2ca2f57383c1ac72d7e"
+}

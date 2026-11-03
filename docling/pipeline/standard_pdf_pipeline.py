@@ -77,6 +77,7 @@ from docling.models.stages.heading_hierarchy.heading_hierarchy_model import (
 from docling.models.stages.layout.layout_postprocessing_model import (
     LayoutPostprocessingModel,
 )
+from docling.models.stages.ocr.ocr_line_refinement_model import OcrLineRefinementModel
 from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
 from docling.models.stages.page_assemble.page_assemble_model import (
     PageAssembleModel,
@@ -100,10 +101,18 @@ from docling.utils.utils import chunkify
 
 _log = logging.getLogger(__name__)
 
-_MODEL_STAGE_NAMES = ("ocr", "layout", "layout_postprocess", "table", "assemble")
+_MODEL_STAGE_NAMES = (
+    "ocr",
+    "layout",
+    "layout_postprocess",
+    "ocr_refinement",
+    "table",
+    "assemble",
+)
 
 STAGE_FAILURE_CATEGORY = {
     "ocr": FailureCategory.INFERENCE_FAILURE,
+    "ocr_refinement": FailureCategory.INFERENCE_FAILURE,
     "layout": FailureCategory.INFERENCE_FAILURE,
     "table": FailureCategory.INFERENCE_FAILURE,
     "form_field": FailureCategory.INFERENCE_FAILURE,
@@ -690,8 +699,27 @@ class StandardPdfPipeline(ConvertPipeline):
             accelerator_options=self.pipeline_options.accelerator_options,
             enable_remote_services=self.pipeline_options.enable_remote_services,
         )
+        ocr_refiner = (
+            OcrRegionRefiner(
+                artifacts_path=art_path,
+                accelerator_options=self.pipeline_options.accelerator_options,
+            )
+            if self.pipeline_options.do_ocr
+            and isinstance(self.pipeline_options.ocr_options, RapidOcrOptions)
+            and self.pipeline_options.ocr_options.use_region_refinement
+            and self.pipeline_options.ocr_options.lang
+            and self.pipeline_options.ocr_options.lang[0]
+            .removeprefix("iso:")
+            .split("-")[0]
+            == "ru"
+            else None
+        )
+        self.ocr_line_refinement_model = (
+            OcrLineRefinementModel(ocr_refiner) if ocr_refiner is not None else None
+        )
         self.assemble_model = PageAssembleModel(
             options=PageAssembleOptions(
+                refine_ocr_lines=False,
                 recover_ocr_tables=(
                     self.pipeline_options.do_table_structure
                     and isinstance(
@@ -699,23 +727,9 @@ class StandardPdfPipeline(ConvertPipeline):
                         TableStructureOptions,
                     )
                     and self.pipeline_options.table_structure_options.prefer_ocr_grid
-                )
+                ),
             ),
-            ocr_refiner=(
-                OcrRegionRefiner(
-                    artifacts_path=art_path,
-                    accelerator_options=self.pipeline_options.accelerator_options,
-                )
-                if self.pipeline_options.do_ocr
-                and isinstance(self.pipeline_options.ocr_options, RapidOcrOptions)
-                and self.pipeline_options.ocr_options.use_region_refinement
-                and self.pipeline_options.ocr_options.lang
-                and self.pipeline_options.ocr_options.lang[0]
-                .removeprefix("iso:")
-                .split("-")[0]
-                == "ru"
-                else None
-            ),
+            ocr_refiner=ocr_refiner,
         )
         self.reading_order_model = ReadingOrderModel(
             options=ReadingOrderOptions(
@@ -890,8 +904,23 @@ class StandardPdfPipeline(ConvertPipeline):
         preprocess.add_output_queue(layout.input_queue)  # PDF parsing
         layout.add_output_queue(ocr.input_queue)  # Layout prediction
         ocr.add_output_queue(layout_postprocess.input_queue)  # OCR
-        layout_postprocess.add_output_queue(table.input_queue)  # Layout post-proc
         stages = [preprocess, ocr, layout, layout_postprocess, table]
+        if self.ocr_line_refinement_model is not None:
+            refinement = ThreadedPipelineStage(
+                name="ocr_refinement",
+                model=self.ocr_line_refinement_model,
+                batch_size=1,
+                batch_timeout=opts.batch_polling_interval_seconds,
+                queue_max_size=opts.queue_max_size,
+                shutdown_timeout=opts.stage_shutdown_timeout_seconds,
+                timed_out_run_ids=timed_out_run_ids,
+                model_executor=model_threads["ocr_refinement"],
+            )
+            layout_postprocess.add_output_queue(refinement.input_queue)
+            refinement.add_output_queue(table.input_queue)
+            stages.insert(-1, refinement)
+        else:
+            layout_postprocess.add_output_queue(table.input_queue)
         if self.pipeline_options.extract_form_fields:
             # Form fields key widgets from table cells, so they follow the table
             # model. When disabled, the stage is left out: tables feed assembly.

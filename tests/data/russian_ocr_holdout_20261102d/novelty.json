@@ -1,0 +1,87 @@
+{
+  "scope": "New relative to the complete pre-task local source/candidate inventory; byte checks plus a rotational perceptual similarity screen.",
+  "previous_files": 190,
+  "previous_unique_sha256": 148,
+  "previous_inventory_sha256": "c5347bdc5058d8c5151c56161d4308d7fc6f3e60ea0d3b36e652a03d8174f467",
+  "selection_before_inference": true,
+  "originals": 9,
+  "cases": 10,
+  "files": [
+    {
+      "file": "2025-10-21 16.17.59_bin.PNG",
+      "sha256": "aa62683148dc144c3df4331ef9405d74bbae8d1f79d745a749de0f5f3df89ff1",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 18,
+        "file": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0891_bin.jpg",
+        "comparison_rotation_degrees": 270
+      }
+    },
+    {
+      "file": "IMG_0936_bin.jpg",
+      "sha256": "08206dc4a39d12f9c7b0a8aff39e243ccf0c65854a8ddd9220251146ce8e051b",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 18,
+        "file": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000484.jpg",
+        "comparison_rotation_degrees": 270
+      }
+    },
+    {
+      "file": "IMG_1108_bin.jpg",
+      "sha256": "501632460c141f9b3da43a507404b8546229128c4c430a7fdbb2aa3191e1921f",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 18,
+        "file": "output/russian-ocr-holdout-2026-11-02b/candidates/grid-IMG_0857_bin.PNG.png",
+        "comparison_rotation_degrees": 0
+      }
+    },
+    {
+      "file": "IMG_1319_bin.png",
+      "sha256": "de478580b1e58026a79a78b5ca5378c017be0b8aac2ddcbac26d658b13069c1d",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 20,
+        "file": "output/real-russian-ocr-new-2026-11-01/sources/IMG_0863_bin.PNG",
+        "comparison_rotation_degrees": 180
+      }
+    },
+    {
+      "file": "IMG_1437_bin.png",
+      "sha256": "7000ed47468630e2b4f9627deea172e82e8ef6a424d1f35b67d28963fe7e8de2",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 18,
+        "file": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_0948_bin.jpg",
+        "comparison_rotation_degrees": 90
+      }
+    },
+    {
+      "file": "IMG_1664_bin.png",
+      "sha256": "4c05a928e1e5e35baac6973d3022206f417978ae9397d1dd073477550ed76416",
+      "exact_previous_duplicate": false,
+      "nearest_previous_image": {
+        "hamming_distance_63_bits": 16,
+        "file": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0891_bin.jpg",
+        "comparison_rotation_degrees": 270
+      }
+    },
+    {
+      "file": "volgograd-balance-2025.pdf",
+      "sha256": "1fc0da4a2f882da94b795be9f8c12f6d213ff7a3119afc108a09c7a11dc73464",
+      "exact_previous_duplicate": false
+    },
+    {
+      "file": "volgograd-audit-2025.pdf",
+      "sha256": "8e7602a89bd9b662d60b2ee96cd5bac1d26234211b8d9801aa61f75acb7869cc",
+      "exact_previous_duplicate": false
+    },
+    {
+      "file": "volgograd-results-2025.pdf",
+      "sha256": "e0078bad7d32347d65f9b80243c614811014ea59348b074e4fcb187f20c54cfe",
+      "exact_previous_duplicate": false
+    }
+  ],
+  "limitations": "Perceptual hashes are a screen, not proof. Source-visible contents were read before inference. Similar canteen backgrounds/layouts remain disclosed."
+}

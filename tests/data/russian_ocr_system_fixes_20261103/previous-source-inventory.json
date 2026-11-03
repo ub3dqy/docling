@@ -1,0 +1,952 @@
+[
+  {
+    "path": "output/real-russian-ocr-2026-11-01/sources/doc-000003.jpg",
+    "sha256": "288a0b476aeea3512e835555b65e53c39498834b22ccb878f3260d3acde0611f",
+    "bytes": 487396
+  },
+  {
+    "path": "output/real-russian-ocr-2026-11-01/sources/doc-000017.jpg",
+    "sha256": "4213813a40408691d8cd8b5740e50a18b99647cb55baa84bd6c8e2db7256aab7",
+    "bytes": 404356
+  },
+  {
+    "path": "output/real-russian-ocr-2026-11-01/sources/hlynov-report.pdf",
+    "sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+    "bytes": 12438585
+  },
+  {
+    "path": "output/real-russian-ocr-2026-11-01/sources/receipt-2.jpg",
+    "sha256": "f737a502e69e8d854663513c946402b8851fb54c788a738fd840370bfce1e9ad",
+    "bytes": 927024
+  },
+  {
+    "path": "output/real-russian-ocr-2026-11-01/sources/receipt-3.jpg",
+    "sha256": "de94c9a76d7e5bfd904ab312022755cc9f5a07728df623a89093e21a47c6ce20",
+    "bytes": 802815
+  },
+  {
+    "path": "output/real-russian-ocr-2026-11-01/sources/rosseti-report.pdf",
+    "sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+    "bytes": 2840734
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-2026-11-01/sources/doc-000003.jpg",
+    "sha256": "288a0b476aeea3512e835555b65e53c39498834b22ccb878f3260d3acde0611f",
+    "bytes": 487396
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-2026-11-01/sources/doc-000017.jpg",
+    "sha256": "4213813a40408691d8cd8b5740e50a18b99647cb55baa84bd6c8e2db7256aab7",
+    "bytes": 404356
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-2026-11-01/sources/hlynov-report.pdf",
+    "sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+    "bytes": 12438585
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-2026-11-01/sources/receipt-2.jpg",
+    "sha256": "f737a502e69e8d854663513c946402b8851fb54c788a738fd840370bfce1e9ad",
+    "bytes": 927024
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-2026-11-01/sources/receipt-3.jpg",
+    "sha256": "de94c9a76d7e5bfd904ab312022755cc9f5a07728df623a89093e21a47c6ce20",
+    "bytes": 802815
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-2026-11-01/sources/rosseti-report.pdf",
+    "sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+    "bytes": 2840734
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass1-2026-11-01/sources/doc-000003.jpg",
+    "sha256": "288a0b476aeea3512e835555b65e53c39498834b22ccb878f3260d3acde0611f",
+    "bytes": 487396
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass1-2026-11-01/sources/doc-000017.jpg",
+    "sha256": "4213813a40408691d8cd8b5740e50a18b99647cb55baa84bd6c8e2db7256aab7",
+    "bytes": 404356
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass1-2026-11-01/sources/hlynov-report.pdf",
+    "sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+    "bytes": 12438585
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass1-2026-11-01/sources/receipt-2.jpg",
+    "sha256": "f737a502e69e8d854663513c946402b8851fb54c788a738fd840370bfce1e9ad",
+    "bytes": 927024
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass1-2026-11-01/sources/receipt-3.jpg",
+    "sha256": "de94c9a76d7e5bfd904ab312022755cc9f5a07728df623a89093e21a47c6ce20",
+    "bytes": 802815
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass1-2026-11-01/sources/rosseti-report.pdf",
+    "sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+    "bytes": 2840734
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass2-2026-11-01/sources/doc-000003.jpg",
+    "sha256": "288a0b476aeea3512e835555b65e53c39498834b22ccb878f3260d3acde0611f",
+    "bytes": 487396
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass2-2026-11-01/sources/doc-000017.jpg",
+    "sha256": "4213813a40408691d8cd8b5740e50a18b99647cb55baa84bd6c8e2db7256aab7",
+    "bytes": 404356
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass2-2026-11-01/sources/hlynov-report.pdf",
+    "sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+    "bytes": 12438585
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass2-2026-11-01/sources/receipt-2.jpg",
+    "sha256": "f737a502e69e8d854663513c946402b8851fb54c788a738fd840370bfce1e9ad",
+    "bytes": 927024
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass2-2026-11-01/sources/receipt-3.jpg",
+    "sha256": "de94c9a76d7e5bfd904ab312022755cc9f5a07728df623a89093e21a47c6ce20",
+    "bytes": 802815
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass2-2026-11-01/sources/rosseti-report.pdf",
+    "sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+    "bytes": 2840734
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass3-2026-11-01/sources/doc-000003.jpg",
+    "sha256": "288a0b476aeea3512e835555b65e53c39498834b22ccb878f3260d3acde0611f",
+    "bytes": 487396
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass3-2026-11-01/sources/doc-000017.jpg",
+    "sha256": "4213813a40408691d8cd8b5740e50a18b99647cb55baa84bd6c8e2db7256aab7",
+    "bytes": 404356
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass3-2026-11-01/sources/hlynov-report.pdf",
+    "sha256": "a3d0af64bbbacf9d2733ed7ab045326f4ba2285db960dd34cf0e0b2d143e0bed",
+    "bytes": 12438585
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass3-2026-11-01/sources/receipt-2.jpg",
+    "sha256": "f737a502e69e8d854663513c946402b8851fb54c788a738fd840370bfce1e9ad",
+    "bytes": 927024
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass3-2026-11-01/sources/receipt-3.jpg",
+    "sha256": "de94c9a76d7e5bfd904ab312022755cc9f5a07728df623a89093e21a47c6ce20",
+    "bytes": 802815
+  },
+  {
+    "path": "output/real-russian-ocr-fixed-pass3-2026-11-01/sources/rosseti-report.pdf",
+    "sha256": "7d95653721e767200ae3d340f9bdfe6001392247058a34fe4fe059dfb102941d",
+    "bytes": 2840734
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/amfbc-audit-2024.pdf",
+    "sha256": "1121246441a782bbd6bccd152694ff4c7ac08aa2f121305f717de595fc9c03d1",
+    "bytes": 4150134
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/bi-balance-2024.pdf",
+    "sha256": "0b60170a158217da5c1203d18da5a12434191071b845f7e32e5712756e83ed1a",
+    "bytes": 1191689
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/bi-results-2024.pdf",
+    "sha256": "00633d5fc56d8582a630d629b6827b7e30fba53fdfc43e3785f3afad10346543",
+    "bytes": 1633025
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000002.jpg",
+    "sha256": "5729c7a44da0e6e66d33c34e23ff64148c66af94b1ea6ebbab6cd29aba1569d3",
+    "bytes": 385302
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000005.jpg",
+    "sha256": "0b6ca9bf3b898d43948d9ccab4c021001a5aa6d34f4b389c1fd7fe29d599a13b",
+    "bytes": 79129
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000009.jpg",
+    "sha256": "8f321593f986fccf93633dd0160ba389209570d0159199a841517624b628c25c",
+    "bytes": 289417
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000013.jpg",
+    "sha256": "b5b683b731cfd52f4438d4db66cbe036066510c7c44cbdeb45005eea13e02381",
+    "bytes": 107721
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000016.jpg",
+    "sha256": "8c80bf86b382a34d716d8f20ffa66d61e2c0cd25f0760119cfc6fdd76cf01da2",
+    "bytes": 104211
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000027.jpg",
+    "sha256": "42dfd7254ccebc46c394182c3538eedad4e0d9d7864b28f44c9873c9f159fabc",
+    "bytes": 211273
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000029.jpg",
+    "sha256": "8c0221b2cf44b8a61bc5b02330e48afa6a519d2693bc5a42bc1bec352ee69de2",
+    "bytes": 812865
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000030.jpg",
+    "sha256": "e79d536a9815743d2cbf4dab282b660aeffeaae20652628ba3650b72bb8f5d2f",
+    "bytes": 112022
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000038.jpg",
+    "sha256": "7a8ca46dedd2e20c7f7f9a82114dc99c01c4f88cde647ab77878f4f8929e616f",
+    "bytes": 2250860
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000041.jpg",
+    "sha256": "4393c8d09bf0fe3fe643667e3ecf9dbeb7d24e8bdf0d6722fe72333f985ee817",
+    "bytes": 133662
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000047.jpg",
+    "sha256": "54ab7a01068966c9f2fbfabdff9b279327c169f0793cb598638e8116cd8b48d1",
+    "bytes": 106891
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000058.jpg",
+    "sha256": "26583db845d44e55175e1914d637094a4192056deaa1689cecd095b60cd4c98e",
+    "bytes": 246784
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/doc-000225.jpg",
+    "sha256": "bd64105f792b82344c5562c4395adef41c494fb30f2720a360974ab26e61f1a7",
+    "bytes": 251887
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/IMG_0667_bin.PNG",
+    "sha256": "bc3787f800a4c40bc1e348296c7a3468ee0eb2ab9af111e57e0f4632e6dccd7a",
+    "bytes": 447369
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/IMG_0752_bin.jpg",
+    "sha256": "a8b3e632a6e91e9c0812651aadae9eb7cd60f5b539584e8b6ab53a93dd25234b",
+    "bytes": 1016712
+  },
+  {
+    "path": "output/real-russian-ocr-new-2026-11-01/sources/IMG_0863_bin.PNG",
+    "sha256": "c2d89cbbb8b22d162f67f2c4854e78d52626a01d100616ab8c6f85fd988ef253",
+    "bytes": 193436
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000007.jpg",
+    "sha256": "dc8aedf6456da1d7628ce479971d7007c5f1d89bf461c8fca8ea3cc8a2993e4a",
+    "bytes": 222636
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000014.jpg",
+    "sha256": "88d997a94a45b1de6f2974b1e9517e2dfd5a1337da2d221073aa824cc39a460d",
+    "bytes": 27477
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000031.jpg",
+    "sha256": "af9c79f6ef3125169fe698a6de2d03ad8770a54e51fc75e3e71b1c0c50675248",
+    "bytes": 82448
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000042.jpg",
+    "sha256": "98cd6bfe94372a24f9a5092689127a2e459e677311612748e216eecf1dd42b33",
+    "bytes": 133172
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000048.jpg",
+    "sha256": "c9a58a6c239d64c1a9b57a3de215f6ddbd8b2e67f96c79bf5e29dbd8b137c138",
+    "bytes": 84610
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000051.jpg",
+    "sha256": "a6e0d31260cf5d0d4f8c445334b386931a3506ab3fe2423cb3de13ac7ae79a59",
+    "bytes": 161028
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000173.jpg",
+    "sha256": "5e91909abb4c4bd92c09254cd77f3b972f5a94ef0b080634fcd0ad691c8baa48",
+    "bytes": 39553
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000179.jpg",
+    "sha256": "d7f6c3302dba8aba663e0ba6eced85e68599750547f3c21e10f90d8a19c3714c",
+    "bytes": 31301
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000244.jpg",
+    "sha256": "ab1dc7c5580e5d98060ffee5a717985d15c839dcb40a3be9c9aec0e15688df76",
+    "bytes": 283680
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/doc-000300.jpg",
+    "sha256": "00529c0a8816578bff62c387b7c297a7468ce7fce01a94680de6d3b07abe72af",
+    "bytes": 132234
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0724_bin.PNG",
+    "sha256": "d4f9d4c090672c2c43e74cdb42d39cab794d5902d7e4ff384ee650aeddda7784",
+    "bytes": 204870
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0777_bin.jpg",
+    "sha256": "261900435c416bde117f90311a0bc6b9cfa5bab2929cbbf4cd29b9804a30725e",
+    "bytes": 1179946
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0872_bin.PNG",
+    "sha256": "2d22bb4713e930784005937ddb281da971b7bd6651aebb6577683bb50a562991",
+    "bytes": 270737
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0891_bin.jpg",
+    "sha256": "79e4d4dadd683b266d8185eb8abff89703258bade599ff123e170b0cd0d0f184",
+    "bytes": 1160465
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/kadastr-audit-2025.pdf",
+    "sha256": "bd446fab3d40f958a2e79e4922339318b305457b0c2104b0503f885bf3d9d9fd",
+    "bytes": 1803713
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/kadastr-balance-2025.pdf",
+    "sha256": "10267673f463e6005f17bf683a420ff1022804349bfe01b8b3bbc0da3f99f6e1",
+    "bytes": 1848374
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02/sources/srosom-balance-2024.pdf",
+    "sha256": "bc84c341433bd21c6359ebca2890040925495b6f5735242892b1cefd10600681",
+    "bytes": 389190
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/clinic-amount-detail.png",
+    "sha256": "4980a417945731a3723c01cb607a56ce42f691c7f5f849dad20e854689d15e9d",
+    "bytes": 104951
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/clinic-received-detail.png",
+    "sha256": "ec4b66fa9999aee82167a75a4a6d4518b52afbddfde1fce60478e7a57284cbd5",
+    "bytes": 56121
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/contact.jpg",
+    "sha256": "7cc58ec640c7e844ac747057cd2b98525aaf9be6fb806c3ed661df79a093c2fd",
+    "bytes": 486512
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/contact2.jpg",
+    "sha256": "0625338e8ab691e3ade54100d206eb1c8add3cef4fad7503c4b690fdd0688c3d",
+    "bytes": 366956
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/contact3.jpg",
+    "sha256": "ecac29454078b26a4af929ce40a86450fb26a2d0da36148e39204e0f8104a065",
+    "bytes": 367946
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/crop-IMG_0725_bin.jpg.png",
+    "sha256": "0ac392a77aa0a02a10dd79f013633cfc3fb773c4ea96302d5564d7df4644d8b7",
+    "bytes": 353272
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/crop-IMG_1001_bin.jpg.png",
+    "sha256": "970911abcef662fb7c7be1a7f664a2e8fc485d961b6cf167e0f08bed6f951de8",
+    "bytes": 527654
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000029.jpg",
+    "sha256": "8c0221b2cf44b8a61bc5b02330e48afa6a519d2693bc5a42bc1bec352ee69de2",
+    "bytes": 812865
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000038.jpg",
+    "sha256": "7a8ca46dedd2e20c7f7f9a82114dc99c01c4f88cde647ab77878f4f8929e616f",
+    "bytes": 2250860
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000041.jpg",
+    "sha256": "4393c8d09bf0fe3fe643667e3ecf9dbeb7d24e8bdf0d6722fe72333f985ee817",
+    "bytes": 133662
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000232.jpg",
+    "sha256": "df188ddc08c69d7504f68ee99b5894f7e45e5e666200ebdf8102c49164217ff1",
+    "bytes": 613550
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000259.jpg",
+    "sha256": "923acaa5c0efb25796588b86ddbde28e16223821a9e71914c90f48b1fc424200",
+    "bytes": 608276
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000282.jpg",
+    "sha256": "d7526f17ccc333e16d77a4f05ad7093607ea85e3f1f4b9bd99704fb6c529a23d",
+    "bytes": 425240
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000303.jpg",
+    "sha256": "dd35890613c279a9a1ba8d2d934f762fac8d85868d1ad9a75648b3eb9177125f",
+    "bytes": 1661568
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000305.jpg",
+    "sha256": "23e1b462f5c741c62bf8c3498e88a74f4127d5f37b6608337c1964db5ee7ba0f",
+    "bytes": 309830
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000383.jpg",
+    "sha256": "1c480f8b623d4ef0089fc280fd2b9701be60549df80841afc894ca76d27d91be",
+    "bytes": 589759
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/doc-000413.jpg",
+    "sha256": "1be2336ab739c343d69aa38b733f0171772b67d174cad01a93d36e57b4eac705",
+    "bytes": 1518567
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/grid-IMG_0725_bin.jpg.png",
+    "sha256": "0cefb608009d1e04bb94845bd76445da33c2c39519352288f82698dc43b2feff",
+    "bytes": 555607
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/grid-IMG_0857_bin.PNG.png",
+    "sha256": "3befd6bb86d74c786b39b7925deb0dc667152e49609182ce903d9d03c2e5f22d",
+    "bytes": 368489
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/grid-IMG_0948_bin.jpg.png",
+    "sha256": "7ff9888ab80fe50ae047eba91a8e4a1f3aba730657b2f734a44f90093d90f35d",
+    "bytes": 2306361
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/grid-IMG_1001_bin.jpg.png",
+    "sha256": "7861065b0bdf8db3c4b72de0f5bac6e5cf5e00f8f69798573d749855e49c2961",
+    "bytes": 1229914
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_0725_bin.jpg",
+    "sha256": "87f7e20062e80abce72dbfc38f4135a34f131609fe112b1159a58b0931c79eb4",
+    "bytes": 810445
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_0753_bin.jpg",
+    "sha256": "5aafd684fff1ea8f013aac5dca6857ef9d74413d36ad5cc2be9d075d8b08cbe3",
+    "bytes": 992578
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_0857_bin.PNG",
+    "sha256": "8a32161ce43a72d21e927ac4f10366de3e004ec538cf8289c4c6f6d2c2cb0bf9",
+    "bytes": 425200
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_0904_bin.jpg",
+    "sha256": "4301edada9c778b594335a8722b7aaef4d17e9f60a81d974a720f0d55fb19f27",
+    "bytes": 1291597
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_0948_bin.jpg",
+    "sha256": "24f4545f99246e2db8f9fad70aa699d28d4e4b804464615a94e21e8dd1623127",
+    "bytes": 955973
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_1001_bin.jpg",
+    "sha256": "25366f31f741d4aefa6735f33aa1bf2a4413ccfbdd203ed9513e652b321750ac",
+    "bytes": 1144498
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-audit-2025-p1.png",
+    "sha256": "8f5a4335c3265cb97ce105e7c3f5f8e9050541b179eaded7256bfb90206066ef",
+    "bytes": 636744
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-audit-2025-p2.png",
+    "sha256": "cb57a68a60007bb33db56f815157762deb099519fdd55f29c310422085e0d717",
+    "bytes": 1205691
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-audit-2025-p3.png",
+    "sha256": "8489058e7a8cf5168cfe3fbd4d8bde93022caf13c382c8fdab77dddcc0fcdd54",
+    "bytes": 1361721
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-audit-2025-p4.png",
+    "sha256": "629ce72dec12cc1829b9bb211737e8f54faa3cbf78b4bb0f758e16f880cfea7d",
+    "bytes": 1146691
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-audit-2025.pdf",
+    "sha256": "10531d4f7a3f7c6a8bb0e90242bf8536cbf9c5e3682bfe3d51159f1f23dacf47",
+    "bytes": 1231659
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-balance-2025-p1.png",
+    "sha256": "6a7aaef7ea972036f50228cf6b3ed16a8e2598748b5eaecd1e23064e54ef14f2",
+    "bytes": 850784
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-balance-2025-p2.png",
+    "sha256": "0c0c0c9d31db1ec243716183c140a85a89772ed5a86ce02e46295be648ba4616",
+    "bytes": 428819
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-balance-2025-p3.png",
+    "sha256": "a81419f1df84dea48704b9894466e91efcf38cf778572626148e06dbea016c96",
+    "bytes": 709447
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-balance-2025.pdf",
+    "sha256": "f2c762c32858ab4989873a780fff1a4c633bf661c668c6d45784565d9a979fa9",
+    "bytes": 589967
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/review-partners-audit-2025-p1.png",
+    "sha256": "4b3b010eba9a3ddac5d04e94289053ed4a5c4f89a59faef69a27cc8ea4733af8",
+    "bytes": 694544
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/review-partners-audit-2025-p2.png",
+    "sha256": "a6b89e59981340c26be30870d06cda89ff134bba9b686d47f88b947824da2426",
+    "bytes": 1330998
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/review-partners-audit-2025-p3.png",
+    "sha256": "3dbc21d41e9b1648ac493acd566fc9dea081712667214a3d15d2581c8940b028",
+    "bytes": 1500946
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/review-partners-audit-2025-p4.png",
+    "sha256": "8fc863b7bd769e46a07641c1336d486d5680cae8d9c08177fb9b5ec629b36394",
+    "bytes": 1265297
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/review-partners-balance-2025-p1.png",
+    "sha256": "257e9741e47d7bceb342ca2c514fd56236810f95bee40dd854d813b79945f9be",
+    "bytes": 934792
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/review-partners-balance-2025-p2.png",
+    "sha256": "528532602e961671b331957fcb9b5d3240417cdc0140108f9135109b0dbfb2a9",
+    "bytes": 469619
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/candidates/review-partners-balance-2025-p3.png",
+    "sha256": "c6dae73e43ccd8d23a9b26b75a2e54145f829febf1526651363044749905dfe7",
+    "bytes": 778419
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/sources/doc-000038.jpg",
+    "sha256": "7a8ca46dedd2e20c7f7f9a82114dc99c01c4f88cde647ab77878f4f8929e616f",
+    "bytes": 2250860
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/sources/doc-000232.jpg",
+    "sha256": "df188ddc08c69d7504f68ee99b5894f7e45e5e666200ebdf8102c49164217ff1",
+    "bytes": 613550
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/sources/IMG_0725_bin.jpg",
+    "sha256": "87f7e20062e80abce72dbfc38f4135a34f131609fe112b1159a58b0931c79eb4",
+    "bytes": 810445
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/sources/IMG_0857_bin.PNG",
+    "sha256": "8a32161ce43a72d21e927ac4f10366de3e004ec538cf8289c4c6f6d2c2cb0bf9",
+    "bytes": 425200
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/sources/IMG_0948_bin.jpg",
+    "sha256": "24f4545f99246e2db8f9fad70aa699d28d4e4b804464615a94e21e8dd1623127",
+    "bytes": 955973
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/sources/IMG_1001_bin.jpg",
+    "sha256": "25366f31f741d4aefa6735f33aa1bf2a4413ccfbdd203ed9513e652b321750ac",
+    "bytes": 1144498
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/sources/partners-audit-2025.pdf",
+    "sha256": "10531d4f7a3f7c6a8bb0e90242bf8536cbf9c5e3682bfe3d51159f1f23dacf47",
+    "bytes": 1231659
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02b/sources/partners-balance-2025.pdf",
+    "sha256": "f2c762c32858ab4989873a780fff1a4c633bf661c668c6d45784565d9a979fa9",
+    "bytes": 589967
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000180.jpg",
+    "sha256": "094defd05df71dd4f512d732647679a56ee0d5768716ceccb4e6d3ad7d249260",
+    "bytes": 34936
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000211.jpg",
+    "sha256": "759c6fd792b3218da18989497dcaa25a8cc2b54117aed036bec8732f992634c8",
+    "bytes": 13853
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000226.jpg",
+    "sha256": "965061d706cff179d2ac54ae4528968551f9919f55a8ae175c554fc21c1ef39f",
+    "bytes": 199227
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000265.jpg",
+    "sha256": "d9f3bb34a8fe594ce35bb732a70bc4a3f9994eb9e81ed19655246f81278d4868",
+    "bytes": 79570
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000314.jpg",
+    "sha256": "9a5c4f823255fe8e31171effc6977bc0129e3aeaca90b607f2351b2f0ffdce97",
+    "bytes": 72153
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000368.jpg",
+    "sha256": "204ae0f401edefe5976dcc1a84b4ac57066f217bc0148ae080b258f8e15cfd7b",
+    "bytes": 110997
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000403.jpg",
+    "sha256": "bbe8ffcc87d6ed229289f96358428e5c27f83f01708e402bcd7e72599de8aff5",
+    "bytes": 227475
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000419.jpg",
+    "sha256": "78794f5a6b6d96c776706d5c2befc7b0e74cb4a85e776bea37fcf36f840cb9f4",
+    "bytes": 141616
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000425.jpg",
+    "sha256": "3e20b93bef49400d65f84bf022955443a218ed57d1871a75a4e35fc1105ffd91",
+    "bytes": 97243
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000484.jpg",
+    "sha256": "854f4fae789f7b0c3f69fad6bc1ba56dda1aaaf6572759227ed9a5c4a382287a",
+    "bytes": 4597
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000538.jpg",
+    "sha256": "f9836dfe0d2b917c87dad11c29bc66db66cdd400da70fd59a215cdbac3fe1a43",
+    "bytes": 115192
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_0784_bin.jpg",
+    "sha256": "d9212833c0422e0eff347ee9d1da4b9bbecdf7486f8c2800f8b0829b6ec81382",
+    "bytes": 1090689
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_0800_bin.jpg",
+    "sha256": "02a6c198ab3c997f1d3ee4f49402a42cd3ff739df5f1c8fb4e3e9f4f78f08f36",
+    "bytes": 1141222
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_0884_bin.jpg",
+    "sha256": "fb97e310f9f65ee7ddc0ac7c26b199ac1927956e230aab03399652fe21d61f33",
+    "bytes": 1172517
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_0916_bin.jpg",
+    "sha256": "7fcecd0ffa738d1436e6463740dbcd8c1e42f2f91c461d11a7e14de5f7405290",
+    "bytes": 1263129
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_1054_bin.jpg",
+    "sha256": "f52b1418a3c22d91d1ca676dfd91378cc36c01b83286c65a3385676e9fa2c9de",
+    "bytes": 827254
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_1109_bin.jpg",
+    "sha256": "38a52f0c5cb83f3b2c3028ea1f850908d3dc271e38bfeb84451b28f98d597e5b",
+    "bytes": 929867
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_1186_bin.jpg",
+    "sha256": "e9ce518a15081abdc0ebb477c8cd95b2222350e801405a0a8cd6b2568825de3a",
+    "bytes": 1174253
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_1244_bin.jpg",
+    "sha256": "afcc8ad7971d9710c9e1065c4bddb4a477b32e731f04b19879d9a509bc9e5259",
+    "bytes": 1001884
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/candidates/mosreg-balance-2025.pdf",
+    "sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+    "bytes": 1358746
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/sources/IMG_0784_bin.jpg",
+    "sha256": "d9212833c0422e0eff347ee9d1da4b9bbecdf7486f8c2800f8b0829b6ec81382",
+    "bytes": 1090689
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/sources/IMG_0800_bin.jpg",
+    "sha256": "02a6c198ab3c997f1d3ee4f49402a42cd3ff739df5f1c8fb4e3e9f4f78f08f36",
+    "bytes": 1141222
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/sources/IMG_0884_bin.jpg",
+    "sha256": "fb97e310f9f65ee7ddc0ac7c26b199ac1927956e230aab03399652fe21d61f33",
+    "bytes": 1172517
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/sources/IMG_1054_bin.jpg",
+    "sha256": "f52b1418a3c22d91d1ca676dfd91378cc36c01b83286c65a3385676e9fa2c9de",
+    "bytes": 827254
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/sources/IMG_1186_bin.jpg",
+    "sha256": "e9ce518a15081abdc0ebb477c8cd95b2222350e801405a0a8cd6b2568825de3a",
+    "bytes": 1174253
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/sources/IMG_1244_bin.jpg",
+    "sha256": "afcc8ad7971d9710c9e1065c4bddb4a477b32e731f04b19879d9a509bc9e5259",
+    "bytes": 1001884
+  },
+  {
+    "path": "output/russian-ocr-holdout-2026-11-02c/sources/mosreg-balance-2025.pdf",
+    "sha256": "ae38ab254c997d210093ec4a8ba3e894d88afa191b26c7e72919c3891cddc021",
+    "bytes": 1358746
+  },
+  {
+    "path": "tests/data/asciidoc/sources/rename-bookmark-menu.png",
+    "sha256": "de33ddc09a0ba9b83128b6b59461e3be59299575eb68ccf2c03984b504f9fa9c",
+    "bytes": 73
+  },
+  {
+    "path": "tests/data/html/sources/example_image_01.png",
+    "sha256": "bef7365b07e60b01c3f5ecce53a706be2f74c731ab7b8494dfc56bff2af186db",
+    "bytes": 561331
+  },
+  {
+    "path": "tests/data/json_paddleocr_vl/sources/self_authored_page.png",
+    "sha256": "3da05cf8344db3e29ce8c41b93ee3a5cca523c2a15f11ce87a5fdc8ad84745c6",
+    "bytes": 60753
+  },
+  {
+    "path": "tests/data/ocr/sources/nemotron_multipage.pdf",
+    "sha256": "b4f6d15c517b5d6b0d674e1b4a04219903528c3601fd026f98eadc62c814f568",
+    "bytes": 372905
+  },
+  {
+    "path": "tests/data/ocr/sources/ocr_test.pdf",
+    "sha256": "73f23122e9edbdb0a115b448e03c8064a0ea8bdc21d02917ce220cf032454f31",
+    "bytes": 93549
+  },
+  {
+    "path": "tests/data/ocr/sources/ocr_test_rotated_180.pdf",
+    "sha256": "5e612719cff9ea5ab877d0ce6c1fae44f0b70ee15d4157e9231e6a5d5d7de906",
+    "bytes": 94703
+  },
+  {
+    "path": "tests/data/ocr/sources/ocr_test_rotated_270.pdf",
+    "sha256": "1b731058c6c1b68ce271e23c5ecc2fbdf07827fc04c965c897241a01c81911d9",
+    "bytes": 94702
+  },
+  {
+    "path": "tests/data/ocr/sources/ocr_test_rotated_90.pdf",
+    "sha256": "39d7fab939f52c2e88a0f51d6ae7ae5e83ece0576f6ec00860fef325ca6e6c5e",
+    "bytes": 94126
+  },
+  {
+    "path": "tests/data/ocr/sources/qr_bill_example.jpg",
+    "sha256": "663ba7b84c432824b5166b3cd456ba44220cec7d63dfbd8dd2052eb9035bb35b",
+    "bytes": 291775
+  },
+  {
+    "path": "tests/data/ocr/sources/rotated_180_dense_text.png",
+    "sha256": "e1afd045daf249b12053e055a42a1cc4b4ac9122eb9f17343713b8781980e912",
+    "bytes": 40904
+  },
+  {
+    "path": "tests/data/ocr/sources/rotated_270_dense_text.png",
+    "sha256": "216233fe54e927478f5e98752746df8d69d2148ad7ba96d3dd2840dff9722114",
+    "bytes": 34495
+  },
+  {
+    "path": "tests/data/ocr/sources/rotated_90_dense_text.png",
+    "sha256": "5caa528a47b964a8c67d6b1ad183b0487094fedd81c874d10e513470aeb544f6",
+    "bytes": 34985
+  },
+  {
+    "path": "tests/data/ocr/sources/sample_with_rotation_mismatch.pdf",
+    "sha256": "ceaa5e8218ca60ff366117a66bd1b6084e02fea903223a69eb63b479c2752757",
+    "bytes": 429779
+  },
+  {
+    "path": "tests/data/odf/sources/odf_presentation_01.odp.pdf",
+    "sha256": "5400452918f7a4fc4cdf895084c5f419ff5c80dd0d591cc8d3dd01b4794af1fb",
+    "bytes": 45958
+  },
+  {
+    "path": "tests/data/odf/sources/odf_presentation_02.odp.pdf",
+    "sha256": "4fa78681d827d49459f4d8aacc864a7c98af50a0cff272fc50e5076f28c53488",
+    "bytes": 8921030
+  },
+  {
+    "path": "tests/data/odf/sources/odf_table_with_title_01.ods.pdf",
+    "sha256": "76313f269e897aba02f0191f2e4582fe5080925e2bcc9a93f974496d5dff3f4b",
+    "bytes": 17431
+  },
+  {
+    "path": "tests/data/odf/sources/text_document_01.odt.pdf",
+    "sha256": "78d2b3e7ba14f3d506340ed6c37abe1e1db8a916d1487c1d8322f07b41080b81",
+    "bytes": 74629
+  },
+  {
+    "path": "tests/data/odf/sources/text_document_02.odt.pdf",
+    "sha256": "4fe68010b0a2de9456b6bd490eb12df6a0d72c1037a052943e2162a011b5a049",
+    "bytes": 3679578
+  },
+  {
+    "path": "tests/data/odf/sources/text_document_03.odt.pdf",
+    "sha256": "3cb1bd59a1c2b323d3f30ea9b1d8587ef9d36924b710a612ed2bd0560a94224a",
+    "bytes": 44695
+  },
+  {
+    "path": "tests/data/pdf/sources/2203.01017v2.pdf",
+    "sha256": "4fa8dff93d74a84069210c84a38d14d62a39ec8f4e4c90bf955fdebdebcf6636",
+    "bytes": 7215177
+  },
+  {
+    "path": "tests/data/pdf/sources/2206.01062.pdf",
+    "sha256": "5dfbd8c115a15fd3396b68409124cfee29fc8efac7b5c846634ff924e635e0dc",
+    "bytes": 4310680
+  },
+  {
+    "path": "tests/data/pdf/sources/2305.03393v1-pg9.pdf",
+    "sha256": "a07f5c34601ba2c234d898cbfaa9e29a7045996ccd82ccab3012516220a1f3a4",
+    "bytes": 162131
+  },
+  {
+    "path": "tests/data/pdf/sources/2305.03393v1.pdf",
+    "sha256": "62f2a2163d768d5b125a207967797aefa6c9cc113de8bb5c725c582595dd0c1d",
+    "bytes": 4318934
+  },
+  {
+    "path": "tests/data/pdf/sources/acroform_sample.pdf",
+    "sha256": "a4c3afbd5f7bf5d9ba7c13b84772e072f451b275bf4a7f05f6750b9a46548ddc",
+    "bytes": 2055
+  },
+  {
+    "path": "tests/data/pdf/sources/amt_handbook_sample.pdf",
+    "sha256": "7099fe05ade36067cf66e72b23277972a1a2b7d2da1cb82c8d690efd70143fe0",
+    "bytes": 673416
+  },
+  {
+    "path": "tests/data/pdf/sources/code_and_formula.pdf",
+    "sha256": "6cb63fba2ad42dd0e0afe6a26dcf3b3bff5a86919c4c06157c71c65ebc0fc9e6",
+    "bytes": 89031
+  },
+  {
+    "path": "tests/data/pdf/sources/elsevier-00.pdf",
+    "sha256": "519d4e8d7dde865ea5a9bfb7328c23b286299c1752365f0ce7c724a0ebb8a491",
+    "bytes": 20830040
+  },
+  {
+    "path": "tests/data/pdf/sources/multi_page.pdf",
+    "sha256": "956846c28f9ed9d3b5cbe071865c082bd415f56e3e299c479aeea1f615eefa61",
+    "bytes": 128322
+  },
+  {
+    "path": "tests/data/pdf/sources/newspaper-00.pdf",
+    "sha256": "ba5f7a78792369ea36dbf2a554aa1635fa9f25983664ff17b406dca326279019",
+    "bytes": 620470
+  },
+  {
+    "path": "tests/data/pdf/sources/normal_4pages.pdf",
+    "sha256": "ca9c83b1653221a66b30cdb543c1ef7b116827762ae65fca36b87b332532b51e",
+    "bytes": 359233
+  },
+  {
+    "path": "tests/data/pdf/sources/picture_classification.pdf",
+    "sha256": "dc38947ee802b7bcf82915804ccb8d04c4611e1b17491c415972821a329352fb",
+    "bytes": 212855
+  },
+  {
+    "path": "tests/data/pdf/sources/redp5110_sampled.pdf",
+    "sha256": "2f6bc92861997d1434c069040dc63447c3e415e8e9eadbd1a8129ba2327ddba5",
+    "bytes": 1277938
+  },
+  {
+    "path": "tests/data/pdf/sources/right_to_left_01.pdf",
+    "sha256": "30d675db2a5c9613f2b12cb03e74c8f9384f473274216ee6a271cf0c99301f14",
+    "bytes": 102852
+  },
+  {
+    "path": "tests/data/pdf/sources/right_to_left_02.pdf",
+    "sha256": "1f0d0b33d156b073907436b74acb2b2d2afe6ff3b037ed4e5ce87300226ec195",
+    "bytes": 92036
+  },
+  {
+    "path": "tests/data/pdf/sources/right_to_left_03.pdf",
+    "sha256": "ecfb67cbdbd082308765c070ba692033d6e92fc33d03e9448f4d7ad2b398440c",
+    "bytes": 278131
+  },
+  {
+    "path": "tests/data/pdf/sources/skipped_1page.pdf",
+    "sha256": "827288488d4497fc02adc18313c6bffe9d43c2e73256b0330ce4d33da9ba57dc",
+    "bytes": 204648
+  },
+  {
+    "path": "tests/data/pdf/sources/skipped_2pages.pdf",
+    "sha256": "63c849bc5a6a3e452e4ff06b823288c4b138cde24e7dc5ca57eb19b3c00635e9",
+    "bytes": 324576
+  },
+  {
+    "path": "tests/data/pdf/sources/table_misidentified_as_form.pdf",
+    "sha256": "7e8e895d8b1d97676bbddf4274fe83b0c17ce1f3238078d0d705392ef81256ff",
+    "bytes": 1254021
+  },
+  {
+    "path": "tests/data/pdf/sources/table_mislabeled_as_picture.pdf",
+    "sha256": "a0d1ed0063db208ccad7ebd54cf549987deaf8f53948d95c3755f6b515925ce7",
+    "bytes": 45661
+  },
+  {
+    "path": "tests/data/pdf_password/sources/2206.01062_pg3.pdf",
+    "sha256": "2bec8dacdd842a2e6f62fd9bf555e5b278cf9237fb1de2593bd515046bb71279",
+    "bytes": 641891
+  },
+  {
+    "path": "tests/data/russian_ocr/sources/degraded.jpg",
+    "sha256": "98c3328d100a00aedd2057bfa185322aa5ef5133757fe9161c6ba8edd6f09c0d",
+    "bytes": 247159
+  },
+  {
+    "path": "tests/data/russian_ocr/sources/mixed.png",
+    "sha256": "f01205aed6f10bbf17a2ef7823c1bfebd7c2bd71caec470a2539f0077025146f",
+    "bytes": 127730
+  },
+  {
+    "path": "tests/data/russian_ocr/sources/russian.png",
+    "sha256": "46f6b0675f9363f0dfe1f77166a32b442a24b7f5b41bcd0ea3e48511c0986eb5",
+    "bytes": 123208
+  },
+  {
+    "path": "tests/data/russian_ocr/sources/scans.pdf",
+    "sha256": "cd4a02132fa47d43a973430f7c0030c6639cb80c97e83bac34c4f49a65770b0a",
+    "bytes": 658923
+  },
+  {
+    "path": "tests/data/russian_ocr/sources/table.png",
+    "sha256": "0c8476b65ea7a2fb19274d82cf1e23090cf26ea371dd98799112a50696310add",
+    "bytes": 87118
+  },
+  {
+    "path": "tests/data/tiff/sources/2206.01062.tif",
+    "sha256": "9c8631375bd3a2ff9030ed7d5b4e82ed59eb021877869c5037d523a0baaceb22",
+    "bytes": 548162
+  }
+]

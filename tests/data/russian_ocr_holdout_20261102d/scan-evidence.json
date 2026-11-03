@@ -1,0 +1,101 @@
+[
+  {
+    "file": "volgograd-audit-2025.pdf",
+    "page": 1,
+    "native_text_characters": 1,
+    "native_text": "1",
+    "raster_images": 1,
+    "page_size": [
+      595.0,
+      842.0
+    ]
+  },
+  {
+    "file": "volgograd-audit-2025.pdf",
+    "page": 2,
+    "native_text_characters": 1,
+    "native_text": "2",
+    "raster_images": 1,
+    "page_size": [
+      595.0,
+      842.0
+    ]
+  },
+  {
+    "file": "volgograd-audit-2025.pdf",
+    "page": 3,
+    "native_text_characters": 1,
+    "native_text": "3",
+    "raster_images": 1,
+    "page_size": [
+      595.0,
+      842.0
+    ]
+  },
+  {
+    "file": "volgograd-audit-2025.pdf",
+    "page": 4,
+    "native_text_characters": 1,
+    "native_text": "4",
+    "raster_images": 1,
+    "page_size": [
+      595.0,
+      842.0
+    ]
+  },
+  {
+    "file": "volgograd-balance-2025.pdf",
+    "page": 1,
+    "native_text_characters": 0,
+    "native_text": "",
+    "raster_images": 1,
+    "page_size": [
+      595.0800170898438,
+      841.6799926757812
+    ]
+  },
+  {
+    "file": "volgograd-balance-2025.pdf",
+    "page": 2,
+    "native_text_characters": 0,
+    "native_text": "",
+    "raster_images": 1,
+    "page_size": [
+      595.0800170898438,
+      841.6799926757812
+    ]
+  },
+  {
+    "file": "volgograd-balance-2025.pdf",
+    "page": 3,
+    "native_text_characters": 0,
+    "native_text": "",
+    "raster_images": 1,
+    "page_size": [
+      595.0800170898438,
+      841.6799926757812
+    ]
+  },
+  {
+    "file": "volgograd-results-2025.pdf",
+    "page": 1,
+    "native_text_characters": 0,
+    "native_text": "",
+    "raster_images": 1,
+    "page_size": [
+      595.0800170898438,
+      841.6799926757812
+    ]
+  },
+  {
+    "file": "volgograd-results-2025.pdf",
+    "page": 2,
+    "native_text_characters": 0,
+    "native_text": "",
+    "raster_images": 1,
+    "page_size": [
+      595.0800170898438,
+      841.6799926757812
+    ]
+  }
+]

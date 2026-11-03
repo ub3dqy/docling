@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-03T03:56:54.792964+00:00",
+  "reason": "Structural inspection found AMFBC notes column merged into label despite all 18 selected amount checks passing. Stop before new D to fix this confirmed regression.",
+  "completed_cohorts": [
+    "previous",
+    "unseen"
+  ],
+  "current_cohort": "latest-b",
+  "current_case_score_count": 7,
+  "no_complete_40_case_score_claimed": true,
+  "new_d_inference_started": false,
+  "integrity": {
+    "runtime_unchanged": true,
+    "models_unchanged": true,
+    "fixed_inputs_unchanged": true
+  }
+}

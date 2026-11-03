@@ -1,0 +1,67 @@
+{
+  "former_source_sha256": "0aeac5ab5f0cc797c0669fb5fe2fb49a65e719dcab4aeaaf789d9c9b86d5078b",
+  "former_source_matches_frozen_v18": true,
+  "cases": [
+    {
+      "source": "rosseti-v15-grid-inputs/01.json",
+      "before_shape": [
+        70,
+        6
+      ],
+      "after_shape": [
+        70,
+        6
+      ],
+      "cells_and_unrounded_bounds_identical": true
+    },
+    {
+      "source": "mosreg-v15-grid-inputs/01.json",
+      "before_shape": [
+        33,
+        6
+      ],
+      "after_shape": [
+        33,
+        6
+      ],
+      "cells_and_unrounded_bounds_identical": true
+    },
+    {
+      "source": "sideways-v12-grid-inputs/01.json",
+      "before_shape": [
+        21,
+        7
+      ],
+      "after_shape": [
+        21,
+        7
+      ],
+      "cells_and_unrounded_bounds_identical": true
+    },
+    {
+      "source": "amfbc-v18-grid-inputs/01.json",
+      "before_shape": [
+        11,
+        4
+      ],
+      "after_shape": [
+        11,
+        5
+      ],
+      "cells_and_unrounded_bounds_identical": false,
+      "recovered_notes": [
+        "",
+        "",
+        "26",
+        "29",
+        "",
+        "",
+        "30",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  ]
+}

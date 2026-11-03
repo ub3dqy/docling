@@ -1,0 +1,98 @@
+{
+  "scope": "Observed full-source and processed readings from the failed v17 diagnostic; frozen official synthetic scores before and after. No fixture-specific runtime rule.",
+  "observation_sha256": "13a6c2c63f232792e39b83c3627c5efbd894c36ffdde337c2ba5c577debbeab8",
+  "observer_sha256": "4c9d11925866ac5eb884340563acfc41cca43a43b37bb4bec3f969756f191d7f",
+  "failed_selection": {
+    "original": "Сумма, руб.",
+    "confidence": 0.88193,
+    "readings": [
+      {
+        "text": "Сумма, руб.",
+        "confidence": 0.9997938166965138,
+        "engine": "cyrillic-v6-medium",
+        "variant": "v6-source-1.0"
+      },
+      {
+        "text": "Сумма, руб.",
+        "confidence": 0.9995879530906677,
+        "engine": "cyrillic-v6-medium",
+        "variant": "v6-source-1.5"
+      },
+      {
+        "text": "Сумма, руб",
+        "confidence": 0.999945604801178,
+        "engine": "cyrillic-v6-medium",
+        "variant": "v6-clean-1.0"
+      },
+      {
+        "text": "Сумма, руб.",
+        "confidence": 0.9565492705865339,
+        "engine": "cyrillic-v6-medium",
+        "variant": "v6-clean-1.5"
+      },
+      {
+        "text": "Сумма, руб",
+        "confidence": 0.999945604801178,
+        "engine": "cyrillic-v6-medium",
+        "variant": "v6-contrast-1.0"
+      },
+      {
+        "text": "Сумма, руб.",
+        "confidence": 0.9565492705865339,
+        "engine": "cyrillic-v6-medium",
+        "variant": "v6-contrast-1.5"
+      },
+      {
+        "text": "Сумма, руб.",
+        "confidence": 0.9999075586145575,
+        "engine": "cyrillic-v6-tiny",
+        "variant": "v6-source-1.0"
+      },
+      {
+        "text": "Сумма, руб.",
+        "confidence": 0.9993889115073464,
+        "engine": "cyrillic-v6-tiny",
+        "variant": "v6-source-1.5"
+      },
+      {
+        "text": "Сумма, руб.",
+        "confidence": 0.9921585050496188,
+        "engine": "cyrillic-v6-tiny",
+        "variant": "v6-clean-1.0"
+      },
+      {
+        "text": "Сумма, руб",
+        "confidence": 0.9668641030788422,
+        "engine": "cyrillic-v6-tiny",
+        "variant": "v6-clean-1.5"
+      },
+      {
+        "text": "Сумма, руб.",
+        "confidence": 0.9921585050496188,
+        "engine": "cyrillic-v6-tiny",
+        "variant": "v6-contrast-1.0"
+      },
+      {
+        "text": "Сумма, руб",
+        "confidence": 0.9668641030788422,
+        "engine": "cyrillic-v6-tiny",
+        "variant": "v6-contrast-1.5"
+      }
+    ],
+    "selected": {
+      "text": "Сумма, руб",
+      "confidence": 0.999945604801178,
+      "engine": "cyrillic-v6-medium",
+      "variant": "v6-clean-1.0"
+    }
+  },
+  "final_header_row": [
+    "Наименование",
+    "Количество",
+    "Цена, руб.",
+    "Сумма, руб."
+  ],
+  "rule": "A weaker preprocessing result cannot vote against its family strongest full-source reading when removing an observed terminal period. Established question/exclamation correction votes remain unchanged.",
+  "failed_score_sha256": "373fa93c6510f64518f59899eabec1f9605c0f45f02322a2de37ab6af58d33ce",
+  "final_score_sha256": "986eb0d54aa52ce910c1e4f5f58d42d852ab23604b5772ea4cd733862822ef1b"
+}

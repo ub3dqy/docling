@@ -1,0 +1,89 @@
+{
+  "checks": [
+    {
+      "command": [
+        "E:\\Project\\docling\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_layout_picture_table_overlap.py",
+        "tests/test_ocr_character_paths.py",
+        "tests/test_ocr_diagnostics.py",
+        "tests/test_ocr_digit_templates.py",
+        "tests/test_ocr_engine_language_mapping.py",
+        "tests/test_ocr_grid_geometry.py",
+        "tests/test_ocr_image_resolution.py",
+        "tests/test_ocr_language.py",
+        "tests/test_ocr_line_order.py",
+        "tests/test_ocr_multiline_blocks.py",
+        "tests/test_ocr_numeric_regions.py",
+        "tests/test_ocr_options_force_full_page.py",
+        "tests/test_ocr_prose_regions.py",
+        "tests/test_ocr_receipt_amounts.py",
+        "tests/test_ocr_receipt_expressions.py",
+        "tests/test_ocr_receipt_fields.py",
+        "tests/test_ocr_receipt_rows.py",
+        "tests/test_ocr_receipt_segments.py",
+        "tests/test_ocr_receipt_text.py",
+        "tests/test_ocr_receipt_words.py",
+        "tests/test_ocr_rects_dedup.py",
+        "tests/test_ocr_rects_invisible_text.py",
+        "tests/test_ocr_rects_vector_shapes.py",
+        "tests/test_ocr_region_refiner.py",
+        "tests/test_ocr_system_integrity.py",
+        "tests/test_ocr_table_grid.py",
+        "tests/test_ocr_table_orientation.py",
+        "tests/test_ocr_text_geometry.py",
+        "tests/test_page_assemble_model.py",
+        "tests/test_picture_only_ocr.py",
+        "tests/test_pipeline_cache.py",
+        "tests/test_rapid_ocr_lang.py",
+        "tests/test_rapid_ocr_model.py",
+        "tests/test_rapid_ocr_word_boxes.py",
+        "tests/test_real_russian_ocr_qualification.py",
+        "tests/test_russian_ocr_model_download.py",
+        "tests/test_russian_ocr_text_models.py",
+        "tests/test_table_structure_model.py",
+        "tests/test_table_structure_model_v2.py",
+        "tests/test_tesseract_ocr_cli_dpi.py",
+        "tests/test_tesseract_ocr_cli_lang.py",
+        "tests/test_tesseract_ocr_cli_model.py",
+        "tests/test_tesseract_ocr_model.py"
+      ],
+      "exit_code": 0,
+      "log_path": "output/russian-ocr-system-fixes-2026-11-02/unit-tests-v21.log",
+      "log_sha256": "b05d2397b00b6068306c67390894ce0f641708bd3945f1724ffb947128fc813f"
+    },
+    {
+      "command": [
+        "E:\\Project\\docling\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_cli.py",
+        "-k",
+        "ocr_profile or russian_profile"
+      ],
+      "exit_code": 0,
+      "log_path": "output/russian-ocr-system-fixes-2026-11-02/cli-tests-v21.log",
+      "log_sha256": "d6e0028730bf58537921eadd1e213dd4939dd5074621c0a85f7bc0566561e427"
+    },
+    {
+      "command": [
+        "E:\\Project\\docling\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_threaded_pipeline.py::test_threaded_pipeline_stage_shutdown_timeout",
+        "tests/test_threaded_pipeline.py::test_threaded_pipeline_model_raises_timeout"
+      ],
+      "exit_code": 0,
+      "log_path": "output/russian-ocr-system-fixes-2026-11-02/threaded-boundary-tests-v21.log",
+      "log_sha256": "9d7fddb4d166dd91e02f9f24e656938d4d8383c5c7f9a98a363b9fa470e9427d"
+    }
+  ],
+  "integrity": {
+    "runtime_unchanged": true,
+    "models_unchanged": true
+  }
+}

@@ -501,6 +501,18 @@ class FieldRegionElement(ContainerElement):
     items: list[FieldItemPrediction] = []
 
 
+class OcrGridGeometry(BaseModel):
+    """Accepted source-page-to-grid transform in page points, independent of DPI."""
+
+    model_config = ConfigDict(allow_inf_nan=False)
+
+    transform: tuple[tuple[float, float, float], tuple[float, float, float]]
+    columns: list[float]
+    rows: list[float]
+    width: float = Field(gt=0)
+    height: float = Field(gt=0)
+
+
 class Table(BasePageElement):
     otsl_seq: list[str]
     from_ocr_grid: bool = False
@@ -510,6 +522,11 @@ class Table(BasePageElement):
     num_cols: int = 0
     orientation: Orientation = Orientation.ROT_0
     table_cells: list[TableCell]
+    # Transient source coverage. Unmatched OCR must remain visible when a
+    # structure prediction cannot place it. Do not serialize a second copy.
+    source_cell_count: int = Field(default=0, ge=0, exclude=True)
+    unmatched_ocr_cells: list[TextCell] = Field(default_factory=list, exclude=True)
+    ocr_grid_geometry: OcrGridGeometry | None = Field(default=None, exclude=True)
     # AcroForm field items placed in this table's cells (see TableFieldPrediction);
     # written by the form field stage, empty unless form fields are extracted.
     field_cells: list[TableFieldPrediction] = []

@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-03T05:23:59.424900+00:00",
+  "reason": "New strongest-family vote restriction unintentionally changed established !/? correction: clinic13950 thanks text regressed from0/15 to4/15 edits. Limit the added restriction to terminal periods; do not change references or limits.",
+  "completed_cohorts": [
+    "unseen",
+    "previous"
+  ],
+  "current_cohort": "latest-b",
+  "current_case_score_count": 8,
+  "no_complete_40_case_score_claimed": true,
+  "new_d_inference_started": false,
+  "integrity": {
+    "runtime_unchanged": true,
+    "models_unchanged": true,
+    "fixed_inputs_unchanged": true
+  }
+}

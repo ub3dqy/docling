@@ -1,0 +1,44 @@
+[
+  {
+    "file": "2025-10-21 16.17.59_bin.PNG",
+    "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/2025-10-21%2016.17.59_bin.PNG?download=true",
+    "expected_sha256": "aa62683148dc144c3df4331ef9405d74bbae8d1f79d745a749de0f5f3df89ff1"
+  },
+  {
+    "file": "IMG_0936_bin.jpg",
+    "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0936_bin.jpg?download=true",
+    "expected_sha256": "08206dc4a39d12f9c7b0a8aff39e243ccf0c65854a8ddd9220251146ce8e051b"
+  },
+  {
+    "file": "IMG_1108_bin.jpg",
+    "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1108_bin.jpg?download=true",
+    "expected_sha256": "501632460c141f9b3da43a507404b8546229128c4c430a7fdbb2aa3191e1921f"
+  },
+  {
+    "file": "IMG_1319_bin.png",
+    "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1319_bin.png?download=true",
+    "expected_sha256": "de478580b1e58026a79a78b5ca5378c017be0b8aac2ddcbac26d658b13069c1d"
+  },
+  {
+    "file": "IMG_1437_bin.png",
+    "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1437_bin.png?download=true",
+    "expected_sha256": "7000ed47468630e2b4f9627deea172e82e8ef6a424d1f35b67d28963fe7e8de2"
+  },
+  {
+    "file": "IMG_1664_bin.png",
+    "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1664_bin.png?download=true",
+    "expected_sha256": "4c05a928e1e5e35baac6973d3022206f417978ae9397d1dd073477550ed76416"
+  },
+  {
+    "file": "volgograd-balance-2025.pdf",
+    "url": "https://nprgf.com/upload/iblock/0ca/epuzwsmes05dfz1kbxxqql49becksmpd/Bukhgalterskiy-balans-za-yanvar-_-dekabr-2025.pdf"
+  },
+  {
+    "file": "volgograd-audit-2025.pdf",
+    "url": "https://nprgf.com/upload/iblock/312/4q5990f21izxpr2yvt6uog5apqxk0rc2/Auditorskoe-zaklyuchenie-za-2025-god.pdf"
+  },
+  {
+    "file": "volgograd-results-2025.pdf",
+    "url": "https://nprgf.com/upload/iblock/6a9/atitnp7e1txhijf15db15ei1evs9brub/Otchet-o-finansovykh-rezultatakh-za-yanvar-_-dekabr-2025.pdf"
+  }
+]

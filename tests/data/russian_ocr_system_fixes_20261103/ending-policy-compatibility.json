@@ -1,0 +1,73 @@
+{
+  "scope": "Compatibility check before first D: new strongest-family restriction applies only to terminal periods. Existing !/? correction behavior retained; no reference or limit changes.",
+  "before_case_score": "verified-regression-v20/latest-b/receipt-clinic-13950/score.json",
+  "before_edits": 4,
+  "before_reference_characters": 15,
+  "final_stage": {
+    "stage": "page.assembled",
+    "lines": 51,
+    "word_count": 99,
+    "fields": [
+      {
+        "name": "unit-price",
+        "expected": "13950.00",
+        "actual_region": "01 13950.00 * 1:00 =13950:00 Fep6)",
+        "roi_number_correct": true,
+        "available_in_export": true,
+        "passed": true
+      },
+      {
+        "name": "total",
+        "expected": "13950.00",
+        "actual_region": "ИТОГ ПОЛНЫЙ РАСЧЕТ ∴OM.22K3. 13950:00",
+        "roi_number_correct": true,
+        "available_in_export": true,
+        "passed": true
+      },
+      {
+        "name": "without-vat",
+        "expected": "13950.00",
+        "actual_region": "Е:Сумма без НДС 13950.00",
+        "roi_number_correct": true,
+        "available_in_export": true,
+        "passed": true
+      },
+      {
+        "name": "card-payment",
+        "expected": "13950.00",
+        "actual_region": "БЕЗНАЛИЧНЫМИ НАОС =13950.00",
+        "roi_number_correct": true,
+        "available_in_export": true,
+        "passed": true
+      },
+      {
+        "name": "received",
+        "expected": "13950.00",
+        "actual_region": "ПОЛУЧЕНО 13950:00",
+        "roi_number_correct": true,
+        "available_in_export": true,
+        "passed": true
+      }
+    ],
+    "texts": [
+      {
+        "name": "merchant",
+        "expected": "ООО \"Современная клиника И-25\"",
+        "actual": "ООО \"Современная клиника И-25\"",
+        "edits": 0,
+        "characters": 30,
+        "passed": true
+      },
+      {
+        "name": "thanks",
+        "expected": "ЖДЕМ ВАС СНОВА!",
+        "actual": "ЖДЕМ ВАС СНОВА!",
+        "edits": 0,
+        "characters": 15,
+        "passed": true
+      }
+    ],
+    "rows": [],
+    "table_shapes": []
+  }
+}

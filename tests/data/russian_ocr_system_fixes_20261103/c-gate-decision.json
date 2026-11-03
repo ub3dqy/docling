@@ -1,0 +1,59 @@
+[
+  {
+    "cohort": "original-c",
+    "old_report_sha256": "06d5cc10b5d637445a76b968f06c9bfa4fd5d3e89cbc87fa6d134ce388a1dba0",
+    "new_report_sha256": "cc040e0eb385a71915a920bf085d1d9e3456ec8f0ce0fff6aff07e2434356563",
+    "regressions": [],
+    "changed_previously_failed_text": []
+  },
+  {
+    "cohort": "c-numeric-milestone-v8",
+    "old_report_sha256": "f36c0f5c1ab7ad6e6216758a0a789c8e74e76b8a7ed8fb56957860aed2662190",
+    "new_report_sha256": "cc040e0eb385a71915a920bf085d1d9e3456ec8f0ce0fff6aff07e2434356563",
+    "regressions": [],
+    "changed_previously_failed_text": [],
+    "nonblocking_text_differences_to_rejected_candidate": [
+      [
+        "c-numeric-milestone-v8",
+        "receipt-aromatny-mir",
+        "text_scores",
+        "payment-and-vat",
+        {
+          "name": "payment-and-vat",
+          "expected": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+          "actual": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+          "roi": [
+            0.2125,
+            0.735625,
+            0.6416666666666667,
+            0.766875
+          ],
+          "edits": 0,
+          "reference_characters": 41,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.05,
+          "passed": true
+        },
+        {
+          "name": "payment-and-vat",
+          "expected": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+          "actual": "БЕЗНАЛИЧНЫМИ =355.96 УМА НДС 20% =59.34",
+          "roi": [
+            0.2125,
+            0.735625,
+            0.6416666666666667,
+            0.766875
+          ],
+          "edits": 2,
+          "reference_characters": 41,
+          "cer": 0.04878048780487805,
+          "wer": 0.16666666666666666,
+          "limit": 0.05,
+          "passed": true
+        }
+      ]
+    ],
+    "reason": "V8 was rejected for old-cohort numeric regressions. Retain its 133/133 table and 43/60 field development floor, not every intermediate text peak. The two-character difference still meets the unchanged official limit and equals original C; exact scores remain published."
+  }
+]

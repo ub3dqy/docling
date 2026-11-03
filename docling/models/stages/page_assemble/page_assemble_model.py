@@ -4,6 +4,7 @@
 import logging
 import re
 from collections.abc import Iterable
+from itertools import count
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
@@ -34,6 +35,7 @@ from docling.models.base_layout_model import (
 )
 from docling.models.base_model import BasePageModel
 from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
+from docling.utils.ocr_table_content import record_ocr_table_coverage
 from docling.utils.ocr_table_grid import table_from_aligned_ocr
 from docling.utils.profiling import TimeRecorder
 from docling.utils.text_normalization import (
@@ -46,6 +48,7 @@ _log = logging.getLogger(__name__)
 
 class PageAssembleOptions(BaseModel):
     recover_ocr_tables: bool = False
+    refine_ocr_lines: bool = True
 
 
 class PageAssembleModel(BasePageModel):
@@ -58,6 +61,68 @@ class PageAssembleModel(BasePageModel):
     ):
         self.options = options
         self.ocr_refiner = ocr_refiner
+
+    @staticmethod
+    def _cluster_tree(cluster: Cluster) -> Iterable[Cluster]:
+        yield cluster
+        for child in cluster.children:
+            yield from PageAssembleModel._cluster_tree(child)
+
+    def _recover_unmatched_table_text(
+        self, table: Table, cluster_id: int
+    ) -> tuple[Table | None, TextElement | None]:
+        missing = table.unmatched_ocr_cells
+        if not missing:
+            return table, None
+        complete_fallback = (
+            not table.table_cells or len(missing) >= 0.2 * table.source_cell_count
+        )
+        if complete_fallback:
+            cells = []
+            seen = set()
+            for cluster in self._cluster_tree(table.cluster):
+                for cell in cluster.cells:
+                    identity = (
+                        cell.text,
+                        tuple(cell.rect.to_bounding_box().as_tuple()),
+                        cell.from_ocr,
+                    )
+                    if identity not in seen:
+                        cells.append(cell)
+                        seen.add(identity)
+        else:
+            cells = missing
+        if not cells:
+            return table, None
+        boxes = [cell.rect.to_bounding_box() for cell in cells]
+        cluster = Cluster(
+            id=cluster_id,
+            label=DocItemLabel.TEXT,
+            bbox=BoundingBox(
+                l=min(box.l for box in boxes),
+                t=min(box.t for box in boxes),
+                r=max(box.r for box in boxes),
+                b=max(box.b for box in boxes),
+            ),
+            cells=cells,
+        )
+        text = self.sanitize_text(cell_text_lines(cells))
+        _log.warning(
+            "Table %s left %s of %s source tokens unplaced; preserving source text%s",
+            table.id,
+            len(missing),
+            table.source_cell_count,
+            " instead of the incomplete table"
+            if complete_fallback
+            else " beside the table",
+        )
+        return (None if complete_fallback else table), TextElement(
+            id=cluster_id,
+            label=DocItemLabel.TEXT,
+            page_no=table.page_no,
+            cluster=cluster,
+            text=text,
+        )
 
     @staticmethod
     def _match_hyperlink(
@@ -294,7 +359,7 @@ class PageAssembleModel(BasePageModel):
             else:
                 with TimeRecorder(conv_res, "page_assemble"):
                     assert page.predictions.layout is not None
-                    if self.ocr_refiner is not None:
+                    if self.ocr_refiner is not None and self.options.refine_ocr_lines:
                         self.ocr_refiner.refine_lines(
                             page, image_input=conv_res.input.format == InputFormat.IMAGE
                         )
@@ -305,6 +370,17 @@ class PageAssembleModel(BasePageModel):
                     headers: List[PageElement] = []
                     body: List[PageElement] = []
                     form_fields = page.predictions.form_fields or FormFieldPrediction()
+                    recovery_ids = count(
+                        1
+                        + max(
+                            (
+                                nested.id
+                                for cluster in page.predictions.layout.clusters
+                                for nested in self._cluster_tree(cluster)
+                            ),
+                            default=-1,
+                        )
+                    )
 
                     for cluster in page.predictions.layout.clusters:
                         # _log.info("Cluster label seen:", cluster.label)
@@ -347,8 +423,24 @@ class PageAssembleModel(BasePageModel):
                                     cluster=cluster,
                                     page_no=page.page_no,
                                 )
-                            elements.append(tbl)
-                            body.append(tbl)
+                                record_ocr_table_coverage(
+                                    tbl,
+                                    [
+                                        cell
+                                        for nested in self._cluster_tree(cluster)
+                                        for cell in nested.cells
+                                    ],
+                                    matched_token_ids=set(),
+                                )
+                            tbl, recovered_text = self._recover_unmatched_table_text(
+                                tbl, next(recovery_ids)
+                            )
+                            if tbl is not None:
+                                elements.append(tbl)
+                                body.append(tbl)
+                            if recovered_text is not None:
+                                elements.append(recovered_text)
+                                body.append(recovered_text)
                         elif cluster.label == FIGURE_LABEL:
                             fig = None
                             if page.predictions.figures_classification:

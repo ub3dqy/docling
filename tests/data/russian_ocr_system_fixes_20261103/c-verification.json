@@ -1,0 +1,19 @@
+{
+  "completed_utc": "2026-11-03T05:50:40.776349+00:00",
+  "completed": [
+    {
+      "cohort": "known-c",
+      "exit_code": 1,
+      "passed": 4,
+      "total": 10,
+      "report_sha256": "cc040e0eb385a71915a920bf085d1d9e3456ec8f0ce0fff6aff07e2434356563",
+      "input_manifest_sha256": "e43f5553af23daa014cb44a736ee3b849c8b4879c3ad0b1ab8e385553d8ba8ae"
+    }
+  ],
+  "integrity": {
+    "runtime_unchanged": true,
+    "models_unchanged": true,
+    "fixed_inputs_unchanged": true,
+    "runner_unchanged": true
+  }
+}

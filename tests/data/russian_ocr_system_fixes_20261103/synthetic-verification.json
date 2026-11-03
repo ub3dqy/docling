@@ -1,0 +1,16 @@
+{
+  "completed_utc": "2026-11-03T05:37:31.318620+00:00",
+  "completed": [
+    {
+      "cohort": "synthetic",
+      "exit_code": 0,
+      "report_sha256": "986eb0d54aa52ce910c1e4f5f58d42d852ab23604b5772ea4cd733862822ef1b"
+    }
+  ],
+  "integrity": {
+    "runtime_unchanged": true,
+    "models_unchanged": true,
+    "fixed_inputs_unchanged": true,
+    "runner_unchanged": true
+  }
+}

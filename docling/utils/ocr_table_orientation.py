@@ -34,9 +34,21 @@ class OrientedGrid:
 
     def restore(self, table: Table, original: Cluster) -> Table:
         inverse_size = (self.size[1], self.size[0])
+        geometry = table.ocr_grid_geometry
+        if geometry is not None:
+            (a, b, c), (d, e, f) = geometry.transform
+            # Compose the original-page quarter turn with the accepted warp.
+            # The grid's own coordinates stay upright at every reading DPI.
+            transform = (
+                ((-b, a, b * self.size[0] + c), (-e, d, e * self.size[0] + f))
+                if self.angle == 90
+                else ((b, -a, a * self.size[1] + c), (e, -d, d * self.size[1] + f))
+            )
+            geometry = geometry.model_copy(update={"transform": transform})
         return table.model_copy(
             update={
                 "cluster": original,
+                "ocr_grid_geometry": geometry,
                 "orientation": Orientation.ROT_90
                 if self.angle == 90
                 else Orientation.ROT_270,
@@ -49,6 +61,20 @@ class OrientedGrid:
                     if cell.bbox is not None
                     else cell
                     for cell in table.table_cells
+                ],
+                "unmatched_ocr_cells": [
+                    cell.model_copy(
+                        update={
+                            "rect": BoundingRectangle.from_bounding_box(
+                                turn_box(
+                                    cell.rect.to_bounding_box(),
+                                    360 - self.angle,
+                                    inverse_size,
+                                )
+                            )
+                        }
+                    )
+                    for cell in table.unmatched_ocr_cells
                 ],
             }
         )

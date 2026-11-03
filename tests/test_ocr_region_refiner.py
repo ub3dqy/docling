@@ -55,23 +55,24 @@ def test_terminal_mark_needs_a_separate_full_height_stem_and_lower_dot(mark):
 
 
 @pytest.mark.parametrize("confidence", [0.65, 0.83])
+@pytest.mark.parametrize(
+    "original",
+    ["Приходите к нам снова!", "Обращайтесь снова?", "Стоимость, ед."],
+)
 def test_observed_sentence_ending_needs_stronger_votes_when_already_confident(
     confidence,
+    original,
 ):
     from types import SimpleNamespace
 
     refiner = object.__new__(OcrRegionRefiner)
     refiner._dictionary = SimpleNamespace(word_is_known=lambda _: True)
     candidates = [
-        RegionReading(
-            "Приходите к нам снова", 0.999, "cyrillic-v6-medium", "row-source"
-        ),
-        RegionReading("Приходите к нам снова", 0.85, "cyrillic-v6-tiny", "row-source"),
+        RegionReading(original[:-1], 0.999, "cyrillic-v6-medium", "row-source"),
+        RegionReading(original[:-1], 0.85, "cyrillic-v6-tiny", "row-source"),
     ]
-    selected = refiner._choose_text("Приходите к нам снова!", confidence, candidates)
-    assert selected.text == (
-        "Приходите к нам снова!" if confidence >= 0.8 else "Приходите к нам снова"
-    )
+    selected = refiner._choose_text(original, confidence, candidates)
+    assert selected.text == (original if confidence >= 0.8 else original[:-1])
 
 
 def test_multiple_preprocessings_of_one_recognizer_are_not_independent_votes():
@@ -82,6 +83,46 @@ def test_multiple_preprocessings_of_one_recognizer_are_not_independent_votes():
         RegionReading("32 785", 0.97, "recognizer-b", "clean"),
     ]
     assert choose_number("32 785", readings) == "32 785"
+
+
+@pytest.mark.parametrize("source_confidence", [0.99991, 0.95])
+def test_sentence_ending_vote_uses_each_recognizers_strongest_reading(
+    source_confidence,
+):
+    from types import SimpleNamespace
+
+    refiner = object.__new__(OcrRegionRefiner)
+    refiner._dictionary = SimpleNamespace(word_is_known=lambda _: True)
+    original = "Масса, кг."  # noqa: RUF001 -- Russian unit caption
+    readings = [
+        RegionReading(original[:-1], 0.99995, "recognizer-a", "clean"),
+        RegionReading(original, 0.99979, "recognizer-a", "source"),
+        RegionReading(original[:-1], 0.96686, "recognizer-b", "clean"),
+        RegionReading(original, source_confidence, "recognizer-b", "source"),
+    ]
+    assert refiner._choose_text(original, 0.88, readings).text == (
+        original if source_confidence > 0.96686 else original[:-1]
+    )
+
+
+@pytest.mark.parametrize("original_ending,correct_ending", [("?", "!"), ("!", "?")])
+def test_period_protection_retains_established_question_and_exclamation_corrections(
+    original_ending,
+    correct_ending,
+):
+    from types import SimpleNamespace
+
+    refiner = object.__new__(OcrRegionRefiner)
+    refiner._dictionary = SimpleNamespace(word_is_known=lambda _: True)
+    original = "Read : carefully" + original_ending
+    corrected = "Read carefully" + correct_ending
+    readings = [
+        RegionReading(corrected, 0.99995, "recognizer-a", "clean"),
+        RegionReading(original, 0.99979, "recognizer-a", "source"),
+        RegionReading(corrected, 0.96686, "recognizer-b", "clean"),
+        RegionReading(original, 0.99991, "recognizer-b", "source"),
+    ]
+    assert refiner._choose_text(original, 0.88, readings).text == corrected
 
 
 def test_two_recognizers_can_correct_a_digit_without_a_reference_answer():

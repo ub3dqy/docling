@@ -1,0 +1,10 @@
+{
+  "former_runtime_file_sha256": "a40f9ad2b8995df0ac400fd01f7882c05e8a1c63080f8a0ea40ffa934ee102e8",
+  "former_runtime_reconstruction_matches_frozen_hash": true,
+  "generated_fixture": "test_sheared_open_grid_survives_failed_rectification",
+  "fixture_file_sha256": "2f3e42466cf48753bdd1139d51cd5838fa3b2667df4f23ce713e59ed85175fe9",
+  "passed": {
+    "former_v11": false,
+    "fixed_v12": true
+  }
+}

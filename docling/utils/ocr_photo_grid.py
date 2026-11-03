@@ -15,7 +15,8 @@ from docling_core.types.doc import BoundingBox, TableCell
 from docling_core.types.doc.page import TextCell
 from PIL import Image
 
-from docling.datamodel.base_models import Cluster, Table
+from docling.datamodel.base_models import Cluster, OcrGridGeometry, Table
+from docling.utils.ocr_table_content import record_ocr_table_coverage
 
 
 @dataclass(frozen=True)
@@ -116,6 +117,61 @@ def photo_grid(gray: np.ndarray, *, padding: int = 0) -> PhotoGrid | None:
     return PhotoGrid(columns, rows, horizontal_slope, vertical_slope, width, height)
 
 
+def _cell_regions(
+    straight: np.ndarray,
+    *,
+    table: Table,
+    columns: list[float],
+    rows: list[float],
+    scale: float,
+) -> dict[int, np.ndarray]:
+    margin = max(1, round(scale * 0.5))
+    return {
+        id(cell): straight[
+            round(rows[cell.start_row_offset_idx]) + margin : round(
+                rows[cell.end_row_offset_idx]
+            )
+            - margin,
+            round(columns[cell.start_col_offset_idx]) + margin : round(
+                columns[cell.end_col_offset_idx]
+            )
+            - margin,
+        ]
+        for cell in table.table_cells
+    }
+
+
+def accepted_grid_regions(
+    image: Image.Image, table: Table, *, scale: float
+) -> dict[int, np.ndarray]:
+    """Sample an accepted grid at reading DPI without detecting its rules again."""
+    import cv2
+
+    geometry = table.ocr_grid_geometry
+    if (
+        not table.from_ocr_grid
+        or geometry is None
+        or len(geometry.rows) != table.num_rows + 1
+        or len(geometry.columns) != table.num_cols + 1
+    ):
+        return {}
+    transform = np.array(geometry.transform, dtype=float)
+    transform[:, 2] *= scale
+    straight = cv2.warpAffine(
+        np.asarray(image.convert("L")),
+        transform,
+        (ceil(geometry.width * scale), ceil(geometry.height * scale)),
+        borderValue=255,
+    )
+    return _cell_regions(
+        straight,
+        table=table,
+        columns=[position * scale for position in geometry.columns],
+        rows=[position * scale for position in geometry.rows],
+        scale=scale,
+    )
+
+
 def photo_table_regions(
     image: Image.Image, table: Table, *, scale: float
 ) -> dict[int, np.ndarray]:
@@ -149,20 +205,9 @@ def photo_table_regions(
     straight = cv2.warpAffine(
         gray, transform, (grid.width, grid.height), borderValue=255
     )
-    margin = max(1, round(scale * 0.5))
-    return {
-        id(cell): straight[
-            round(grid.rows[cell.start_row_offset_idx]) + margin : round(
-                grid.rows[cell.end_row_offset_idx]
-            )
-            - margin,
-            round(grid.columns[cell.start_col_offset_idx]) + margin : round(
-                grid.columns[cell.end_col_offset_idx]
-            )
-            - margin,
-        ]
-        for cell in table.table_cells
-    }
+    return _cell_regions(
+        straight, table=table, columns=grid.columns, rows=grid.rows, scale=scale
+    )
 
 
 def table_from_photo_grid(
@@ -189,8 +234,10 @@ def table_from_photo_grid(
     grid = photo_grid(gray, padding=padding)
     if grid is None:
         return None
+    words = [word for word in words if word.text.strip()]
     contents: dict[tuple[int, int], list[TextCell]] = defaultdict(list)
-    for word in words:
+    placed: set[int] = set()
+    for word_index, word in enumerate(words):
         bounds = word.rect.to_bounding_box()
         x, y = grid.project(
             (bounds.l + bounds.r) * scale / 2 - left,
@@ -200,6 +247,7 @@ def table_from_photo_grid(
         row = bisect_right(grid.rows, y) - 1
         if 0 <= col < len(grid.columns) - 1 and 0 <= row < len(grid.rows) - 1:
             contents[row, col].append(word)
+            placed.add(word_index)
     if sum(map(len, contents.values())) < len(words) * 0.9:
         return None
     cells = []
@@ -232,9 +280,27 @@ def table_from_photo_grid(
                     column_header=row == 0,
                 )
             )
-    return Table(
+    table = Table(
         from_ocr_grid=True,
         ocr_grid_rectified=True,
+        ocr_grid_geometry=OcrGridGeometry(
+            transform=(
+                (
+                    1,
+                    -grid.vertical_slope,
+                    (-left + grid.vertical_slope * (top + grid.height / 2)) / scale,
+                ),
+                (
+                    -grid.horizontal_slope,
+                    1,
+                    (-top + grid.horizontal_slope * (left + grid.width / 2)) / scale,
+                ),
+            ),
+            columns=[position / scale for position in grid.columns],
+            rows=[position / scale for position in grid.rows],
+            width=grid.width / scale,
+            height=grid.height / scale,
+        ),
         id=cluster.id,
         label=cluster.label,
         page_no=page_no,
@@ -244,3 +310,5 @@ def table_from_photo_grid(
         num_rows=len(grid.rows) - 1,
         num_cols=len(grid.columns) - 1,
     )
+    record_ocr_table_coverage(table, words, matched_token_ids=placed)
+    return table

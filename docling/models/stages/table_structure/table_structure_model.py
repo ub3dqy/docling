@@ -16,6 +16,7 @@ from docling_core.types.doc.page import (
     TextCellUnit,
 )
 from PIL import ImageDraw
+from pydantic import BaseModel, TypeAdapter
 
 from docling.datamodel.accelerator_options import AcceleratorDevice, AcceleratorOptions
 from docling.datamodel.base_models import (
@@ -34,12 +35,17 @@ from docling.datamodel.spatial import BoundingBoxSpatialIndex
 from docling.models.base_table_model import BaseTableStructureModel
 from docling.models.utils.hf_model_download import download_hf_model
 from docling.utils.accelerator_utils import decide_device
+from docling.utils.ocr_table_content import record_ocr_table_coverage
 from docling.utils.ocr_table_grid import table_from_ocr_grid
 from docling.utils.ocr_table_orientation import upright_table_view
 from docling.utils.profiling import TimeRecorder
 from docling.utils.text_normalization import normalize_extracted_text
 
 _log = logging.getLogger(__name__)
+
+
+class _MatchedSourceCell(BaseModel):
+    cell_id: int
 
 
 def _uncovered(cells: Sequence[TextCell], covers: Sequence[TextCell]) -> list[TextCell]:
@@ -75,7 +81,53 @@ def _words_and_ocr_cells(
     ocr_lines = [c for c in cluster_cells if c.from_ocr]
     native_words = _uncovered([w for w in word_cells if not w.from_ocr], ocr_lines)
     ocr_words = _uncovered([w for w in word_cells if w.from_ocr], native_words)
-    return native_words + ocr_words + _uncovered(ocr_lines, ocr_words)
+    # Refinement can change a line after word boxes were emitted. Never use
+    # stale word text in place of that corrected line. Keep fine word geometry
+    # only when it still represents the complete current reading.
+    groups: dict[int, list[int]] = {index: [] for index in range(len(ocr_lines))}
+    line_index = BoundingBoxSpatialIndex()
+    for index, line in enumerate(ocr_lines):
+        line_index.insert(index, line.rect.to_bounding_box())
+    retained: dict[int, TextCell] = {}
+    for position, word in enumerate(ocr_words):
+        word_box = word.rect.to_bounding_box()
+        candidates = [
+            (word_box.intersection_over_self(line.rect.to_bounding_box()), index)
+            for index in line_index.intersection(word_box)
+            for line in [ocr_lines[index]]
+        ]
+        overlap, owner = max(candidates, default=(0.0, -1))
+        if overlap >= 0.5:
+            groups[owner].append(position)
+        else:
+            retained[position] = word
+    fallbacks = []
+    for index, line in enumerate(ocr_lines):
+        dx = line.rect.r_x2 - line.rect.r_x3
+        dy = line.rect.r_y2 - line.rect.r_y3
+        positions = groups[index]
+        words = sorted(
+            (ocr_words[position] for position in positions),
+            key=lambda word: (
+                sum((word.rect.r_x0, word.rect.r_x1, word.rect.r_x2, word.rect.r_x3))
+                * dx
+                + sum((word.rect.r_y0, word.rect.r_y1, word.rect.r_y2, word.rect.r_y3))
+                * dy
+            ),
+        )
+        observed = "".join("".join(word.text.split()) for word in words)
+        if words and observed == "".join(line.text.split()):
+            retained.update((position, ocr_words[position]) for position in positions)
+        elif positions:
+            # Keep the source token order even if layout clusters list lines
+            # differently. A refined line replaces its stale words in place;
+            # appending it after every other word reverses wrapped sentences.
+            retained[min(positions)] = line
+        else:
+            fallbacks.append(line)
+    return (
+        native_words + [retained[position] for position in sorted(retained)] + fallbacks
+    )
 
 
 class TableStructureModel(BaseTableStructureModel):
@@ -400,6 +452,22 @@ class TableStructureModel(BaseTableStructureModel):
                         cluster=table_cluster,
                         label=table_cluster.label,
                     )
+
+                    if self.do_cell_matching:
+                        # TableFormer exposes the source IDs that actually
+                        # reached its responses after matching/postprocessing.
+                        responses = TypeAdapter(
+                            list[_MatchedSourceCell]
+                        ).validate_python(
+                            table_out["predict_details"].get("docling_responses", [])
+                        )
+                        record_ocr_table_coverage(
+                            tbl,
+                            tcells,
+                            matched_token_ids={
+                                response.cell_id for response in responses
+                            },
+                        )
 
                     table_prediction.table_map[table_cluster.id] = (
                         tbl if view is None else view.restore(tbl, table_cluster)

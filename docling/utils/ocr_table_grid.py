@@ -17,6 +17,7 @@ from PIL import Image
 
 from docling.datamodel.base_models import Cluster, Table
 from docling.utils.ocr_photo_grid import table_from_photo_grid
+from docling.utils.ocr_table_content import record_ocr_table_coverage
 from docling.utils.ocr_table_orientation import label_first_rows, sideways_grid_views
 
 
@@ -40,6 +41,54 @@ def _row_centers(positions: list[float]) -> list[float]:
     return [median(group) for group in groups]
 
 
+def _fragmented_verticals(
+    binary_views: list[np.ndarray], width: int, height: int
+) -> list[float]:
+    """Find ruling tracks whose short pieces jointly cover the table height.
+
+    A faint separator can be broken at every horizontal rule. Requiring one
+    segment to span half the table loses real columns. Character stems alone
+    must not qualify: require long pieces and substantial nonduplicated coverage.
+    """
+    import cv2
+
+    tracks: list[tuple[float, float, float]] = []
+    for binary in binary_views:
+        segments = cv2.HoughLinesP(
+            binary,
+            1,
+            np.pi / 1800,
+            threshold=max(20, height // 30),
+            minLineLength=max(24, height * 0.1),
+            maxLineGap=max(3, height // 80),
+        )
+        if segments is None:
+            continue
+        for x1, y1, x2, y2 in segments.reshape(-1, 4):
+            dy = float(y2 - y1)
+            if abs(dy) < max(24, height * 0.1) or abs(x2 - x1) > 0.025 * abs(dy):
+                continue
+            anchor = float(x1) + (height / 2 - float(y1)) * float(x2 - x1) / dy
+            tracks.append((anchor, float(min(y1, y2)), float(max(y1, y2))))
+    groups: list[list[tuple[float, float, float]]] = []
+    for track in sorted(tracks):
+        if groups and track[0] - groups[-1][0][0] <= max(3, width * 0.008):
+            groups[-1].append(track)
+        else:
+            groups.append([track])
+    boundaries = []
+    for group in groups:
+        bands: list[tuple[float, float]] = []
+        for _, top, bottom in sorted(group, key=lambda track: track[1]):
+            if bands and top <= bands[-1][1]:
+                bands[-1] = bands[-1][0], max(bottom, bands[-1][1])
+            else:
+                bands.append((top, bottom))
+        if sum(bottom - top for top, bottom in bands) >= height * 0.65:
+            boundaries.append(median(track[0] for track in group))
+    return boundaries
+
+
 def table_from_ocr_grid(
     image: Image.Image,
     cluster: Cluster,
@@ -50,6 +99,7 @@ def table_from_ocr_grid(
     allow_open_labels: bool = False,
     adaptive_thresholds: bool = False,
 ) -> Table | None:
+    words = [word for word in words if word.text.strip()]
     if not words or not all(word.from_ocr for word in words):
         return None
     views = sideways_grid_views(image, cluster, words, scale=scale)
@@ -179,9 +229,27 @@ def _table_from_ocr_grid(
         if abs(y2 - y1) >= height * 0.45
         and abs(x2 - x1) <= (0.05 if allow_open_labels else 0.025) * abs(y2 - y1)
     ]
-    columns = _centers(verticals, max(3, width * 0.008))
+    column_tolerance = max(3, width * 0.008)
+    columns = _centers(verticals, column_tolerance)
+    # Short fragments can supply a missing rule. They must not shift an
+    # already supported long rule and change an otherwise valid source crop.
+    for position in _fragmented_verticals(binary_views, width, height):
+        if all(abs(position - column) > column_tolerance for column in columns):
+            columns.append(position)
     if len(columns) < 4:
+        # A wholly unsupported grid still needs the skew-aware fallback below.
         return None
+    if len(binary_views) == 1:
+        # A global threshold can erase one faint interior separator while the
+        # other rules still form a plausible but incomplete grid. Add locally
+        # supported tracks only after preserving every established boundary.
+        local_ink = cv2.adaptiveThreshold(
+            gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 31, 4
+        )
+        for position in _fragmented_verticals([local_ink], width, height):
+            if all(abs(position - column) > column_tolerance for column in columns):
+                columns.append(position)
+    columns.sort()
     if allow_open_labels and columns[0] > width * 0.06:
         # Some financial forms have no left rule around the label column.
         # Repeated full-width row rules and real labels must support that column.
@@ -233,20 +301,73 @@ def _table_from_ocr_grid(
     if any(end - start <= 2 * tolerance for start, end in pairwise(rows)):
         return None
 
+    vertical_slopes = [
+        float(x2 - x1) / float(y2 - y1)
+        for x1, y1, x2, y2 in segments
+        if abs(y2 - y1) >= height * 0.45 and abs(x2 - x1) <= 0.025 * abs(y2 - y1)
+    ]
+    rectified = None
+    if vertical_slopes and abs(median(vertical_slopes)) * height > max(
+        3, min(end - start for start, end in pairwise(columns)) * 0.1
+    ):
+        # Retain established numeric cells and their original source pixels.
+        # A supported warp can locate short dashes near a slanted border without
+        # rebuilding every cell or interpolating faint numeric glyphs again.
+        rectified = table_from_photo_grid(
+            image, cluster, words, page_no=page_no, scale=scale
+        )
+        if rectified is not None and (
+            rectified.num_cols != len(columns) - 1
+            or rectified.num_rows != len(rows) - 1
+        ):
+            rectified = None
+    geometry = rectified.ocr_grid_geometry if rectified is not None else None
+    rectified_cells = (
+        {
+            (cell.start_row_offset_idx, cell.start_col_offset_idx): cell
+            for cell in rectified.table_cells
+        }
+        if rectified is not None
+        else {}
+    )
+    moved_markers: set[tuple[int, int]] = set()
+
     contents: dict[tuple[int, int], list[TextCell]] = defaultdict(list)
-    assigned = 0
+    placed: set[int] = set()
     outside: list[TextCell] = []
-    for word in words:
+    for word_index, word in enumerate(words):
         word_box = word.rect.to_bounding_box()
         x = (word_box.l + word_box.r) * scale / 2 - left
         y = (word_box.t + word_box.b) * scale / 2 - top
         column, row = bisect_right(columns, x) - 1, bisect_right(rows, y) - 1
+        if (
+            geometry is not None
+            and not any(char.isdigit() for char in word.text)
+            and sum(char.isalpha() for char in word.text) <= 1
+            and any(char in "-_\u2013\u2014" for char in word.text)
+        ):
+            (a, b, c), (d, e, f) = geometry.transform
+            source_x, source_y = (x + left) / scale, (y + top) / scale
+            marker_column = (
+                bisect_right(geometry.columns, a * source_x + b * source_y + c) - 1
+            )
+            marker_row = (
+                bisect_right(geometry.rows, d * source_x + e * source_y + f) - 1
+            )
+            if (
+                0 <= marker_column < len(columns) - 1
+                and 0 <= marker_row < len(rows) - 1
+                and (marker_row, marker_column) != (row, column)
+            ):
+                column, row = marker_column, marker_row
+                moved_markers.add((row, column))
         if 0 <= column < len(columns) - 1 and 0 <= row < len(rows) - 1:
             contents[row, column].append(word)
-            assigned += 1
+            placed.add(word_index)
         elif allow_open_labels and not rows[0] <= y <= rows[-1]:
             outside.append(word)
-    if assigned < (len(words) - len(outside)) * 0.9:
+            placed.add(word_index)
+    if len(placed) - len(outside) < (len(words) - len(outside)) * 0.9:
         return None
     offset = int(bool(outside))
     cells = [
@@ -272,7 +393,9 @@ def _table_from_ocr_grid(
             start_col_offset_idx=column,
             end_col_offset_idx=column + 1,
             column_header=row == 0,
-            bbox=BoundingBox(
+            bbox=rectified_cells[row, column].bbox
+            if (row, column) in moved_markers
+            else BoundingBox(
                 l=(left + columns[column]) / scale,
                 r=(left + columns[column + 1]) / scale,
                 t=(top + rows[row]) / scale,
@@ -302,8 +425,10 @@ def _table_from_ocr_grid(
                 ),
             ),
         )
-    return Table(
+    table = Table(
         from_ocr_grid=True,
+        ocr_grid_rectified=geometry is not None and not outside,
+        ocr_grid_geometry=geometry if not outside else None,
         id=cluster.id,
         label=cluster.label,
         page_no=page_no,
@@ -313,6 +438,8 @@ def _table_from_ocr_grid(
         num_rows=len(rows) - 1 + offset,
         num_cols=len(columns) - 1,
     )
+    record_ocr_table_coverage(table, words, matched_token_ids=placed)
+    return table
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,157 @@
+{
+  "utc": "2026-11-03T06:40:48.499439+00:00",
+  "comparisons": [
+    {
+      "cohort": "original-c",
+      "old_report_sha256": "06d5cc10b5d637445a76b968f06c9bfa4fd5d3e89cbc87fa6d134ce388a1dba0",
+      "new_report_sha256": "cc040e0eb385a71915a920bf085d1d9e3456ec8f0ce0fff6aff07e2434356563",
+      "regressions": [],
+      "changed_previously_failed_text": []
+    },
+    {
+      "cohort": "c-numeric-milestone-v8",
+      "old_report_sha256": "f36c0f5c1ab7ad6e6216758a0a789c8e74e76b8a7ed8fb56957860aed2662190",
+      "new_report_sha256": "cc040e0eb385a71915a920bf085d1d9e3456ec8f0ce0fff6aff07e2434356563",
+      "regressions": [],
+      "changed_previously_failed_text": [],
+      "nonblocking_text_differences_to_rejected_candidate": [
+        [
+          "c-numeric-milestone-v8",
+          "receipt-aromatny-mir",
+          "text_scores",
+          "payment-and-vat",
+          {
+            "name": "payment-and-vat",
+            "expected": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+            "actual": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+            "roi": [
+              0.2125,
+              0.735625,
+              0.6416666666666667,
+              0.766875
+            ],
+            "edits": 0,
+            "reference_characters": 41,
+            "cer": 0.0,
+            "wer": 0.0,
+            "limit": 0.05,
+            "passed": true
+          },
+          {
+            "name": "payment-and-vat",
+            "expected": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+            "actual": "БЕЗНАЛИЧНЫМИ =355.96 УМА НДС 20% =59.34",
+            "roi": [
+              0.2125,
+              0.735625,
+              0.6416666666666667,
+              0.766875
+            ],
+            "edits": 2,
+            "reference_characters": 41,
+            "cer": 0.04878048780487805,
+            "wer": 0.16666666666666666,
+            "limit": 0.05,
+            "passed": true
+          }
+        ]
+      ],
+      "reason": "V8 was rejected for old-cohort numeric regressions. Retain its 133/133 table and 43/60 field development floor, not every intermediate text peak. The two-character difference still meets the unchanged official limit and equals original C; exact scores remain published."
+    },
+    {
+      "cohort": "latest-b",
+      "old_report_sha256": "ff08dd4d6112ce5caeba4f6ab9ca85f57f506403541af73c67e329a3d797982c",
+      "new_report_sha256": "34fbf11f53fb987d9bfe0210a1de9e2a3b2fb01a81f52efe07c4742769a2103a",
+      "regressions": [],
+      "changed_previously_failed_text": []
+    },
+    {
+      "cohort": "newest",
+      "old_report_sha256": "b1bd9061eb67ed8e336c8b0a3d71ef7288f2a6eaffa9cf20be4019ed887672c8",
+      "new_report_sha256": "4a57ce60193adb8650b50c38daf5f1585521f83860742c9f3f4f643d7aa1c710",
+      "regressions": [],
+      "changed_previously_failed_text": []
+    },
+    {
+      "cohort": "unseen",
+      "old_report_sha256": "0440abcc3d16a1e5501d10c75f1d6c74b022cfcec20255e29ba532ad33618f51",
+      "new_report_sha256": "eb4ba7619cd0ccb06d92cbff9908c00e9eb33fe3cb47da9315b9017b55f325a3",
+      "regressions": [],
+      "changed_previously_failed_text": []
+    },
+    {
+      "cohort": "previous",
+      "old_report_sha256": "65f6a664e4924529a6b6f3d5ef8e8b117640a7c039662e5286c2ddf59a6a35c2",
+      "new_report_sha256": "6f557cd4e14560d00264587ed6f1961c130873e951586737808c6704d3d2fa7b",
+      "regressions": [],
+      "changed_previously_failed_text": []
+    }
+  ],
+  "nonblocking_text_differences_to_rejected_v8": [
+    [
+      "c-numeric-milestone-v8",
+      "receipt-aromatny-mir",
+      "text_scores",
+      "payment-and-vat",
+      {
+        "name": "payment-and-vat",
+        "expected": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+        "actual": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+        "roi": [
+          0.2125,
+          0.735625,
+          0.6416666666666667,
+          0.766875
+        ],
+        "edits": 0,
+        "reference_characters": 41,
+        "cer": 0.0,
+        "wer": 0.0,
+        "limit": 0.05,
+        "passed": true
+      },
+      {
+        "name": "payment-and-vat",
+        "expected": "БЕЗНАЛИЧНЫМИ =355.96 СУММА НДС 20% =59.34",
+        "actual": "БЕЗНАЛИЧНЫМИ =355.96 УМА НДС 20% =59.34",
+        "roi": [
+          0.2125,
+          0.735625,
+          0.6416666666666667,
+          0.766875
+        ],
+        "edits": 2,
+        "reference_characters": 41,
+        "cer": 0.04878048780487805,
+        "wer": 0.16666666666666666,
+        "limit": 0.05,
+        "passed": true
+      }
+    ]
+  ],
+  "old_table_shapes_preserved": true,
+  "amfbc_notes_column": [
+    "",
+    "",
+    "26",
+    "29",
+    "",
+    "",
+    "30",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "bank_caption_source_order_preserved": true,
+  "gate_policy": "Preserve original-cohort checks and numeric C development floor; official scores unchanged.",
+  "regressions": [],
+  "fields_lost_after_correct_reading": [],
+  "can_507_captions": {
+    "Кассовый чек": true,
+    "БЕЗНАЛИЧНЫМИ": true
+  },
+  "known_vat_association_restored": true,
+  "d_inference_started": false,
+  "manual_review_before_d": true
+}

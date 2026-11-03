@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-03T04:22:25.971584+00:00",
+  "reason": "Captured previous/bank-liabilities OCR lines are exactly unchanged, but mixed refined-line/word token assembly reorders a table-cell sentence. Stop before D for source-order preservation fix.",
+  "no_complete_cohort_score_claimed": true,
+  "new_d_inference_started": false,
+  "completed_case_score_count": 4,
+  "integrity": {
+    "runtime_unchanged": true,
+    "models_unchanged": true,
+    "fixed_inputs_unchanged": true
+  }
+}

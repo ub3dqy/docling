@@ -24,6 +24,12 @@ if TYPE_CHECKING:
     from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
 
 
+def _rectified_dash(gray: np.ndarray, table: Table, quarter_turns: int) -> bool:
+    if quarter_turns and table.ocr_grid_geometry is None:
+        gray = np.rot90(gray, quarter_turns).copy()
+    return printed_dash(gray)
+
+
 def refine_table_regions(
     refiner: OcrRegionRefiner,
     page: Page,
@@ -68,19 +74,25 @@ def refine_table_regions(
                 photo_number_readings,
                 refine_photo_labels,
             )
-            from docling.utils.ocr_photo_grid import photo_table_regions
+            from docling.utils.ocr_photo_grid import (
+                accepted_grid_regions,
+                photo_table_regions,
+            )
 
             # Recover skewed source cells in either a photo or a scanned PDF.
             # Axis-aligned bounds can otherwise include the neighboring rule.
             # Straight PDF cells retain the established source crop. An
             # unnecessary warp can join a faint digit to its neighbouring rule.
-            regions = (
-                photo_table_regions(
-                    image, table, scale=photo_scale if image_input else 600 / 72
+            if image_input:
+                regions = photo_table_regions(image, table, scale=photo_scale)
+            elif table.ocr_grid_rectified:
+                regions = (
+                    accepted_grid_regions(image, table, scale=600 / 72)
+                    if table.ocr_grid_geometry is not None
+                    else photo_table_regions(image, table, scale=600 / 72)
                 )
-                if image_input or table.ocr_grid_rectified
-                else {}
-            )
+            else:
+                regions = {}
             if image_input:
                 refine_photo_labels(refiner, api, page, image, table, regions)
             column_keys: dict[int, list[str]] = defaultdict(list)
@@ -173,7 +185,11 @@ def refine_table_regions(
                 # Grid cells include border rules. Neural table boxes
                 # usually hug the glyphs and need a small outer margin.
                 inset = 0.35 if table.from_ocr_grid else -0.7
-                gray = regions.get(id(cell))
+                rectified_gray = regions.get(id(cell))
+                # Preserve the original shapes of faint PDF digits. A second
+                # interpolation can close a 6 into an 8. The recovered grid
+                # still supplies correct bounds and independent dash evidence.
+                gray = rectified_gray if image_input else None
                 if gray is None:
                     gray = refiner._crop(image, cell.bbox, page, inset=inset)
                 if gray is not None:
@@ -184,11 +200,29 @@ def refine_table_regions(
                     }.get(table.orientation.value, 0)
                     if quarter_turns:
                         gray = np.rot90(gray, quarter_turns).copy()
-                    if cell.text.strip() in {"", ".", "-", "_", "\u2014", "\u2013"}:
-                        if printed_dash(gray) or (
-                            image_input and printed_dash(photo_contrast(gray))
+                    empty_or_marker = cell.text.strip() in {
+                        "",
+                        ".",
+                        "-",
+                        "_",
+                        "\u2014",
+                        "\u2013",
+                    }
+                    if empty_or_marker or number_key(cell.text) is None:
+                        if (
+                            printed_dash(gray)
+                            or (
+                                not image_input
+                                and rectified_gray is not None
+                                and _rectified_dash(
+                                    rectified_gray, table, quarter_turns
+                                )
+                            )
+                            or (image_input and printed_dash(photo_contrast(gray)))
                         ):
                             cell.text = "-"
+                            continue
+                    if empty_or_marker:
                         if (
                             cell.text.strip()
                             or cell.start_col_offset_idx not in code_columns

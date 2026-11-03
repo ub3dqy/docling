@@ -67,21 +67,84 @@ def test_table_tokens_keep_full_lines_when_word_output_is_incomplete(
         )
 
 
+@pytest.mark.parametrize(
+    "original,original_confidence,reading,confidence",
+    [
+        ("We audit", 0.55, "We performed the audit", 0.96),
+        ("ab03X7", 0.45, "Product 42.90*2 =85.80", 0.75),
+        ("3.402", 0.91, "73.40*2", 0.95),
+        ("00731=", 0.86, "=137.00", 0.91),
+    ],
+)
 def test_multiscale_replaces_incomplete_line_with_its_own_words(
     monkeypatch: pytest.MonkeyPatch,
+    *,
+    original: str,
+    original_confidence: float,
+    reading: str,
+    confidence: float,
 ) -> None:
     model = _model()
     image = Image.new("RGB", (3072, 1000))
-    initial = _OcrPrediction([(_box(100, 100, 1000, 180), "We audit", 0.55)], [[]])
+    initial = _OcrPrediction(
+        [(_box(100, 100, 1000, 180), original, original_confidence)], [[]]
+    )
     alternative = _OcrPrediction(
-        [(_box(50, 50, 500, 90), "We performed the audit", 0.96)],
-        [[(_box(50, 50, 500, 90), "We performed the audit", 0.96)]],
+        [(_box(50, 50, 500, 90), reading, confidence)],
+        [[(_box(50, 50, 500, 90), reading, confidence)]],
     )
     monkeypatch.setattr(model, "_read", lambda image, **kwargs: alternative)
     prediction = model._read_multiscale(image, initial)
-    assert [line[1] for line in prediction.lines] == ["We performed the audit"]
+    assert [line[1] for line in prediction.lines] == [reading]
     assert prediction.words[0][0] == _box(100, 100, 1000, 180)
-    assert prediction.words[0][1] == "We performed the audit"
+    assert prediction.words[0][1] == reading
+
+
+def test_multiscale_tolerates_one_glyph_of_detector_border_uncertainty(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    model = _model()
+    initial = _OcrPrediction([(_box(100, 100, 206, 132), "3.402", 0.91)], [[]])
+    alternative = _OcrPrediction([(_box(59, 50, 103, 66), "73.40*2", 0.95)], [[]])
+    monkeypatch.setattr(model, "_read", lambda image, **kwargs: alternative)
+    result = model._read_multiscale(Image.new("RGB", (3072, 1000)), initial)
+    assert [line[1] for line in result.lines] == ["73.40*2"]
+
+
+def test_multiscale_uses_complete_word_boxes_instead_of_empty_detector_margins(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    model = _model()
+    initial = _OcrPrediction(
+        [(_box(100, 100, 304, 152), "573", 0.92)],
+        [[(_box(158, 102, 240, 150), "573", 0.89)]],
+    )
+    alternative = _OcrPrediction([(_box(55, 53, 123, 74), "4.75", 0.97)], [[]])
+    monkeypatch.setattr(model, "_read", lambda image, **kwargs: alternative)
+    result = model._read_multiscale(Image.new("RGB", (3072, 1000)), initial)
+    assert [line[1] for line in result.lines] == ["4.75"]
+
+
+def test_subthreshold_scale_reading_cannot_turn_an_integer_into_an_amount(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    model = _model()
+    initial = _OcrPrediction([(_box(100, 100, 300, 150), "5321", 0.6)], [[]])
+    alternative = _OcrPrediction([(_box(50, 50, 150, 75), "53.21", 0.79)], [[]])
+    monkeypatch.setattr(model, "_read", lambda image, **kwargs: alternative)
+    result = model._read_multiscale(Image.new("RGB", (3072, 1000)), initial)
+    assert [line[1] for line in result.lines] == ["5321"]
+
+
+def test_subthreshold_scale_reading_cannot_change_a_numeric_only_date(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    model = _model()
+    initial = _OcrPrediction([(_box(100, 100, 300, 150), "13.10.25", 0.4)], [[]])
+    alternative = _OcrPrediction([(_box(50, 50, 150, 75), "14.10.25", 0.79)], [[]])
+    monkeypatch.setattr(model, "_read", lambda image, **kwargs: alternative)
+    result = model._read_multiscale(Image.new("RGB", (3072, 1000)), initial)
+    assert [line[1] for line in result.lines] == ["13.10.25"]
 
 
 def test_close_ocr_fragments_keep_printed_order_and_fine_table_tokens() -> None:

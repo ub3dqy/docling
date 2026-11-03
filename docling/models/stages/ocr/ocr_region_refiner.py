@@ -987,6 +987,12 @@ class OcrRegionRefiner:
             RegionReading(original, confidence, "page", "original"),
             *readings,
         ]
+        family_confidence: dict[str, float] = {}
+        for reading in readings:
+            family = recognizer_family(reading.engine)
+            family_confidence[family] = max(
+                family_confidence.get(family, 0.0), reading.confidence
+            )
 
         def score(reading: RegionReading) -> float:
             text = normalize_mixed_script(reading.text)
@@ -997,7 +1003,7 @@ class OcrRegionRefiner:
 
                 if not compatible_receipt_text(original, text, readings=readings):
                     return -1
-            ending = re.search(r"[!?]+$", original.strip())
+            ending = re.search(r"[!?]+$|\.+$", original.strip())
             if (
                 ending is not None
                 and reading.engine != "page"
@@ -1007,6 +1013,11 @@ class OcrRegionRefiner:
                         recognizer_family(r.engine)
                         for r in readings
                         if r.confidence >= (0.95 if confidence >= 0.8 else 0.85)
+                        and (
+                            not ending[0].endswith(".")
+                            or r.confidence
+                            >= family_confidence[recognizer_family(r.engine)]
+                        )
                         and r.text.strip().casefold() == text.strip().casefold()
                     }
                 )
