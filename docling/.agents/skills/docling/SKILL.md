@@ -44,6 +44,9 @@ This fork also provides `--ocr-profile ru` for Russian printed scans. Install
 its `russian` extra and prefetch the ONNX Russian models. See the OCR section
 in [references/cli.md](references/cli.md). The profile reads the full page;
 `--ocr-mode default` preserves normal PDF text-layer handling.
+The profile prefers a reliable whole-page direction from source readings.
+If none is reliable and Russian text remains weak, a protected legacy line
+direction fallback is available. It does not train on the input documents.
 
 Output files are named after the input (`report.pdf` → `report.md`). Default
 output directory is the current directory. This handles the majority of

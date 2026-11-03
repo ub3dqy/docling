@@ -22,9 +22,46 @@ def _box(line: OcrWord) -> BoundingBox:
     )
 
 
-def _same_row(first: OcrWord, second: OcrWord, band: _Band) -> bool:
+def _ink_box(item: _Item) -> BoundingBox:
+    line, words = item
+    bounds = _box(line)
+    if (
+        line[2] < 0.8
+        or not words
+        or any(word[2] < 0.8 for word in words)
+        or "".join(line[1].split())
+        != "".join("".join(word[1].split()) for word in words)
+    ):
+        return bounds
+    boxes = [_box(word) for word in words]
+    # Use complete word positions only within their own detector envelope.
+    # Padding around two neighbouring fragments can overlap despite distinct
+    # printed words. Weak, partial or out-of-frame output is not evidence.
+    if any(
+        box.width <= 0
+        or box.height <= 0
+        or box.l < bounds.l
+        or box.r > bounds.r
+        or box.t < bounds.t
+        or box.b > bounds.b
+        for box in boxes
+    ):
+        return bounds
+    return BoundingBox(
+        l=min(box.l for box in boxes),
+        t=min(box.t for box in boxes),
+        r=max(box.r for box in boxes),
+        b=max(box.b for box in boxes),
+    )
+
+
+def _same_row(first_item: _Item, second_item: _Item, band: _Band) -> bool:
+    first, second = first_item[0], second_item[0]
     a, b = _box(first), _box(second)
-    if min(a.r, b.r) - max(a.l, b.l) > 0.1 * min(a.width, b.width):
+    ink_a, ink_b = _ink_box(first_item), _ink_box(second_item)
+    if min(ink_a.r, ink_b.r) - max(ink_a.l, ink_b.l) > 0.1 * min(
+        ink_a.width, ink_b.width
+    ):
         return False
     x = (max(a.l, b.l) + min(a.r, b.r)) / 2
     ay, ah = band(first, x)
@@ -60,7 +97,7 @@ def order_ocr_lines(selected: list[_Item], *, line_band: _Band) -> list[_Item]:
     rows: list[list[_Item]] = []
     for item in sorted(selected, key=lambda item: _box(item[0]).t):
         for row in rows:
-            if all(_same_row(item[0], other[0], line_band) for other in row):
+            if all(_same_row(item, other, line_band) for other in row):
                 row.append(item)
                 break
         else:

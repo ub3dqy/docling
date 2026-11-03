@@ -1,0 +1,106 @@
+{
+  "scope": "Required local make-validate equivalent on all78taskfiles. make is unavailable on this Windows host; the Makefile uses the same prek hooks. A final repeat also checks the completed evidence files before commit.",
+  "checked_utc": "2026-11-03T17:38:29.616778+00:00",
+  "exit_code": 0,
+  "command": "uv run --no-sync prek run --files <all task paths from final preview>",
+  "files": 78,
+  "hooks": [
+    {
+      "name": "trim trailing whitespace",
+      "result": "passed"
+    },
+    {
+      "name": "fix end of files",
+      "result": "passed"
+    },
+    {
+      "name": "check yaml",
+      "result": "not_applicable_to_changed_files"
+    },
+    {
+      "name": "check toml",
+      "result": "not_applicable_to_changed_files"
+    },
+    {
+      "name": "check for merge conflicts",
+      "result": "passed"
+    },
+    {
+      "name": "check for added large files",
+      "result": "passed"
+    },
+    {
+      "name": "Insert license header",
+      "result": "passed"
+    },
+    {
+      "name": "Ruff linter",
+      "result": "passed"
+    },
+    {
+      "name": "Ruff formatter",
+      "result": "passed"
+    },
+    {
+      "name": "Skill routing and link integrity",
+      "result": "not_applicable_to_changed_files"
+    },
+    {
+      "name": "ty",
+      "result": "passed"
+    },
+    {
+      "name": "Tach",
+      "result": "passed"
+    },
+    {
+      "name": "Tach module coverage",
+      "result": "passed"
+    },
+    {
+      "name": "Check max lines per file",
+      "result": "passed"
+    },
+    {
+      "name": "Dprint check",
+      "result": "not_applicable_to_changed_files"
+    },
+    {
+      "name": "uv-lock",
+      "result": "not_applicable_to_changed_files"
+    }
+  ],
+  "log_sha256": "1c93f7ad901ffd1c2d22c5cbd2d65206193fa227e6fdb9623fdf98e05f1a7246",
+  "source_changed_by_hooks": false,
+  "affected_tests": [
+    {
+      "name": "unit-tests",
+      "passed": 774,
+      "skipped": 15,
+      "exit_code": 0,
+      "log_sha256": "47bf40b59c749a02ef68f98ae2e9dd1df725f598dd3fd4de76681ad4b5795977"
+    },
+    {
+      "name": "cli-tests",
+      "passed": 12,
+      "skipped": 0,
+      "exit_code": 0,
+      "log_sha256": "bfafb44e34161d7dde145dbe4f6c9f292cd4f0147da4c150dc46f119459fe71b"
+    },
+    {
+      "name": "threaded-tests",
+      "passed": 2,
+      "skipped": 0,
+      "exit_code": 0,
+      "log_sha256": "b3594b5d3ea1c3349fab39adad87716d94986acdd1c90c3c98b27c45adcf5860"
+    },
+    {
+      "name": "synthetic-tests",
+      "passed": 8,
+      "skipped": 0,
+      "exit_code": 0,
+      "log_sha256": "99f6fe6ca9f5609a5bcd83eba7c970e4757409293d21d29e24935f48f966bc19"
+    }
+  ],
+  "qualification": "All60oldcases andthefirst10newEcases pluspairedinitialbaselineEcompleted; all recorded source/model/control integrity checks passed. E accuracy limitations are retained in the report."
+}

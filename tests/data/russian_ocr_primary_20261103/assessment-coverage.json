@@ -1,0 +1,138 @@
+[
+  {
+    "cohort": "d-before",
+    "expected_cases": 10,
+    "expected_table_values": 95,
+    "expected_fields": 48,
+    "expected_texts": 13,
+    "expected_reference_characters": 1314,
+    "exceptions": []
+  },
+  {
+    "cohort": "d-after",
+    "expected_cases": 10,
+    "expected_table_values": 95,
+    "expected_fields": 48,
+    "expected_texts": 13,
+    "expected_reference_characters": 1314,
+    "exceptions": []
+  },
+  {
+    "cohort": "c-before",
+    "expected_cases": 10,
+    "expected_table_values": 133,
+    "expected_fields": 60,
+    "expected_texts": 12,
+    "expected_reference_characters": 462,
+    "exceptions": []
+  },
+  {
+    "cohort": "c-after",
+    "expected_cases": 10,
+    "expected_table_values": 133,
+    "expected_fields": 60,
+    "expected_texts": 12,
+    "expected_reference_characters": 462,
+    "exceptions": []
+  },
+  {
+    "cohort": "latest-b-before",
+    "expected_cases": 10,
+    "expected_table_values": 81,
+    "expected_fields": 19,
+    "expected_texts": 15,
+    "expected_reference_characters": 1777,
+    "exceptions": []
+  },
+  {
+    "cohort": "latest-b-after",
+    "expected_cases": 10,
+    "expected_table_values": 81,
+    "expected_fields": 19,
+    "expected_texts": 15,
+    "expected_reference_characters": 1777,
+    "exceptions": []
+  },
+  {
+    "cohort": "newest-before",
+    "expected_cases": 10,
+    "expected_table_values": 192,
+    "expected_fields": 31,
+    "expected_texts": 14,
+    "expected_reference_characters": 1487,
+    "exceptions": []
+  },
+  {
+    "cohort": "newest-after",
+    "expected_cases": 10,
+    "expected_table_values": 192,
+    "expected_fields": 31,
+    "expected_texts": 14,
+    "expected_reference_characters": 1487,
+    "exceptions": []
+  },
+  {
+    "cohort": "unseen-before",
+    "expected_cases": 10,
+    "expected_table_values": 249,
+    "expected_fields": 34,
+    "expected_texts": 5,
+    "expected_reference_characters": 985,
+    "exceptions": []
+  },
+  {
+    "cohort": "unseen-after",
+    "expected_cases": 10,
+    "expected_table_values": 249,
+    "expected_fields": 34,
+    "expected_texts": 5,
+    "expected_reference_characters": 985,
+    "exceptions": []
+  },
+  {
+    "cohort": "previous-before",
+    "expected_cases": 10,
+    "expected_table_values": 117,
+    "expected_fields": 12,
+    "expected_texts": 5,
+    "expected_reference_characters": 1617,
+    "exceptions": []
+  },
+  {
+    "cohort": "previous-after",
+    "expected_cases": 10,
+    "expected_table_values": 117,
+    "expected_fields": 12,
+    "expected_texts": 5,
+    "expected_reference_characters": 1617,
+    "exceptions": []
+  },
+  {
+    "cohort": "e-first",
+    "expected_cases": 10,
+    "expected_table_values": 135,
+    "expected_fields": 58,
+    "expected_texts": 14,
+    "expected_reference_characters": 1109,
+    "exceptions": [
+      {
+        "id": "receipt-visa-services",
+        "error": "ValueError: Each control case must convert exactly one page."
+      }
+    ]
+  },
+  {
+    "cohort": "e-baseline",
+    "expected_cases": 10,
+    "expected_table_values": 135,
+    "expected_fields": 58,
+    "expected_texts": 14,
+    "expected_reference_characters": 1109,
+    "exceptions": [
+      {
+        "id": "receipt-visa-services",
+        "error": "ValueError: Each control case must convert exactly one page."
+      }
+    ]
+  }
+]

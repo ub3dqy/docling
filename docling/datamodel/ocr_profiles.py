@@ -31,6 +31,12 @@ def ocr_options_for_profile(profile: OcrProfile) -> RapidOcrOptions:
         image_scale=2.0,
         preserve_native_resolution=True,
         use_word_boxes=True,
+        # The generic line classifier can turn upright Cyrillic words and
+        # short amounts upside down. Prefer reliable whole-page direction;
+        # retain the old path only when all full-page readings stay weak.
+        use_cls=False,
+        detect_orientation=True,
+        use_orientation_fallback=True,
         use_multiscale=True,
         use_region_refinement=True,
         text_score=0.25,

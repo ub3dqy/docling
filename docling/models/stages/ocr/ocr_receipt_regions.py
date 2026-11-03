@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass, field, replace
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -27,6 +28,98 @@ if TYPE_CHECKING:
     from tesserocr import PyTessBaseAPI
 
     from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
+
+
+_MONEY = re.compile(r"(?:[=+\-\u2212]\s*|(?<![\d.,]))\(?\d+[.,]\d{2}\)?(?![\d.,])")
+
+
+@dataclass(frozen=True)
+class VerifiedReceiptAmount:
+    ordinal: int
+    count: int
+    key: str
+    equals: bool
+
+
+@dataclass
+class ReceiptPriceRefinements:
+    """Keep pixel-verified amounts in their positions during later row reading."""
+
+    changed_lines: set[int] = field(default_factory=set)
+    amounts: dict[int, dict[int, VerifiedReceiptAmount]] = field(default_factory=dict)
+
+    def record(self, index: int, text: str, span: tuple[int, int]) -> None:
+        matches = list(_MONEY.finditer(text))
+        for ordinal, match in enumerate(matches):
+            key = number_key(match.group())
+            if span[0] <= match.start() and match.end() <= span[1] and key is not None:
+                self.amounts.setdefault(index, {})[ordinal] = VerifiedReceiptAmount(
+                    ordinal, len(matches), key, match.group().lstrip().startswith("=")
+                )
+
+    def preserves(self, index: int, text: str) -> bool:
+        verified = self.amounts.get(index, {})
+        if not verified:
+            return True
+        matches = list(_MONEY.finditer(text))
+        return all(
+            len(matches) == item.count
+            and number_key(matches[item.ordinal].group()) == item.key
+            and (
+                not item.equals
+                or matches[item.ordinal].group().lstrip().startswith("=")
+            )
+            for item in verified.values()
+        )
+
+    def readings_for(
+        self, index: int, readings: list[RegionReading]
+    ) -> list[RegionReading]:
+        """Carry a verified local sign into a row reading with identical digits.
+
+        A row can still improve letters when it misreads the same source mark.
+        Require the same amount count, positions and decimal digits. Never
+        replace a row's different digits with a verified neighbouring amount.
+        Keep the original model family and label this combined observation.
+        """
+        verified = self.amounts.get(index, {})
+        if not verified:
+            return readings
+        retained = []
+        for reading in readings:
+            text = reading.text
+            matches = list(_MONEY.finditer(text))
+            for item in sorted(
+                verified.values(), key=lambda v: v.ordinal, reverse=True
+            ):
+                if len(matches) != item.count:
+                    break
+                match = matches[item.ordinal]
+                key = number_key(match.group())
+                if key is None or key.lstrip("-") != item.key.lstrip("-"):
+                    continue
+                if key == item.key and (
+                    not item.equals or match.group().lstrip().startswith("=")
+                ):
+                    continue
+                digits = re.search(r"\d+[.,]\d{2}", match.group())
+                assert digits is not None
+                marker = "=" if item.equals else "-" if item.key.startswith("-") else ""
+                text = (
+                    text[: match.start()]
+                    + marker
+                    + digits.group()
+                    + text[match.end() :]
+                )
+            if self.preserves(index, text):
+                retained.append(
+                    reading
+                    if text == reading.text
+                    else replace(
+                        reading, text=text, variant=reading.variant + "+verified-marker"
+                    )
+                )
+        return retained
 
 
 def _amount_pixels(
@@ -97,9 +190,13 @@ def refine_receipt_prices(
     api: PyTessBaseAPI,
     *,
     verified_lines: set[int] | None = None,
-) -> set[int]:
+) -> ReceiptPriceRefinements:
     """Verify individual printed amounts inside otherwise mixed receipt lines."""
     from rapidocr.ch_ppocr_rec.typings import TextRecOutput
+
+    from docling.models.stages.ocr.ocr_receipt_expressions import (
+        restore_receipt_separator,
+    )
 
     assert page.parsed_page is not None
     verified = [
@@ -107,7 +204,7 @@ def refine_receipt_prices(
         for cell in page.parsed_page.textline_cells
         if verified_lines is not None and cell.index in verified_lines
     ]
-    changed: set[int] = set()
+    changed = ReceiptPriceRefinements()
     for word in page.parsed_page.word_cells:
         if any(
             word.text == cell.text
@@ -158,6 +255,7 @@ def refine_receipt_prices(
             )
         )
         replacement = refiner._receipt_equals(api, original_gray, word.text)
+        replacement = restore_receipt_separator(replacement, readings, original_gray)
         if re.search(
             r"\d-$", word.text[: amount.start()]
         ) and decimal_expression_equals(original_gray, len(key.split(".")[0])):
@@ -184,7 +282,14 @@ def refine_receipt_prices(
                 and box.intersection_over_self(line.rect.to_bounding_box()) >= 0.8
                 and len(pattern.findall(line.text)) == 1
             ):
+                match = pattern.search(line.text)
+                assert match is not None
                 line.text = pattern.sub(lambda _: replacement, line.text)
-                changed.add(line.index)
+                changed.changed_lines.add(line.index)
+                changed.record(
+                    line.index,
+                    line.text,
+                    (match.start(), match.start() + len(replacement)),
+                )
         word.text = replacement
     return changed

@@ -402,6 +402,12 @@ class RapidOcrOptions(OcrOptions):
             description="Re-read uncertain Russian image lines and numeric table cells with independent local recognizers. Requires the russian extra and prefetched russian_ocr_refinement models."
         ),
     ] = False
+    use_orientation_fallback: Annotated[
+        bool,
+        Field(
+            description="Allow the line-direction classifier as a last resort when no reliable whole-page orientation is found. Disabled by default; enabled by the Russian profile."
+        ),
+    ] = False
     image_scale: Annotated[
         float | None,
         Field(

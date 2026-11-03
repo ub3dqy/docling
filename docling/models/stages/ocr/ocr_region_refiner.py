@@ -363,9 +363,10 @@ def choose_number(
             allow_decimal_removal and len(original_fraction) > 3 and not fraction
         ):
             continue
-        previous = groups[key].get(reading.engine)
+        family = recognizer_family(reading.engine)
+        previous = groups[key].get(family)
         if previous is None or reading.confidence > previous.confidence:
-            groups[key][reading.engine] = reading
+            groups[key][family] = reading
     supported = [group for group in groups.values() if len(group) >= 2]
     if not supported:
         return original
@@ -1189,20 +1190,6 @@ class OcrRegionRefiner:
             )
         ]
 
-    def _receipt_prices(
-        self,
-        page: Page,
-        image: Image.Image,
-        api: PyTessBaseAPI,
-        *,
-        verified_lines: set[int] | None = None,
-    ) -> set[int]:
-        from docling.models.stages.ocr.ocr_receipt_regions import refine_receipt_prices
-
-        return refine_receipt_prices(
-            self, page, image, api, verified_lines=verified_lines
-        )
-
     def refine_lines(self, page: Page, *, image_input: bool) -> None:
         if page.parsed_page is None or page.size is None:
             return
@@ -1236,6 +1223,12 @@ class OcrRegionRefiner:
         verified_captions: set[int] = set()
         verified_numbers: set[int] = set()
         segmented_amounts: set[int] = set()
+        from docling.models.stages.ocr.ocr_receipt_regions import (
+            ReceiptPriceRefinements,
+            refine_receipt_prices,
+        )
+
+        price_refinements = ReceiptPriceRefinements()
         with (
             self._lock,
             self._tesserocr.PyTessBaseAPI(
@@ -1276,11 +1269,13 @@ class OcrRegionRefiner:
                 lines = [
                     cell for cell in page.parsed_page.textline_cells if cell.from_ocr
                 ]
+                expression_lines = refine_receipt_expressions(self, page, image)
+                price_refinements = refine_receipt_prices(
+                    self, page, image, api, verified_lines=verified_numbers
+                )
                 for index in (
-                    refine_receipt_expressions(self, page, image)
-                    | self._receipt_prices(
-                        page, image, api, verified_lines=verified_numbers
-                    )
+                    expression_lines
+                    | price_refinements.changed_lines
                     | refine_receipt_words(self, page, image, api)
                     | verified_captions
                     | verified_numbers
@@ -1428,6 +1423,7 @@ class OcrRegionRefiner:
                             self, gray, cell.text, cell.confidence, enabled=receipt
                         ),
                     ]
+                    readings = price_refinements.readings_for(cell.index, readings)
                     selected = self._choose_text(
                         cell.text,
                         cell.confidence,

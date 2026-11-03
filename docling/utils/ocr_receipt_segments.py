@@ -82,7 +82,7 @@ def split_receipt_lines(page: Page) -> set[int]:
         for word in contained[1:]:
             previous = groups[-1][-1].rect.to_bounding_box()
             amount = re.fullmatch(
-                r"[=* ]*\d+[.,]\d{2}", word.text
+                r"[=* ]*-?\d+[.,]\d{2}", word.text
             ) is not None and is_receipt_field_caption(
                 " ".join(w.text for w in groups[-1])
             )

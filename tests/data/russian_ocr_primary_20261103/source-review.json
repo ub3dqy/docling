@@ -1,0 +1,253 @@
+{
+  "scope": "Host delegation review of current source/tests/docs and frozen new E controls before any E inference. Final quality and result-artifact review remain separate.",
+  "total_files": 30,
+  "reviewed_files": 30,
+  "skipped_files": 0,
+  "coverage_rate": 1.0,
+  "remaining_blocking_findings": [],
+  "preview_sha256": "2453037e92eee77c88027fb6cb8d35970c82782a030b302751ea2e8cf6dcb2a3",
+  "rules_sha256": "d434558d5572c1938724b20c86e16f6aadd66da4e4d80a2658e39b59799e34aa",
+  "validation_log_sha256": "1c93f7ad901ffd1c2d22c5cbd2d65206193fa227e6fdb9623fdf98e05f1a7246",
+  "entries": [
+    {
+      "path": "docling/datamodel/ocr_profiles.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "fef618784b9610e5d3da91e99c9d89a31e72b1739c546af9da2e1627b684f46f",
+      "note": "Prior host review retained; byte-identical. Page-first Russian direction with explicit protected legacy fallback. Existing primary eslav model and renderer configuration retained."
+    },
+    {
+      "path": "docling/datamodel/pipeline_options.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5a3f3d59d86ed7403af527100ef3bfa58f008b1ec36ab312bcacb7379a114716",
+      "note": "Prior host review retained; byte-identical. New optional orientation fallback defaultsFalse; RUprofile enablesTrue. GenericCLI option validation retained and opt-out documented. No model/dependency paths changed."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_line_refinement_model.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "377a31389608e552e42881f92f97f65d085aed9ee7787a30490a1ccd4cf13651",
+      "note": "Prior host review retained; byte-identical. Only image refinement gets an upright working frame; PDF prose path remains unchanged. Fiscal layout routing runs on restored source frame."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_prose_regions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "8c2d068d9f92c4efdf4310602abacf4953e9ee97e18d8f2e5db9c14d72f1965e",
+      "note": "Two independent source confirmations retain numeric/operator/position guards. Verified prose commit now updates source ownership through replace_verified_prose: an exact overlapping prefix borrowed from another OCR text cluster cannot remain duplicated. Real Kadastr before/after diagnostic62extra->0, no reference changes."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_receipt_expressions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "6bd62281068d1e5d2a08d9955b5fe7d6e655aefb88be5002faf4cb8258478557",
+      "note": "Detached opaque source marker needs compact shape, fill and neighbouring digit dimensions, an explicit high-confidence source equals and2 independent numeric families. Exact negative vote veto and existing fused-marker rules retained. Every amount digit and decimal position preserved. No known values/filenames or arithmetic."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_receipt_regions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "c41576b2c21c4c3f607e40c2348a7605d3b4bb52face29111cb21d8ef27a8f47",
+      "note": "Typed request-local per-amount proof records monetary ordinal/count/key and confirmed equals only after an actual source-word correction. Later row readings retain confirmed signs only with identical decimal digits and positions; different digits/counts are rejected. Composite variant is labelled, original recognizer family/confidence retained; no extra independent vote. Other fields remain eligible. Source amount pixels and genuine negative guards retained."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_region_refiner.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "50b8ddaaac3a6f6f11328d0ad680cc87e6cf86f56b33643415bb2ef8e33056e8",
+      "note": "Native numeric votes grouped by recognizer family. Removed unused private price wrapper and call typed result directly, preserving expression/price/word processing order. Only request-local verified amounts constrain later nonnumeric row candidates. Numeric/native/table paths and layout replacement mapping retained."
+    },
+    {
+      "path": "docling/models/stages/ocr/rapid_ocr_model.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5e18ade3c0eb7b1c6c8dbcfe8599c015147cc1efab0db5765066fb58cd8f8232",
+      "note": "Prior host review retained; byte-identical. Whole-page direction precedes multiscale for Russian. Empty/sparse results remain eligible. Fallback decision stays request-local and uses independent lazy native readers at all3detectors, protecting mutable per-reader flags. Original _read interface retained; pinned paths, explicit language, model hashes unaffected."
+    },
+    {
+      "path": "docling/utils/ocr_line_order.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "da33d14694621d244a6d1af7ab1dd85ad6b6a36de64c52d00f6c6bf0ad982cb9",
+      "note": "Full in-envelope credible word positions may disambiguate overlapping padded detector frames. Weak line/word confidence below0.8, partial/empty/out-of-frame output fall back to previous envelope. Sloped-band vertical test and original merging retained; weak-number crop expansion, duplicate and separate-row guards tested. Two actual caption orders repaired; full quality gate still required."
+    },
+    {
+      "path": "docling/utils/ocr_receipt_segments.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5ced17ee2af0adea3bf5a2807bad0e1e281dc6822db4a2f717e5ae39de3573ae",
+      "note": "Prior host review retained; byte-identical. Generic signed fiscal amount splitting retains minus and source geometry; no arithmetic."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_line_classifier.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "8d7ffabd1a33994ef8b718095026af48b54c27d45b4a3cb72083f74b4150b5bd",
+      "note": "Prior host review retained; byte-identical. Typed call-only Protocol matches RapidOCR3.10 positional image interface. Immutable view forces classification only on its separately configured native reader. No shared normal-reader flag changes or additional assets."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_oriented_refinement.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "3d6d464b4750b531a15e5a474e633014f2871c6ea27973fa8c643d690dbe2d9c",
+      "note": "Prior host review retained; byte-identical. At least5shared OCR label axes and80percent agreement nominate a quarter/half turn. Native/mixed-origin text bypasses. Clone text+layout together to preserve aliases; image renderer uses source pixels. New/merged boxes and children restored once. Atomic commit after success retains source dimensions and nontext data."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_page_orientation.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "e7c2a55346d844809f84e4fb9bc728958de2eca6ddd4f3d956527b61e578c704",
+      "note": "Generic legacy path retained. Russian source with _reads_well, dominant horizontal labels and3confident known4+letter-word rows/20weightedknownchars confirms upright direction. Unknown names cannot alone force3expensive full-page turns. Weak/single-row/vertical evidence still searches. Existing candidate/fallback numeric guards retained. Dense receipt now165.7sec versus repeated180timeout; same CPU4/180, no resolution/model changes."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_prose_replacement.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "f5e7dacdd64caf2e69ff9dd93ff9e853197ca8a4bd4eef50f4d2826b90f3204f",
+      "note": "New typed commit helper consumes only whole exact NFC/casefold/whitespace-equivalent OCR text, confidence>=.8, without digits/unbalanced guillemets, from other leaf TEXT clusters, after strong independent source confirmation. Exact word span must match source width/overlap and sloped band. Real repeated rows, native/numeric/weak/different text stay. Removes stale layout aliases and only owned OCR words with matching text/band, preserving unrelated/native words. No filenames/expected values or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/collection-plan.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "bc4f526ae19b3f8521c1d64fafaa6b28ed14323a3d363519b566d790690c8d61",
+      "note": "Prior host review retained; byte-identical. Seeded pre-view selection, all6photos retained; native Windows TLS trust for failed downloads, no disabled verification."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/evaluation-seal.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "d408b15753918ebfe413fe0303a55da1d5557903077aef885aeb7eaa896f05a7",
+      "note": "Prior host review retained; byte-identical. Initial pre-inference snapshot retained; may include rejected prototype. Final run seal will identify final candidate, without changing this snapshot."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/novelty.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "e28afb4fab432e405ca16d9372d887936d4e7f9c504ef3b36bbf02cf365a98bd",
+      "note": "Prior host review retained; byte-identical. Exact source novelty vs199prior files; pHash bounds documented, not training-data novelty."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/references.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "3b4dc334c05c4ced3108696c546cb1a325c95984b684570cffaad63eaafcdce1",
+      "note": "Prior host review retained; byte-identical. New E answers and ROIs transcribed from source images before inference; immutable original seal; expected values never used by runtime."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/scan-evidence.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "3eee9f279b28227033b22c7192c18c60a2b20ffb0e256071ec6462652b76530f",
+      "note": "Prior host review retained; byte-identical. Read-only PDFium text/raster inventory plus original image dimensions. Source input bytes unchanged."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/sources.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "242208a9a209138dfb54d09f73c46b53f93cd7257fb740b708960d9c03f83964",
+      "note": "Prior host review retained; byte-identical. 8 public original hashes, sizes and pinned URLs; no signed redirect credentials. No duplicate old bytes."
+    },
+    {
+      "path": "docling/.agents/skills/docling/SKILL.md",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "56bbd6c33d964dc79c38bc9270e62df717d41038a7dccdb4fc5e2ed7fdda1397",
+      "note": "Prior host review retained; byte-identical. Usage guidance describes actual profile behavior with no replaced primary model."
+    },
+    {
+      "path": "docling/.agents/skills/docling/references/cli.md",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "8adec8bd26361394d079e2f012070c8ad27ebdf4c41f78b497958387108e8124",
+      "note": "Prior host review retained; byte-identical. CLI guidance consistent with runtime; segmentation variants are not independent models."
+    },
+    {
+      "path": "docs/usage/russian_ocr.md",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "3fc4063c96dd68a72540817d2cc8e0d0863309236d9ff34a4ce8b3c9beecabcb",
+      "note": "Documents page-first direction, credible upright source text, protected opt-out fallback, upright refinement frame, source-confirmed prose ownership, detached marker proof and verified-amount retention. No training/new model claims. Does not promise arbitrary-document or100percent accuracy."
+    },
+    {
+      "path": "tests/test_ocr_line_order.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "cf31470e307a49894b229d2c723ecc46a5a8408b46de40d20a7abec9d9ef77f9",
+      "note": "Meaningful geometry regressions cover overlapping padded fragments with complete words, reject partial/outside/duplicate/other-row alternatives and prevent a weak line/word fragment from expanding a caption crop. Existing date/slope checks retained."
+    },
+    {
+      "path": "tests/test_ocr_prose_regions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "fa7ba067bd5bca3dba3254498b878988deec33607a71eed695757aab126ed2a6",
+      "note": "Covers mixed-script/weak segmentation agreement plus actual ownership commit across aliased parent/leaf/source lists, exact overlapping-prefix adoption, native/unconfirmed/different/numeric/unbalanced-quote/weak source preservation, unrelated/native words and genuine tilted repeated rows whose envelopes overlap. No expected real-document wording."
+    },
+    {
+      "path": "tests/test_ocr_receipt_expressions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "0e5b8bbd0adcfd73e9e9cb0cc78c49c873a9ef097737dfa6ad1d0119c771a24c",
+      "note": "Scale/shape and independent-source evidence guards cover compact filled marks, thin/broad minus, colon, missing mark, negative/disagreeing/one-family votes. Per-field proof covers repeats, numeric positions, changed other fields, negative/parenthesized/comma values, attached quantity equals and labelled sign carry without digit substitution. Existing expression/receipt classification checks retained."
+    },
+    {
+      "path": "tests/test_ocr_receipt_segments.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "fe7d324c63349b25595a3bb206151391a8c346a5dcb892ccff3ad8857ab91052",
+      "note": "Prior host review retained; byte-identical. Refund sign retained when caption and amount split."
+    },
+    {
+      "path": "tests/test_ocr_region_refiner.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "7f9ff2d502cdb59a0277fb23f2c438af420351e07e9228559e87887f1786eb06",
+      "note": "Prior host review retained; byte-identical. Two Tesseract modes rejected as independent votes; second actual family permits observed value."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/README.md",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "d9a97788cc01a93cc3ff9dd461f1b533d65311651e94a55f64b0c3b3a4378e0d",
+      "note": "Prior host review retained; byte-identical. Collection, assessment limits, fixed180-second protocol and reproducibility command reviewed."
+    },
+    {
+      "path": "tests/test_cyrillic_primary.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "77b91f144dd733030d27d533e7c9a02fa9ba3fc0dbc304071400362d5ea65978",
+      "note": "Actual existing eslav model checks all4page angles, empty-first-reading recovery and isolated native classifier state. Typed image-refinement frame/atomic/native guards and fallback/scale tests retained. New direction-decision cases distinguish several credible horizontal rows from single-row, weak or vertical evidence; no model mocks for actual orientation acceptance."
+    }
+  ]
+}

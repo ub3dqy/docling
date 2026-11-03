@@ -1,0 +1,117 @@
+{
+  "scope": "Host review of the first frozen E and subsequent archived-baseline E; official scores are not rescored.",
+  "complete": true,
+  "before": {
+    "cases_passed": 1,
+    "cases_total": 10,
+    "nonempty_successful": 9,
+    "table_values_correct": 122,
+    "table_values_total": 135,
+    "fields_correct_in_source_region": 19,
+    "fields_correct_and_exported": 19,
+    "fields_total": 44,
+    "fields_lost_after_correct_source_reading": 0,
+    "text_within_frozen_limits": 7,
+    "text_exact": 6,
+    "text_total": 13,
+    "text_edits": 91,
+    "reference_characters": 1090,
+    "weighted_cer": 0.0834862385321101,
+    "conversion_seconds": 667.3679730003932
+  },
+  "after": {
+    "cases_passed": 2,
+    "cases_total": 10,
+    "nonempty_successful": 9,
+    "table_values_correct": 122,
+    "table_values_total": 135,
+    "fields_correct_in_source_region": 24,
+    "fields_correct_and_exported": 24,
+    "fields_total": 44,
+    "fields_lost_after_correct_source_reading": 0,
+    "text_within_frozen_limits": 8,
+    "text_exact": 7,
+    "text_total": 13,
+    "text_edits": 87,
+    "reference_characters": 1090,
+    "weighted_cer": 0.0798165137614679,
+    "conversion_seconds": 756.8291756000835
+  },
+  "frozen_denominators": {
+    "cases": 10,
+    "table_values": 135,
+    "fields": 58,
+    "text_regions": 14
+  },
+  "changes": [
+    {
+      "case_id": "vladimir-independent-audit",
+      "control": [
+        "text",
+        "auditor-opinion"
+      ],
+      "before": false,
+      "after": true
+    },
+    {
+      "case_id": "receipt-soup-no-vat",
+      "control": [
+        "field",
+        "soup-sum"
+      ],
+      "before": false,
+      "after": true
+    },
+    {
+      "case_id": "receipt-soup-no-vat",
+      "control": [
+        "field",
+        "total"
+      ],
+      "before": false,
+      "after": true
+    },
+    {
+      "case_id": "receipt-soup-no-vat",
+      "control": [
+        "field",
+        "vat-exempt-base"
+      ],
+      "before": false,
+      "after": true
+    },
+    {
+      "case_id": "receipt-six-dishes-vat5",
+      "control": [
+        "field",
+        "paid"
+      ],
+      "before": false,
+      "after": true
+    },
+    {
+      "case_id": "receipt-beer-no-vat",
+      "control": [
+        "field",
+        "vat-exempt-base"
+      ],
+      "before": false,
+      "after": true
+    }
+  ],
+  "selected_pass_regressions": [],
+  "exceptions": [
+    {
+      "case_id": "receipt-visa-services",
+      "original_error": "ValueError: Each control case must convert exactly one page.",
+      "elapsed_seconds": 180.20150810002815,
+      "expected_fields": 14
+    }
+  ],
+  "full_table_changes_sha256": "361bd4dd7ca3cf8fe930a3772dc8a959c7c906cd775173ae72f7b259666adad8",
+  "full_table_assessment": "One unselected caption changes date/name word order; no shapes or numeric glyphs change. All selected table results are identical. Source-control transcription mistakes and complete-parenthesized-dash normalizer limitation are documented separately, without rescoring.",
+  "source_discrepancies_sha256": "8a80d10cbdca8a3d1e21d2b2ab504df0a91ac4254760658719e2352110f48648",
+  "runtime_limitations": "Both versions exceed the unchanged180-second budget on receipt-visa-services; pipeline logs show stage-table timeout/stop, followed by evaluator ValueError because no single converted page is available. Count all14fields and its text as failures, not zero controls.",
+  "identifier_limitation": "The audit body still contains Cyrillic o instead of one OGRN zero and one missing word space. Passing the1percent text limit does not validate that identifier.",
+  "decision": "Retain the bounded generic patch:5new selected field gains and1new text-limit gain, no new selected losses or execution failures. This does not establish reliable arbitrary receipt intake;24/58fields,2/10completecases andanemptyresult remain poor."
+}

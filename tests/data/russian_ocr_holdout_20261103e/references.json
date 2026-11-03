@@ -1,0 +1,259 @@
+{
+  "scope": "E: first recognition after primary Russian OCR fixes. Ten pages from eight unused public originals; six camera receipts and four raster PDF pages. Controls visually transcribed before OCR.",
+  "exclusions": ["Only selected fields, table values and text regions are scored. Logos, QR/barcodes, signatures, personal identifiers and remaining text are outside scoring. No amount was obtained by arithmetic.", "Receipt selection was the six lowest seeded hashes among unused pinned publisher test images, before visual inspection. All six initial selections retained; four downloads retried using Windows certificate trust without disabling TLS verification. No publisher OCR annotations fetched.", "Financial PDF pages2,3,4 contain assets,liabilities,results; audit page1 selected. All have0 native text characters and1 raster image. Repeated parenthesized dash placeholders are transcribed as dashes; actual parenthesized numeric losses as negatives. Subrows without unique codes are outside the table control.", "Photos are publisher-binarized originals, not raw colour photographs. The sideways photo is submitted unchanged; its control rectangles are mapped to source coordinates. Common merchant forms and three financial pages from one original are correlated. Novelty is local, not a claim about the models training data.", "Case passage requires all conditions. Numeric fields require the expected value in the fixed OCR region and export; this is not proof of every label/value association. The evaluator, normalization and180-second timeout are unchanged."],
+  "cases": [
+    {
+      "id": "vladimir-assets",
+      "file": "vladimir-financial-2025.pdf",
+      "page": 2,
+      "kind": "scanned-pdf",
+      "source_url": "https://garantfond-33.ru/upload/iblock/6e1/acfdwf6cjg7npl5ngyaw58vsrulqskq3/%D0%91%D1%83%D1%85%D0%B3%D0%B0%D0%BB%D1%82%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BE%D1%82%D1%87%D0%B5%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B7%D0%B0%202025%20%D0%B3%D0%BE%D0%B4.pdf",
+      "texts": [
+        {"name": "balance-heading", "roi": [0.31, 0.131, 0.53, 0.166], "max_cer": 0.02, "text": "Бухгалтерский баланс на 31 декабря 2025 г."}
+      ],
+      "rows": [
+        {"key": "1110", "values": ["-", "-", "-"]},
+        {"key": "1150", "values": ["-", "-", "-"]},
+        {"key": "1160", "values": ["-", "-", "-"]},
+        {"key": "1170", "values": ["-", "-", "-"]},
+        {"key": "1180", "values": ["-", "-", "-"]},
+        {"key": "1190", "values": ["-", "-", "-"]},
+        {"key": "1100", "values": ["-", "-", "-"]},
+        {"key": "1210", "values": ["1", "-", "2"]},
+        {"key": "1215", "values": ["-", "-", "-"]},
+        {"key": "1220", "values": ["-", "-", "-"]},
+        {"key": "1230", "values": ["15 102", "10 390", "5 572"]},
+        {"key": "1240", "values": ["1 067 512", "876 512", "765 012"]},
+        {"key": "1250", "values": ["32 561", "60 627", "20 162"]},
+        {"key": "1260", "values": ["107", "145", "143"]},
+        {"key": "1200", "values": ["1 115 238", "947 674", "790 891"]},
+        {"key": "1600", "values": ["1 115 238", "947 674", "790 891"]}
+      ],
+      "fields": [
+      ]
+    },
+    {
+      "id": "vladimir-liabilities",
+      "file": "vladimir-financial-2025.pdf",
+      "page": 3,
+      "kind": "scanned-pdf",
+      "source_url": "https://garantfond-33.ru/upload/iblock/6e1/acfdwf6cjg7npl5ngyaw58vsrulqskq3/%D0%91%D1%83%D1%85%D0%B3%D0%B0%D0%BB%D1%82%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BE%D1%82%D1%87%D0%B5%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B7%D0%B0%202025%20%D0%B3%D0%BE%D0%B4.pdf",
+      "texts": [
+        {"name": "liabilities-caption", "roi": [0.275, 0.069, 0.37, 0.082], "max_cer": 0.02, "text": "ПАССИВ"}
+      ],
+      "rows": [
+        {"key": "1310", "values": ["-", "-", "-"]},
+        {"key": "1320", "values": ["-", "-", "-"]},
+        {"key": "1330", "values": ["1 113 105", "945 080", "789 614"]},
+        {"key": "1360", "values": ["-", "-", "-"]},
+        {"key": "1370", "values": ["-", "-", "-"]},
+        {"key": "1300", "values": ["1 113 105", "945 080", "789 614"]},
+        {"key": "1410", "values": ["-", "-", "-"]},
+        {"key": "1420", "values": ["-", "-", "-"]},
+        {"key": "1430", "values": ["-", "-", "-"]},
+        {"key": "1450", "values": ["-", "-", "-"]},
+        {"key": "1400", "values": ["-", "-", "-"]},
+        {"key": "1510", "values": ["-", "-", "-"]},
+        {"key": "1520", "values": ["1 263", "1 389", "49"]},
+        {"key": "1540", "values": ["915", "1 205", "1 227"]},
+        {"key": "1550", "values": ["-", "-", "-"]},
+        {"key": "1500", "values": ["2 178", "2 594", "1 277"]},
+        {"key": "1700", "values": ["1 115 238", "947 674", "790 891"]}
+      ],
+      "fields": [
+      ]
+    },
+    {
+      "id": "vladimir-results",
+      "file": "vladimir-financial-2025.pdf",
+      "page": 4,
+      "kind": "scanned-pdf",
+      "source_url": "https://garantfond-33.ru/upload/iblock/6e1/acfdwf6cjg7npl5ngyaw58vsrulqskq3/%D0%91%D1%83%D1%85%D0%B3%D0%B0%D0%BB%D1%82%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BE%D1%82%D1%87%D0%B5%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B7%D0%B0%202025%20%D0%B3%D0%BE%D0%B4.pdf",
+      "texts": [
+        {"name": "results-heading", "roi": [0.235, 0.132, 0.5, 0.166], "max_cer": 0.02, "text": "Отчет о финансовых результатах за 2025 г."}
+      ],
+      "rows": [
+        {"key": "2110", "values": ["24 411", "19 599"]},
+        {"key": "2120", "values": ["-", "-"]},
+        {"key": "2100", "values": ["24 411", "19 599"]},
+        {"key": "2210", "values": ["-", "-"]},
+        {"key": "2220", "values": ["-20 115", "-20 358"]},
+        {"key": "2200", "values": ["4 296", "-759"]},
+        {"key": "2310", "values": ["-", "-"]},
+        {"key": "2320", "values": ["210 397", "145 484"]},
+        {"key": "2330", "values": ["-602", "-1 140"]},
+        {"key": "2340", "values": ["36 675", "2 367"]},
+        {"key": "2350", "values": ["-37 137", "-2 536"]},
+        {"key": "2300", "values": ["213 629", "143 416"]},
+        {"key": "2410", "values": ["-9 825", "-5 757"]},
+        {"key": "2411", "values": ["-9 825", "-5 757"]},
+        {"key": "2412", "values": ["-", "-"]},
+        {"key": "2420", "values": ["-", "-"]},
+        {"key": "2460", "values": ["-", "-"]},
+        {"key": "2400", "values": ["203 804", "137 659"]}
+      ],
+      "fields": [
+      ]
+    },
+    {
+      "id": "vladimir-independent-audit",
+      "file": "vladimir-audit-2025.pdf",
+      "page": 1,
+      "kind": "scanned-pdf",
+      "source_url": "https://garantfond-33.ru/upload/iblock/ca3/vovdkey0rtz3r2com5psup1kfl2orv65/%D0%90%D1%83%D0%B4%D0%B8%D1%82%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B5%20%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%202025%20%D0%B3%D0%BE%D0%B4.pdf",
+      "texts": [
+        {"name": "audit-heading", "roi": [0.26, 0.261, 0.9, 0.285], "max_cer": 0.02, "text": "АУДИТОРСКОЕ ЗАКЛЮЧЕНИЕ НЕЗАВИСИМОГО АУДИТОРА"},
+        {"name": "audited-statements", "roi": [0.14, 0.362, 0.97, 0.469], "max_cer": 0.01, "text": "Мы провели аудит прилагаемой бухгалтерской отчетности Гарантийного фонда Владимирской области (ОГРН 1153300000402), состоящей из бухгалтерского баланса по состоянию на 31 декабря 2025 года, отчета о целевом использовании средств за 2025 год, приложений к бухгалтерскому балансу и отчету о целевом использовании средств, в том числе отчета о финансовых результатах за 2025 год, пояснений к бухгалтерскому балансу и отчету о целевом использовании средств, включая основные положения учетной политики."},
+        {"name": "auditor-opinion", "roi": [0.14, 0.469, 0.97, 0.553], "max_cer": 0.01, "text": "По нашему мнению, прилагаемая бухгалтерская отчетность отражает достоверно во всех существенных отношениях финансовое положение Гарантийного фонда Владимирской области по состоянию на 31 декабря 2025 года, целевое использование средств и их движение в 2025 году в соответствии с правилами составления бухгалтерской отчетности, установленными в Российской Федерации."}
+      ],
+      "rows": [
+      ],
+      "fields": [
+      ]
+    },
+    {
+      "id": "receipt-soup-no-vat",
+      "file": "IMG_0893_bin.jpg",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0893_bin.jpg?download=true",
+      "texts": [
+        {"name": "receipt-heading", "roi": [0.465, 0.433, 0.6, 0.454], "max_cer": 0.05, "text": "Кассовый чек"},
+        {"name": "vat-exemption", "roi": [0.255, 0.457, 0.43, 0.478], "max_cer": 0.05, "text": "НДС не облагается"}
+      ],
+      "rows": [
+      ],
+      "fields": [
+        {"name": "soup-price", "value": "470.00", "roi": [0.56, 0.447, 0.66, 0.475]},
+        {"name": "soup-quantity", "value": "1", "roi": [0.56, 0.447, 0.66, 0.475]},
+        {"name": "soup-sum", "value": "470.00", "roi": [0.7, 0.45, 0.785, 0.483]},
+        {"name": "total", "value": "470.00", "roi": [0.66, 0.482, 0.785, 0.511]},
+        {"name": "vat-exempt-base", "value": "470.00", "roi": [0.69, 0.506, 0.785, 0.526]},
+        {"name": "paid", "value": "470.00", "roi": [0.69, 0.521, 0.785, 0.542]}
+      ]
+    },
+    {
+      "id": "receipt-visa-services",
+      "file": "IMG_0953_bin.jpg",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0953_bin.jpg?download=true",
+      "texts": [
+        {"name": "receipt-heading", "roi": [0.1, 0.082, 0.51, 0.11], "max_cer": 0.05, "text": "КАССОВЫЙ ЧЕК/ПРИХОД"}
+      ],
+      "rows": [
+      ],
+      "fields": [
+        {"name": "notice-price", "value": "160.00", "roi": [0.64, 0.232, 0.86, 0.263]},
+        {"name": "notice-quantity", "value": "1", "roi": [0.64, 0.232, 0.86, 0.263]},
+        {"name": "notice-sum", "value": "160.00", "roi": [0.62, 0.254, 0.87, 0.285]},
+        {"name": "document-price", "value": "3200.00", "roi": [0.6, 0.329, 0.87, 0.36]},
+        {"name": "document-quantity", "value": "1", "roi": [0.6, 0.329, 0.87, 0.36]},
+        {"name": "document-sum", "value": "3200.00", "roi": [0.62, 0.349, 0.88, 0.379]},
+        {"name": "consular-price", "value": "8470.00", "roi": [0.6, 0.411, 0.89, 0.442]},
+        {"name": "consular-quantity", "value": "1", "roi": [0.6, 0.411, 0.89, 0.442]},
+        {"name": "consular-sum", "value": "8470.00", "roi": [0.61, 0.43, 0.89, 0.46]},
+        {"name": "total", "value": "11830.00", "roi": [0.49, 0.563, 0.92, 0.622]},
+        {"name": "paid", "value": "11830.00", "roi": [0.65, 0.611, 0.92, 0.644]},
+        {"name": "vat-rate-20", "value": "20", "roi": [0.1, 0.687, 0.52, 0.717]},
+        {"name": "vat-amount-20", "value": "560.00", "roi": [0.69, 0.684, 0.92, 0.718]},
+        {"name": "vat-exempt-base", "value": "8470.00", "roi": [0.67, 0.706, 0.92, 0.739]}
+      ]
+    },
+    {
+      "id": "receipt-six-dishes-vat5",
+      "file": "IMG_1073_bin.jpg",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1073_bin.jpg?download=true",
+      "texts": [
+        {"name": "receipt-heading", "roi": [0.36, 0.319, 0.49, 0.341], "max_cer": 0.05, "text": "Кассовый чек"}
+      ],
+      "rows": [
+      ],
+      "fields": [
+        {"name": "pork-price", "value": "189.00", "roi": [0.45, 0.329, 0.55, 0.356]},
+        {"name": "pork-sum", "value": "189.00", "roi": [0.577, 0.328, 0.658, 0.36]},
+        {"name": "salad-price", "value": "135.00", "roi": [0.45, 0.363, 0.55, 0.391]},
+        {"name": "salad-sum", "value": "135.00", "roi": [0.577, 0.363, 0.658, 0.393]},
+        {"name": "cauliflower-price", "value": "125.00", "roi": [0.45, 0.397, 0.55, 0.426]},
+        {"name": "cauliflower-sum", "value": "125.00", "roi": [0.577, 0.397, 0.658, 0.427]},
+        {"name": "cutlet-price", "value": "199.00", "roi": [0.45, 0.433, 0.55, 0.46]},
+        {"name": "cutlet-quantity", "value": "2", "roi": [0.45, 0.433, 0.55, 0.46]},
+        {"name": "cutlet-sum", "value": "398.00", "roi": [0.577, 0.433, 0.658, 0.465]},
+        {"name": "compote-price", "value": "50.00", "roi": [0.45, 0.471, 0.55, 0.5]},
+        {"name": "sour-cream-price", "value": "10.00", "roi": [0.45, 0.508, 0.55, 0.539]},
+        {"name": "total", "value": "907.00", "roi": [0.52, 0.557, 0.675, 0.586]},
+        {"name": "vat-rate-5", "value": "5", "roi": [0.17, 0.58, 0.32, 0.604]},
+        {"name": "vat-amount-5", "value": "43.19", "roi": [0.59, 0.579, 0.675, 0.605]},
+        {"name": "paid", "value": "907.00", "roi": [0.59, 0.594, 0.675, 0.62]}
+      ]
+    },
+    {
+      "id": "receipt-tea-vat5",
+      "file": "IMG_1246_bin.jpg",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1246_bin.jpg?download=true",
+      "texts": [
+        {"name": "receipt-heading", "roi": [0.49, 0.34, 0.62, 0.372], "max_cer": 0.05, "text": "Кассовый чек"}
+      ],
+      "rows": [
+      ],
+      "fields": [
+        {"name": "tea-price", "value": "250.00", "roi": [0.58, 0.36, 0.69, 0.403]},
+        {"name": "tea-quantity", "value": "1", "roi": [0.58, 0.36, 0.69, 0.403]},
+        {"name": "tea-sum", "value": "250.00", "roi": [0.75, 0.36, 0.84, 0.405]},
+        {"name": "total", "value": "250.00", "roi": [0.7, 0.45, 0.84, 0.5]},
+        {"name": "vat-rate-5", "value": "5", "roi": [0.295, 0.484, 0.43, 0.52]},
+        {"name": "vat-amount-5", "value": "11.90", "roi": [0.75, 0.493, 0.84, 0.532]},
+        {"name": "paid", "value": "250.00", "roi": [0.75, 0.52, 0.84, 0.556]}
+      ]
+    },
+    {
+      "id": "receipt-sideways-two-dishes",
+      "file": "IMG_1415_bin.png",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1415_bin.png?download=true",
+      "texts": [
+        {"name": "receipt-heading", "roi": [0.613, 0.455, 0.635, 0.6], "max_cer": 0.05, "text": "Кассовый чек"}
+      ],
+      "rows": [
+      ],
+      "fields": [
+        {"name": "borscht-price", "value": "99.00", "roi": [0.585, 0.575, 0.627, 0.68]},
+        {"name": "borscht-quantity", "value": "1", "roi": [0.585, 0.575, 0.627, 0.68]},
+        {"name": "borscht-sum", "value": "99.00", "roi": [0.597, 0.75, 0.639, 0.84]},
+        {"name": "rice-price", "value": "99.00", "roi": [0.55, 0.575, 0.5920000000000001, 0.68]},
+        {"name": "rice-quantity", "value": "1", "roi": [0.55, 0.575, 0.5920000000000001, 0.68]},
+        {"name": "rice-sum", "value": "99.00", "roi": [0.56, 0.75, 0.605, 0.84]},
+        {"name": "total", "value": "198.00", "roi": [0.524, 0.67, 0.5609999999999999, 0.84]},
+        {"name": "vat-rate-5", "value": "5", "roi": [0.48, 0.25, 0.511, 0.41]},
+        {"name": "vat-amount-5", "value": "9.43", "roi": [0.507, 0.75, 0.532, 0.84]},
+        {"name": "paid", "value": "198.00", "roi": [0.487, 0.75, 0.513, 0.84]}
+      ]
+    },
+    {
+      "id": "receipt-beer-no-vat",
+      "file": "IMG_1657_bin.png",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1657_bin.png?download=true",
+      "texts": [
+        {"name": "receipt-heading", "roi": [0.455, 0.408, 0.59, 0.43], "max_cer": 0.05, "text": "Кассовый чек"},
+        {"name": "vat-exemption", "roi": [0.245, 0.431, 0.43, 0.451], "max_cer": 0.05, "text": "НДС не облагается"}
+      ],
+      "rows": [
+      ],
+      "fields": [
+        {"name": "beer-price", "value": "860.00", "roi": [0.54, 0.417, 0.64, 0.445]},
+        {"name": "beer-quantity", "value": "1", "roi": [0.54, 0.417, 0.64, 0.445]},
+        {"name": "beer-sum", "value": "860.00", "roi": [0.705, 0.419, 0.785, 0.45]},
+        {"name": "total", "value": "860.00", "roi": [0.655, 0.465, 0.8, 0.49]},
+        {"name": "vat-exempt-base", "value": "860.00", "roi": [0.71, 0.488, 0.795, 0.51]},
+        {"name": "paid", "value": "860.00", "roi": [0.71, 0.503, 0.8, 0.525]}
+      ]
+    }
+  ]
+}

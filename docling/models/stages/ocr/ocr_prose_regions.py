@@ -113,9 +113,11 @@ def numbers_have_source_positions(
 
 
 def _bad_letters(text: str, known: Callable[[str], bool]) -> int:
-    return sum(
+    normalized = normalize_mixed_script(text)
+    mixed = sum(before != after for before, after in zip(text, normalized))
+    return mixed + sum(
         len(word)
-        for word in _WORD.findall(normalize_mixed_script(text))
+        for word in _WORD.findall(normalized)
         if any(char.isalpha() for char in word)
         and not (word.isupper() and word.isalpha() and len(word) <= 5)
         and not known(word)
@@ -142,6 +144,7 @@ def _needs_reading(
         return False
     return bool(
         verify_quotes
+        or text != normalize_mixed_script(text)
         or _bad_letters(text, known) >= 3
         or (
             len(cluster.cells) >= 2
@@ -321,9 +324,19 @@ def confirm_prose_row(
     best = max(group.values(), key=lambda reading: reading.confidence)
     text = " ".join(normalize_mixed_script(best.text).split())
     tokens = text.split()
-    if len(tokens) != len(row.words) or any(
+    words = row.words
+    if len(tokens) != len(words):
+        # Wide justified spaces can be emitted as low-confidence dash/noise
+        # tokens. Only the exact agreement of two source readers may remove
+        # them; retain every letter/number box and every confident punctuation.
+        words = tuple(
+            word
+            for word in words
+            if word.confidence >= 0.8 or word.text.strip("-\u2013\u2014~")
+        )
+    if len(tokens) != len(words) or any(
         prose_numbers(word.text, known) != prose_numbers(token, known)
-        for word, token in zip(row.words, tokens)
+        for word, token in zip(words, tokens)
     ):
         return row
     return replace(
@@ -332,7 +345,7 @@ def confirm_prose_row(
         confidence=min(reading.confidence for reading in group.values()),
         words=tuple(
             word.model_copy(update={"text": token})
-            for word, token in zip(row.words, tokens)
+            for word, token in zip(words, tokens)
         ),
         quotes_confirmed=True,
         source_confirmed=True,
@@ -379,8 +392,7 @@ def _confirmed_rows(
 ) -> bool:
     assert page.size is not None
     for index, row in enumerate(rows):
-        if row.confidence < 0.8:
-            return False
+        weak_segmentation = row.confidence < 0.8
         crop = rectified_text_crop(gray, row.rect, page.size)
         if crop is None:
             return False
@@ -395,6 +407,8 @@ def _confirmed_rows(
             >= 0.97
         ]
         row = confirm_prose_row(row, readings, refiner._dictionary.word_is_known)
+        if weak_segmentation and not row.source_confirmed:
+            return False
         row = repair_prose_words(row, readings, refiner._dictionary.word_is_known)
         key = _key(row.text)
         if len(
@@ -489,43 +503,8 @@ def refine_pdf_prose(refiner: OcrRegionRefiner, page: Page) -> None:
             quote_deficit += (candidate.count("»") - candidate.count("«")) - (
                 original.count("»") - original.count("«")
             )
-            removed = {cell.index for cell in cluster.cells}
-            line_index = (
-                max(
-                    (cell.index for cell in page.parsed_page.textline_cells), default=-1
-                )
-                + 1
+            from docling.models.stages.ocr.ocr_prose_replacement import (
+                replace_verified_prose,
             )
-            word_index = (
-                max((word.index for word in page.parsed_page.word_cells), default=-1)
-                + 1
-            )
-            new_lines = []
-            new_words = []
-            for row in rows:
-                new_lines.append(
-                    TextCell(
-                        index=line_index,
-                        text=row.text,
-                        orig=row.text,
-                        confidence=row.confidence,
-                        from_ocr=True,
-                        rect=row.rect,
-                    )
-                )
-                line_index += 1
-                for word in row.words:
-                    new_words.append(word.model_copy(update={"index": word_index}))
-                    word_index += 1
-            cluster.cells = new_lines
-            page.parsed_page.textline_cells = [
-                cell
-                for cell in page.parsed_page.textline_cells
-                if cell.index not in removed
-            ] + new_lines
-            word_ids = {word.index for word in words if word.from_ocr}
-            page.parsed_page.word_cells = [
-                word
-                for word in page.parsed_page.word_cells
-                if word.index not in word_ids
-            ] + new_words
+
+            replace_verified_prose(page, cluster, rows)

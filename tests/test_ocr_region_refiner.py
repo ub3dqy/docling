@@ -85,6 +85,16 @@ def test_multiple_preprocessings_of_one_recognizer_are_not_independent_votes():
     assert choose_number("32 785", readings) == "32 785"
 
 
+def test_tesseract_segmentation_modes_are_one_numeric_vote():
+    readings = [
+        RegionReading("32 795", 0.99, "tesseract-7", "source"),
+        RegionReading("32 795", 0.99, "tesseract-13", "source"),
+    ]
+    assert choose_number("32 785", readings) == "32 785"
+    readings.append(RegionReading("32 795", 0.99, "iso:ru", "source"))
+    assert choose_number("32 785", readings) == "32 795"
+
+
 @pytest.mark.parametrize("source_confidence", [0.99991, 0.95])
 def test_sentence_ending_vote_uses_each_recognizers_strongest_reading(
     source_confidence,

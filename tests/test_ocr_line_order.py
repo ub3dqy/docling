@@ -3,6 +3,8 @@
 
 """Slanted paragraph rows must keep their own words and numeric fragments."""
 
+import pytest
+
 from docling.models.stages.ocr.rapid_ocr_model import RapidOcrModel
 
 
@@ -47,3 +49,55 @@ def test_joining_fragments_retains_the_printed_row_slope_for_later_crops():
     assert joined[0][0][1] < joined[0][1][1]
     assert abs(RapidOcrModel._line_band(joined, 80)[1] - 10) < 1e-8
     assert [word[1] for word in result.words][:2] == ["Part", "two"]
+
+
+def test_complete_word_positions_order_fragments_with_overlapping_padded_boxes():
+    start = _line("A", 0, 30, 21, 0)
+    middle = _line("short", 20, 95, 20, 0)
+    end = _line("caption", 90, 165, 19, 0)
+    words = [
+        _line("A", 3, 24, 21, 0),
+        _line("short", 24, 86, 20, 0),
+        _line("caption", 97, 160, 19, 0),
+    ]
+    result = RapidOcrModel._order_and_join(
+        [(end, [words[2]]), (middle, [words[1]]), (start, [words[0]])]
+    )
+    assert [line[1] for line in result.lines] == ["A short caption"]
+    assert [word[1] for word in result.words] == ["A", "short", "caption"]
+
+
+@pytest.mark.parametrize("kind", ["partial", "outside", "duplicate", "other-row"])
+def test_word_positions_cannot_join_partial_duplicate_or_other_row_text(kind):
+    first = _line("first", 0, 40, 20, 0)
+    second = _line("second", 20, 90, 19, 0)
+    before = _line("first", 2, 28, 20, 0)
+    after = _line("second", 30, 85, 19, 0)
+    if kind == "partial":
+        after = after[0], "sec", after[2]
+    elif kind == "outside":
+        after = _line("second", 41, 96, 19, 0)
+    elif kind == "duplicate":
+        after = _line("second", 23, 60, 19, 0)
+    else:
+        second = _line("second", 20, 90, 34, 0)
+        after = _line("second", 30, 85, 34, 0)
+    result = RapidOcrModel._order_and_join([(second, [after]), (first, [before])])
+    assert len(result.lines) == 2
+
+
+@pytest.mark.parametrize("weak_word", [False, True])
+def test_weak_fragment_positions_cannot_expand_a_caption_crop(weak_word):
+    heading = _line("Heading", 0, 80, 20, 0)
+    heading_word = _line("Heading", 3, 76, 20, 0)
+    fragment = _line("2", 70, 90, 21, 0)
+    word = _line("2", 80, 86, 21, 0)
+    if weak_word:
+        word = word[0], word[1], 0.72
+    else:
+        fragment = fragment[0], fragment[1], 0.72
+    result = RapidOcrModel._order_and_join(
+        [(fragment, [word]), (heading, [heading_word])]
+    )
+    assert [line[1] for line in result.lines] == ["Heading", "2"]
+    assert result.lines[0][0] == heading[0]

@@ -1,0 +1,11 @@
+{
+  "scope": "Paired first-E versus archived-baseline full table differences. Baseline was run after the first E result. Changes are not adjudicated accuracy scores; source controls and first result remain unchanged.",
+  "baseline_report_sha256": "ddf5ef77e6a0eb6378755cdf5a66a90fd113dbb813161749bf1649da97558313",
+  "first_report_sha256": "ad6acba50872751fdab14981bac5945daf098e588715c6e99c0f68316bcf0e26",
+  "changed_cells": 1,
+  "shape_changes": 0,
+  "numeric_glyph_changes": 0,
+  "changes": [
+    {"case_id": "vladimir-liabilities", "kind": "cell", "table": 1, "row": 1, "column": 0, "before": "(наименование февраля \"16\"", "after": "(наименование \"16\" февраля", "numeric_glyphs_changed": false}
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "scope": "Post-inference source inspection, not an update to frozen E controls. Official first-run and paired-baseline scores remain unchanged. No runtime tuning or arithmetic.",
+  "discovered_after_first_inference": true,
+  "reviewed_utc": "2026-11-03T17:03:08.281178+00:00",
+  "original_source_sha256": "bb79b8f90b6fbb79dbad28e431de46ea0502b2a7bb161644d0fbd9b155362817",
+  "reference_sha256": "3b4dc334c05c4ced3108696c546cb1a325c95984b684570cffaad63eaafcdce1",
+  "first_run_seal_sha256": "23858b6726a3282f5de8aaa47eab07fab3d1fabce6e120a6d50be746a0849135",
+  "control_typos": [
+    {
+      "case_id": "vladimir-assets",
+      "row_key": "1200",
+      "column": 0,
+      "frozen_expected": "1 115 238",
+      "source_visible": "1 115 283",
+      "first_output": "1 115 283",
+      "official_score_rewritten": false
+    },
+    {
+      "case_id": "vladimir-assets",
+      "row_key": "1600",
+      "column": 0,
+      "frozen_expected": "1 115 238",
+      "source_visible": "1 115 283",
+      "first_output": "1 115 283",
+      "official_score_rewritten": false
+    },
+    {
+      "case_id": "vladimir-liabilities",
+      "row_key": "1700",
+      "column": 0,
+      "frozen_expected": "1 115 238",
+      "source_visible": "1 115 283",
+      "first_output": "1115283",
+      "official_score_rewritten": false
+    }
+  ],
+  "evaluator_limitations": [
+    {
+      "case_id": "vladimir-results",
+      "row_key": "2210",
+      "column": 1,
+      "frozen_expected": "-",
+      "first_output": "( - )",
+      "source_visible": "( - )",
+      "note": "The pre-inference transcription records parenthesized dash placeholders as dashes, but the unchanged evaluator does not accept a complete parenthesized dash as equivalent. It therefore records a failure even for this intact observed placeholder. Fragmented brackets/dashes and incomplete negative amounts in other cells remain recognition/assembly failures; they are not reclassified.",
+      "official_score_rewritten": false
+    }
+  ],
+  "evidence": [
+    {
+      "page": 2,
+      "render_scale": 1.8,
+      "render_sha256": "9602686dc9419a2b9050112bd54955dc50844328afdeb9b29aea5f8c1a100119",
+      "crop_pixels": [
+        60,
+        826,
+        1000,
+        889
+      ],
+      "crop_file": "e-source-p2-crop.png",
+      "crop_sha256": "4d49489ab4c89b311e5380a50a03ef1e2a041ab1dc8c62044515fe8e3dce85ff",
+      "crop_unscaled_pixels_match_render": true
+    },
+    {
+      "page": 3,
+      "render_scale": 1.8,
+      "render_sha256": "fabe58d0f1b9c309a7e0e5ad2eb5fbed1bfc685b3db51fa52049d76952ac59a8",
+      "crop_pixels": [
+        60,
+        590,
+        1000,
+        632
+      ],
+      "crop_file": "e-source-p3-crop.png",
+      "crop_sha256": "ae64d62d915f07f53d012cc34ee8bb2ea3bbd0cee2658469b3c738ca3e2d0173",
+      "crop_unscaled_pixels_match_render": true
+    },
+    {
+      "page": 4,
+      "render_scale": 1.8,
+      "render_sha256": "936d940ca59f2be4eb9165d302c82c0291bc057807e88edc0a77077d2dc4e4e7",
+      "crop_pixels": [
+        65,
+        389,
+        998,
+        464
+      ],
+      "crop_file": "e-source-p4-crop.png",
+      "crop_sha256": "7cd529ae19727172dda878fcf16f54300ad1f918d3567b2c02dafb623d1ad1e2",
+      "crop_unscaled_pixels_match_render": true
+    }
+  ],
+  "notes": "Original rendered pages2,3,4 visually rechecked. The repeated283was read directly, not calculated from totals. The mistaken238in three original answers is retained; no new adjudication file is installed and neither official report is rescored."
+}

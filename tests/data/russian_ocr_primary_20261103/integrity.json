@@ -1,0 +1,13 @@
+{
+  "candidate": "candidate-v8",
+  "runtime_files": 343,
+  "model_assets": 36,
+  "scoring_evaluators_unchanged": true,
+  "original_controls_unchanged": true,
+  "exact_selected_score_roundtrips": true,
+  "raw_source_review_objects_preserved": true,
+  "first_e_result_retained": true,
+  "e_used_for_runtime_tuning": false,
+  "baseline_e_inference_after_first_final_candidate": true,
+  "note": "Claims are limited to the frozen selected controls. Full local table arrays and document outputs are identified by their hashes. No model training or financial arithmetic was used."
+}

@@ -1,0 +1,48 @@
+{
+  "selected_before_inference_utc": "2026-11-03T08:05:00.418180+00:00",
+  "rule": "Six lowest SHA256(seed+publisher_file_sha256) among unused pinned test image hashes, before visual inspection. Two publisher financial/audit PDFs; pages selected after checking raster/native evidence, before OCR.",
+  "seed": "ru-primary-2026-11-03e",
+  "old_file_count": 199,
+  "old_unique_count": 157,
+  "unused_images": 171,
+  "jobs": [
+    {
+      "file": "IMG_0953_bin.jpg",
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0953_bin.jpg?download=true",
+      "expected_sha256": "76eea8085dc61c998ac684d82d61d40b9f89897ba9116df36b6759ee58873af1"
+    },
+    {
+      "file": "IMG_1415_bin.png",
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1415_bin.png?download=true",
+      "expected_sha256": "ee3ea57344d80ecfbbcddc264f0902550d70facbe4b4c9f35743472548692c53"
+    },
+    {
+      "file": "IMG_0893_bin.jpg",
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0893_bin.jpg?download=true",
+      "expected_sha256": "c6501ab8a65da2cdde12ad327204fd23e2c460f207fe3e6ae569621bee26badb"
+    },
+    {
+      "file": "IMG_1246_bin.jpg",
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1246_bin.jpg?download=true",
+      "expected_sha256": "ef6059110d2bf9c0074869ea5657e473be648bea1c874df82cc5edf5546ccaff"
+    },
+    {
+      "file": "IMG_1657_bin.png",
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1657_bin.png?download=true",
+      "expected_sha256": "70382bcb9cbba4edcbd6fc04147bd2b486e5c3f3c9afe639f033b3bb3d469a96"
+    },
+    {
+      "file": "IMG_1073_bin.jpg",
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1073_bin.jpg?download=true",
+      "expected_sha256": "3119634ff337739bd44e53e4d874e8c57bc1e0487dc560d4a713ad10ee105536"
+    },
+    {
+      "file": "vladimir-financial-2025.pdf",
+      "url": "https://garantfond-33.ru/upload/iblock/6e1/acfdwf6cjg7npl5ngyaw58vsrulqskq3/%D0%91%D1%83%D1%85%D0%B3%D0%B0%D0%BB%D1%82%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BE%D1%82%D1%87%D0%B5%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B7%D0%B0%202025%20%D0%B3%D0%BE%D0%B4.pdf"
+    },
+    {
+      "file": "vladimir-audit-2025.pdf",
+      "url": "https://garantfond-33.ru/upload/iblock/ca3/vovdkey0rtz3r2com5psup1kfl2orv65/%D0%90%D1%83%D0%B4%D0%B8%D1%82%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B5%20%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%202025%20%D0%B3%D0%BE%D0%B4.pdf"
+    }
+  ]
+}

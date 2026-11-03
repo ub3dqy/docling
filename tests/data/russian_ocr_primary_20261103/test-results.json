@@ -1,0 +1,33 @@
+{
+  "candidate": "candidate-v8",
+  "checks": [
+    {
+      "name": "unit-tests",
+      "passed": 774,
+      "skipped": 15,
+      "exit_code": 0,
+      "log_sha256": "47bf40b59c749a02ef68f98ae2e9dd1df725f598dd3fd4de76681ad4b5795977"
+    },
+    {
+      "name": "cli-tests",
+      "passed": 12,
+      "skipped": 0,
+      "exit_code": 0,
+      "log_sha256": "bfafb44e34161d7dde145dbe4f6c9f292cd4f0147da4c150dc46f119459fe71b"
+    },
+    {
+      "name": "threaded-tests",
+      "passed": 2,
+      "skipped": 0,
+      "exit_code": 0,
+      "log_sha256": "b3594b5d3ea1c3349fab39adad87716d94986acdd1c90c3c98b27c45adcf5860"
+    },
+    {
+      "name": "synthetic-tests",
+      "passed": 8,
+      "skipped": 0,
+      "exit_code": 0,
+      "log_sha256": "99f6fe6ca9f5609a5bcd83eba7c970e4757409293d21d29e24935f48f966bc19"
+    }
+  ]
+}

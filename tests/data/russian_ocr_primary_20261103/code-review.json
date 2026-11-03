@@ -1,0 +1,739 @@
+{
+  "scope": "Open Code Review delegation; host review of all changed source/tests/docs, frozen controls and result artifacts. Read-only review of local supporting qualification scripts is included. No external model provider used.",
+  "reviewed_utc": "2026-11-03T17:38:29.678844+00:00",
+  "mode": "workspace",
+  "total_files": 78,
+  "reviewed_files": 78,
+  "skipped_files": 0,
+  "coverage_rate": 1.0,
+  "tool_reviewable": 62,
+  "tool_excluded": 16,
+  "preview_sha256": "ab88ae54aef2ec875bfa685e1e2d9c71a4840c27902578e7e5a1ced21a870711",
+  "rules_sha256": "a25761314b1bd92c1c7e9cc71c3d38390ab57fb39ce421882ee0d8753fe666f0",
+  "remaining_new_structural_or_security_findings": [],
+  "measured_limits": "Passing review is not OCR accuracy certification. NewE24/58fields,2/10cases,onepreexistingtimeout/emptyreceipt,OGRNzero-to-lettererror,oldwithin-limitclosingquoteloss andunselectedcaption regressions remain explicitly disclosed. OriginalEcontrolswiththreevisualtranscriptiontypos are unchanged.",
+  "supporting_scripts": [
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/run_known.py",
+      "sha256": "57b32c968867832f20c6f5c01c380277de1a6de11b9eda8b985f5e908ff58dfa",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/run_e.py",
+      "sha256": "874ab32ca472f17190b853a9f72eb3178315ed7062e915614be6b1336c4220bf",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/compare_known.py",
+      "sha256": "501a41856d0565a0571de7e4f1e90062e0f78225284fd8ae8e8093a52a9096bd",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/inspect_tables.py",
+      "sha256": "659020ce9debc6b2b0c66b76a76088597f5e8c9221af6f3c5def4f296bfbec38",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/inspect_known_gate.py",
+      "sha256": "4a82c3247916321f32e3b1004e63dc4dd784ecc2f38f351480890cc3967cacd0",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/report_tools.py",
+      "sha256": "e4da6e7400491e831a1959282e7d1ac05682c2b6e9f98404c0d56a5dc6d50af5",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/build_results.py",
+      "sha256": "f4390481d65e033a88fb503705dfae37869bffebb06abaee7ecb0b5fb5953202",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/render_report.py",
+      "sha256": "3f2bfb6465bc4e693623ca86147959cce4ed94d2cf765c6c5b107fb49caecea2",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/finish_known_review.py",
+      "sha256": "9241f90a2e13186eab6796425c2f8602d69c45d9c8095f47593f0668f5555135",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/inspect_e_tables.py",
+      "sha256": "f17417a6b75298ea52723dd9884670bb3ffaa3975f17ee558352f4427d47736d",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/record_e_source_notes.py",
+      "sha256": "130334d6f1624bd373bccd6444cced77caef73fe55beecac18eb639807e3f769",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/finish_e_review.py",
+      "sha256": "a2b310c4dac7d029d99db5c474e7516aa90b423b225bdf1cdf2979043d1890e7",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/verify_artifacts.py",
+      "sha256": "a8e60b55f6da9a8fedc3dc13771107b810cf552ce7ed6adeb0d38f43687324b1",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/refresh_inventory.py",
+      "sha256": "79480a666b5bf1ac8cc1b52191bf4d0e2cc7d54e3de673d8ab974507903be1c1",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/record_final_review.py",
+      "sha256": "d58b6f47c1c6bd3509001ac287ac1afc00ba563f5f6342e0573f8c346113d4ff",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    },
+    {
+      "path": "output/russian-ocr-primary-2026-11-03/verify_published.py",
+      "sha256": "8853ac89a43c2d5efa455874aa09cb50486ee262a77795ef3ec61b10130b31db",
+      "result": "reviewed",
+      "note": "Local script excluded from Git selection by .gitignore. Reviewed invocation boundaries, file/hash checks, first-versus-baseline order and score preservation; not shipped as runtime code."
+    }
+  ],
+  "entries": [
+    {
+      "path": "docling/datamodel/ocr_profiles.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "fef618784b9610e5d3da91e99c9d89a31e72b1739c546af9da2e1627b684f46f",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Page-first Russian direction with explicit protected legacy fallback. Existing primary eslav model and renderer configuration retained."
+    },
+    {
+      "path": "docling/datamodel/pipeline_options.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5a3f3d59d86ed7403af527100ef3bfa58f008b1ec36ab312bcacb7379a114716",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. New optional orientation fallback defaultsFalse; RUprofile enablesTrue. GenericCLI option validation retained and opt-out documented. No model/dependency paths changed."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_line_refinement_model.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "377a31389608e552e42881f92f97f65d085aed9ee7787a30490a1ccd4cf13651",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Only image refinement gets an upright working frame; PDF prose path remains unchanged. Fiscal layout routing runs on restored source frame."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_prose_regions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "8c2d068d9f92c4efdf4310602abacf4953e9ee97e18d8f2e5db9c14d72f1965e",
+      "note": "Previously reviewed before E; bytes unchanged. Two independent source confirmations retain numeric/operator/position guards. Verified prose commit now updates source ownership through replace_verified_prose: an exact overlapping prefix borrowed from another OCR text cluster cannot remain duplicated. Real Kadastr before/after diagnostic62extra->0, no reference changes."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_receipt_expressions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "6bd62281068d1e5d2a08d9955b5fe7d6e655aefb88be5002faf4cb8258478557",
+      "note": "Previously reviewed before E; bytes unchanged. Detached opaque source marker needs compact shape, fill and neighbouring digit dimensions, an explicit high-confidence source equals and2 independent numeric families. Exact negative vote veto and existing fused-marker rules retained. Every amount digit and decimal position preserved. No known values/filenames or arithmetic."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_receipt_regions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "c41576b2c21c4c3f607e40c2348a7605d3b4bb52face29111cb21d8ef27a8f47",
+      "note": "Previously reviewed before E; bytes unchanged. Typed request-local per-amount proof records monetary ordinal/count/key and confirmed equals only after an actual source-word correction. Later row readings retain confirmed signs only with identical decimal digits and positions; different digits/counts are rejected. Composite variant is labelled, original recognizer family/confidence retained; no extra independent vote. Other fields remain eligible. Source amount pixels and genuine negative guards retained."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_region_refiner.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "50b8ddaaac3a6f6f11328d0ad680cc87e6cf86f56b33643415bb2ef8e33056e8",
+      "note": "Previously reviewed before E; bytes unchanged. Native numeric votes grouped by recognizer family. Removed unused private price wrapper and call typed result directly, preserving expression/price/word processing order. Only request-local verified amounts constrain later nonnumeric row candidates. Numeric/native/table paths and layout replacement mapping retained."
+    },
+    {
+      "path": "docling/models/stages/ocr/rapid_ocr_model.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5e18ade3c0eb7b1c6c8dbcfe8599c015147cc1efab0db5765066fb58cd8f8232",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Whole-page direction precedes multiscale for Russian. Empty/sparse results remain eligible. Fallback decision stays request-local and uses independent lazy native readers at all3detectors, protecting mutable per-reader flags. Original _read interface retained; pinned paths, explicit language, model hashes unaffected."
+    },
+    {
+      "path": "docling/utils/ocr_line_order.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "da33d14694621d244a6d1af7ab1dd85ad6b6a36de64c52d00f6c6bf0ad982cb9",
+      "note": "Previously reviewed before E; bytes unchanged. Full in-envelope credible word positions may disambiguate overlapping padded detector frames. Weak line/word confidence below0.8, partial/empty/out-of-frame output fall back to previous envelope. Sloped-band vertical test and original merging retained; weak-number crop expansion, duplicate and separate-row guards tested. Two actual caption orders repaired; full quality gate still required."
+    },
+    {
+      "path": "docling/utils/ocr_receipt_segments.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5ced17ee2af0adea3bf5a2807bad0e1e281dc6822db4a2f717e5ae39de3573ae",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Generic signed fiscal amount splitting retains minus and source geometry; no arithmetic."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_line_classifier.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "8d7ffabd1a33994ef8b718095026af48b54c27d45b4a3cb72083f74b4150b5bd",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Typed call-only Protocol matches RapidOCR3.10 positional image interface. Immutable view forces classification only on its separately configured native reader. No shared normal-reader flag changes or additional assets."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_oriented_refinement.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "3d6d464b4750b531a15e5a474e633014f2871c6ea27973fa8c643d690dbe2d9c",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. At least5shared OCR label axes and80percent agreement nominate a quarter/half turn. Native/mixed-origin text bypasses. Clone text+layout together to preserve aliases; image renderer uses source pixels. New/merged boxes and children restored once. Atomic commit after success retains source dimensions and nontext data."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_page_orientation.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "e7c2a55346d844809f84e4fb9bc728958de2eca6ddd4f3d956527b61e578c704",
+      "note": "Previously reviewed before E; bytes unchanged. Generic legacy path retained. Russian source with _reads_well, dominant horizontal labels and3confident known4+letter-word rows/20weightedknownchars confirms upright direction. Unknown names cannot alone force3expensive full-page turns. Weak/single-row/vertical evidence still searches. Existing candidate/fallback numeric guards retained. Dense receipt now165.7sec versus repeated180timeout; same CPU4/180, no resolution/model changes."
+    },
+    {
+      "path": "docling/models/stages/ocr/ocr_prose_replacement.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "f5e7dacdd64caf2e69ff9dd93ff9e853197ca8a4bd4eef50f4d2826b90f3204f",
+      "note": "Previously reviewed before E; bytes unchanged. New typed commit helper consumes only whole exact NFC/casefold/whitespace-equivalent OCR text, confidence>=.8, without digits/unbalanced guillemets, from other leaf TEXT clusters, after strong independent source confirmation. Exact word span must match source width/overlap and sloped band. Real repeated rows, native/numeric/weak/different text stay. Removes stale layout aliases and only owned OCR words with matching text/band, preserving unrelated/native words. No filenames/expected values or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/baseline-run-seal.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "3335cd5997566280febd3ad6bf6d5846319e2b639b51ce11c2f53c169e94dc3a",
+      "note": "Verified source343 versus initial339 maps, identical model/fixed/source hashes, first-before-baseline ordering and loaded module origins. No E runtime tuning."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/collection-plan.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "bc4f526ae19b3f8521c1d64fafaa6b28ed14323a3d363519b566d790690c8d61",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Seeded pre-view selection, all6photos retained; native Windows TLS trust for failed downloads, no disabled verification."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/evaluation-seal.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "d408b15753918ebfe413fe0303a55da1d5557903077aef885aeb7eaa896f05a7",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Initial pre-inference snapshot retained; may include rejected prototype. Final run seal will identify final candidate, without changing this snapshot."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/novelty.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "e28afb4fab432e405ca16d9372d887936d4e7f9c504ef3b36bbf02cf365a98bd",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Exact source novelty vs199prior files; pHash bounds documented, not training-data novelty."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/references.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "3b4dc334c05c4ced3108696c546cb1a325c95984b684570cffaad63eaafcdce1",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. New E answers and ROIs transcribed from source images before inference; immutable original seal; expected values never used by runtime."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/run-seal.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "23858b6726a3282f5de8aaa47eab07fab3d1fabce6e120a6d50be746a0849135",
+      "note": "Verified source343 versus initial339 maps, identical model/fixed/source hashes, first-before-baseline ordering and loaded module origins. No E runtime tuning."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/scan-evidence.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "3eee9f279b28227033b22c7192c18c60a2b20ffb0e256071ec6462652b76530f",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Read-only PDFium text/raster inventory plus original image dimensions. Source input bytes unchanged."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/sources.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "242208a9a209138dfb54d09f73c46b53f93cd7257fb740b708960d9c03f83964",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. 8 public original hashes, sizes and pinned URLs; no signed redirect credentials. No duplicate old bytes."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/assessment-coverage.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "523c3334fa93b8f4fc06c91304467bea5f530b9aa1622e4db12a040b8192d64b",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/attempts.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "ff82f11133995ff75ae7b35a4f2e9778a0cf6926583bcd9de5b035dfbcd502d6",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/baseline-report-provenance.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "2b83b52303f65b4383430000ccd152394c48df06192e7ada4bfea7f4c5d1efd5",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/c-after.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "fd021b9f790deed1e85c762462068784e9e99ca3e14cd5ecf3d548b871d454cb",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/c-before.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "21f261b1f7711b46b268551573d73c2787eacca57caa1ca20bffcb1305c0ec62",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/code-review.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": null,
+      "note": "This review record covers every preview identity, including tool-excluded files. Its own content digest is omitted to avoid a recursive hash."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/d-after.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "f9e8d06a76f1f8de33b309c2689084a947c9b66dc4e1a002e9329ffcf76a11d1",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/d-before.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5b45659a2fe2756b86d5c34ed114874cf84ce1df76c4d042f75ba3186f563c29",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-baseline-verification.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "e07c063197a71ca7220b59b5c3aaee61893eae43a195e69ea8eebbfae30469c7",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-baseline.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "76d2d524352fe54e53c5eb41b9847c347cf6c87b1fee30bc49ccd29d06bb558d",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-comparison.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "0993bce77a69f51030c097c07b6b418a15986b2b5abf599d7b9a02d19778f92d",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-first-verification.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5b09996fcd551379e5c13a2406f316c096a99b0bf881c80e97c45bc465b5a3e0",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-first.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "92dd3c8fc84ecb9f048b8aebb10204d5d5dbbfe8762124192e7553795de69ec1",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-full-table-changes.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "361bd4dd7ca3cf8fe930a3772dc8a959c7c906cd775173ae72f7b259666adad8",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-source-discrepancies.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "8a80d10cbdca8a3d1e21d2b2ab504df0a91ac4254760658719e2352110f48648",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/field-transitions.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "737e3232c7a1714ccbe5b1384541ee8a79cc096f7a2710e8f8423235e6010de3",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/frozen-inputs.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5a65334c0bf299a500a32baaca6ddee5ea852d6ad7751c68a7e8826b13d96a0e",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/full-table-changes.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "ba25b061dce7410e025b90d66b8d6450995d12d1f281b366fb9d7fcc3e6aa4e3",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/full-table-review.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "a8d80878dfd4532a395e609d7ab90852c3b483a0d0af6d8fcc8671def3a19971",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/integrity.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "68755073972d01bf79a39bdfc3b40b22a2d909e3e6d1cf27baa405f5bcd231f4",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/known-comparison.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "893793a6e2427ed9973909e913fbae5167f60d139022e9a7b05274f07854bf75",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/known-verification.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "84a598b10f077b48dd2aa8e65c392be684ef252bf3f4582b05e7c9f98915903d",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/latest-b-after.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "02239ce17f50219464a2009df56412412a15080a51ab67a2b8fb419e92e36427",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/latest-b-before.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "9258cf5538dddc833d649e8bf2ced7a99f1ff97d286f376967265397d3933331",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/local-artifacts.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "5f2ff43dfa5039a608d5e7ae5f39a73926ef15f653bbc5d9b6dbd16ff6c9c2aa",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/newest-after.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "b3c1a92873a84afcb0583f504ad4615c0d9ccc30137649a56279981b41078bab",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/newest-before.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "38178d7cdfc8a46202d2927623c59b925e8bc064e61ddb0a89438c7a4e880e96",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/pre-e-gate.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "be1376b539e287df63d47fe6d40e7c62e0cb49d4b1dc6ba6d4d932eb1a1d9dce",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/previous-after.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "b969e66061d53b0d97ad1b268652f2f8cc9b2084846ab8a252340af30878b101",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/previous-before.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "e3bdc07782852262630a07f881444d42be5deb5e57f63f33302ed4f9f95673ee",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/primary-causal-evidence.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "11a29df2da7eb556a3ae1f43f843bf0780183059c7afb4c19f295eecdb59292e",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/source-discrepancies.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "594397db20e3b09f790db3417c8b7888918df296348403ff177c5cd4285af8d5",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/source-review.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "b07d08af52a04c4fbb5b695615c1140de2c79dc549e8ea7b65373a7dfff83a56",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/summary.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "96c58dc4d96d2813f0f0bb5dd4c1286f24b84a4d1db6e3caab537f86b0d4831c",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/synthetic-result.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "16c4de2ed9e9b7a6cf0f8080a494f3eafca632d405fc64b140e71e85aa549b0e",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/task-start.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "8aca592e3506f10baa799c2161c933fa4e8347add480a47503d6013d81d8b57d",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/test-results.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "147d92f6f9dc5a2361511a5e0f37c7eedf208fc7f5f59b66c72133308a5bb2e7",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/unseen-after.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "47db92c9aa8f1d2a716a69ead8d0615b08ee14bc1f968138d0f383903ca72e68",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/unseen-before.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "85cdefcde1073ffa1b3b3404490628b73c5ab37dfcc90688a5f417b513b24933",
+      "note": "Reviewed artifact values beyond the JSON-key rule. Parsed JSON, bound raw reports/seals and full expected denominators; fourteen selected reports round-trip every official score and original-reference object. Source/model/evaluator hashes, failed attempts and exception/control annotations remain distinct. No score rescoring or financial arithmetic."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/validation.json",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": null,
+      "sha256": "ffa0798ff420c3c1d3fb2b57ff47db8ad21965e1555178321d68f57aeaf481d6",
+      "note": "Recorded actual successful required-hook pass and affected test results. Nonapplicable hooks are identified; no source change by hooks. Completed metadata is checked in the final repeat."
+    },
+    {
+      "path": "docling/.agents/skills/docling/SKILL.md",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "56bbd6c33d964dc79c38bc9270e62df717d41038a7dccdb4fc5e2ed7fdda1397",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Usage guidance describes actual profile behavior with no replaced primary model."
+    },
+    {
+      "path": "docling/.agents/skills/docling/references/cli.md",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "8adec8bd26361394d079e2f012070c8ad27ebdf4c41f78b497958387108e8124",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. CLI guidance consistent with runtime; segmentation variants are not independent models."
+    },
+    {
+      "path": "docs/usage/russian_ocr.md",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "225ebdf822fa967e05058bf5be52614ea2327a54738291b5ef2717da3d6036e5",
+      "note": "Reviewed the full diff, existing option documentation and appended measured results. Counts match official paired reports; E timeout, identifier error, control typos, quote and caption regressions are explicit. No arbitrary-document or perfect-accuracy claim."
+    },
+    {
+      "path": "tests/test_ocr_line_order.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "cf31470e307a49894b229d2c723ecc46a5a8408b46de40d20a7abec9d9ef77f9",
+      "note": "Previously reviewed before E; bytes unchanged. Meaningful geometry regressions cover overlapping padded fragments with complete words, reject partial/outside/duplicate/other-row alternatives and prevent a weak line/word fragment from expanding a caption crop. Existing date/slope checks retained."
+    },
+    {
+      "path": "tests/test_ocr_prose_regions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "fa7ba067bd5bca3dba3254498b878988deec33607a71eed695757aab126ed2a6",
+      "note": "Previously reviewed before E; bytes unchanged. Covers mixed-script/weak segmentation agreement plus actual ownership commit across aliased parent/leaf/source lists, exact overlapping-prefix adoption, native/unconfirmed/different/numeric/unbalanced-quote/weak source preservation, unrelated/native words and genuine tilted repeated rows whose envelopes overlap. No expected real-document wording."
+    },
+    {
+      "path": "tests/test_ocr_receipt_expressions.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "0e5b8bbd0adcfd73e9e9cb0cc78c49c873a9ef097737dfa6ad1d0119c771a24c",
+      "note": "Previously reviewed before E; bytes unchanged. Scale/shape and independent-source evidence guards cover compact filled marks, thin/broad minus, colon, missing mark, negative/disagreeing/one-family votes. Per-field proof covers repeats, numeric positions, changed other fields, negative/parenthesized/comma values, attached quantity equals and labelled sign carry without digit substitution. Existing expression/receipt classification checks retained."
+    },
+    {
+      "path": "tests/test_ocr_receipt_segments.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "fe7d324c63349b25595a3bb206151391a8c346a5dcb892ccff3ad8857ab91052",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Refund sign retained when caption and amount split."
+    },
+    {
+      "path": "tests/test_ocr_region_refiner.py",
+      "status": "modified",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "7f9ff2d502cdb59a0277fb23f2c438af420351e07e9228559e87887f1786eb06",
+      "note": "Previously reviewed before E; bytes unchanged. Prior host review retained; byte-identical. Two Tesseract modes rejected as independent votes; second actual family permits observed value."
+    },
+    {
+      "path": "tests/data/russian_ocr_holdout_20261103e/README.md",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "b10ede7bce82a29b2023a32b918359e25f624b44647affb2d4d00459912f4936",
+      "note": "Collection and repeat command retained. Added post-inference control-typo/normalizer disclosure; frozen answers and manifest hashes unchanged, original negative scores retained."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/README.md",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "a81a95c022a9fe4feb65bdace45195d08897830f7cef0141f3e2eff7a875da6f",
+      "note": "Read entire report/README. Verified seven comparison rows, full denominators on the exception, raw/prior-reviewed results, actual remaining errors, all41full-table differences, own three control typos, normalizer limit, OGRN error, quote/caption regressions and local links. Owner attribution retained."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/REPORT.md",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": "unsupported_ext",
+      "sha256": "70a8fa42a497b7fa52d7130fdc00da3ad6215b6455d714ebb2bbcc75ece8b2d4",
+      "note": "Read entire report/README. Verified seven comparison rows, full denominators on the exception, raw/prior-reviewed results, actual remaining errors, all41full-table differences, own three control typos, normalizer limit, OGRN error, quote/caption regressions and local links. Owner attribution retained."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-source-p2-crop.png",
+      "status": "binary",
+      "result": "reviewed",
+      "tool_exclusion": "binary",
+      "sha256": "4d49489ab4c89b311e5380a50a03ef1e2a041ab1dc8c62044515fe8e3dce85ff",
+      "note": "Visually inspected published crop. Bytes match the declared unscaled source/render crop. Visible numbers/bracket placeholders support the corresponding annotation; full originals are not republished."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-source-p3-crop.png",
+      "status": "binary",
+      "result": "reviewed",
+      "tool_exclusion": "binary",
+      "sha256": "ae64d62d915f07f53d012cc34ee8bb2ea3bbd0cee2658469b3c738ca3e2d0173",
+      "note": "Visually inspected published crop. Bytes match the declared unscaled source/render crop. Visible numbers/bracket placeholders support the corresponding annotation; full originals are not republished."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/e-source-p4-crop.png",
+      "status": "binary",
+      "result": "reviewed",
+      "tool_exclusion": "binary",
+      "sha256": "7cd529ae19727172dda878fcf16f54300ad1f918d3567b2c02dafb623d1ad1e2",
+      "note": "Visually inspected published crop. Bytes match the declared unscaled source/render crop. Visible numbers/bracket placeholders support the corresponding annotation; full originals are not republished."
+    },
+    {
+      "path": "tests/data/russian_ocr_primary_20261103/source-vat-crop.png",
+      "status": "binary",
+      "result": "reviewed",
+      "tool_exclusion": "binary",
+      "sha256": "2d66f4fe284b1172902b577c0d6af8eea148ad0bf05db2f4ab37793e5871f124",
+      "note": "Visually inspected published crop. Bytes match the declared unscaled source/render crop. Visible numbers/bracket placeholders support the corresponding annotation; full originals are not republished."
+    },
+    {
+      "path": "tests/test_cyrillic_primary.py",
+      "status": "added",
+      "result": "reviewed",
+      "tool_exclusion": "default_path",
+      "sha256": "77b91f144dd733030d27d533e7c9a02fa9ba3fc0dbc304071400362d5ea65978",
+      "note": "Previously reviewed before E; bytes unchanged. Actual existing eslav model checks all4page angles, empty-first-reading recovery and isolated native classifier state. Typed image-refinement frame/atomic/native guards and fallback/scale tests retained. New direction-decision cases distinguish several credible horizontal rows from single-row, weak or vertical evidence; no model mocks for actual orientation acceptance."
+    }
+  ]
+}

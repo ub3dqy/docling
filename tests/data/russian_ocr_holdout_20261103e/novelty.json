@@ -1,0 +1,57 @@
+{
+  "prior_files": 199,
+  "prior_unique_sha256": 157,
+  "new_originals": 8,
+  "all_sha256_new": true,
+  "photos": [
+    {
+      "file": "IMG_0953_bin.jpg",
+      "sha256": "76eea8085dc61c998ac684d82d61d40b9f89897ba9116df36b6759ee58873af1",
+      "same_hash_as_prior": false,
+      "phash63": "191af51ea4f19a64",
+      "nearest_prior": "output/real-russian-ocr-2026-11-01/sources/receipt-3.jpg",
+      "nearest_distance_of63": 20
+    },
+    {
+      "file": "IMG_1415_bin.png",
+      "sha256": "ee3ea57344d80ecfbbcddc264f0902550d70facbe4b4c9f35743472548692c53",
+      "same_hash_as_prior": false,
+      "phash63": "1b65309e6d9a92c6",
+      "nearest_prior": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_0884_bin.jpg",
+      "nearest_distance_of63": 20
+    },
+    {
+      "file": "IMG_0893_bin.jpg",
+      "sha256": "c6501ab8a65da2cdde12ad327204fd23e2c460f207fe3e6ae569621bee26badb",
+      "same_hash_as_prior": false,
+      "phash63": "5b6634899296cd6c",
+      "nearest_prior": "output/russian-ocr-holdout-2026-11-02b/candidates/partners-audit-2025-p4.png",
+      "nearest_distance_of63": 20
+    },
+    {
+      "file": "IMG_1246_bin.jpg",
+      "sha256": "ef6059110d2bf9c0074869ea5657e473be648bea1c874df82cc5edf5546ccaff",
+      "same_hash_as_prior": false,
+      "phash63": "58666969b4c9b686",
+      "nearest_prior": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_1186_bin.jpg",
+      "nearest_distance_of63": 14
+    },
+    {
+      "file": "IMG_1657_bin.png",
+      "sha256": "70382bcb9cbba4edcbd6fc04147bd2b486e5c3f3c9afe639f033b3bb3d469a96",
+      "same_hash_as_prior": false,
+      "phash63": "5e72608d96b26969",
+      "nearest_prior": "output/real-russian-ocr-new-2026-11-01/sources/doc-000002.jpg",
+      "nearest_distance_of63": 22
+    },
+    {
+      "file": "IMG_1073_bin.jpg",
+      "sha256": "3119634ff337739bd44e53e4d874e8c57bc1e0487dc560d4a713ad10ee105536",
+      "same_hash_as_prior": false,
+      "phash63": "4b5b34c49bccc931",
+      "nearest_prior": "output/russian-ocr-holdout-2026-11-02c/candidates/IMG_1244_bin.jpg",
+      "nearest_distance_of63": 18
+    }
+  ],
+  "scope": "Exact SHA256 check against all prior originals/candidates, plus source pHash inspection. Repeated merchant layouts remain correlated; pHash is not a proof of different semantic documents."
+}

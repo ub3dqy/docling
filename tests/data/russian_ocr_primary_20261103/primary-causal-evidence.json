@@ -1,0 +1,286 @@
+{
+  "scope": "Direct observation of identical source crops, before and after the generic line classifier. Every record meeting180>=.9, source confidence>=.85 and differing text is retained. These selected examples are causal evidence, not an accuracy sample. Direct rendering may differ from converter crops.",
+  "records": [
+    {
+      "case_id": "receipt-canteen-breakfast",
+      "observation_sha256": "c20033b72a5dc013fad8b7624e7b7197677282775d3222bb8033c93a55b54674",
+      "examples": []
+    },
+    {
+      "case_id": "receipt-order-222-no-vat",
+      "observation_sha256": "d47a3523b02e64238a6c8109473344f678c02b21f15528cbb20a92b121fd378a",
+      "examples": [
+        {
+          "index": 18,
+          "box": [
+            [
+              2191.0,
+              2184.0
+            ],
+            [
+              2399.0,
+              2184.0
+            ],
+            [
+              2399.0,
+              2286.0
+            ],
+            [
+              2191.0,
+              2286.0
+            ]
+          ],
+          "orientation": [
+            "180",
+            0.9993976354598999
+          ],
+          "rotated_text": "0068",
+          "rotated_confidence": 0.56938,
+          "source_text": "-89.00",
+          "source_confidence": 0.88793,
+          "crop_size": [
+            102,
+            208
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "volgograd-independent-audit",
+      "observation_sha256": "62ba4746ebac0520116b18fef0dfad936e1ed9833ac5947d02a2c0a6bdac565f",
+      "examples": [
+        {
+          "index": 3,
+          "box": [
+            [
+              978.0,
+              539.0
+            ],
+            [
+              1929.0,
+              539.0
+            ],
+            [
+              1929.0,
+              615.0
+            ],
+            [
+              978.0,
+              615.0
+            ]
+          ],
+          "orientation": [
+            "180",
+            0.9079760313034058
+          ],
+          "rotated_text": "",
+          "rotated_confidence": 0.0,
+          "source_text": "(некоммерческое партнерство)",
+          "source_confidence": 0.99671,
+          "crop_size": [
+            76,
+            951
+          ]
+        },
+        {
+          "index": 12,
+          "box": [
+            [
+              1628.0,
+              997.0
+            ],
+            [
+              1916.0,
+              997.0
+            ],
+            [
+              1916.0,
+              1044.0
+            ],
+            [
+              1628.0,
+              1044.0
+            ]
+          ],
+          "orientation": [
+            "180",
+            0.999754011631012
+          ],
+          "rotated_text": "",
+          "rotated_confidence": 0.0,
+          "source_text": "отчетности",
+          "source_confidence": 0.98972,
+          "crop_size": [
+            47,
+            288
+          ]
+        },
+        {
+          "index": 14,
+          "box": [
+            [
+              350.0,
+              1052.0
+            ],
+            [
+              1156.0,
+              1052.0
+            ],
+            [
+              1156.0,
+              1123.0
+            ],
+            [
+              350.0,
+              1123.0
+            ]
+          ],
+          "orientation": [
+            "180",
+            0.9505277276039124
+          ],
+          "rotated_text": "",
+          "rotated_confidence": 0.0,
+          "source_text": "(некоммерческое партнерство)",
+          "source_confidence": 0.99713,
+          "crop_size": [
+            71,
+            806
+          ]
+        },
+        {
+          "index": 51,
+          "box": [
+            [
+              353.0,
+              1738.0
+            ],
+            [
+              631.0,
+              1738.0
+            ],
+            [
+              631.0,
+              1784.0
+            ],
+            [
+              353.0,
+              1784.0
+            ]
+          ],
+          "orientation": [
+            "180",
+            0.9913362264633179
+          ],
+          "rotated_text": "",
+          "rotated_confidence": 0.0,
+          "source_text": "отчетность",
+          "source_confidence": 0.99115,
+          "crop_size": [
+            46,
+            278
+          ]
+        },
+        {
+          "index": 113,
+          "box": [
+            [
+              352.0,
+              2741.0
+            ],
+            [
+              671.0,
+              2741.0
+            ],
+            [
+              671.0,
+              2787.0
+            ],
+            [
+              352.0,
+              2787.0
+            ]
+          ],
+          "orientation": [
+            "180",
+            0.9499329328536987
+          ],
+          "rotated_text": "",
+          "rotated_confidence": 0.0,
+          "source_text": "отчетности»",
+          "source_confidence": 0.92848,
+          "crop_size": [
+            46,
+            319
+          ]
+        },
+        {
+          "index": 131,
+          "box": [
+            [
+              350.0,
+              3007.0
+            ],
+            [
+              1028.0,
+              3005.0
+            ],
+            [
+              1028.0,
+              3063.0
+            ],
+            [
+              350.0,
+              3065.0
+            ]
+          ],
+          "orientation": [
+            "180",
+            0.9804978370666504
+          ],
+          "rotated_text": "и",
+          "rotated_confidence": 0.62069,
+          "source_text": "аудиторов и аудиторских",
+          "source_confidence": 0.94303,
+          "crop_size": [
+            58,
+            678
+          ]
+        },
+        {
+          "index": 145,
+          "box": [
+            [
+              346.0,
+              3128.0
+            ],
+            [
+              2317.0,
+              3130.0
+            ],
+            [
+              2317.0,
+              3206.0
+            ],
+            [
+              346.0,
+              3204.0
+            ]
+          ],
+          "orientation": [
+            "180",
+            0.9154897928237915
+          ],
+          "rotated_text": "    и ",
+          "rotated_confidence": 0.51064,
+          "source_text": "бухгалтерской отчетности, и нами выполнены прочие этические обязанности",
+          "source_confidence": 0.98379,
+          "crop_size": [
+            76,
+            1971
+          ]
+        }
+      ]
+    }
+  ]
+}

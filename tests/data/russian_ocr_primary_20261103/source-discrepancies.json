@@ -1,0 +1,43 @@
+{
+  "scope": "Reconfirmation of a pre-existing source adjudication. No new correction is introduced. Original and previously source-reviewed scores remain separately preserved, as before this task.",
+  "reviewed_utc": "2026-11-03T15:29:06.851666+00:00",
+  "items": [
+    {
+      "cohort": "unseen",
+      "case_id": "receipt-grocery-mixed-vat",
+      "field": "vat-20",
+      "frozen_expected": "103.19",
+      "source_visible": "103.18",
+      "before_output": "103.18",
+      "current_output": "103.18",
+      "source_file": "output/real-russian-ocr-new-2026-11-01/sources/IMG_0667_bin.PNG",
+      "source_sha256": "bc3787f800a4c40bc1e348296c7a3468ee0eb2ab9af111e57e0f4632e6dccd7a",
+      "crop_pixels": [
+        1080,
+        1395,
+        1340,
+        1505
+      ],
+      "local_crop": "vat-source-v8.png",
+      "crop_sha256": "e56c48725683aaa39d3e16229115654c61f03c23740469ef55c0ff9c0ed5e66e",
+      "evidence": "The original unmodified binarized photograph shows two loops of8; the9 in1522.93above has a different tail. No VAT or total arithmetic used.",
+      "official_score_rewritten": false,
+      "runtime_changed_for_this_discrepancy": false,
+      "published_crop": "source-vat-crop.png",
+      "published_crop_pixels": [
+        100,
+        1395,
+        1400,
+        1505
+      ],
+      "published_crop_sha256": "2d66f4fe284b1172902b577c0d6af8eea148ad0bf05db2f4ab37793e5871f124",
+      "published_crop_native_pixels_unchanged": true,
+      "previously_reviewed_expected": "103.18",
+      "adjudication_existed_before_this_task": true,
+      "existing_adjudication_file": "tests/data/russian_ocr_unseen/reference_adjudications.json",
+      "existing_adjudication_sha256": "17d2268d8e502878bd40f097147e9d47f2af1d083ee49cc09b61639b0297ca93",
+      "diagnostic_uses_original_references": true,
+      "diagnostic_matches_previously_reviewed_value": true
+    }
+  ]
+}

@@ -11,6 +11,7 @@ from docling_core.types.doc import DocItemLabel
 from docling.datamodel.base_models import InputFormat, Page
 from docling.datamodel.document import ConversionResult
 from docling.models.base_model import BasePageModel
+from docling.models.stages.ocr.ocr_oriented_refinement import refine_image_lines
 from docling.models.stages.ocr.ocr_region_refiner import (
     OcrRegionRefiner,
     normalize_mixed_script,
@@ -61,8 +62,9 @@ class OcrLineRefinementModel(BasePageModel):
         for page in page_batch:
             if page._backend is not None and page._backend.is_valid():
                 with TimeRecorder(conv_res, "ocr_line_refinement"):
-                    self.refiner.refine_lines(
-                        page, image_input=conv_res.input.format == InputFormat.IMAGE
-                    )
+                    if conv_res.input.format == InputFormat.IMAGE:
+                        refine_image_lines(self.refiner, page)
+                    else:
+                        self.refiner.refine_lines(page, image_input=False)
                     self.route_fiscal_text(page)
             yield page

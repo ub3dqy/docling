@@ -3,7 +3,7 @@
 
 import logging
 import re
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -29,6 +29,10 @@ from docling.exceptions import (
     RapidOcrModelSizeNotSupportedError,
 )
 from docling.models.base_ocr_model import BaseOcrModel
+from docling.models.stages.ocr.ocr_line_classifier import (
+    LineClassifierView,
+    RapidReader as _RapidOCRReader,
+)
 from docling.utils.accelerator_utils import decide_device
 from docling.utils.ocr_language import (
     OcrLanguage,
@@ -47,7 +51,6 @@ from docling.utils.profiling import TimeRecorder
 from docling.utils.utils import download_url_with_progress, safe_version
 
 if TYPE_CHECKING:
-    from rapidocr import RapidOCR as _RapidOCRReader
     from rapidocr.utils.typings import EngineType, OCRVersion
 
 _log = logging.getLogger(__name__)
@@ -84,6 +87,7 @@ _RapidWordLine = tuple[_RapidWord, ...] | _RapidWord
 class _OcrPrediction:
     lines: list[_OcrLine]
     line_words: list[list[_OcrLine]]
+    line_classifier_fallback: bool = False
 
     @property
     def words(self) -> list[_OcrLine]:
@@ -511,6 +515,7 @@ def _confident_chars(lines: list[_OcrLine]) -> int:
 
 class RapidOcrModel(BaseOcrModel):
     _model_repo_folder = "RapidOcr"
+    orientation_word_is_known: Callable[[str], bool] | None = None
 
     multiple_languages = False
 
@@ -530,6 +535,7 @@ class RapidOcrModel(BaseOcrModel):
         self.options: RapidOcrOptions
         self._multiscale_reader: _RapidOCRReader | None = None
         self._refinement_reader: _RapidOCRReader | None = None
+        self._line_classifier_readers: dict[int, LineClassifierView] = {}
 
         # multiplier for 72 dpi; the default 3.0 == 216 dpi.
         self.scale = self.options.scale
@@ -721,15 +727,32 @@ class RapidOcrModel(BaseOcrModel):
                 _log.debug("Overwriting RapidOCR params with user-provided values.")
                 params.update(user_params)
 
-            self.reader = RapidOCR(
-                params=params,
-            )
+            def create_reader(config: Mapping[str, object]) -> RapidOCR:
+                reader = RapidOCR(params=dict(config))
+                if self.options.use_orientation_fallback:
+                    # RapidOCR mutates Global call flags. Keep fallback flags
+                    # in a separate lazy reader, never in the normal reader.
+                    self._line_classifier_readers[id(reader)] = LineClassifierView(
+                        RapidOCR(params=dict(config))
+                    )
+                return reader
+
+            self.reader = create_reader(params)
+            if (
+                self.languages
+                and self.languages[0].bcp47_language == "ru"
+                and self.options.detect_orientation
+                and self.options.use_region_refinement
+            ):
+                import pymorphy3
+
+                self.orientation_word_is_known = pymorphy3.MorphAnalyzer().word_is_known
             if self.options.use_multiscale:
                 # A small original scan needs the regular detector scale. The
                 # reduced second reading needs larger detection glyphs, while
                 # recognition still crops the original reduced image.
-                self._multiscale_reader = RapidOCR(
-                    params=params | {"Det.limit_side_len": 1536}
+                self._multiscale_reader = create_reader(
+                    params | {"Det.limit_side_len": 1536}
                 )
                 alternate_detector = (
                     (artifacts_path or settings.cache_dir / "models")
@@ -744,8 +767,8 @@ class RapidOcrModel(BaseOcrModel):
                     and "Det.model_path" not in (self.options.rapidocr_params or {})
                     and alternate_detector.is_file()
                 ):
-                    self._refinement_reader = RapidOCR(
-                        params=params | {"Det.model_path": str(alternate_detector)}
+                    self._refinement_reader = create_reader(
+                        params | {"Det.model_path": str(alternate_detector)}
                     )
 
     def supported_ocr_languages(self) -> OcrLanguageSupport:
@@ -849,8 +872,16 @@ class RapidOcrModel(BaseOcrModel):
                         )
                         result = self._read(high_res_image)
                         if result is None:
-                            _log.warning("RapidOCR returned empty result!")
-                            continue
+                            if (
+                                self.options.detect_orientation
+                                and self.orientation_word_is_known is not None
+                            ):
+                                # An upside-down Russian page can produce no
+                                # lines. Keep it eligible for page comparison.
+                                result = _OcrPrediction([], [])
+                            else:
+                                _log.warning("RapidOCR returned empty result!")
+                                continue
                         orientation, im_size = 0, high_res_image.size
                         if self.options.use_region_refinement:
                             result, orientation = self._read_sideways_page(
@@ -861,6 +892,18 @@ class RapidOcrModel(BaseOcrModel):
                                     -orientation, expand=True
                                 )
                                 im_size = high_res_image.size
+                        if (
+                            self.options.detect_orientation
+                            and not orientation
+                            and self.orientation_word_is_known is not None
+                        ):
+                            result, orientation, im_size = self._read_upright(
+                                high_res_image, result
+                            )
+                            if orientation:
+                                high_res_image = high_res_image.rotate(
+                                    -orientation, expand=True
+                                )
                         if self.options.use_multiscale:
                             reference = (
                                 page._backend.get_page_image(scale=1, cropbox=ocr_rect)
@@ -876,8 +919,15 @@ class RapidOcrModel(BaseOcrModel):
                                 refine_detection=conv_res.input.format
                                 == InputFormat.IMAGE,
                                 detector_reference=reference,
+                                line_classification=True
+                                if result.line_classifier_fallback
+                                else None,
                             )
-                        if self.options.detect_orientation and not orientation:
+                        if (
+                            self.options.detect_orientation
+                            and not orientation
+                            and self.orientation_word_is_known is None
+                        ):
                             result, orientation, im_size = self._read_upright(
                                 high_res_image, result
                             )
@@ -969,7 +1019,10 @@ class RapidOcrModel(BaseOcrModel):
         ]
 
     def _read(
-        self, image: Image.Image, *, reader: "_RapidOCRReader | None" = None
+        self,
+        image: Image.Image,
+        *,
+        reader: "_RapidOCRReader | None" = None,
     ) -> _OcrPrediction | None:
         from rapidocr.utils.output import RapidOCROutput
 
@@ -1015,7 +1068,26 @@ class RapidOcrModel(BaseOcrModel):
                     lines[index], line_words[index] = deduplicate_line_words(
                         line, complete_words
                     )
-        return _OcrPrediction(lines=lines, line_words=line_words)
+        return _OcrPrediction(
+            lines=lines,
+            line_words=line_words,
+            line_classifier_fallback=isinstance(selected_reader, LineClassifierView),
+        )
+
+    def _read_configured(
+        self,
+        image: Image.Image,
+        *,
+        reader: _RapidOCRReader | None = None,
+        line_classification: bool | None = None,
+    ) -> _OcrPrediction | None:
+        if line_classification is True:
+            selected = self.reader if reader is None else reader
+            fallback = self._line_classifier_readers.get(id(selected))
+            if fallback is None:
+                raise RuntimeError("Line-direction fallback reader is not configured")
+            return self._read(image, reader=fallback)
+        return self._read(image, reader=reader)
 
     def _read_multiscale(
         self,
@@ -1024,6 +1096,7 @@ class RapidOcrModel(BaseOcrModel):
         *,
         refine_detection: bool = True,
         detector_reference: Image.Image | None = None,
+        line_classification: bool | None = None,
     ) -> _OcrPrediction:
         ratio = 1536 / max(image.size)
         if ratio >= 0.9:
@@ -1032,7 +1105,10 @@ class RapidOcrModel(BaseOcrModel):
             )
             return (
                 self._refine_detection(
-                    image, ordered, detector_reference=detector_reference
+                    image,
+                    ordered,
+                    detector_reference=detector_reference,
+                    line_classification=line_classification,
                 )
                 if refine_detection
                 else ordered
@@ -1041,11 +1117,18 @@ class RapidOcrModel(BaseOcrModel):
             (max(1, round(image.width * ratio)), max(1, round(image.height * ratio))),
             Image.Resampling.LANCZOS,
         )
-        alternative = self._read(reduced, reader=self._multiscale_reader)
+        alternative = self._read_configured(
+            reduced,
+            reader=self._multiscale_reader,
+            line_classification=line_classification,
+        )
         if alternative is None:
             return (
                 self._refine_detection(
-                    image, prediction, detector_reference=detector_reference
+                    image,
+                    prediction,
+                    detector_reference=detector_reference,
+                    line_classification=line_classification,
                 )
                 if refine_detection
                 else prediction
@@ -1081,7 +1164,12 @@ class RapidOcrModel(BaseOcrModel):
             selected.append((candidate, [rescale(word) for word in words]))
         merged = self._order_and_join(selected)
         return (
-            self._refine_detection(image, merged, detector_reference=detector_reference)
+            self._refine_detection(
+                image,
+                merged,
+                detector_reference=detector_reference,
+                line_classification=line_classification,
+            )
             if refine_detection
             else merged
         )
@@ -1092,11 +1180,16 @@ class RapidOcrModel(BaseOcrModel):
         prediction: _OcrPrediction,
         *,
         detector_reference: Image.Image | None = None,
+        line_classification: bool | None = None,
     ) -> _OcrPrediction:
         """Recover small missed lines with a second local detector, retaining words."""
         if not self.options.use_region_refinement or self._refinement_reader is None:
             return prediction
-        alternative = self._read(image, reader=self._refinement_reader)
+        alternative = self._read_configured(
+            image,
+            reader=self._refinement_reader,
+            line_classification=line_classification,
+        )
         if alternative is None:
             return prediction
         if len(prediction.lines) <= 12 and any(
@@ -1115,7 +1208,11 @@ class RapidOcrModel(BaseOcrModel):
                     Image.Resampling.LANCZOS,
                 )
             )
-            smaller = self._read(reduced, reader=self._refinement_reader)
+            smaller = self._read_configured(
+                reduced,
+                reader=self._refinement_reader,
+                line_classification=line_classification,
+            )
             if smaller is not None:
                 sx, sy = image.width / reduced.width, image.height / reduced.height
                 for line, words in zip(smaller.lines, smaller.line_words):
@@ -1324,47 +1421,10 @@ class RapidOcrModel(BaseOcrModel):
     def _read_upright(
         self, image: Image.Image, prediction: _OcrPrediction
     ) -> tuple[_OcrPrediction, int, tuple[int, int]]:
-        """Read a poorly read region again at the other orientations.
+        """Compare actual page readings without changing individual row directions."""
+        from docling.models.stages.ocr.ocr_page_orientation import read_page_upright
 
-        Keeps the first orientation that reads well with at least twice the confidently
-        read characters. Returns the lines that score at least `text_score`, the
-        orientation they were read at (the image turned with ``rotate(-orientation)``,
-        as in the Tesseract engines) and the size of the image they were read on.
-        """
-        orientation, im_size = 0, image.size
-        if len(prediction.lines) >= _ORIENTATION_MIN_LINES and not _reads_well(
-            prediction.lines
-        ):
-            needed = 2 * _confident_chars(prediction.lines)
-            # RapidOCR turns tall line crops a quarter turn counter-clockwise, so it
-            # reads a region turned counter-clockwise upside down: try that fix first.
-            for turn in (90, 180, 270):
-                turned = image.rotate(-turn, expand=True)
-                turned_prediction = self._read(turned)
-                turned_lines = (
-                    turned_prediction.lines if turned_prediction is not None else []
-                )
-                if (
-                    _reads_well(turned_lines)
-                    and _confident_chars(turned_lines) >= needed
-                ):
-                    assert turned_prediction is not None
-                    prediction, orientation, im_size = (
-                        turned_prediction,
-                        turn,
-                        turned.size,
-                    )
-                    break
-        kept = [
-            (line, words)
-            for line, words in zip(prediction.lines, prediction.line_words)
-            if line[2] >= self.options.text_score
-        ]
-        return (
-            _OcrPrediction([line for line, _ in kept], [words for _, words in kept]),
-            orientation,
-            im_size,
-        )
+        return read_page_upright(self, image, prediction)
 
     def _read_sideways_page(
         self, image: Image.Image, prediction: _OcrPrediction

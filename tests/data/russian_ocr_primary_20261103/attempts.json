@@ -1,0 +1,84 @@
+{
+  "scope": "Development on previously used documents only. Rejected attempts are not final quality measurements; E was not inferred during these changes.",
+  "final_candidate": "candidate-v8",
+  "attempts": [
+    {
+      "id": "candidate-v7",
+      "result": "rejected",
+      "evidence": "candidate-v7",
+      "reason": "762units15skip,CLI12/thread2/synthetic8passed; all60knownfinished andintegritytrue. D4/10,C5/10,B10/10,newest7/10,unseen9/10,previous10/10. Kadastrscope gained duplicate62charfirstline fromanother source cluster, anddensegrocery exceeded180sec. Bothcausallytraced andfixedgenericallybeforeE. NoE inference."
+    },
+    {
+      "id": "candidate-v6",
+      "result": "rejected",
+      "evidence": "candidate-v6",
+      "reason": "760 units15skip,CLI12/thread2/synthetic8 passed. D4/10,95/95table39/48fields,audit3regions0edits. But overlap relaxation joined a weak digit with a caption, increasing its errors2to5. Two table-caption orders repaired. Own partial C evaluator stopped; all integrity checks true. Generic weak-word/line geometry guard added before fresh v7 qualification."
+    },
+    {
+      "id": "medium-primary-v1",
+      "result": "rejected",
+      "evidence": "candidate-v1",
+      "reason": "719 unit checks passed but unchanged synthetic scan lost10 spaces/317characters. Synthetic7/8. Replacement archived; not shipped."
+    },
+    {
+      "id": "sparse-orientation-v2",
+      "result": "rejected",
+      "evidence": "candidate-v2",
+      "reason": "716 checks passed;180-degree primary test failed because sparse first read was ineligible for direction search. Generic sparse/empty recovery fixed."
+    },
+    {
+      "id": "weak-page-turn-v3",
+      "result": "rejected",
+      "evidence": "candidate-v3",
+      "reason": "718 unit,CLI/thread/synthetic checks passed; D tables95/95 but fields35/48 versus38/48, sideways receipt lost4 old fields. Own partial C run stopped; integrity retained."
+    },
+    {
+      "id": "orientation-v4-v6",
+      "result": "rejected",
+      "evidence": "orientation-v4-diagnostic,orientation-v5-diagnostic,orientation-v6-diagnostic",
+      "reason": "Weak full-page turns retained too few reliable fields. Replaced forced-turn policy with protected legacy fallback; upright refinement frame retained."
+    },
+    {
+      "id": "orientation-v7-instrument",
+      "result": "instrumentation-error",
+      "evidence": "orientation-v7-diagnostic",
+      "reason": "Unchanged diagnostic wrapper rejected new private _read keyword;0 completed cases. Original _read signature restored, configuration moved to separate caller."
+    },
+    {
+      "id": "isolation-test-v4",
+      "result": "rejected-test",
+      "evidence": "candidate-v4",
+      "reason": "731 pass15 skip1 failed. New test checked cfg.Global defaults rather than actual mutable reader.use_cls state. Test corrected; runtime byte-identical in v5."
+    },
+    {
+      "id": "candidate-v5",
+      "result": "rejected",
+      "evidence": "candidate-v5",
+      "reason": "732 units15skip,CLI12/thread2/synthetic8 passed. D4/10,95/95table39/48fields. C5/10,133/133table45/60fields, but one previously correct positive amount became negative. B intentionally stopped; no partial-cohort success claim."
+    },
+    {
+      "id": "whole-receipt-row-consensus",
+      "result": "not-shipped",
+      "evidence": "rejected-whole-rows",
+      "reason": "Two-model exact complete-row prototype accepted0 changes on2 known receipt probes. Saved, then removed."
+    },
+    {
+      "id": "detached-marker-height-v6",
+      "result": "rejected",
+      "evidence": "c-v6-marker-diagnostic",
+      "reason": "Source equals and independent digits existed but height-only shape condition missed a compact filled mark. Final shape adds compact aspect/fill with scale tests; no arithmetic or known-value rule."
+    },
+    {
+      "id": "detached-marker-shape-v7",
+      "result": "incomplete",
+      "evidence": "c-v7-marker-shape-diagnostic",
+      "reason": "Local sign corrected, later weak whole-row text selection rewrote it. Demonstrated cross-stage loss of verified field evidence."
+    },
+    {
+      "id": "verified-amount-v8",
+      "result": "refined-before-final",
+      "evidence": "c-v8-verified-amount-diagnostic",
+      "reason": "Correct amount retained to assembly; rejecting all sign-incompatible row readings exposed weaker punctuation-heavy text. Final approach carries a source-verified marker only when amount digits/count/ordinal agree; mismatching digits are rejected and composite observations labelled."
+    }
+  ]
+}

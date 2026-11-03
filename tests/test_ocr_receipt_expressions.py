@@ -14,9 +14,11 @@ from docling.datamodel.base_models import Page
 from docling.models.stages.ocr.ocr_receipt_expressions import (
     choose_receipt_expression,
     compact_amount_marker,
+    opaque_amount_marker,
     restore_receipt_separator,
     verify_receipt_page,
 )
+from docling.models.stages.ocr.ocr_receipt_regions import ReceiptPriceRefinements
 from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner, RegionReading
 
 
@@ -110,6 +112,123 @@ def test_a_filled_marker_needs_two_views_independent_digits_and_no_negative_vote
     assert restore_receipt_separator("-425.01", readings, image) == "-425.01"
     readings.append(RegionReading("-425.00", 0.99, "cyrillic-v6-tiny", "source"))
     assert restore_receipt_separator("-425.00", readings, image) == "-425.00"
+
+
+def _detached_marker(kind: str, scale: int) -> np.ndarray:
+    image = Image.new("L", (130, 40), 255)
+    draw = ImageDraw.Draw(image)
+    for left in (30, 47, 64, 88, 105):
+        draw.rectangle((left, 10, left + 11, 29), fill=0)
+    if kind == "filled":
+        draw.rectangle((15, 14, 23, 24), fill=0)
+    elif kind == "compact":
+        draw.rectangle((15, 17, 23, 23), fill=0)
+    elif kind == "minus":
+        draw.rectangle((12, 19, 25, 21), fill=0)
+    elif kind == "bold-minus":
+        draw.rectangle((5, 16, 24, 23), fill=0)
+    elif kind == "colon":
+        draw.rectangle((19, 14, 21, 16), fill=0)
+        draw.rectangle((19, 22, 21, 24), fill=0)
+    return np.asarray(image.resize((130 * scale, 40 * scale)))
+
+
+@pytest.mark.parametrize("scale", [1, 2, 3])
+@pytest.mark.parametrize(
+    "kind", ["filled", "compact", "minus", "bold-minus", "colon", "empty"]
+)
+def test_detached_source_mark_requires_independent_digits_and_source_equals(
+    kind, scale
+):
+    image = _detached_marker(kind, scale)
+    filled = kind in {"filled", "compact"}
+    assert opaque_amount_marker(image) is filled
+    readings = [
+        RegionReading("=317.42", 0.99, "ch", "source"),
+        RegionReading("317.42", 0.99, "cyrillic", "clean"),
+    ]
+    expected = "=317.42" if filled else "-317.42"
+    assert restore_receipt_separator("-317.42", readings, image) == expected
+
+
+def test_detached_mark_cannot_override_negative_or_disagreeing_source_readings():
+    image = _detached_marker("filled", 2)
+    source_equals = RegionReading("=317.42", 0.99, "ch", "source")
+    independent = RegionReading("317.42", 0.99, "cyrillic", "clean")
+    for readings in (
+        [source_equals],
+        [source_equals, RegionReading("317.42", 0.99, "ch", "clean")],
+        [source_equals, RegionReading("317.43", 0.99, "cyrillic", "clean")],
+        [RegionReading("=317.42", 0.99, "ch", "clean"), independent],
+        [
+            source_equals,
+            independent,
+            RegionReading("-317.42", 0.96, "iso:ru", "source"),
+        ],
+    ):
+        assert restore_receipt_separator("-317.42", readings, image) == "-317.42"
+
+
+def test_later_row_reading_preserves_verified_amount_without_freezing_other_fields():
+    original = "Товар 55.30*2 =110.60 НДС 102"
+    start = original.index("=")
+    verified = ReceiptPriceRefinements()
+    verified.record(7, original, (start, start + len("=110.60")))
+    assert verified.preserves(7, "Описание 56,30*2 =110,60 НДС 10%")
+    assert verified.preserves(7, "Описание 55.30*2 = 110.60 НДС 10%")
+    assert verified.preserves(8, "Иная строка -110.60")
+    for damaged in (
+        "Товар 55.30*2 -110.60 НДС 102",
+        "Товар 55.30*2 110.60 НДС 102",
+        "Товар 55.30*2 =110.61 НДС 102",
+        "Товар 110.60*2 =55.30 НДС 102",
+        "Товар =110.60 НДС 102",
+    ):
+        assert not verified.preserves(7, damaged)
+
+
+def test_verified_negative_amount_keeps_its_sign_and_each_repeated_position():
+    original = "Возврат -36.80 НДС 6.13 Оплата -36.80"
+    verified = ReceiptPriceRefinements()
+    for start in (original.index("-"), original.rindex("-")):
+        verified.record(4, original, (start, start + len("-36.80")))
+    assert verified.preserves(4, "Возврат (36,80) НДС 7.14 Оплата \u221236.80")
+    assert not verified.preserves(4, "Возврат 36.80 НДС 6.13 Оплата -36.80")
+    assert not verified.preserves(4, "Возврат -36.80 НДС 6.13 Оплата 36.80")
+
+
+def test_verified_separator_attached_to_quantity_is_not_dropped():
+    original = "Товар 21.50*2=43.00"
+    verified = ReceiptPriceRefinements()
+    start = original.index("=")
+    verified.record(2, original, (start, len(original)))
+    assert verified.preserves(2, "Описание 21,50*2=43,00")
+    assert not verified.preserves(2, "Товар 21.50*2 43.00")
+    assert not verified.preserves(2, "Товар 21.50*2-43.00")
+
+
+def test_row_letters_can_improve_with_the_verified_source_marker_and_unchanged_digits():
+    original = "Товар 55.30*2 =110.60 НДС 102"
+    start = original.index("=")
+    verified = ReceiptPriceRefinements()
+    verified.record(7, original, (start, start + len("=110.60")))
+    readings = [
+        RegionReading("Название 55.30*2 -110.60 НДС 10%", 0.9, "cyrillic", "source"),
+        RegionReading("Название 55.30*2 110,60 НДС 10%", 0.9, "iso:ru", "source"),
+        RegionReading("Название 55.30*2 -110.61 НДС 10%", 0.99, "ch", "source"),
+        RegionReading("Название -110.60 НДС 10%", 0.99, "ch", "wide"),
+    ]
+    retained = verified.readings_for(7, readings)
+    assert [r.text for r in retained] == [
+        "Название 55.30*2 =110.60 НДС 10%",
+        "Название 55.30*2 =110,60 НДС 10%",
+    ]
+    assert [r.engine for r in retained] == ["cyrillic", "iso:ru"]
+    assert all(
+        r.confidence == 0.9 and "+verified-marker" in r.variant for r in retained
+    )
+    assert readings[0].text == "Название 55.30*2 -110.60 НДС 10%"
+    assert verified.readings_for(8, readings) == readings
 
 
 @pytest.mark.parametrize("independent", [False, True])

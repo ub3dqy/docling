@@ -1,0 +1,358 @@
+{
+  "known-d": {
+    "before": {
+      "cases_passed": 3,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 95,
+      "table_values_total": 95,
+      "fields_correct_in_source_region": 38,
+      "fields_correct_and_exported": 38,
+      "fields_total": 48,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 7,
+      "text_exact": 7,
+      "text_total": 13,
+      "text_edits": 155,
+      "reference_characters": 1314,
+      "weighted_cer": 0.11796042617960426,
+      "conversion_seconds": 501.755542500061
+    },
+    "after": {
+      "cases_passed": 4,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 95,
+      "table_values_total": 95,
+      "fields_correct_in_source_region": 39,
+      "fields_correct_and_exported": 39,
+      "fields_total": 48,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 10,
+      "text_exact": 10,
+      "text_total": 13,
+      "text_edits": 7,
+      "reference_characters": 1314,
+      "weighted_cer": 0.00532724505327245,
+      "conversion_seconds": 596.2570661999052
+    },
+    "changes": [
+      {
+        "case_id": "volgograd-independent-audit",
+        "control": [
+          "text",
+          "audit-heading"
+        ],
+        "before": false,
+        "after": true
+      },
+      {
+        "case_id": "volgograd-independent-audit",
+        "control": [
+          "text",
+          "audited-statements"
+        ],
+        "before": false,
+        "after": true
+      },
+      {
+        "case_id": "volgograd-independent-audit",
+        "control": [
+          "text",
+          "auditor-opinion"
+        ],
+        "before": false,
+        "after": true
+      },
+      {
+        "case_id": "receipt-canteen-three-eggs",
+        "control": [
+          "field",
+          "vat-amount-5"
+        ],
+        "before": false,
+        "after": true
+      }
+    ],
+    "regressions": [],
+    "text_edits_increased": [],
+    "table_shapes_changed": []
+  },
+  "known-c": {
+    "before": {
+      "cases_passed": 4,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 133,
+      "table_values_total": 133,
+      "fields_correct_in_source_region": 43,
+      "fields_correct_and_exported": 43,
+      "fields_total": 60,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 7,
+      "text_exact": 6,
+      "text_total": 12,
+      "text_edits": 49,
+      "reference_characters": 462,
+      "weighted_cer": 0.10606060606060606,
+      "conversion_seconds": 767.4791827998124
+    },
+    "after": {
+      "cases_passed": 5,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 133,
+      "table_values_total": 133,
+      "fields_correct_in_source_region": 46,
+      "fields_correct_and_exported": 46,
+      "fields_total": 60,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 7,
+      "text_exact": 6,
+      "text_total": 12,
+      "text_edits": 49,
+      "reference_characters": 462,
+      "weighted_cer": 0.10606060606060606,
+      "conversion_seconds": 778.529274500208
+    },
+    "changes": [
+      {
+        "case_id": "receipt-lenta-handwritten-overlay",
+        "control": [
+          "field",
+          "bread-last-price"
+        ],
+        "before": false,
+        "after": true
+      },
+      {
+        "case_id": "receipt-canteen-507",
+        "control": [
+          "field",
+          "paid"
+        ],
+        "before": false,
+        "after": true
+      },
+      {
+        "case_id": "receipt-canteen-964",
+        "control": [
+          "field",
+          "paid"
+        ],
+        "before": false,
+        "after": true
+      }
+    ],
+    "regressions": [],
+    "text_edits_increased": [],
+    "table_shapes_changed": []
+  },
+  "latest-b": {
+    "before": {
+      "cases_passed": 10,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 81,
+      "table_values_total": 81,
+      "fields_correct_in_source_region": 19,
+      "fields_correct_and_exported": 19,
+      "fields_total": 19,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 15,
+      "text_exact": 14,
+      "text_total": 15,
+      "text_edits": 3,
+      "reference_characters": 1777,
+      "weighted_cer": 0.0016882386043894203,
+      "conversion_seconds": 667.6655586999841
+    },
+    "after": {
+      "cases_passed": 10,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 81,
+      "table_values_total": 81,
+      "fields_correct_in_source_region": 19,
+      "fields_correct_and_exported": 19,
+      "fields_total": 19,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 15,
+      "text_exact": 13,
+      "text_total": 15,
+      "text_edits": 4,
+      "reference_characters": 1777,
+      "weighted_cer": 0.0022509848058525606,
+      "conversion_seconds": 678.69809409976
+    },
+    "changes": [],
+    "regressions": [],
+    "text_edits_increased": [
+      {
+        "case_id": "scan-award-diploma",
+        "name": "institution",
+        "before": {
+          "name": "institution",
+          "expected": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)",
+          "actual": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)",
+          "roi": [
+            0.15,
+            0.5,
+            0.84,
+            0.618
+          ],
+          "edits": 0,
+          "reference_characters": 152,
+          "cer": 0.0,
+          "wer": 0.0,
+          "limit": 0.02,
+          "passed": true
+        },
+        "after": {
+          "name": "institution",
+          "expected": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)",
+          "actual": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет (г. Волгоград)",
+          "roi": [
+            0.15,
+            0.5,
+            0.84,
+            0.618
+          ],
+          "edits": 1,
+          "reference_characters": 152,
+          "cer": 0.006578947368421052,
+          "wer": 0.07692307692307693,
+          "limit": 0.02,
+          "passed": true
+        }
+      }
+    ],
+    "table_shapes_changed": []
+  },
+  "newest": {
+    "before": {
+      "cases_passed": 8,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 192,
+      "table_values_total": 192,
+      "fields_correct_in_source_region": 30,
+      "fields_correct_and_exported": 30,
+      "fields_total": 31,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 12,
+      "text_exact": 10,
+      "text_total": 14,
+      "text_edits": 41,
+      "reference_characters": 1487,
+      "weighted_cer": 0.02757229320780094,
+      "conversion_seconds": 697.5419196002185
+    },
+    "after": {
+      "cases_passed": 8,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 192,
+      "table_values_total": 192,
+      "fields_correct_in_source_region": 30,
+      "fields_correct_and_exported": 30,
+      "fields_total": 31,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 12,
+      "text_exact": 10,
+      "text_total": 14,
+      "text_edits": 41,
+      "reference_characters": 1487,
+      "weighted_cer": 0.02757229320780094,
+      "conversion_seconds": 629.1798740000231
+    },
+    "changes": [],
+    "regressions": [],
+    "text_edits_increased": [],
+    "table_shapes_changed": []
+  },
+  "unseen": {
+    "before": {
+      "cases_passed": 10,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 249,
+      "table_values_total": 249,
+      "fields_correct_in_source_region": 34,
+      "fields_correct_and_exported": 34,
+      "fields_total": 34,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 5,
+      "text_exact": 4,
+      "text_total": 5,
+      "text_edits": 2,
+      "reference_characters": 985,
+      "weighted_cer": 0.0020304568527918783,
+      "conversion_seconds": 864.9051165002165
+    },
+    "after": {
+      "cases_passed": 10,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 249,
+      "table_values_total": 249,
+      "fields_correct_in_source_region": 34,
+      "fields_correct_and_exported": 34,
+      "fields_total": 34,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 5,
+      "text_exact": 4,
+      "text_total": 5,
+      "text_edits": 2,
+      "reference_characters": 985,
+      "weighted_cer": 0.0020304568527918783,
+      "conversion_seconds": 779.2836221999023
+    },
+    "changes": [],
+    "regressions": [],
+    "text_edits_increased": [],
+    "table_shapes_changed": []
+  },
+  "previous": {
+    "before": {
+      "cases_passed": 10,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 117,
+      "table_values_total": 117,
+      "fields_correct_in_source_region": 12,
+      "fields_correct_and_exported": 12,
+      "fields_total": 12,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 5,
+      "text_exact": 3,
+      "text_total": 5,
+      "text_edits": 12,
+      "reference_characters": 1617,
+      "weighted_cer": 0.0074211502782931356,
+      "conversion_seconds": 672.8296082998859
+    },
+    "after": {
+      "cases_passed": 10,
+      "cases_total": 10,
+      "nonempty_successful": 10,
+      "table_values_correct": 117,
+      "table_values_total": 117,
+      "fields_correct_in_source_region": 12,
+      "fields_correct_and_exported": 12,
+      "fields_total": 12,
+      "fields_lost_after_correct_source_reading": 0,
+      "text_within_frozen_limits": 5,
+      "text_exact": 3,
+      "text_total": 5,
+      "text_edits": 12,
+      "reference_characters": 1617,
+      "weighted_cer": 0.0074211502782931356,
+      "conversion_seconds": 683.7609627996571
+    },
+    "changes": [],
+    "regressions": [],
+    "text_edits_increased": [],
+    "table_shapes_changed": []
+  }
+}

@@ -151,6 +151,18 @@ docling photo.jpg --ocr-profile ru --artifacts-path model_artifacts/ru --device 
 `ru` selects RapidOCR, ONNX Runtime, `iso:ru` (the PP-OCRv5 `eslav` recognizer),
 full-page OCR at 300 DPI for PDFs and at least 144 DPI for images, word coordinates, and
 a second reading at 1536 pixels. Close fragments are joined in printed order.
+Page direction is checked before individual line flipping. These checks compare
+source readings, observed Russian word quality and physical text direction. The
+dictionary supplies no output text. Different Tesseract segmentation modes
+count as one recognizer when choosing a numeric value.
+Russian page orientation precedes multiscale reading. Image-line refinement
+uses a temporary upright text/layout view and restores source coordinates
+after success. Original images, page geometry and non-text data stay intact.
+If no whole-page direction is reliable and the source Russian reading stays
+weak, the profile retains the legacy line-direction path at every detector
+scale. It cannot erase a nonempty reading or change established monetary
+values and confident numeric tokens. Set
+`--ocr-option use_orientation_fallback=false` to disable this last resort.
 Uncertain image lines and numeric table cells are also read as separate crops.
 This needs the `russian` extra, independent RapidOCR recognizers, pinned Tesseract
 models, the pinned PP-OCRv6 Cyrillic Medium/Tiny models and the local Russian

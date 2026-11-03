@@ -173,6 +173,41 @@ def compact_amount_marker(gray: np.ndarray) -> bool:
     return bool(occupied.sum() >= glyph_height * 0.5)
 
 
+def opaque_amount_marker(gray: np.ndarray) -> bool:
+    """A filled fiscal marker has a substantial body; a minus is a thin stroke.
+
+    Compare with neighbouring digit sizes, so scale and camera foreshortening
+    do not turn an ordinary minus into a square. This only nominates a source
+    marker; independent numeric readings and an explicit source equals are
+    still required before changing any output.
+    """
+    import cv2
+
+    if gray.ndim != 2 or min(gray.shape) < 6:
+        return False
+    _, ink = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    _, _, stats, _ = cv2.connectedComponentsWithStats(ink)
+    parts = [stat for stat in stats[1:] if stat[4] >= 3 and stat[3] >= 3]
+    if len(parts) < 4:
+        return False
+    maximum = max(int(stat[3]) for stat in parts)
+    body = [stat for stat in parts if stat[3] >= maximum * 0.6]
+    height = median(int(stat[3]) for stat in body)
+    digits = [stat for stat in body if stat[3] >= height * 0.85]
+    if len(digits) < 3:
+        return False
+    width = median(int(stat[2]) for stat in digits)
+    first_digit = min(int(stat[0]) for stat in digits)
+    return any(
+        0 <= first_digit - (stat[0] + stat[2]) <= height
+        and width * 0.3 <= stat[2] <= width * 1.4
+        and height * 0.3 <= stat[3] <= height * 0.8
+        and stat[3] >= stat[2] * 0.6
+        and stat[4] >= stat[2] * stat[3] * 0.75
+        for stat in parts
+    )
+
+
 def restore_receipt_separator(
     original: str, readings: list[RegionReading], gray: np.ndarray
 ) -> str:
@@ -195,17 +230,23 @@ def restore_receipt_separator(
         and reading.text.strip().startswith("=")
         and number_key(reading.text) == amount
     ]
+    positive_families = {
+        recognizer_family(reading.engine)
+        for reading in readings
+        if reading.confidence >= 0.95 and number_key(reading.text) == amount
+    }
+    if (
+        len(positive_families) >= 2
+        and any(reading.variant == "source" for reading in equals)
+        and opaque_amount_marker(gray)
+    ):
+        return "=" + original.strip()[1:]
     views = {
         reading.variant.split("-")[1]
         for reading in equals
         if reading.variant.startswith("v6-")
     }
-    families = {
-        recognizer_family(reading.engine)
-        for reading in readings
-        if reading.confidence >= 0.95 and number_key(reading.text) == amount
-    }
-    if len(views) < 2 or len(families) < 2 or not compact_amount_marker(gray):
+    if len(views) < 2 or len(positive_families) < 2 or not compact_amount_marker(gray):
         return original
     return "=" + original.strip()[1:]
 

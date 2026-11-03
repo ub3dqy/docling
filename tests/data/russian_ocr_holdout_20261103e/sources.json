@@ -1,0 +1,45 @@
+{
+  "reference_sha256": "3b4dc334c05c4ced3108696c546cb1a325c95984b684570cffaad63eaafcdce1",
+  "files": {
+    "IMG_0953_bin.jpg": {
+      "sha256": "76eea8085dc61c998ac684d82d61d40b9f89897ba9116df36b6759ee58873af1",
+      "bytes": 1915150,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0953_bin.jpg?download=true"
+    },
+    "IMG_1415_bin.png": {
+      "sha256": "ee3ea57344d80ecfbbcddc264f0902550d70facbe4b4c9f35743472548692c53",
+      "bytes": 268389,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1415_bin.png?download=true"
+    },
+    "IMG_0893_bin.jpg": {
+      "sha256": "c6501ab8a65da2cdde12ad327204fd23e2c460f207fe3e6ae569621bee26badb",
+      "bytes": 1213379,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0893_bin.jpg?download=true"
+    },
+    "IMG_1246_bin.jpg": {
+      "sha256": "ef6059110d2bf9c0074869ea5657e473be648bea1c874df82cc5edf5546ccaff",
+      "bytes": 900659,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1246_bin.jpg?download=true"
+    },
+    "IMG_1657_bin.png": {
+      "sha256": "70382bcb9cbba4edcbd6fc04147bd2b486e5c3f3c9afe639f033b3bb3d469a96",
+      "bytes": 320605,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1657_bin.png?download=true"
+    },
+    "IMG_1073_bin.jpg": {
+      "sha256": "3119634ff337739bd44e53e4d874e8c57bc1e0487dc560d4a713ad10ee105536",
+      "bytes": 1139920,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1073_bin.jpg?download=true"
+    },
+    "vladimir-financial-2025.pdf": {
+      "sha256": "bb79b8f90b6fbb79dbad28e431de46ea0502b2a7bb161644d0fbd9b155362817",
+      "bytes": 1288422,
+      "url": "https://garantfond-33.ru/upload/iblock/6e1/acfdwf6cjg7npl5ngyaw58vsrulqskq3/%D0%91%D1%83%D1%85%D0%B3%D0%B0%D0%BB%D1%82%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BE%D1%82%D1%87%D0%B5%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%B7%D0%B0%202025%20%D0%B3%D0%BE%D0%B4.pdf"
+    },
+    "vladimir-audit-2025.pdf": {
+      "sha256": "5f568f83486fd3fc20315e982ac9a6d5e9d6fb0e2d85d992b8206e55fbc8c746",
+      "bytes": 885962,
+      "url": "https://garantfond-33.ru/upload/iblock/ca3/vovdkey0rtz3r2com5psup1kfl2orv65/%D0%90%D1%83%D0%B4%D0%B8%D1%82%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B5%20%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%202025%20%D0%B3%D0%BE%D0%B4.pdf"
+    }
+  }
+}

@@ -108,6 +108,18 @@ def test_widely_spaced_tax_caption_stays_together_before_its_amount():
     assert [c.text for c in page.cells] == ["СУММА НДС 20%", "=43.20"]
 
 
+def test_a_signed_amount_is_separated_from_its_caption_without_losing_the_sign():
+    words = [
+        _cell(0, "Возврат", 20, 130),
+        _cell(1, "СУММА", 140, 230),
+        _cell(2, "-47.60", 330, 430),
+    ]
+    page = _page([_cell(0, "Возврат СУММА -47.60", 20, 430)], words)
+    amount_ids = split_receipt_lines(page)
+    assert [c.text for c in page.cells] == ["Возврат СУММА", "-47.60"]
+    assert page.cells[1].index in amount_ids
+
+
 def test_split_keeps_the_original_spacing_inside_a_payment_abbreviation():
     words = [
         _cell(0, "*Плат.", 20, 90),

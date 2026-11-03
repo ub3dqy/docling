@@ -1,0 +1,20 @@
+{
+  "completed_utc": "2026-11-03T17:24:30.482207+00:00",
+  "exit_code": 1,
+  "complete_cases": 10,
+  "passed_cases": 1,
+  "report_sha256": "ddf5ef77e6a0eb6378755cdf5a66a90fd113dbb813161749bf1649da97558313",
+  "log_sha256": "875e3d5414c1420d5f255f2fab8a222232235a4e34753d41eaff36fd885ef773",
+  "loaded_module_count": 252,
+  "integrity": {
+    "final_runtime_unchanged": true,
+    "inferred_runtime_unchanged": true,
+    "models_unchanged": true,
+    "controls_unchanged": true,
+    "e_answers_unchanged": true,
+    "e_manifest_unchanged": true,
+    "sources_unchanged": true,
+    "runner_unchanged": true,
+    "loaded_runtime_origins_verified": true
+  }
+}

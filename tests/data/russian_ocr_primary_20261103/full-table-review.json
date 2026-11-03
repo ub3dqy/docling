@@ -1,0 +1,94 @@
+{
+  "scope": "Host inspection of every changed full table cell, beyond fixed selected controls. This is not new ground truth or a claim of complete table-text accuracy.",
+  "candidate": "candidate-v8",
+  "complete": true,
+  "reviewed_utc": "2026-11-03T16:56:03.364436+00:00",
+  "full_table_changes_sha256": "ba25b061dce7410e025b90d66b8d6450995d12d1f281b366fb9d7fcc3e6aa4e3",
+  "reviewed_changed_cells": 40,
+  "reviewed": [
+    {
+      "cohort": "known-d",
+      "changed_cells": 11,
+      "numeric_glyph_changes": 0,
+      "assessment": "All11changed cells inspected. Eight case-only changes; one new Latin-lookalike B TOM error; two caption orders improve, including the long discontinued-activities caption, while 3a remains uncorrected. All95selected values and table shapes retained."
+    },
+    {
+      "cohort": "known-c",
+      "changed_cells": 0,
+      "numeric_glyph_changes": 0,
+      "assessment": "Full table arrays are unchanged. All133selected values retained. Receipt bread amount224.97is correct, but its whole item row still reads74.99-3andNDS102: operators and annotations outside isolated numeric controls are not qualified."
+    },
+    {
+      "cohort": "latest-b",
+      "changed_cells": 2,
+      "numeric_glyph_changes": 2,
+      "assessment": "Both altered numeric glyphs are unselected vertical serial fragments,2to0. Original source was visually inspected: it prints02 in both locations. Neither program reproduces complete02 there. This is still incomplete mixed-direction text, not a newly correct serial. All81selected table values and19fields retained."
+    },
+    {
+      "cohort": "newest",
+      "changed_cells": 13,
+      "numeric_glyph_changes": 1,
+      "assessment": "All13changed cells inspected. Several captions improve, but assets table1row17 reverses previously correct word order, and cash-flow table1row21 moves a standalone v into the wrong line. The numeric-glyph flag in row3is a removed period in an improved caption, not a financial number. All192selected values retained."
+    },
+    {
+      "cohort": "unseen",
+      "changed_cells": 2,
+      "numeric_glyph_changes": 0,
+      "assessment": "Both changed captions inspected. AMFBC OKPO improves; BI asset-amortization caption still has wrong word order and changed again. Physical table columns, including AMFBC notes column2, and all249selected values retained. Dense grocery now154.277sec,17/17previously source-reviewed fields and exact selected text. Existing103.19to103.18adjudication retained without a new correction."
+    },
+    {
+      "cohort": "previous",
+      "changed_cells": 12,
+      "numeric_glyph_changes": 0,
+      "assessment": "All12changed cells inspected. Three Rosseti captions lose letters versus previously complete wording; other wording partly improves. Two bank caption orders improve and emission-income caption becomes readable, but case/lookalike/word-segmentation errors remain. Two grades cells only lose a space. All117selected values, bank-liabilities26/26, grades16/16and both receipt6/6fields retained. Existing75393adjudication unchanged."
+    }
+  ],
+  "selected_text_edit_increases": [
+    {
+      "cohort": "latest-b",
+      "case_id": "scan-award-diploma",
+      "name": "institution",
+      "before": {
+        "name": "institution",
+        "expected": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)",
+        "actual": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)",
+        "roi": [
+          0.15,
+          0.5,
+          0.84,
+          0.618
+        ],
+        "edits": 0,
+        "reference_characters": 152,
+        "cer": 0.0,
+        "wer": 0.0,
+        "limit": 0.02,
+        "passed": true
+      },
+      "after": {
+        "name": "institution",
+        "expected": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет» (г. Волгоград)",
+        "actual": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Волгоградский государственный аграрный университет (г. Волгоград)",
+        "roi": [
+          0.15,
+          0.5,
+          0.84,
+          0.618
+        ],
+        "edits": 1,
+        "reference_characters": 152,
+        "cer": 0.006578947368421052,
+        "wer": 0.07692307692307693,
+        "limit": 0.02,
+        "passed": true
+      }
+    }
+  ],
+  "report_notes": [
+    "Все 867 выбранных значений прежних таблиц сохранились. Подписи строк полностью безошибочными не стали: остаются похожие латинские и русские буквы, лишние прописные буквы и перестановки слов.",
+    "Есть ухудшения вне выбранных числовых ответов: перестановка слов в подписи итога раздела II и в одной длинной подписи движения денег; в трёх подписях баланса «Россетей» появились пропуски букв. Рядом сохранены исходные и новые варианты. Другие подписи, в том числе банковские, стали читаться лучше.",
+    "На дипломе пропала одна закрывающая кавычка: было 0 отличий, стало 1 на 152 символа. Это укладывается в прежние 2%, но точное совпадение ухудшилось.",
+    "На фотографии документа в двух ячейках неполный вертикальный фрагмент «2» изменился на «0». На источнике стоит «02»; полное значение не воспроизведено ни до, ни после. Выбранная проверка текста выдающего органа не проверяет всю серию документа.",
+    "Верная сумма хлеба 224.97 не делает всю строку верной: остаются «74.99-3» и «НДС 102» вместо правильных знаков. Проверка отдельных чисел не засчитывается как проверка всей товарной строки."
+  ]
+}
