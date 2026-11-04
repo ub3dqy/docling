@@ -1,0 +1,34 @@
+{
+  "verified_utc": "2026-11-04T00:26:08.053262+00:00",
+  "base_commit": "3685f3ab070e1ab804328340dbafd4d5c25d8e4b",
+  "runtime_change_commit": "8d628e84303e5dbe465f9a28e4db52544f0fed22",
+  "all68_committed_fixed_inputs_identical_before_and_after": true,
+  "all68_actual_run_fixed_inputs_unchanged": true,
+  "byte_identical_between_committed_and_actual_run": 66,
+  "existing_newline_only_differences": [
+    {
+      "path": "uv.lock",
+      "git_blob_unchanged_from_base": true,
+      "git_archive_sha256": "98de7126becbf00c186a90f7d1411c62f6a3480279be2be005b76f98b4b7e07f",
+      "actual_run_worktree_sha256": "fbc8391a8ecc927347fd3c2eb81d79314e81c492d72cba55eba872513434762d",
+      "git_bytes": 1835442,
+      "actual_run_bytes": 1825497,
+      "git_crlf_count": 9945,
+      "actual_run_crlf_count": 0,
+      "sha256_after_lf_normalization": "fbc8391a8ecc927347fd3c2eb81d79314e81c492d72cba55eba872513434762d"
+    },
+    {
+      "path": "scripts/qualify_real_russian_ocr.py",
+      "git_blob_unchanged_from_base": true,
+      "git_archive_sha256": "69aa00d4d7ef1ae19622f7ade1357b658b384933dd3af2c5eafd7469faa169b2",
+      "actual_run_worktree_sha256": "fa3935ed48ccc01c834a8ee4dfd742dc40e8d8bf2361e30ddaaaec5ecf24ac67",
+      "git_bytes": 26777,
+      "actual_run_bytes": 27471,
+      "git_crlf_count": 0,
+      "actual_run_crlf_count": 694,
+      "sha256_after_lf_normalization": "69aa00d4d7ef1ae19622f7ade1357b658b384933dd3af2c5eafd7469faa169b2"
+    }
+  ],
+  "all343_published_runtime_python_bytes_equal_first_f_run": true,
+  "note": "These two checkout-vs-Git newline differences predate this task and are identical in both base and runtime-change commits. Actual paired evaluations used unchanged live bytes and matching scorer hashes. No dependency, evaluation logic, answer, source or model changes are introduced. The runtime inventory records actual run bytes; a fresh checkout can report a different scorer/lockfile byte hash solely because of these existing line endings."
+}
