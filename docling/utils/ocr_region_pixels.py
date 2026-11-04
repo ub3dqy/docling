@@ -288,7 +288,9 @@ def two_bar_marker(gray: np.ndarray, *, allow_uneven_bars: bool = False) -> bool
     ink = gray < 128
     return any(
         _two_bar_shape(ink, coverage, allow_uneven_bars=allow_uneven_bars)
-        for coverage in (0.4, 0.55, 0.65)
+        for coverage in (
+            (0.4, 0.55, 0.65, 0.9) if allow_uneven_bars else (0.4, 0.55, 0.65)
+        )
     )
 
 

@@ -101,3 +101,29 @@ def test_weak_fragment_positions_cannot_expand_a_caption_crop(weak_word):
     )
     assert [line[1] for line in result.lines] == ["Heading", "2"]
     assert result.lines[0][0] == heading[0]
+
+
+@pytest.mark.parametrize("slope", [0, -0.06, 0.06])
+@pytest.mark.parametrize("reverse", [False, True])
+def test_portrait_detector_boxes_cannot_join_unrelated_rotated_rows(slope, reverse):
+    # Detectors keep image-corner order for these boxes; the first edge is
+    # horizontal although the text runs down the tall box. The former join
+    # treated that entire span as text height and combined neighbouring rows.
+    observed = []
+    for index, text in enumerate(["Сумма 73.28", "НДС 12.21", "Оплата 73.28"]):
+        left, top, width, height = 20 + index * 16, 30, 11, 132
+        quad = [
+            [left, top],
+            [left + width, top + width * slope],
+            [left + width - height * slope, top + height + width * slope],
+            [left - height * slope, top + height],
+        ]
+        observed.append((quad, text, 0.96))
+    selected = observed[::-1] if reverse else observed
+    result = RapidOcrModel._order_and_join([(line, [line]) for line in selected])
+    assert sorted(result.lines, key=lambda line: line[1]) == sorted(
+        observed, key=lambda line: line[1]
+    )
+    assert sorted(result.words, key=lambda line: line[1]) == sorted(
+        observed, key=lambda line: line[1]
+    )

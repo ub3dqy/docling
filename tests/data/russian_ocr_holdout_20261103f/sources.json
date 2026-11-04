@@ -1,0 +1,45 @@
+{
+  "reference_sha256": "99d23bd7e53823d69c9f12b985f00a967ec9c19be4f63ee8e3eedc1fbee94654",
+  "files": {
+    "IMG_0805_bin.jpg": {
+      "sha256": "cb442e24d415acf2958c3c7922dbe6de53a6e730d22960608a5e578744eaa5bb",
+      "bytes": 975155,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0805_bin.jpg?download=true"
+    },
+    "IMG_1455_bin.png": {
+      "sha256": "31c28b3b45b0b807e21e807ac57bfa0932a13e5972b50c9aeb0da14e42e1a228",
+      "bytes": 299417,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1455_bin.png?download=true"
+    },
+    "IMG_1328_bin.png": {
+      "sha256": "13069faa7a4f1d24eeb1233add664c1dd29f0db34c5a04dd49959b53c9e563c0",
+      "bytes": 298541,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1328_bin.png?download=true"
+    },
+    "IMG_1243_bin.jpg": {
+      "sha256": "78127361031e1e027d5ee07be856d365b43ae94a1880e44a38b85a66f66cd3b0",
+      "bytes": 364837,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1243_bin.jpg?download=true"
+    },
+    "IMG_1429_bin.png": {
+      "sha256": "ee6c866ed79a033090abfa504e850bf8c22a23ce1e3cfc3caad5538e4ea02ac0",
+      "bytes": 258190,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1429_bin.png?download=true"
+    },
+    "IMG_1660_bin.png": {
+      "sha256": "67ce9abcd32fe757e647759968d35709cb4cf12577fa3261da40d04c2374e41e",
+      "bytes": 312210,
+      "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1660_bin.png?download=true"
+    },
+    "mariel-audit-2025.pdf": {
+      "sha256": "33e58163df2faed2249aac7f3fd30c959bc3ec9cee382ce90c03e4b5ec4261d5",
+      "bytes": 1489877,
+      "url": "https://xn--12-9kcqjffxnf3b.xn--p1ai/upload/documents/2026/%D0%90%D1%83%D0%B4%D0%B8%D1%82%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B5%20%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%202025%20%D0%B3%D0%BE%D0%B4.pdf"
+    },
+    "primorye-financial-2025.pdf": {
+      "sha256": "1886c6c7e69fc196ef30297989f46ae8218db3082d52a90e864251aca4461e79",
+      "bytes": 5245003,
+      "url": "https://www.garantprim.ru/upload/iblock/6b7/vvklscbtnpawvvsw70acc7fbcu17xm52/Bukhgalterskaya-otchetnost-za-2025-god.pdf"
+    }
+  }
+}

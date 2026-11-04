@@ -6,6 +6,7 @@
 import os
 from pathlib import Path
 
+import numpy as np
 import pytest
 from docling_core.types.doc import BoundingBox, DocItemLabel, Size
 from docling_core.types.doc.page import (
@@ -23,17 +24,128 @@ from docling.datamodel.ocr_profiles import OcrProfile, ocr_options_for_profile
 from docling.datamodel.pipeline_options import RapidOcrOptions
 from docling.models.stages.ocr.ocr_line_classifier import LineClassifierView
 from docling.models.stages.ocr.ocr_oriented_refinement import refine_image_lines
+from docling.models.stages.ocr.ocr_page_orientation import restore_vertical_crop_axes
 from docling.models.stages.ocr.ocr_region_refiner import OcrRegionRefiner
 from docling.models.stages.ocr.rapid_ocr_model import (
     RapidOcrModel,
     _OcrPrediction,
     _reads_well,
 )
+from docling.utils.ocr_text_geometry import rectified_text_crop
 from docling.utils.orientation import ocr_quad_to_bounding_rectangle
 
 pytest.importorskip("rapidocr")
 
 pytestmark = pytest.mark.ml_ocr
+
+
+@pytest.mark.parametrize("width,height", [(20, 29), (20, 30), (20, 90)])
+def test_portrait_axes_match_the_actual_vendor_crop_and_preserve_source_points(
+    width, height
+):
+    from rapidocr.utils.process_img import get_rotate_crop_image
+
+    # A vertical intensity gradient exposes an unnoticed quarter turn, without
+    # comparing model predictions or relying on a particular document's text.
+    image = np.tile(np.arange(120, dtype=np.uint8)[:, None], (1, 80))
+    points = [
+        [10.0, 10.0],
+        [10.0 + width, 10.0],
+        [10.0 + width, 10.0 + height],
+        [10.0, 10.0 + height],
+    ]
+    line = (points, "Пример", 0.9)
+    source = _OcrPrediction([line], [[line]])
+    result = restore_vertical_crop_axes(source)
+    rect = ocr_quad_to_bounding_rectangle(
+        result.lines[0][0],
+        original_offset=BoundingBox(l=0, t=0, r=80, b=120),
+        scale=1,
+        orientation=0,
+        im_size=(80, 120),
+    )
+    observed = rectified_text_crop(image, rect, Size(width=80, height=120))
+    vendor = get_rotate_crop_image(image, np.asarray(points, dtype=np.float32))
+    assert observed is not None
+    assert observed[3:-3, 4:-4].shape == vendor.shape
+    assert np.mean(np.abs(observed[3:-3, 4:-4].astype(float) - vendor)) <= 2
+    assert sorted(result.lines[0][0]) == sorted(points)
+    assert result.lines[0][1:] == line[1:]
+    assert result.line_words[0][0][0] == result.lines[0][0]
+    assert source.lines[0][0] == points
+
+
+def test_narrow_horizontal_row_words_do_not_get_their_own_portrait_turn():
+    horizontal = ([[0, 0], [200, 0], [200, 20], [0, 20]], "Количество 1", 0.99)
+    digit = ([[100, 0], [108, 0], [108, 20], [100, 20]], "1", 0.99)
+    source = _OcrPrediction([horizontal], [[digit]])
+    result = restore_vertical_crop_axes(source)
+    assert result.lines == source.lines
+    assert result.line_words == source.line_words
+    fallback = _OcrPrediction(
+        source.lines, source.line_words, line_classifier_fallback=True
+    )
+    assert restore_vertical_crop_axes(fallback) is fallback
+
+
+def test_canonical_portrait_lines_refine_in_the_vendor_reading_frame(monkeypatch):
+    page, _ = _turned_page(0)
+    source_image = page.get_image()
+    assert source_image is not None
+    lines = [
+        (
+            [
+                [20 + 40 * i, 40],
+                [40 + 40 * i, 40],
+                [40 + 40 * i, 240],
+                [20 + 40 * i, 240],
+            ],
+            "Пример",
+            0.9,
+        )
+        for i in range(5)
+    ]
+    result = restore_vertical_crop_axes(_OcrPrediction(lines, [[v] for v in lines]))
+    assert page.parsed_page is not None
+    page.parsed_page.textline_cells = [
+        TextCell(
+            index=i,
+            text=line[1],
+            orig=line[1],
+            from_ocr=True,
+            confidence=line[2],
+            rect=ocr_quad_to_bounding_rectangle(
+                line[0],
+                original_offset=BoundingBox(l=0, t=0, r=300, b=500),
+                scale=1,
+                orientation=0,
+                im_size=(300, 500),
+            ),
+        )
+        for i, line in enumerate(result.lines)
+    ]
+    page.parsed_page.word_cells = list(page.cells)
+    page.predictions.layout.clusters[0].cells = list(page.cells)
+    source_points = [c.rect.model_copy() for c in page.cells]
+    refiner = object.__new__(OcrRegionRefiner)
+
+    def refine(view, *, image_input):
+        assert image_input
+        assert view is not page
+        assert (
+            view.get_image().tobytes() == source_image.rotate(90, expand=True).tobytes()
+        )
+        assert all(
+            c.rect.to_bounding_box().width > c.rect.to_bounding_box().height
+            for c in view.cells
+        )
+        view.cells[0].text = "Обновлено"
+
+    monkeypatch.setattr(refiner, "refine_lines", refine)
+    refine_image_lines(refiner, page)
+    assert page.cells[0].text == "Обновлено"
+    assert [c.rect for c in page.cells] == source_points
+    assert page.get_image().tobytes() == source_image.tobytes()
 
 
 @pytest.mark.parametrize("evidence", ["several-rows", "one-row", "weak", "vertical"])

@@ -173,6 +173,88 @@ def test_financial_contents_is_not_relabelled_as_a_receipt() -> None:
     assert cluster.label == DocItemLabel.DOCUMENT_INDEX
 
 
+@pytest.mark.parametrize(
+    "label,native,lines,routed",
+    [
+        (
+            DocItemLabel.DOCUMENT_INDEX,
+            False,
+            [
+                "Кассовый чек",
+                "58.40*2",
+                "=116.80",
+                "ЯОГ",
+                "=116.80",
+                "БЕЗНАЛИЧНЫМИ",
+                "СУММА НДС 5% =5.56",  # noqa: RUF001 -- Russian fiscal caption
+            ],
+            True,
+        ),
+        (
+            DocItemLabel.DOCUMENT_INDEX,
+            False,
+            ["Кассовый чек", "58.40*2", "116.80", "БЕЗНАЛИЧНЫМИ", "СУММА НДС 5% 5.56"],  # noqa: RUF001 -- Russian fiscal caption
+            False,
+        ),
+        (
+            DocItemLabel.DOCUMENT_INDEX,
+            False,
+            ["Кассовый чек", "=116.80", "=116.80", "СУММА НДС 5% =5.56"],  # noqa: RUF001 -- Russian fiscal caption
+            False,
+        ),
+        (
+            DocItemLabel.DOCUMENT_INDEX,
+            False,
+            ["Оглавление", "=116.80", "=116.80", "БЕЗНАЛИЧНЫМИ", "СУММА НДС 5% =5.56"],  # noqa: RUF001 -- Russian fiscal caption
+            False,
+        ),
+        (
+            DocItemLabel.TABLE,
+            False,
+            [
+                "Кассовый чек",
+                "=116.80",
+                "=116.80",
+                "БЕЗНАЛИЧНЫМИ",
+                "СУММА НДС 5% =5.56",  # noqa: RUF001 -- Russian fiscal caption
+            ],
+            False,
+        ),
+        (
+            DocItemLabel.DOCUMENT_INDEX,
+            True,
+            [
+                "Кассовый чек",
+                "=116.80",
+                "=116.80",
+                "БЕЗНАЛИЧНЫМИ",
+                "СУММА НДС 5% =5.56",  # noqa: RUF001 -- Russian fiscal caption
+            ],
+            False,
+        ),
+    ],
+)
+def test_payment_and_tax_source_evidence_survives_an_unreadable_total_caption(
+    label: DocItemLabel, native: bool, lines: list[str], routed: bool
+) -> None:
+    source = [
+        cell(
+            text, index=index, left=0, top=index * 20, right=250, bottom=index * 20 + 15
+        )
+        for index, text in enumerate(lines)
+    ]
+    for item in source:
+        item.from_ocr = not native
+    cluster = Cluster(
+        id=0, label=label, bbox=BoundingBox(l=0, t=0, r=250, b=200), cells=source
+    )
+    page = Page(page_no=1)
+    page.predictions.layout = LayoutPrediction(clusters=[cluster])
+    OcrLineRefinementModel.route_fiscal_text(page)
+    assert cluster.label == (DocItemLabel.TEXT if routed else label)
+    assert [item.text for item in cluster.cells] == lines
+
+
 def test_refined_line_replaces_stale_words_before_table_matching() -> None:
     line = cell("Кассовый чек", index=0, left=0, top=0, right=200, bottom=20)
     old_words = [

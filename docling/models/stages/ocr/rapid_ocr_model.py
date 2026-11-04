@@ -934,6 +934,12 @@ class RapidOcrModel(BaseOcrModel):
 
                         del high_res_image
 
+                        if self.options.use_cls is False:
+                            from docling.models.stages.ocr.ocr_page_orientation import (
+                                restore_vertical_crop_axes,
+                            )
+
+                            result = restore_vertical_crop_axes(result)
                         all_ocr_cells.extend(
                             self._to_cells(
                                 result.lines, ocr_rect, orientation, im_size, scale

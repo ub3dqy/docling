@@ -1,0 +1,599 @@
+{
+  "initial": {
+    "selected_before_inference_utc": "2026-11-03T18:06:47.380374+00:00",
+    "rule": "Six lowest seeded file hashes among unused pinned publisher test photos, before viewing. No publisher OCR annotations fetched. PDF selected from official publisher, pages to be fixed after raster/native inspection and before OCR.",
+    "seed": "ru-receipts-2026-11-03f",
+    "old_file_count": 207,
+    "old_unique_count": 165,
+    "unused_images": 165,
+    "jobs": [
+      {
+        "file": "IMG_0805_bin.jpg",
+        "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0805_bin.jpg?download=true",
+        "expected_sha256": "cb442e24d415acf2958c3c7922dbe6de53a6e730d22960608a5e578744eaa5bb"
+      },
+      {
+        "file": "IMG_1455_bin.png",
+        "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1455_bin.png?download=true",
+        "expected_sha256": "31c28b3b45b0b807e21e807ac57bfa0932a13e5972b50c9aeb0da14e42e1a228"
+      },
+      {
+        "file": "IMG_1328_bin.png",
+        "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1328_bin.png?download=true",
+        "expected_sha256": "13069faa7a4f1d24eeb1233add664c1dd29f0db34c5a04dd49959b53c9e563c0"
+      },
+      {
+        "file": "IMG_1243_bin.jpg",
+        "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1243_bin.jpg?download=true",
+        "expected_sha256": "78127361031e1e027d5ee07be856d365b43ae94a1880e44a38b85a66f66cd3b0"
+      },
+      {
+        "file": "IMG_1429_bin.png",
+        "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1429_bin.png?download=true",
+        "expected_sha256": "ee6c866ed79a033090abfa504e850bf8c22a23ce1e3cfc3caad5538e4ea02ac0"
+      },
+      {
+        "file": "IMG_1660_bin.png",
+        "url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1660_bin.png?download=true",
+        "expected_sha256": "67ce9abcd32fe757e647759968d35709cb4cf12577fa3261da40d04c2374e41e"
+      },
+      {
+        "file": "mariel-audit-2025.pdf",
+        "url": "https://xn--12-9kcqjffxnf3b.xn--p1ai/upload/documents/2026/%D0%90%D1%83%D0%B4%D0%B8%D1%82%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B5%20%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%202025%20%D0%B3%D0%BE%D0%B4.pdf"
+      }
+    ]
+  },
+  "financial": {
+    "file": "primorye-financial-2025.pdf",
+    "url": "https://www.garantprim.ru/upload/iblock/6b7/vvklscbtnpawvvsw70acc7fbcu17xm52/Bukhgalterskaya-otchetnost-za-2025-god.pdf",
+    "selected_before_ocr_utc": "2026-11-03T18:14:05.450862+00:00",
+    "sha256": "1886c6c7e69fc196ef30297989f46ae8218db3082d52a90e864251aca4461e79",
+    "bytes": 5245003,
+    "pages": 19,
+    "evidence": [
+      {
+        "page": 1,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 2,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 3,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 4,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 5,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 6,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 7,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 8,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 9,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 10,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 11,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 12,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 13,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 14,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 15,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 16,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 17,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 18,
+        "native_characters": 0,
+        "raster_images": 1
+      },
+      {
+        "page": 19,
+        "native_characters": 0,
+        "raster_images": 1
+      }
+    ]
+  },
+  "excluded_native_pdf": {
+    "file": "reestr-financial-2025.pdf",
+    "url": "https://www.aoreestr.ru/upload/2025/bfo_2025_12.pdf",
+    "selected_before_ocr_utc": "2026-11-03T18:08:08.610846+00:00",
+    "sha256": "003a28a8614254f619afb3e7c3d9bda3ae833726ee51e55c7cb6a0815fd7bb76",
+    "bytes": 1574979,
+    "pages": 77,
+    "evidence": [
+      {
+        "page": 1,
+        "native_characters": 190,
+        "raster_images": 1
+      },
+      {
+        "page": 2,
+        "native_characters": 716,
+        "raster_images": 1
+      },
+      {
+        "page": 3,
+        "native_characters": 3038,
+        "raster_images": 1
+      },
+      {
+        "page": 4,
+        "native_characters": 3220,
+        "raster_images": 1
+      },
+      {
+        "page": 5,
+        "native_characters": 3803,
+        "raster_images": 1
+      },
+      {
+        "page": 6,
+        "native_characters": 1365,
+        "raster_images": 1
+      },
+      {
+        "page": 7,
+        "native_characters": 2028,
+        "raster_images": 0
+      },
+      {
+        "page": 8,
+        "native_characters": 805,
+        "raster_images": 0
+      },
+      {
+        "page": 9,
+        "native_characters": 2923,
+        "raster_images": 0
+      },
+      {
+        "page": 10,
+        "native_characters": 2097,
+        "raster_images": 0
+      },
+      {
+        "page": 11,
+        "native_characters": 2226,
+        "raster_images": 0
+      },
+      {
+        "page": 12,
+        "native_characters": 1510,
+        "raster_images": 0
+      },
+      {
+        "page": 13,
+        "native_characters": 4296,
+        "raster_images": 0
+      },
+      {
+        "page": 14,
+        "native_characters": 2830,
+        "raster_images": 0
+      },
+      {
+        "page": 15,
+        "native_characters": 1587,
+        "raster_images": 0
+      },
+      {
+        "page": 16,
+        "native_characters": 6541,
+        "raster_images": 0
+      },
+      {
+        "page": 17,
+        "native_characters": 6966,
+        "raster_images": 0
+      },
+      {
+        "page": 18,
+        "native_characters": 5233,
+        "raster_images": 0
+      },
+      {
+        "page": 19,
+        "native_characters": 6475,
+        "raster_images": 0
+      },
+      {
+        "page": 20,
+        "native_characters": 5279,
+        "raster_images": 0
+      },
+      {
+        "page": 21,
+        "native_characters": 5796,
+        "raster_images": 0
+      },
+      {
+        "page": 22,
+        "native_characters": 6208,
+        "raster_images": 0
+      },
+      {
+        "page": 23,
+        "native_characters": 2730,
+        "raster_images": 0
+      },
+      {
+        "page": 24,
+        "native_characters": 1440,
+        "raster_images": 0
+      },
+      {
+        "page": 25,
+        "native_characters": 1371,
+        "raster_images": 0
+      },
+      {
+        "page": 26,
+        "native_characters": 857,
+        "raster_images": 0
+      },
+      {
+        "page": 27,
+        "native_characters": 2427,
+        "raster_images": 0
+      },
+      {
+        "page": 28,
+        "native_characters": 1536,
+        "raster_images": 0
+      },
+      {
+        "page": 29,
+        "native_characters": 2093,
+        "raster_images": 0
+      },
+      {
+        "page": 30,
+        "native_characters": 922,
+        "raster_images": 0
+      },
+      {
+        "page": 31,
+        "native_characters": 1986,
+        "raster_images": 0
+      },
+      {
+        "page": 32,
+        "native_characters": 1194,
+        "raster_images": 0
+      },
+      {
+        "page": 33,
+        "native_characters": 859,
+        "raster_images": 0
+      },
+      {
+        "page": 34,
+        "native_characters": 1387,
+        "raster_images": 0
+      },
+      {
+        "page": 35,
+        "native_characters": 1656,
+        "raster_images": 0
+      },
+      {
+        "page": 36,
+        "native_characters": 1586,
+        "raster_images": 0
+      },
+      {
+        "page": 37,
+        "native_characters": 1503,
+        "raster_images": 0
+      },
+      {
+        "page": 38,
+        "native_characters": 1729,
+        "raster_images": 0
+      },
+      {
+        "page": 39,
+        "native_characters": 1223,
+        "raster_images": 0
+      },
+      {
+        "page": 40,
+        "native_characters": 1212,
+        "raster_images": 0
+      },
+      {
+        "page": 41,
+        "native_characters": 1057,
+        "raster_images": 0
+      },
+      {
+        "page": 42,
+        "native_characters": 1127,
+        "raster_images": 0
+      },
+      {
+        "page": 43,
+        "native_characters": 1509,
+        "raster_images": 0
+      },
+      {
+        "page": 44,
+        "native_characters": 541,
+        "raster_images": 0
+      },
+      {
+        "page": 45,
+        "native_characters": 1231,
+        "raster_images": 0
+      },
+      {
+        "page": 46,
+        "native_characters": 973,
+        "raster_images": 0
+      },
+      {
+        "page": 47,
+        "native_characters": 1777,
+        "raster_images": 0
+      },
+      {
+        "page": 48,
+        "native_characters": 2383,
+        "raster_images": 0
+      },
+      {
+        "page": 49,
+        "native_characters": 941,
+        "raster_images": 0
+      },
+      {
+        "page": 50,
+        "native_characters": 1150,
+        "raster_images": 0
+      },
+      {
+        "page": 51,
+        "native_characters": 934,
+        "raster_images": 0
+      },
+      {
+        "page": 52,
+        "native_characters": 951,
+        "raster_images": 0
+      },
+      {
+        "page": 53,
+        "native_characters": 780,
+        "raster_images": 0
+      },
+      {
+        "page": 54,
+        "native_characters": 2839,
+        "raster_images": 0
+      },
+      {
+        "page": 55,
+        "native_characters": 4036,
+        "raster_images": 0
+      },
+      {
+        "page": 56,
+        "native_characters": 1062,
+        "raster_images": 0
+      },
+      {
+        "page": 57,
+        "native_characters": 1032,
+        "raster_images": 0
+      },
+      {
+        "page": 58,
+        "native_characters": 999,
+        "raster_images": 0
+      },
+      {
+        "page": 59,
+        "native_characters": 1276,
+        "raster_images": 0
+      },
+      {
+        "page": 60,
+        "native_characters": 1252,
+        "raster_images": 0
+      },
+      {
+        "page": 61,
+        "native_characters": 1530,
+        "raster_images": 0
+      },
+      {
+        "page": 62,
+        "native_characters": 1414,
+        "raster_images": 0
+      },
+      {
+        "page": 63,
+        "native_characters": 1835,
+        "raster_images": 0
+      },
+      {
+        "page": 64,
+        "native_characters": 2067,
+        "raster_images": 0
+      },
+      {
+        "page": 65,
+        "native_characters": 1825,
+        "raster_images": 0
+      },
+      {
+        "page": 66,
+        "native_characters": 1344,
+        "raster_images": 0
+      },
+      {
+        "page": 67,
+        "native_characters": 1371,
+        "raster_images": 0
+      },
+      {
+        "page": 68,
+        "native_characters": 355,
+        "raster_images": 0
+      },
+      {
+        "page": 69,
+        "native_characters": 1526,
+        "raster_images": 0
+      },
+      {
+        "page": 70,
+        "native_characters": 1343,
+        "raster_images": 0
+      },
+      {
+        "page": 71,
+        "native_characters": 2000,
+        "raster_images": 0
+      },
+      {
+        "page": 72,
+        "native_characters": 2398,
+        "raster_images": 0
+      },
+      {
+        "page": 73,
+        "native_characters": 1583,
+        "raster_images": 0
+      },
+      {
+        "page": 74,
+        "native_characters": 1497,
+        "raster_images": 0
+      },
+      {
+        "page": 75,
+        "native_characters": 1662,
+        "raster_images": 0
+      },
+      {
+        "page": 76,
+        "native_characters": 257,
+        "raster_images": 0
+      },
+      {
+        "page": 77,
+        "native_characters": 564,
+        "raster_images": 0
+      }
+    ]
+  },
+  "selected_pages": [
+    {
+      "file": "primorye-financial-2025.pdf",
+      "page": 1,
+      "id": "primorye-assets"
+    },
+    {
+      "file": "primorye-financial-2025.pdf",
+      "page": 3,
+      "id": "primorye-liabilities"
+    },
+    {
+      "file": "primorye-financial-2025.pdf",
+      "page": 4,
+      "id": "primorye-targeted-funds"
+    },
+    {
+      "file": "mariel-audit-2025.pdf",
+      "page": 2,
+      "id": "mariel-independent-audit"
+    },
+    {
+      "file": "IMG_0805_bin.jpg",
+      "page": 1,
+      "id": "receipt-grocery-vat10"
+    },
+    {
+      "file": "IMG_1243_bin.jpg",
+      "page": 1,
+      "id": "receipt-bacon-vat5"
+    },
+    {
+      "file": "IMG_1328_bin.png",
+      "page": 1,
+      "id": "receipt-four-dishes-vat5"
+    },
+    {
+      "file": "IMG_1429_bin.png",
+      "page": 1,
+      "id": "receipt-business-lunch-vat5"
+    },
+    {
+      "file": "IMG_1455_bin.png",
+      "page": 1,
+      "id": "receipt-business-mini-vat5"
+    },
+    {
+      "file": "IMG_1660_bin.png",
+      "page": 1,
+      "id": "receipt-craft-shop-vat20"
+    }
+  ],
+  "page_choice_before_ocr_utc": "2026-11-03T18:47:52.435642+00:00"
+}

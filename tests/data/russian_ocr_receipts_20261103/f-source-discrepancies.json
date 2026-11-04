@@ -1,0 +1,37 @@
+{
+  "reviewed_after_first_f_prediction_utc": "2026-11-03T23:57:55.252796+00:00",
+  "case_id": "primorye-liabilities",
+  "source_file": "primorye-financial-2025.pdf",
+  "source_pdf_sha256": "1886c6c7e69fc196ef30297989f46ae8218db3082d52a90e864251aca4461e79",
+  "source_page": 3,
+  "reference_key": "Обязательства по аренде",
+  "printed_key": "Обязательство по аренде",
+  "expected_values": [
+    "2 929",
+    "2 171",
+    "-"
+  ],
+  "observed_extracted_values": [
+    "2929",
+    "2171",
+    "-"
+  ],
+  "finding": "The frozen selector is plural, while the selected short-term source row is singular. The same singular caption and all three values occur in the exported table. The plural caption also occurs in a different long-term row. Original strict3negative controls remain unchanged; this is an annotation selector error, not proof of three wrongly read numeric cells.",
+  "evidence": "f-source-lease-caption.png",
+  "evidence_sha256": "594da55da8376acf2ff31eb7d51b5e6f3b281be487eeb915b1d021938316bf13",
+  "render_sha256": "d85ffa69c76fc203fc49d5de81ad8095cdeb115c40629065258ada7b800bd472",
+  "render_dimensions": [
+    954,
+    1348
+  ],
+  "crop_box_on_render": [
+    150,
+    654,
+    919,
+    684
+  ],
+  "edits": "Crop only from the pre-existing annotation page render; no resize, filtering or OCR used.",
+  "reference_sha256": "99d23bd7e53823d69c9f12b985f00a967ec9c19be4f63ee8e3eedc1fbee94654",
+  "manifest_sha256": "b2a3d7b8e1c55e076514616d593b7035fd511ba2f19b27e10542325f10353035",
+  "controls_and_program": "No changes. Paired baseline uses the same frozen plural selector; raw results retained."
+}

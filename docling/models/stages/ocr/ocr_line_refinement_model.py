@@ -26,7 +26,7 @@ class OcrLineRefinementModel(BasePageModel):
 
     @staticmethod
     def route_fiscal_text(page: Page) -> None:
-        """A fiscal receipt with a printed total is not a document index.
+        """A confirmed fiscal payment record is not a document index.
 
         Use the block's observed content, rather than its filename or a template.
         Genuine tables retain table extraction and its source-coverage safeguard.
@@ -42,6 +42,23 @@ class OcrLineRefinementModel(BasePageModel):
                 if cell.from_ocr
             ]
             text = " ".join(texts)
+            total = re.search(
+                r"\bИТОГ(?:О)?\b[^\d]{0,60}\d+[.,:]\d{2}(?!\d)",  # noqa: RUF001 -- Russian total caption
+                text,
+            )
+            # Large or stamped total captions can be unreadable even though
+            # the payment, tax and explicit amount separators survive. Do not
+            # require that one word to avoid sending a whole receipt through
+            # the document-index table decoder. This changes its label only;
+            # source text and genuine TABLE clusters remain untouched.
+            payment_record = (
+                re.search(
+                    r"\b(?:БЕЗНАЛИЧНЫМИ|НАЛИЧНЫМИ|ПЛАТ[.]?\s*КАРТОЙ)\b",
+                    text,
+                )
+                and re.search(r"\bНДС\s*\d{1,2}\s*%", text)  # noqa: RUF001
+                and len(re.findall(r"=\s*\d+[.,]\d{2}(?!\d)", text)) >= 2
+            )
             if (
                 is_receipt_page(texts)
                 and len(re.findall(r"\d+[.,]\d{2}(?!\d)", text)) >= 3
@@ -49,10 +66,7 @@ class OcrLineRefinementModel(BasePageModel):
                     r"КАСС.{0,12}ЧЕК|ФН\W*\d|ФПД\W*\d|ККТ\W*\d",  # noqa: RUF001 -- Russian fiscal captions
                     text,
                 )
-                and re.search(
-                    r"\bИТОГ(?:О)?\b[^\d]{0,60}\d+[.,:]\d{2}(?!\d)",  # noqa: RUF001 -- Russian total caption
-                    text,
-                )
+                and (total or payment_record)
             ):
                 cluster.label = DocItemLabel.TEXT
 

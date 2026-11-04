@@ -8,8 +8,10 @@ import pytest
 from PIL import Image, ImageDraw
 
 from docling.utils.ocr_digit_templates import (
+    connected_decimal_equals,
     decimal_expression_equals,
     decimal_suffix_region,
+    printed_multiplication,
     repeated_digit_support,
 )
 
@@ -111,3 +113,97 @@ def test_bleeding_equals_requires_two_horizontal_bars_before_the_decimal(marker)
     assert decimal_expression_equals(np.asarray(image), 3, allow_uneven_bars=True) == (
         marker == "bleeding-equals"
     )
+
+
+@pytest.mark.parametrize("scale", [1, 2, 3])
+@pytest.mark.parametrize("split_integer", [False, True])
+@pytest.mark.parametrize("marker", ["=", "-", "+", ":", "none"])
+def test_touching_thermal_marker_needs_both_bars_and_a_complete_amount(
+    marker, scale, split_integer
+):
+    image = Image.new("L", (104, 40), 255)
+    draw = ImageDraw.Draw(image)
+    for left in [32, 42, 52, 72, 82]:
+        draw.rectangle((left, 8, left + 9, 27), fill=0)
+        draw.rectangle((left + 2, 10, left + 7, 15), fill=255)
+        draw.rectangle((left + 2, 19, left + 7, 25), fill=255)
+    draw.rectangle((66, 25, 68, 27), fill=0)
+    if marker in ["=", "-", "+"]:
+        draw.rectangle((24, 22, 31, 24), fill=0)
+    if marker == "=":
+        draw.rectangle((24, 17, 31, 19), fill=0)
+    if marker == "+":
+        draw.rectangle((27, 17, 29, 27), fill=0)
+    if marker == ":":
+        draw.rectangle((28, 15, 31, 18), fill=0)
+        draw.rectangle((28, 22, 31, 25), fill=0)
+    if split_integer:
+        # One integer glyph is detached from the other two. The marker still
+        # touches the first glyph; component count is not the digit count.
+        draw.line((41, 8, 41, 27), fill=255)
+    image = image.resize((image.width * scale, image.height * scale))
+    gray = np.asarray(image)
+    assert connected_decimal_equals(gray, 3) == (marker == "=")
+    assert not connected_decimal_equals(gray, 2)
+    assert not connected_decimal_equals(gray, 4)
+    # Removing the real decimal point cannot be repaired by a marker guess.
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((66 * scale, 25 * scale, 69 * scale - 1, 28 * scale - 1), fill=255)
+    assert not connected_decimal_equals(np.asarray(image), 3)
+
+
+@pytest.mark.parametrize("scale", [1, 2, 3])
+@pytest.mark.parametrize("equals", [True, False])
+def test_wide_connected_digits_use_the_fractional_pitch_without_losing_signs(
+    scale, equals
+):
+    image = Image.new("L", (132, 40), 255)
+    draw = ImageDraw.Draw(image)
+    for left in [32, 48, 64, 92, 108]:
+        draw.rectangle((left, 8, left + 13, 27), fill=0)
+        draw.rectangle((left + 2, 10, left + 11, 25), fill=255)
+    # Two integer digits bleed together; the two fractional glyphs stay separate.
+    draw.line((61, 20, 64, 20), fill=0)
+    draw.rectangle((83, 25, 86, 27), fill=0)
+    draw.rectangle((14, 21, 28, 23), fill=0)
+    if equals:
+        draw.rectangle((14, 15, 28, 17), fill=0)
+        # A narrow ink bridge must not hide the two full horizontal strokes.
+        draw.rectangle((18, 17, 25, 21), fill=0)
+    image = image.resize((image.width * scale, image.height * scale))
+    gray = np.asarray(image)
+    assert decimal_suffix_region(gray, 3) is not None
+    assert decimal_expression_equals(gray, 3, allow_uneven_bars=True) == equals
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((83 * scale, 25 * scale, 87 * scale - 1, 28 * scale - 1), fill=255)
+    assert decimal_suffix_region(np.asarray(image), 3) is None
+
+
+@pytest.mark.parametrize("scale", [1, 2, 3])
+@pytest.mark.parametrize(
+    "kind", ["cross", "plus", "minus", "colon", "digit", "no-quantity"]
+)
+def test_a_missing_multiplication_needs_its_source_arms_and_quantity(kind, scale):
+    image = Image.new("L", (82, 36), 255)
+    draw = ImageDraw.Draw(image)
+    for left in [8, 16, 24, 40, 48, 64]:
+        draw.rectangle((left, 8, left + 7, 25), fill=0)
+        draw.rectangle((left + 2, 10, left + 5, 23), fill=255)
+    draw.rectangle((34, 23, 36, 25), fill=0)
+    if kind in ["cross", "no-quantity"]:
+        draw.line((56, 12, 63, 20), fill=0, width=2)
+        draw.line((56, 20, 63, 12), fill=0, width=2)
+    elif kind == "plus":
+        draw.rectangle((56, 16, 63, 17), fill=0)
+        draw.rectangle((59, 12, 60, 21), fill=0)
+    elif kind == "minus":
+        draw.rectangle((56, 16, 63, 17), fill=0)
+    elif kind == "colon":
+        draw.rectangle((59, 12, 61, 14), fill=0)
+        draw.rectangle((59, 20, 61, 22), fill=0)
+    else:
+        draw.rectangle((59, 8, 61, 25), fill=0)
+    if kind == "no-quantity":
+        draw.rectangle((64, 8, 71, 25), fill=255)
+    image = image.resize((image.width * scale, image.height * scale))
+    assert printed_multiplication(np.asarray(image), 3) == (kind == "cross")

@@ -1,0 +1,13 @@
+{
+  "reviewed_before_any_F_inference_utc": "2026-11-03T18:52:59.624126+00:00",
+  "initial_reference_sha256": "817031035fdfb18550fc5966dcda73abf02d8c775227faeb5b2dd56783009118",
+  "final_reference_sha256": "99d23bd7e53823d69c9f12b985f00a967ec9c19be4f63ee8e3eedc1fbee94654",
+  "changes": [
+    "Grocery text region narrowed to clearly readable sale words; uncertain adjacent number excluded before inference.",
+    "Mini-receipt regions adjusted from full-resolution upright source, with inverse mapping to original pixels."
+  ],
+  "all91_table_values_rechecked_on_source": true,
+  "all70_numeric_controls_visually_read": true,
+  "ambiguous_craft_prices_excluded_before_inference": true,
+  "no_F_inference_performed": true
+}

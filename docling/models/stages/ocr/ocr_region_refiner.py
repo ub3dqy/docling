@@ -1271,7 +1271,11 @@ class OcrRegionRefiner:
                 ]
                 expression_lines = refine_receipt_expressions(self, page, image)
                 price_refinements = refine_receipt_prices(
-                    self, page, image, api, verified_lines=verified_numbers
+                    self,
+                    page,
+                    image,
+                    api,
+                    verified_lines=verified_numbers | expression_lines,
                 )
                 for index in (
                     expression_lines
@@ -1446,7 +1450,14 @@ class OcrRegionRefiner:
                             selected.engine,
                             selected.variant,
                         )
-                if selected.text and selected.text != cell.text:
+                if (
+                    selected.text
+                    and selected.text != cell.text
+                    and (
+                        not receipt
+                        or price_refinements.preserves(cell.index, selected.text)
+                    )
+                ):
                     replacements[cell.index] = selected
                     cell.text = selected.text
                     cell.confidence = selected.confidence

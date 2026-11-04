@@ -1,0 +1,45 @@
+{
+  "prior_files": 207,
+  "prior_unique_sha256": 165,
+  "new_originals": 8,
+  "all_sha256_new": true,
+  "photos": [
+    {
+      "file": "IMG_0805_bin.jpg",
+      "phash63": "7c8bd6acd124d981",
+      "nearest_prior": "output/russian-ocr-holdout-2026-11-02b/candidates/IMG_0753_bin.jpg",
+      "nearest_distance_of63": 14
+    },
+    {
+      "file": "IMG_1455_bin.png",
+      "phash63": "1a4b6794cc6d938c",
+      "nearest_prior": "output/real-russian-ocr-new-2026-11-01/sources/doc-000029.jpg",
+      "nearest_distance_of63": 22
+    },
+    {
+      "file": "IMG_1328_bin.png",
+      "phash63": "4dcc3233c74d989c",
+      "nearest_prior": "output/russian-ocr-holdout-2026-11-02/sources/IMG_0891_bin.jpg",
+      "nearest_distance_of63": 20
+    },
+    {
+      "file": "IMG_1243_bin.jpg",
+      "phash63": "1ea5615a21d77a29",
+      "nearest_prior": "output/russian-ocr-holdout-2026-11-02c/candidates/doc-000538.jpg",
+      "nearest_distance_of63": 20
+    },
+    {
+      "file": "IMG_1429_bin.png",
+      "phash63": "1a61619c6e926cdd",
+      "nearest_prior": "output/real-russian-ocr-new-2026-11-01/sources/doc-000030.jpg",
+      "nearest_distance_of63": 20
+    },
+    {
+      "file": "IMG_1660_bin.png",
+      "phash63": "4b2bb32e6c073c89",
+      "nearest_prior": "output/russian-ocr-holdout-2026-11-02b/candidates/grid-IMG_0857_bin.PNG.png",
+      "nearest_distance_of63": 18
+    }
+  ],
+  "scope": "pHash63 is only an image-distance check, not semantic independence or model-training novelty."
+}

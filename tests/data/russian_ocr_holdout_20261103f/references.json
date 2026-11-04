@@ -1,0 +1,1241 @@
+{
+  "scope": "F: ten previously unused real pages from eight originals, visually transcribed before any F recognition; unchanged evaluation protocol.",
+  "exclusions": [
+    "Only selected fields, table values and text regions are scored. QR/barcodes, signatures, personal identifiers other than the audit OGRN and remaining text are outside scoring. No expected value was calculated from other values.",
+    "Six lowest seeded unused pinned publisher test images were fixed before visual inspection and all retained. Photos are publisher-binarized camera originals, not colour photographs. No publisher OCR labels were fetched.",
+    "Financial pages1,3,4 and audit page2 were selected before OCR. Financial page4 is targeted use of funds, not a profit-and-loss statement. All four selected pages have zero native text and one raster image. Repeated printed row1520 is disambiguated by the full lease caption. Parenthesized numeric losses are negative controls; plain dash placeholders remain dashes. Uncoded subrows are outside scoring.",
+    "Four craft-shop price fractions are visually ambiguous in the binarized source and were excluded before recognition; quantities, final/paid/card sums and VAT are scored. The grocery and other five receipt source values are individually transcribed from visible pixels.",
+    "Annotation-only rotations map selected regions back to the original photos. Program inputs remain unchanged. Slanted axis-aligned regions can include neighbouring ink. Numeric checks require value presence in a fixed region and export, not proof of every label/value relationship.",
+    "New SHA256 values are checked against207 prior physical source files. Common merchant layouts and three financial pages from one original remain correlated. Local novelty does not establish novelty with respect to model training. A downloaded77-page searchable PDF was excluded before OCR because it is not a raster scan."
+  ],
+  "cases": [
+    {
+      "id": "primorye-assets",
+      "file": "primorye-financial-2025.pdf",
+      "page": 1,
+      "kind": "scanned-pdf",
+      "source_url": "https://www.garantprim.ru/upload/iblock/6b7/vvklscbtnpawvvsw70acc7fbcu17xm52/Bukhgalterskaya-otchetnost-za-2025-god.pdf",
+      "texts": [
+        {
+          "name": "balance-heading",
+          "text": "Бухгалтерский баланс на 31 декабря 2025 г.",
+          "roi": [
+            0.4,
+            0.388,
+            0.68,
+            0.426
+          ],
+          "max_cer": 0.02
+        }
+      ],
+      "rows": [
+        {
+          "key": "1110",
+          "values": [
+            "117",
+            "117",
+            "117"
+          ]
+        },
+        {
+          "key": "1150",
+          "values": [
+            "4 384",
+            "5 423",
+            "697"
+          ]
+        },
+        {
+          "key": "1180",
+          "values": [
+            "-",
+            "363",
+            "-"
+          ]
+        },
+        {
+          "key": "1100",
+          "values": [
+            "4 501",
+            "5 903",
+            "813"
+          ]
+        },
+        {
+          "key": "1210",
+          "values": [
+            "-",
+            "-",
+            "1"
+          ]
+        },
+        {
+          "key": "1230",
+          "values": [
+            "102 483",
+            "31 470",
+            "25 371"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "primorye-liabilities",
+      "file": "primorye-financial-2025.pdf",
+      "page": 3,
+      "kind": "scanned-pdf",
+      "source_url": "https://www.garantprim.ru/upload/iblock/6b7/vvklscbtnpawvvsw70acc7fbcu17xm52/Bukhgalterskaya-otchetnost-za-2025-god.pdf",
+      "texts": [
+        {
+          "name": "liabilities-caption",
+          "text": "ПАССИВ",
+          "roi": [
+            0.3,
+            0.074,
+            0.43,
+            0.096
+          ],
+          "max_cer": 0.02
+        }
+      ],
+      "rows": [
+        {
+          "key": "1330",
+          "values": [
+            "2 478 270",
+            "2 224 282",
+            "1 933 011"
+          ]
+        },
+        {
+          "key": "1360",
+          "values": [
+            "832",
+            "770",
+            "813"
+          ]
+        },
+        {
+          "key": "1300",
+          "values": [
+            "2 479 102",
+            "2 225 052",
+            "1 933 824"
+          ]
+        },
+        {
+          "key": "1420",
+          "values": [
+            "-",
+            "163",
+            "-"
+          ]
+        },
+        {
+          "key": "1450",
+          "values": [
+            "739",
+            "2 599",
+            "-"
+          ]
+        },
+        {
+          "key": "1400",
+          "values": [
+            "739",
+            "2 762",
+            "-"
+          ]
+        },
+        {
+          "key": "1520",
+          "values": [
+            "1 357",
+            "32 379",
+            "3 660"
+          ]
+        },
+        {
+          "key": "Обязательства по аренде",
+          "values": [
+            "2 929",
+            "2 171",
+            "-"
+          ]
+        },
+        {
+          "key": "1540",
+          "values": [
+            "1 723",
+            "1 452",
+            "1 999"
+          ]
+        },
+        {
+          "key": "1500",
+          "values": [
+            "6 009",
+            "36 002",
+            "5 658"
+          ]
+        },
+        {
+          "key": "1700",
+          "values": [
+            "2 485 850",
+            "2 263 816",
+            "1 939 482"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "primorye-targeted-funds",
+      "file": "primorye-financial-2025.pdf",
+      "page": 4,
+      "kind": "scanned-pdf",
+      "source_url": "https://www.garantprim.ru/upload/iblock/6b7/vvklscbtnpawvvsw70acc7fbcu17xm52/Bukhgalterskaya-otchetnost-za-2025-god.pdf",
+      "texts": [
+        {
+          "name": "funds-heading",
+          "text": "Отчет о целевом использовании средств за 2025 г.",
+          "roi": [
+            0.3,
+            0.033,
+            0.73,
+            0.071
+          ],
+          "max_cer": 0.02
+        }
+      ],
+      "rows": [
+        {
+          "key": "6100",
+          "values": [
+            "2 224 282",
+            "1 933 011"
+          ]
+        },
+        {
+          "key": "6220",
+          "values": [
+            "-",
+            "51 456"
+          ]
+        },
+        {
+          "key": "6240",
+          "values": [
+            "333 681",
+            "340 603"
+          ]
+        },
+        {
+          "key": "6250",
+          "values": [
+            "26",
+            "200"
+          ]
+        },
+        {
+          "key": "6200",
+          "values": [
+            "333 707",
+            "392 259"
+          ]
+        },
+        {
+          "key": "6310",
+          "values": [
+            "-79 382",
+            "-100 731"
+          ]
+        },
+        {
+          "key": "6311",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6312",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6313",
+          "values": [
+            "-79 382",
+            "-100 731"
+          ]
+        },
+        {
+          "key": "6320",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6321",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6322",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6323",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6324",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6325",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6326",
+          "values": [
+            "-",
+            "-"
+          ]
+        },
+        {
+          "key": "6330",
+          "values": [
+            "-337",
+            "-"
+          ]
+        },
+        {
+          "key": "6350",
+          "values": [
+            "-",
+            "-257"
+          ]
+        },
+        {
+          "key": "6300",
+          "values": [
+            "-79 719",
+            "-100 987"
+          ]
+        },
+        {
+          "key": "6400",
+          "values": [
+            "2 478 270",
+            "2 224 282"
+          ]
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "mariel-independent-audit",
+      "file": "mariel-audit-2025.pdf",
+      "page": 2,
+      "kind": "scanned-pdf",
+      "source_url": "https://xn--12-9kcqjffxnf3b.xn--p1ai/upload/documents/2026/%D0%90%D1%83%D0%B4%D0%B8%D1%82%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B5%20%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%202025%20%D0%B3%D0%BE%D0%B4.pdf",
+      "texts": [
+        {
+          "name": "opinion-heading",
+          "text": "Мнение",
+          "roi": [
+            0.49,
+            0.095,
+            0.59,
+            0.117
+          ],
+          "max_cer": 0.02
+        },
+        {
+          "name": "audited-statements",
+          "text": "Мы провели аудит прилагаемой годовой бухгалтерской отчетности Микрокредитной компании «Фонд поддержки предпринимательства Республики Марий Эл» (ОГРН 1021200774110) состоящей из бухгалтерского баланса по состоянию на 31 декабря 2025 года, отчета о целевом использовании средств за 2025 год, приложений к бухгалтерскому балансу и отчету о целевом использовании средств, в том числе отчета о финансовых результатах за 2025 год и отчета о движении денежных средств за 2025 год, пояснений к бухгалтерскому балансу и отчету о целевом использовании средств за 2025 год, включая основные положения учетной политики (далее «бухгалтерская отчетность»).",
+          "roi": [
+            0.125,
+            0.12,
+            0.95,
+            0.258
+          ],
+          "max_cer": 0.01
+        },
+        {
+          "name": "auditor-opinion",
+          "text": "По нашему мнению, прилагаемая годовая бухгалтерская отчетность отражает достоверно во всех существенных отношениях финансовое положение Микрокредитной компании «Фонд поддержки предпринимательства Республики Марий Эл» по состоянию на 31 декабря 2025 года, финансовые результаты его деятельности и движение денежных средств за 2025 год в соответствии с правилами составления бухгалтерской отчетности, установленными в Российской Федерации, в том числе Центральным банком Российской Федерации.",
+          "roi": [
+            0.125,
+            0.26,
+            0.95,
+            0.359
+          ],
+          "max_cer": 0.01
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "ogrn",
+          "value": "1021200774110",
+          "roi": [
+            0.125,
+            0.12,
+            0.95,
+            0.258
+          ]
+        }
+      ]
+    },
+    {
+      "id": "receipt-grocery-vat10",
+      "file": "IMG_0805_bin.jpg",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_0805_bin.jpg?download=true",
+      "texts": [
+        {
+          "name": "sale-heading",
+          "text": "ДОКУМЕНТ НА ПРОДАЖУ",
+          "roi": [
+            0.1975,
+            0.39875,
+            0.3775,
+            0.416875
+          ],
+          "max_cer": 0.05
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "dark-bread-price",
+          "value": "74.99",
+          "roi": [
+            0.3775,
+            0.42,
+            0.5,
+            0.438125
+          ]
+        },
+        {
+          "name": "dark-bread-quantity",
+          "value": "1",
+          "roi": [
+            0.3775,
+            0.42,
+            0.5,
+            0.438125
+          ]
+        },
+        {
+          "name": "dark-bread-sum",
+          "value": "74.99",
+          "roi": [
+            0.49916666666666665,
+            0.42,
+            0.565,
+            0.438125
+          ]
+        },
+        {
+          "name": "white-loaf-price",
+          "value": "139.99",
+          "roi": [
+            0.3775,
+            0.434375,
+            0.5,
+            0.4525
+          ]
+        },
+        {
+          "name": "white-loaf-quantity",
+          "value": "1",
+          "roi": [
+            0.3775,
+            0.434375,
+            0.5,
+            0.4525
+          ]
+        },
+        {
+          "name": "white-loaf-sum",
+          "value": "139.99",
+          "roi": [
+            0.49916666666666665,
+            0.434375,
+            0.565,
+            0.4525
+          ]
+        },
+        {
+          "name": "bread-a-price",
+          "value": "119.99",
+          "roi": [
+            0.3775,
+            0.44875,
+            0.5,
+            0.466875
+          ]
+        },
+        {
+          "name": "bread-a-quantity",
+          "value": "2",
+          "roi": [
+            0.3775,
+            0.44875,
+            0.5,
+            0.466875
+          ]
+        },
+        {
+          "name": "bread-a-sum",
+          "value": "239.98",
+          "roi": [
+            0.49916666666666665,
+            0.44875,
+            0.565,
+            0.466875
+          ]
+        },
+        {
+          "name": "bread-b-price",
+          "value": "79.99",
+          "roi": [
+            0.3775,
+            0.463125,
+            0.5,
+            0.48125
+          ]
+        },
+        {
+          "name": "bread-b-quantity",
+          "value": "2",
+          "roi": [
+            0.3775,
+            0.463125,
+            0.5,
+            0.48125
+          ]
+        },
+        {
+          "name": "bread-b-sum",
+          "value": "159.98",
+          "roi": [
+            0.49916666666666665,
+            0.463125,
+            0.565,
+            0.48125
+          ]
+        },
+        {
+          "name": "lemons-price",
+          "value": "199.99",
+          "roi": [
+            0.3775,
+            0.47875,
+            0.5,
+            0.496875
+          ]
+        },
+        {
+          "name": "lemons-quantity",
+          "value": "1.482",
+          "roi": [
+            0.3775,
+            0.47875,
+            0.5,
+            0.496875
+          ]
+        },
+        {
+          "name": "lemons-sum",
+          "value": "296.39",
+          "roi": [
+            0.49916666666666665,
+            0.47875,
+            0.565,
+            0.496875
+          ]
+        },
+        {
+          "name": "total",
+          "value": "911.33",
+          "roi": [
+            0.5808333333333333,
+            0.651875,
+            0.6558333333333334,
+            0.6725
+          ]
+        },
+        {
+          "name": "paid",
+          "value": "911.33",
+          "roi": [
+            0.5808333333333333,
+            0.66625,
+            0.6558333333333334,
+            0.68625
+          ]
+        },
+        {
+          "name": "vat-rate",
+          "value": "10",
+          "roi": [
+            0.425,
+            0.685,
+            0.5183333333333333,
+            0.703125
+          ]
+        },
+        {
+          "name": "vat-amount",
+          "value": "82.85",
+          "roi": [
+            0.5916666666666667,
+            0.68625,
+            0.65,
+            0.705
+          ]
+        }
+      ]
+    },
+    {
+      "id": "receipt-bacon-vat5",
+      "file": "IMG_1243_bin.jpg",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1243_bin.jpg?download=true",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "text": "Кассовый чек",
+          "roi": [
+            0.4975786924939467,
+            0.15951742627345844,
+            0.6537530266343826,
+            0.22386058981233245
+          ],
+          "max_cer": 0.05
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "price",
+          "value": "79.00",
+          "roi": [
+            0.652542372881356,
+            0.21849865951742628,
+            0.7469733656174334,
+            0.2734584450402145
+          ]
+        },
+        {
+          "name": "quantity",
+          "value": "2",
+          "roi": [
+            0.652542372881356,
+            0.21849865951742628,
+            0.7469733656174334,
+            0.2734584450402145
+          ]
+        },
+        {
+          "name": "item-sum",
+          "value": "158.00",
+          "roi": [
+            0.8680387409200968,
+            0.20509383378016086,
+            0.9987893462469734,
+            0.2587131367292225
+          ]
+        },
+        {
+          "name": "total",
+          "value": "158.00",
+          "roi": [
+            0.784503631961259,
+            0.3230563002680965,
+            0.9987893462469734,
+            0.3739946380697051
+          ]
+        },
+        {
+          "name": "vat-rate",
+          "value": "5",
+          "roi": [
+            0.15375302663438256,
+            0.3378016085790885,
+            0.3280871670702179,
+            0.37935656836461124
+          ]
+        },
+        {
+          "name": "vat-amount",
+          "value": "7.52",
+          "roi": [
+            0.9055690072639225,
+            0.36863270777479895,
+            0.9987893462469734,
+            0.41152815013404825
+          ]
+        },
+        {
+          "name": "paid",
+          "value": "158.00",
+          "roi": [
+            0.8765133171912833,
+            0.4061662198391421,
+            0.9987893462469734,
+            0.450402144772118
+          ]
+        }
+      ]
+    },
+    {
+      "id": "receipt-four-dishes-vat5",
+      "file": "IMG_1328_bin.png",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1328_bin.png?download=true",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "text": "Кассовый чек",
+          "roi": [
+            0.3549742084669888,
+            0.33530556857011884,
+            0.4044740315384874,
+            0.4226226188029041
+          ],
+          "max_cer": 0.05
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "rice-price",
+          "value": "79.20",
+          "roi": [
+            0.3895716677065413,
+            0.30203167825295707,
+            0.4367972550769635,
+            0.3797007047267066
+          ]
+        },
+        {
+          "name": "rice-quantity",
+          "value": "1",
+          "roi": [
+            0.3895716677065413,
+            0.30203167825295707,
+            0.4367972550769635,
+            0.3797007047267066
+          ]
+        },
+        {
+          "name": "rice-sum",
+          "value": "79.20",
+          "roi": [
+            0.4433547724142752,
+            0.2048856707992788,
+            0.4851611094538258,
+            0.2701834783389175
+          ]
+        },
+        {
+          "name": "saute-price",
+          "value": "87.20",
+          "roi": [
+            0.4178767993746993,
+            0.3265404348286333,
+            0.4651023867451215,
+            0.40420946130238283
+          ]
+        },
+        {
+          "name": "saute-quantity",
+          "value": "1",
+          "roi": [
+            0.4178767993746993,
+            0.3265404348286333,
+            0.4651023867451215,
+            0.40420946130238283
+          ]
+        },
+        {
+          "name": "saute-sum",
+          "value": "87.20",
+          "roi": [
+            0.47165990408243325,
+            0.22939442737495502,
+            0.5134662411219838,
+            0.2946922349145937
+          ]
+        },
+        {
+          "name": "potato-price",
+          "value": "116.00",
+          "roi": [
+            0.4456577619378915,
+            0.35059532554179695,
+            0.49288334930831373,
+            0.4282643520155465
+          ]
+        },
+        {
+          "name": "potato-quantity",
+          "value": "1",
+          "roi": [
+            0.4456577619378915,
+            0.35059532554179695,
+            0.49288334930831373,
+            0.4282643520155465
+          ]
+        },
+        {
+          "name": "potato-sum",
+          "value": "116.00",
+          "roi": [
+            0.4994408666456254,
+            0.2534493180881187,
+            0.541247203685176,
+            0.31874712562775737
+          ]
+        },
+        {
+          "name": "mors-price",
+          "value": "52.00",
+          "roi": [
+            0.47448706271101543,
+            0.3755579479799857,
+            0.5217126500814377,
+            0.4532269744537353
+          ]
+        },
+        {
+          "name": "mors-quantity",
+          "value": "1",
+          "roi": [
+            0.47448706271101543,
+            0.3755579479799857,
+            0.5217126500814377,
+            0.4532269744537353
+          ]
+        },
+        {
+          "name": "mors-sum",
+          "value": "52.00",
+          "roi": [
+            0.5282701674187493,
+            0.27841194052630747,
+            0.5700765044582999,
+            0.3437097480659461
+          ]
+        },
+        {
+          "name": "discount",
+          "value": "-83.60",
+          "roi": [
+            0.5544305530553554,
+            0.30379224213463724,
+            0.5985382658152609,
+            0.3775491287384731
+          ]
+        },
+        {
+          "name": "total",
+          "value": "334.40",
+          "roi": [
+            0.5527409769246708,
+            0.31559275455996283,
+            0.612166662544374,
+            0.4207997874617521
+          ]
+        },
+        {
+          "name": "vat-rate",
+          "value": "5",
+          "roi": [
+            0.4243623346875666,
+            0.598535511164429,
+            0.4810648251321947,
+            0.6981514069465821
+          ]
+        },
+        {
+          "name": "vat-amount",
+          "value": "15.92",
+          "roi": [
+            0.5878416756767794,
+            0.3283009987103135,
+            0.6273675665883849,
+            0.392028369077344
+          ]
+        },
+        {
+          "name": "paid",
+          "value": "334.40",
+          "roi": [
+            0.5961260317059879,
+            0.3378321818230764,
+            0.6378509486877026,
+            0.4066968234472307
+          ]
+        }
+      ]
+    },
+    {
+      "id": "receipt-business-lunch-vat5",
+      "file": "IMG_1429_bin.png",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1429_bin.png?download=true",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "text": "Кассовый чек",
+          "roi": [
+            0.6606912968373101,
+            0.5421895417257185,
+            0.6890535644042924,
+            0.6620180086193697
+          ],
+          "max_cer": 0.05
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "business-lunch-price",
+          "value": "419.00",
+          "roi": [
+            0.6476337802659401,
+            0.6398140625070553,
+            0.6789125433566094,
+            0.8021715112215141
+          ]
+        },
+        {
+          "name": "business-lunch-quantity",
+          "value": "1",
+          "roi": [
+            0.6476337802659401,
+            0.6398140625070553,
+            0.6789125433566094,
+            0.8021715112215141
+          ]
+        },
+        {
+          "name": "business-lunch-sum",
+          "value": "419.00",
+          "roi": [
+            0.6546664243860856,
+            0.8187351874839165,
+            0.6828704500474823,
+            0.9028666559759335
+          ]
+        },
+        {
+          "name": "potato-bake-price",
+          "value": "145.00",
+          "roi": [
+            0.6089368857942002,
+            0.6425180869129408,
+            0.6402156488848698,
+            0.8048755356273994
+          ]
+        },
+        {
+          "name": "potato-bake-quantity",
+          "value": "1",
+          "roi": [
+            0.6089368857942002,
+            0.6425180869129408,
+            0.6402156488848698,
+            0.8048755356273994
+          ]
+        },
+        {
+          "name": "potato-bake-sum",
+          "value": "145.00",
+          "roi": [
+            0.615969529914346,
+            0.8214392118898018,
+            0.6441735555757424,
+            0.9055706803818191
+          ]
+        },
+        {
+          "name": "total",
+          "value": "564.00",
+          "roi": [
+            0.5747212575757626,
+            0.7592759298335091,
+            0.6048198076721292,
+            0.9074425135087423
+          ]
+        },
+        {
+          "name": "vat-rate",
+          "value": "5",
+          "roi": [
+            0.536523904155923,
+            0.32902596133318257,
+            0.5630464513178924,
+            0.44955577961518844
+          ]
+        },
+        {
+          "name": "vat-amount",
+          "value": "26.86",
+          "roi": [
+            0.5568394511515522,
+            0.8298742713777864,
+            0.5828766566814174,
+            0.9063851784685368
+          ]
+        },
+        {
+          "name": "paid",
+          "value": "564.00",
+          "roi": [
+            0.5409087649444937,
+            0.8227299176036312,
+            0.5660247832824339,
+            0.9074755108902648
+          ]
+        }
+      ]
+    },
+    {
+      "id": "receipt-business-mini-vat5",
+      "file": "IMG_1455_bin.png",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1455_bin.png?download=true",
+      "texts": [
+        {
+          "name": "receipt-heading",
+          "text": "Кассовый чек",
+          "roi": [
+            0.6276585362197952,
+            0.3991772681287511,
+            0.6685146138339505,
+            0.5355585737684
+          ],
+          "max_cer": 0.05
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "price",
+          "value": "389.00",
+          "roi": [
+            0.6285169136213227,
+            0.5011041222355263,
+            0.6809099323582132,
+            0.6670101516625532
+          ]
+        },
+        {
+          "name": "quantity",
+          "value": "1",
+          "roi": [
+            0.6285169136213227,
+            0.5011041222355263,
+            0.6809099323582132,
+            0.6670101516625532
+          ]
+        },
+        {
+          "name": "item-sum",
+          "value": "389.00",
+          "roi": [
+            0.6591766012667091,
+            0.6596769453846484,
+            0.6954685036452299,
+            0.739885953709404
+          ]
+        },
+        {
+          "name": "total",
+          "value": "389.00",
+          "roi": [
+            0.6148113296679762,
+            0.6155673848650549,
+            0.6633104487462156,
+            0.7509435550880287
+          ]
+        },
+        {
+          "name": "vat-rate",
+          "value": "5",
+          "roi": [
+            0.509813962405424,
+            0.2135183196198003,
+            0.5522644310872431,
+            0.33552632178864816
+          ]
+        },
+        {
+          "name": "vat-amount",
+          "value": "18.52",
+          "roi": [
+            0.6095978287088566,
+            0.6849386236249423,
+            0.6406932341782283,
+            0.7588082250551548
+          ]
+        },
+        {
+          "name": "paid",
+          "value": "389.00",
+          "roi": [
+            0.5914433754946109,
+            0.6879736644606231,
+            0.6231858285767389,
+            0.7650630186451324
+          ]
+        }
+      ]
+    },
+    {
+      "id": "receipt-craft-shop-vat20",
+      "file": "IMG_1660_bin.png",
+      "page": 1,
+      "kind": "document-photo",
+      "source_url": "https://huggingface.co/datasets/cdek-ocr/receipt-ocr-ru/resolve/50a7383534b3fe498c49eff9e7bb35b20f300eba/images/test/IMG_1660_bin.png?download=true",
+      "texts": [
+        {
+          "name": "thank-you-caption",
+          "text": "СПАСИБО ЗА ПОКУПКУ!",
+          "roi": [
+            0.37833333333333335,
+            0.566875,
+            0.5441666666666667,
+            0.586875
+          ],
+          "max_cer": 0.05
+        }
+      ],
+      "rows": [],
+      "fields": [
+        {
+          "name": "item-1-quantity",
+          "value": "1",
+          "roi": [
+            0.5641666666666667,
+            0.36625,
+            0.6558333333333334,
+            0.385
+          ]
+        },
+        {
+          "name": "item-2-quantity",
+          "value": "1",
+          "roi": [
+            0.5641666666666667,
+            0.436875,
+            0.6558333333333334,
+            0.455625
+          ]
+        },
+        {
+          "name": "item-3-quantity",
+          "value": "1",
+          "roi": [
+            0.5641666666666667,
+            0.485625,
+            0.6558333333333334,
+            0.504375
+          ]
+        },
+        {
+          "name": "item-4-quantity",
+          "value": "1",
+          "roi": [
+            0.5641666666666667,
+            0.530625,
+            0.6558333333333334,
+            0.549375
+          ]
+        },
+        {
+          "name": "total",
+          "value": "1335.70",
+          "roi": [
+            0.5191666666666667,
+            0.580625,
+            0.6575,
+            0.608125
+          ]
+        },
+        {
+          "name": "paid",
+          "value": "1335.70",
+          "roi": [
+            0.5808333333333333,
+            0.60375,
+            0.66,
+            0.621875
+          ]
+        },
+        {
+          "name": "card",
+          "value": "1335.70",
+          "roi": [
+            0.5808333333333333,
+            0.628125,
+            0.66,
+            0.64625
+          ]
+        },
+        {
+          "name": "vat-rate",
+          "value": "20",
+          "roi": [
+            0.2675,
+            0.636875,
+            0.3775,
+            0.655625
+          ]
+        },
+        {
+          "name": "vat-amount",
+          "value": "222.63",
+          "roi": [
+            0.5858333333333333,
+            0.6425,
+            0.66,
+            0.66
+          ]
+        }
+      ]
+    }
+  ]
+}

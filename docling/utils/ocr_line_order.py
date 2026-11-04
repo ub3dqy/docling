@@ -58,6 +58,12 @@ def _ink_box(item: _Item) -> BoundingBox:
 def _same_row(first_item: _Item, second_item: _Item, band: _Band) -> bool:
     first, second = first_item[0], second_item[0]
     a, b = _box(first), _box(second)
+    if a.height > a.width * 1.5 or b.height > b.width * 1.5:
+        # A detector's portrait box can contain a rotated line even when its
+        # first edge is horizontal. Its long vertical span is not line height.
+        # Keep these observations separate until reading direction is known;
+        # horizontal row grouping would join unrelated columns of the page.
+        return False
     ink_a, ink_b = _ink_box(first_item), _ink_box(second_item)
     if min(ink_a.r, ink_b.r) - max(ink_a.l, ink_b.l) > 0.1 * min(
         ink_a.width, ink_b.width

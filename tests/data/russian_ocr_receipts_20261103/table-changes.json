@@ -1,0 +1,5 @@
+{
+  "scope": "Every changed extracted table cell, including cells outside selected controls; positional comparison does not assert semantic row identity.",
+  "cases": [
+  ]
+}

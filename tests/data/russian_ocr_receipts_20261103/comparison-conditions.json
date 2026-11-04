@@ -1,0 +1,161 @@
+{
+  "verified_utc": "2026-11-04T00:19:10.863592+00:00",
+  "base_commit": "3685f3ab070e1ab804328340dbafd4d5c25d8e4b",
+  "runtime_files_per_version": 343,
+  "unchanged_model_assets": 36,
+  "old_controls_and_fixed_inputs": 68,
+  "fresh_controls_fixed_before_first_f": 8,
+  "device": "cpu",
+  "num_threads": 4,
+  "configured_document_timeout_seconds": 180,
+  "common": {
+    "versions": {
+      "docling-slim": "2.145.0",
+      "docling-core": "2.105.0",
+      "docling-parse": "7.24.2",
+      "rapidocr": "3.10.0",
+      "onnxruntime": "1.31.1",
+      "torch": "2.15.0",
+      "tesserocr": "2.12.0",
+      "pymorphy3": "2.0.6",
+      "pymorphy3-dicts-ru": "2.4.417150.4580142"
+    },
+    "ocr_options": {
+      "mode": "full_page",
+      "lang": [
+        "iso:ru-Cyrl"
+      ],
+      "scale": 4.166666666666667,
+      "replace_broken_text_layer": false,
+      "use_word_boxes": true,
+      "use_multiscale": true,
+      "use_region_refinement": true,
+      "use_orientation_fallback": true,
+      "image_scale": 2.0,
+      "preserve_native_resolution": true,
+      "backend": "onnxruntime",
+      "model_size": "small",
+      "text_score": 0.25,
+      "use_det": null,
+      "use_cls": false,
+      "detect_orientation": true,
+      "use_rec": null,
+      "print_verbose": false,
+      "det_model_path": null,
+      "cls_model_path": null,
+      "rec_model_path": null,
+      "rec_keys_path": null,
+      "rec_font_path": null,
+      "font_path": null,
+      "rapidocr_params": {
+        "Global.max_side_len": 4096,
+        "Det.limit_side_len": 736,
+        "Det.limit_type": "min"
+      },
+      "force_full_page_ocr": true
+    },
+    "profile": "ru",
+    "runner_sha256": "fa3935ed48ccc01c834a8ee4dfd742dc40e8d8bf2361e30ddaaaec5ecf24ac67",
+    "python_network_connections_blocked": true,
+    "native_network_capture_performed": false
+  },
+  "cohorts": [
+    {
+      "cohort": "known-e",
+      "before_manifest_sha256": "e5ba9824ee17e4ece5b92af852b534ed60e76f52ffea91f0ff41e40c5f32aea2",
+      "after_manifest_sha256": "392d056719928241caa73755de622a54738946e1f90cd91c46969138bb1152a7",
+      "original_sources_equal": true,
+      "answers_equal": true,
+      "scorer_equal": true,
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "before343runtime_verified": true,
+      "after343runtime_verified": true
+    },
+    {
+      "cohort": "known-d",
+      "before_manifest_sha256": "c925f0eda275c9bc721e1c7f4e7c608efd9c3485fbb65a7e7ba5a067282a555b",
+      "after_manifest_sha256": "7ba83500f49a08440c3251e74b08a934034372391805d37e1cbb27ffdf8356ab",
+      "original_sources_equal": true,
+      "answers_equal": true,
+      "scorer_equal": true,
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "before343runtime_verified": true,
+      "after343runtime_verified": true
+    },
+    {
+      "cohort": "known-c",
+      "before_manifest_sha256": "25547f72b228252f6c28a972d6189460b902d77c603c326b09d2bdac210961b9",
+      "after_manifest_sha256": "77cab259f1e055940a2c22abd1e0c2179946a5cfaa94a943f6c0f01944f9457f",
+      "original_sources_equal": true,
+      "answers_equal": true,
+      "scorer_equal": true,
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "before343runtime_verified": true,
+      "after343runtime_verified": true
+    },
+    {
+      "cohort": "latest-b",
+      "before_manifest_sha256": "707c4da6788eb798d1c170b09a5db9c0fa75970aab93b5743f1a4db22ff2debc",
+      "after_manifest_sha256": "a56d2a556758cd9df82b37201d1fbddbcf9470d02d0c6f8e435a9c8f06f69251",
+      "original_sources_equal": true,
+      "answers_equal": true,
+      "scorer_equal": true,
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "before343runtime_verified": true,
+      "after343runtime_verified": true
+    },
+    {
+      "cohort": "newest",
+      "before_manifest_sha256": "aca9475207728d96e792a04ed76c77d899b06fc61a84078deefac31f3826e51c",
+      "after_manifest_sha256": "747f5de0b8f4d95bc3639e0caabc06cb4694b017e9965fd89dc19e4b273c5e54",
+      "original_sources_equal": true,
+      "answers_equal": true,
+      "scorer_equal": true,
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "before343runtime_verified": true,
+      "after343runtime_verified": true
+    },
+    {
+      "cohort": "unseen",
+      "before_manifest_sha256": "002874cd81aba2249e13587ebfd59e8091bbeb17776e9311e2f66b27e372e06f",
+      "after_manifest_sha256": "44ba6e18e7ffa97308a8c63183258b2bdc268fa4e3a2d5648b02ff8bf22b3344",
+      "original_sources_equal": true,
+      "answers_equal": true,
+      "scorer_equal": true,
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "before343runtime_verified": true,
+      "after343runtime_verified": true
+    },
+    {
+      "cohort": "previous",
+      "before_manifest_sha256": "30e06b8b93f1bf12ffd1455535afbf43a0ed5a9b6456335441c1a52f183b5b6f",
+      "after_manifest_sha256": "a36379c338b7188cf09a9d58502f38ba7f3b064957533163aa64c77c733bc169",
+      "original_sources_equal": true,
+      "answers_equal": true,
+      "scorer_equal": true,
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "before343runtime_verified": true,
+      "after343runtime_verified": true
+    },
+    {
+      "cohort": "new-f",
+      "before_manifest_sha256": "d52b3a73c9b04cb3f6bd787893862efdb2b799fe9ef5b22f6fa558bb826d0dea",
+      "after_manifest_sha256": "9417faffaeca4d003a1affa094762b5b72597517bbb0c5d78f5a20dc73e334c5",
+      "original_sources_equal": true,
+      "answers_equal": true,
+      "scorer_equal": true,
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "before343runtime_verified": true,
+      "after343runtime_verified": true
+    }
+  ],
+  "note": "Evaluation code and normalization bytes are among the68frozen files. Native packet capture was not performed; network flags describe the qualifier guard only. Every source and effective/original reference match is checked pairwise."
+}

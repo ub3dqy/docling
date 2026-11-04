@@ -1,0 +1,72 @@
+{
+  "reviewed_utc": "2026-11-04T00:13:30.504207+00:00",
+  "candidate": "candidate-v9",
+  "case_id": "receipt-business-lunch-vat5",
+  "raw_regression": {
+    "before": {
+      "name": "business-lunch-quantity",
+      "expected": "1",
+      "actual_region": "145.00*1 419.01",
+      "roi_number_correct": true,
+      "available_in_export": true,
+      "passed": true
+    },
+    "after": {
+      "name": "business-lunch-quantity",
+      "expected": "1",
+      "actual_region": "419.01",
+      "roi_number_correct": false,
+      "available_in_export": false,
+      "passed": false
+    }
+  },
+  "observation": "The first source item is419.00x1; both exports still contain the same wrong fused419.01. The other item145.00*1 remains in both exports. The baseline region additionally included that neighboring item, so its quantity1 made the first item control pass. With changed line geometry that neighboring expression no longer enters this region. This is a retained raw control regression, not evidence that a correctly assigned first-item quantity was lost. The source first-item quantity remains unresolved in both exports. No score/answer/region/program changes are made.",
+  "exports": [
+    {
+      "role": "baseline",
+      "full_export_sha256": "fa80feadc09ddaacdde16670bf29a412e74a830cc172d6c79c910105be710eb3",
+      "source_lines": [
+        {
+          "text": "145.00*1 419.01",
+          "confidence": 0.9261800000000001,
+          "bbox": [
+            0.615625,
+            0.6293571428571437,
+            0.6765625,
+            0.7361309523809466
+          ]
+        }
+      ],
+      "contains_other_item_expression": true,
+      "contains_primary_fused_expression": true
+    },
+    {
+      "role": "first",
+      "full_export_sha256": "f9c94cc607e2049dc430dc8a22ce1bc7f73d173b3cd273d944f286f016062c82",
+      "source_lines": [
+        {
+          "text": "419.01",
+          "confidence": 0.83986,
+          "bbox": [
+            0.6490625,
+            0.63,
+            0.6765625,
+            0.7316666666666667
+          ]
+        },
+        {
+          "text": "145.00*1",
+          "confidence": 0.99092,
+          "bbox": [
+            0.615625,
+            0.6483333333333333,
+            0.6415625,
+            0.7320833333333333
+          ]
+        }
+      ],
+      "contains_other_item_expression": true,
+      "contains_primary_fused_expression": true
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "pages": [
+    {
+      "file": "primorye-financial-2025.pdf",
+      "page": 1,
+      "native_characters": 0,
+      "raster_images": 1
+    },
+    {
+      "file": "primorye-financial-2025.pdf",
+      "page": 3,
+      "native_characters": 0,
+      "raster_images": 1
+    },
+    {
+      "file": "primorye-financial-2025.pdf",
+      "page": 4,
+      "native_characters": 0,
+      "raster_images": 1
+    },
+    {
+      "file": "mariel-audit-2025.pdf",
+      "page": 2,
+      "native_characters": 0,
+      "raster_images": 1
+    }
+  ]
+}

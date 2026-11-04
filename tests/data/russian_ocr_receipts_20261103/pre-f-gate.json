@@ -1,0 +1,106 @@
+{
+  "approved": true,
+  "purpose": "Technical gate for first F measurement; this does not claim perfect recognition or approve unattended financial use.",
+  "approved_utc": "2026-11-03T23:52:39.653414+00:00",
+  "candidate": "candidate-v9",
+  "complete_known_cases": 70,
+  "known_verification_sha256": "1c63653f75bddc6d11e37261843031daf1f7ee3b96d5a1a64acf89dd86d0f46c",
+  "known_comparison_sha256": "00f8934040ddcf367b552d424b9a0c711a722a1b9d402e78e85caff5539a1231",
+  "full_export_audit_sha256": "b8fe41b85c864a0e19f4fa480b877fc8a5d3757a54a2260e97ec01ba0ac3d118",
+  "full_export_review_sha256": "edb35db8356baa515bab12b2722b382a477386a397eb3b52920e927def0749ec",
+  "frozen_inputs_sha256": "f6b18b20987311efbec0094184d2692790c1a9ed3c509f774409edc32d18fdb4",
+  "source_review_sha256": "84da4fe54273a8afdc7a8071a83c532e9344b88f5afddd70fcc9069e871bf7b8",
+  "validation_log_sha256": "1c93f7ad901ffd1c2d22c5cbd2d65206193fa227e6fdb9623fdf98e05f1a7246",
+  "runtime_files": 343,
+  "model_assets": 36,
+  "fixed_inputs": 68,
+  "fresh_controls": 8,
+  "tests": {
+    "affected_passed": 904,
+    "affected_skipped": 15,
+    "cli_passed": 12,
+    "shutdown_passed": 2,
+    "synthetic_passed": 8
+  },
+  "selected_regressions": 0,
+  "changed_full_tables": 0,
+  "new_empty_exports": 0,
+  "source_and_environment_checks": [
+    {
+      "cohort": "known-e",
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "original_sources_equal": true,
+      "scorer_equal": true,
+      "before_code_verified": true,
+      "after_code_verified": true
+    },
+    {
+      "cohort": "known-d",
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "original_sources_equal": true,
+      "scorer_equal": true,
+      "before_code_verified": true,
+      "after_code_verified": true
+    },
+    {
+      "cohort": "known-c",
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "original_sources_equal": true,
+      "scorer_equal": true,
+      "before_code_verified": true,
+      "after_code_verified": true
+    },
+    {
+      "cohort": "latest-b",
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "original_sources_equal": true,
+      "scorer_equal": true,
+      "before_code_verified": true,
+      "after_code_verified": true
+    },
+    {
+      "cohort": "newest",
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "original_sources_equal": true,
+      "scorer_equal": true,
+      "before_code_verified": true,
+      "after_code_verified": true
+    },
+    {
+      "cohort": "unseen",
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "original_sources_equal": true,
+      "scorer_equal": true,
+      "before_code_verified": true,
+      "after_code_verified": true
+    },
+    {
+      "cohort": "previous",
+      "versions_equal": true,
+      "ocr_options_equal": true,
+      "original_sources_equal": true,
+      "scorer_equal": true,
+      "before_code_verified": true,
+      "after_code_verified": true
+    }
+  ],
+  "known_remaining": "31/262numeric fields and13/1002table controls fail;15/78text regions fail their frozen limits. Three E table references are documented wrong; raw scores retained. Some E text ROIs intersect adjacent ink. Newly recovered long heading adds28edits/19chars, retained in raw coverage.",
+  "unselected_text_regressions": [
+    {
+      "cohort": "latest-b",
+      "case_id": "receipt-grocery-discount-vat20",
+      "source_caption": "ФП",
+      "before_caption": "оП",
+      "after_caption": "",
+      "retained_number": "3748306580"
+    }
+  ],
+  "source_confirmed_expression_retention": "Full source-confirmed price/operator/quantity preserved in final soup export; no numeric-only pass is used as a substitute for that check.",
+  "fresh_protocol": "F sources/answers/regions fixed before any program prediction. No F-driven runtime changes after first run. First final runtime run retained, then exact343-file baseline archive; same CPU4 and180-second configured limit."
+}

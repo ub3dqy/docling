@@ -1,0 +1,29 @@
+{
+  "scope": "Source inspection only; no evaluator or reference changes. All frozen failures remain in qualification scores.",
+  "cases": [
+    {
+      "case_id": "receipt-six-dishes-vat5",
+      "finding": "Frozen receipt-heading rectangle intersects ink from the first item below; both the item quadrilateral and source ink overlap its bottom edge. Correct heading output alone therefore cannot pass this whole rectangular text control.",
+      "evidence": "source-review/receipt-six-dishes-vat5-roi-evidence.png",
+      "evidence_sha256": "4467f9f529e790e353342e11c391852a94abb62b890f58e421f203f6895358d8"
+    },
+    {
+      "case_id": "receipt-soup-no-vat",
+      "finding": "Frozen vat-exemption rectangle intersects the preceding slanted item text band and some source ink. Whole-line ROI inclusion adds the item description to a correctly read VAT caption. Preserve this raw failure.",
+      "evidence": "source-review/receipt-soup-no-vat-roi-evidence.png",
+      "evidence_sha256": "8a58d3800a353f04515c48e4fc89c02a0c039b26458bf5eb2effca692337487a"
+    },
+    {
+      "case_id": "receipt-beer-no-vat",
+      "finding": "The source has punctuation dots to the right of the heading. The frozen heading reference omits those dots. Do not delete visible punctuation to fit the reference.",
+      "evidence": "source-review/receipt-beer-no-vat-roi-evidence.png",
+      "evidence_sha256": "a43005ab80d34ed6dd1f6186243c38be85499e1246b26932e69c088c8d74e7c8"
+    },
+    {
+      "case_id": "receipt-visa-services",
+      "finding": "Own source price crop shows a multiplication sign followed by a short dash-like mark and a colon-shaped separator. A semantic positive currency value cannot justify deleting the observed sign or globally treating colons as decimals.",
+      "evidence": "source-review/visa-72-own.png",
+      "evidence_sha256": "11388918d90acb6f7446730ace3485c1c8f1fc4a9d85c37762af97a4b9d92226"
+    }
+  ]
+}

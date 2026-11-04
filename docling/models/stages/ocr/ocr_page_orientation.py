@@ -8,6 +8,7 @@ from __future__ import annotations
 import re
 from collections import Counter
 from collections.abc import Callable
+from math import dist
 from typing import TYPE_CHECKING
 
 from docling.models.stages.ocr.rapid_ocr_model import (
@@ -24,6 +25,33 @@ if TYPE_CHECKING:
     from PIL import Image
 
     from docling.models.stages.ocr.rapid_ocr_model import RapidOcrModel
+
+
+def restore_vertical_crop_axes(prediction: _OcrPrediction) -> _OcrPrediction:
+    """Retain RapidOCR's actual 90CCW portrait-crop reading direction.
+
+    RapidOCR's get_rotate_crop_image rotates crops with height/width >=1.5,
+    but its line boxes and CalRecBoxes word boxes retain canonical corners.
+    Rotate their corner order together, without moving any source point.
+    Decide from the parent line: a narrow digit in a horizontal row was not
+    independently rotated. A 180-degree classifier has a separate, unknown
+    direction; callers must disable it and fallback predictions stay intact.
+    """
+    if prediction.line_classifier_fallback:
+        return prediction
+    lines, line_words = [], []
+    for line, words in zip(prediction.lines, prediction.line_words):
+        box = line[0]
+        # Match the installed cropper's integer dimensions at the boundary.
+        width = int(max(dist(box[0], box[1]), dist(box[2], box[3])))
+        height = int(max(dist(box[0], box[3]), dist(box[1], box[2])))
+        if width > 0 and height >= width * 1.5:
+            lines.append((box[1:] + box[:1], line[1], line[2]))
+            line_words.append([(w[0][1:] + w[0][:1], w[1], w[2]) for w in words])
+        else:
+            lines.append(line)
+            line_words.append(words)
+    return _OcrPrediction(lines, line_words)
 
 
 def _known_text(

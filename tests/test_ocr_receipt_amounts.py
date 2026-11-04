@@ -49,3 +49,85 @@ def test_existing_amounts_signs_and_expressions_remain_protected(original):
         choose_fiscal_number(original, _readings("88.90"), printed_separator=True)
         is None
     )
+
+
+def test_false_minus_needs_two_source_equals_readings_and_both_printed_marks():
+    readings = _readings("=73.28")
+    for decimal, equals in [(False, True), (True, False), (False, False)]:
+        assert (
+            choose_fiscal_number(
+                "-73.28", readings, printed_separator=decimal, printed_equals=equals
+            )
+            is None
+        )
+    selected = choose_fiscal_number(
+        "-73,28", readings, printed_separator=True, printed_equals=True
+    )
+    assert selected is not None and selected.text == "=73,28"
+    assert selected.engine == "fiscal-marker-consensus"
+
+
+@pytest.mark.parametrize("original", ["(73.28)", "=-73.28", "+73.28", "73.28"])
+def test_source_equals_cannot_remove_a_parenthesized_or_already_explicit_sign(original):
+    assert (
+        choose_fiscal_number(
+            original, _readings("=73.28"), printed_separator=True, printed_equals=True
+        )
+        is None
+    )
+
+
+@pytest.mark.parametrize(
+    "failure", ["single-family", "different-digits", "negative-veto"]
+)
+def test_printed_bars_alone_cannot_rewrite_a_fiscal_sign(failure):
+    readings = _readings("=73.28")
+    if failure == "single-family":
+        readings[1] = RegionReading("=73.28", 0.99, readings[0].engine, "wide")
+    elif failure == "different-digits":
+        readings = _readings("=73.29")
+    else:
+        readings.append(RegionReading("-73.28", 0.95, "ch", "source"))
+    assert (
+        choose_fiscal_number(
+            "-73.28", readings, printed_separator=True, printed_equals=True
+        )
+        is None
+    )
+
+
+def test_printed_equals_can_survive_one_reader_omitting_the_marker():
+    readings = [
+        RegionReading("=73.28", 0.99, "cyrillic-v6-medium", "source"),
+        RegionReading("73.28", 0.98, "ch", "wide"),
+    ]
+    selected = choose_fiscal_number(
+        "-73.28", readings, printed_separator=True, printed_equals=True
+    )
+    assert selected is not None and selected.text == "=73.28"
+    readings[0] = RegionReading("73.28", 0.99, "cyrillic-v6-medium", "source")
+    assert (
+        choose_fiscal_number(
+            "-73.28", readings, printed_separator=True, printed_equals=True
+        )
+        is None
+    )
+
+
+def test_a_bleeding_source_marker_still_needs_two_strong_numeric_families():
+    readings = [
+        RegionReading("=73.28", 0.93, "cyrillic-v6-medium", "source"),
+        RegionReading("73.28", 0.99, "cyrillic-v6-medium", "clean"),
+        RegionReading("73.28", 0.98, "iso:ru", "wide"),
+    ]
+    selected = choose_fiscal_number(
+        "-73.28", readings, printed_separator=True, printed_equals=True
+    )
+    assert selected is not None and selected.text == "=73.28"
+    readings[-1] = RegionReading("73.28", 0.94, "iso:ru", "wide")
+    assert (
+        choose_fiscal_number(
+            "-73.28", readings, printed_separator=True, printed_equals=True
+        )
+        is None
+    )

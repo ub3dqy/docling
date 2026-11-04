@@ -171,7 +171,64 @@ def _decimal_suffix_bounds(
                     for dot in decimals
                 ):
                     return left, top, right, bottom
-    return None
+    return _thermal_decimal_bounds(body, stats, integer_digits, fraction_digits)
+
+
+def _thermal_decimal_bounds(
+    bodies: list[tuple[int, int, int, int]],
+    stats: np.ndarray,
+    integer_digits: int,
+    fraction_digits: int,
+) -> tuple[int, int, int, int] | None:
+    """Use the printed fractional glyph pitch for connected, wide digits."""
+    if fraction_digits != 2 or not 1 <= integer_digits <= 7 or len(bodies) < 2:
+        return None
+    from statistics import median
+
+    height = median(box[3] for box in bodies)
+    if (
+        any(not height * 0.75 <= box[3] <= height * 1.25 for box in bodies)
+        or max(box[1] for box in bodies) - min(box[1] for box in bodies) > height * 0.25
+    ):
+        return None
+    supported: set[tuple[int, int, int, int]] = set()
+    for fraction_parts in (1, 2):
+        if fraction_parts >= len(bodies):
+            continue
+        integer, fraction = bodies[:-fraction_parts], bodies[-fraction_parts:]
+        pitch = (
+            fraction[0][2] / 2
+            if fraction_parts == 1
+            else fraction[1][0]
+            + fraction[1][2] / 2
+            - fraction[0][0]
+            - fraction[0][2] / 2
+        )
+        if not height * 0.3 <= pitch <= height * 1.2:
+            continue
+        counts = [round(box[2] / pitch) for box in integer]
+        if (
+            sum(counts) != integer_digits
+            or any(
+                n < 1 or abs(box[2] / pitch - n) > 0.3
+                for box, n in zip(integer, counts)
+            )
+            or (fraction_parts == 2 and any(box[2] > pitch * 1.3 for box in fraction))
+        ):
+            continue
+        top = min(box[1] for box in bodies)
+        bottom = max(box[1] + box[3] for box in bodies)
+        before, after = integer[-1], fraction[0]
+        if any(
+            before[0] + before[2] <= x
+            and x + width <= after[0]
+            and h <= height * 0.3
+            and area >= 3
+            and bottom - height * 0.3 <= y < bottom
+            for x, y, width, h, area in stats[1:]
+        ):
+            supported.add((bodies[0][0], top, bodies[-1][0] + bodies[-1][2], bottom))
+    return supported.pop() if len(supported) == 1 else None
 
 
 def decimal_suffix_region(
@@ -231,3 +288,136 @@ def decimal_expression_equals(
             gray[y0:y1, x0:x1], allow_uneven_bars=allow_uneven_bars
         )
     return supported == 1
+
+
+def connected_decimal_equals(gray: np.ndarray, integer_digits: int) -> bool:
+    """Check a thermal equals sign touching a connected, fixed-pitch amount.
+
+    Two connected fractional digits establish the local pitch. A real decimal
+    point must separate them from the integer bodies. Account for detached
+    integer groups before inspecting the excess prefix of the first group.
+    This is pixel evidence only; independent OCR agreement is still required.
+    """
+    import cv2
+
+    from docling.utils.ocr_region_pixels import two_bar_marker
+
+    if gray.ndim != 2 or min(gray.shape) < 6 or not 1 <= integer_digits <= 7:
+        return False
+    _, ink = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    _, _, stats, _ = cv2.connectedComponentsWithStats(ink)
+    bodies = sorted(
+        (int(x), int(y), int(w), int(h))
+        for x, y, w, h, _ in stats[1:]
+        if h > gray.shape[0] * 0.4 and w > 2
+    )
+    if len(bodies) < 2:
+        return False
+    first, fraction = bodies[0], bodies[-1]
+    x, y, width, height = first
+    fx, fy, fw, fh = fraction
+    pitch = fw / 2
+    if not height * 0.3 <= pitch <= height * 0.9:
+        return False
+    remaining = bodies[1:-1]
+    counts = [round(w / pitch) for _, _, w, _ in remaining]
+    if any(
+        count < 1 or abs(w / pitch - count) > 0.25
+        for (_, _, w, _), count in zip(remaining, counts)
+    ):
+        return False
+    first_count = integer_digits - sum(counts)
+    if first_count < 1:
+        return False
+    prefix = round(width - first_count * pitch)
+    integer_right = bodies[-2][0] + bodies[-2][2]
+    if (
+        abs(height - fh) > height * 0.15
+        or abs(y - fy) > height * 0.15
+        or any(
+            abs(h - height) > height * 0.15 or abs(iy - y) > height * 0.15
+            for _, iy, _, h in remaining
+        )
+        or not pitch * 0.5 <= prefix <= pitch * 1.6
+        or not any(
+            integer_right <= dx
+            and dx + dw <= fx
+            and dh <= height * 0.3
+            and y + height * 0.7 <= dy < y + height
+            and area >= 3
+            for dx, dy, dw, dh, area in stats[1:]
+        )
+    ):
+        return False
+    marker = ink[y : y + height, x : x + prefix]
+    ys, xs = np.where(marker > 0)
+    if not len(xs):
+        return False
+    marker = marker[ys.min() : ys.max() + 1, xs.min() : xs.max() + 1]
+    return two_bar_marker(255 - marker, allow_uneven_bars=True)
+
+
+def printed_multiplication(gray: np.ndarray, integer_digits: int) -> bool:
+    """Verify a small printed cross between a two-decimal price and quantity.
+
+    A decimal dot and the integer span establish the local glyph pitch. The
+    cross can touch adjacent digits. Its diagonal arms must fit between two
+    complete fractional glyphs and a tall quantity glyph. A third decimal
+    digit, plus, minus, colon or trailing ornament cannot supply that evidence.
+    """
+    import cv2
+
+    if gray.ndim != 2 or min(gray.shape) < 6 or not 1 <= integer_digits <= 7:
+        return False
+    _, ink = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    _, _, stats, _ = cv2.connectedComponentsWithStats(ink)
+    bodies = [s for s in stats[1:] if s[3] > gray.shape[0] * 0.4 and s[2] > 1]
+    if len(bodies) < 2:
+        return False
+    from statistics import median
+
+    height = median(int(s[3]) for s in bodies)
+    top = min(int(s[1]) for s in bodies)
+    bottom = max(int(s[1] + s[3]) for s in bodies)
+    for x, y, width, h, area in stats[1:]:
+        if h > height * 0.3 or area < 3 or not bottom - height * 0.35 <= y < bottom:
+            continue
+        before = [s for s in bodies if s[0] + s[2] <= x]
+        after = [s for s in bodies if s[0] >= x + width]
+        if not before or not after:
+            continue
+        pitch = (
+            max(int(s[0] + s[2]) for s in before) - min(int(s[0]) for s in before)
+        ) / integer_digits
+        if not height * 0.3 <= pitch <= height * 1.2:
+            continue
+        position = min(int(s[0]) for s in after) + 2 * pitch
+        for offset in (-0.15, 0.0, 0.15):
+            left = max(0, round(position + pitch * (0.1 + offset)))
+            right = min(ink.shape[1], round(position + pitch * (0.9 + offset)))
+            if right <= left:
+                continue
+            marker = ink[top:bottom, left:right]
+            ys, xs = np.where(marker > 0)
+            if len(xs) == 0:
+                continue
+            marker = marker[ys.min() : ys.max() + 1, xs.min() : xs.max() + 1]
+            mh, mw = marker.shape
+            if not height * 0.25 <= mh <= height * 0.75 or mw < mh * 0.4:
+                continue
+            cy, cx = max(1, round(mh * 0.35)), max(1, round(mw * 0.35))
+            if not all(
+                part.any()
+                for part in (
+                    marker[:cy, :cx],
+                    marker[:cy, -cx:],
+                    marker[-cy:, :cx],
+                    marker[-cy:, -cx:],
+                )
+            ):
+                continue
+            quantity = ink[top:bottom, min(ink.shape[1], round(position + pitch)) :]
+            qy, _ = np.where(quantity > 0)
+            if len(qy) > 0 and qy.max() - qy.min() + 1 >= height * 0.75:
+                return True
+    return False
